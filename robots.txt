@@ -1,11 +1,47 @@
 # Rebirth Station — robots.txt
-# 2026-05-22
+# 2026-05-23 AEO 정책 통합 (전 사이트 정합 = aiklink·thaipl·placecite 동일 패턴)
 
+# 일반 검색엔진
 User-agent: *
 Allow: /
+
+# AI 답변엔진 5종 명시 허용 (출처 표기 + 트래픽 회수 가능)
+User-agent: GPTBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+# 차단 — 출처 표기 없는 학습 흡수 / 인용 가치 낮음
+User-agent: CCBot
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+# SEO 도구 봇 차단 (대역폭 절약)
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
 
 # Sitemap
 Sitemap: https://www.rebirthstation.com/sitemap.xml
 
-# 미공개 영역은 Stage 2 정식 출시 후 별도 지정
-# (현재는 정적 자산만 노출)
+# 미공개 영역은 Stage 2 SSR 마이그레이션 후 별도 지정
