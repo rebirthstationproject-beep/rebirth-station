@@ -1,0 +1,91 @@
+{
+  "name": "Rebirth Station — 큐브 리스트",
+  "short_name": "큐브 리스트",
+  "description": "안 쓰는 폰을 PC 매크로 컨트롤러로 만드는 무료 큐브 리스트. 단축키·매크로·링크를 한 번의 탭으로 실행. Stream Deck 대안.",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone"],
+  "orientation": "any",
+  "theme_color": "#1A237E",
+  "background_color": "#ffffff",
+  "lang": "ko",
+  "dir": "ltr",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "다운로드",
+      "short_name": "다운로드",
+      "description": "큐브 리스트 PC 헬퍼 다운로드",
+      "url": "/download/",
+      "icons": [
+        { "src": "/favicon-96x96.png", "sizes": "96x96", "type": "image/png" }
+      ]
+    },
+    {
+      "name": "마켓플레이스",
+      "short_name": "마켓",
+      "description": "큐브팩 추천 마켓",
+      "url": "/marketplace/",
+      "icons": [
+        { "src": "/favicon-96x96.png", "sizes": "96x96", "type": "image/png" }
+      ]
+    },
+    {
+      "name": "FAQ",
+      "short_name": "FAQ",
+      "description": "자주 묻는 질문",
+      "url": "/faq/",
+      "icons": [
+        { "src": "/favicon-96x96.png", "sizes": "96x96", "type": "image/png" }
+      ]
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}
