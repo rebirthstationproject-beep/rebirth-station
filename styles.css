@@ -99,6 +99,30 @@ button {
   width: 100%;
 }
 
+/* Skip link (a11y) — 2026-05-23 Phase B3.3 */
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+  z-index: 9999;
+  padding: 12px 20px;
+  background: var(--primary, #1A237E);
+  color: #fff;
+  font-weight: 700;
+  text-decoration: none;
+  border-radius: 0 0 8px 0;
+}
+.skip-link:focus {
+  left: 0;
+  outline: 3px solid var(--accent, #E91E63);
+  outline-offset: 2px;
+}
+
+/* main 포커스 시 outline 제거 (탭 점프 시 시각 노이즈 회피) */
+main[tabindex="-1"]:focus {
+  outline: none;
+}
+
 .section {
   padding: 120px 0;
 }

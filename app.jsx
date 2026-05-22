@@ -459,8 +459,9 @@ function App() {
 
   return (
     <>
+      <a href="#main" className="skip-link">메인 콘텐츠로 건너뛰기</a>
       <Nav t={t} lang={lang} setLang={setLang} scrolled={scrolled} ver={ver} pro={pro} />
-      <main>{body}</main>
+      <main id="main" tabIndex="-1">{body}</main>
       <AdSlotPlaceholder ver={ver} pro={pro} />
       <Footer t={t} />
       <ToastContainer />
