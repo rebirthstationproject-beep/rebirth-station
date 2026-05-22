@@ -3,92 +3,92 @@
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
 
   <url>
-    <loc>https://rebirthstation.com/</loc>
+    <loc>https://www.rebirthstation.com/</loc>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="ko" href="https://rebirthstation.com/" />
-    <xhtml:link rel="alternate" hreflang="en" href="https://rebirthstation.com/" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://rebirthstation.com/" />
+    <xhtml:link rel="alternate" hreflang="ko" href="https://www.rebirthstation.com/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.rebirthstation.com/" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.rebirthstation.com/" />
   </url>
 
   <url>
-    <loc>https://rebirthstation.com/program/</loc>
+    <loc>https://www.rebirthstation.com/program/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://rebirthstation.com/program/cubelist/</loc>
+    <loc>https://www.rebirthstation.com/program/cubelist/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://rebirthstation.com/marketplace/</loc>
+    <loc>https://www.rebirthstation.com/marketplace/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://rebirthstation.com/marketplace/cubelist/</loc>
+    <loc>https://www.rebirthstation.com/marketplace/cubelist/</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
-    <loc>https://rebirthstation.com/marketplace/cubelist/create-cube/</loc>
+    <loc>https://www.rebirthstation.com/marketplace/cubelist/create-cube/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://rebirthstation.com/marketplace/cubelist/create-list/</loc>
+    <loc>https://www.rebirthstation.com/marketplace/cubelist/create-list/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://rebirthstation.com/marketplace/cubelist/convert/</loc>
+    <loc>https://www.rebirthstation.com/marketplace/cubelist/convert/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://rebirthstation.com/marketplace/cubelist/manage/</loc>
+    <loc>https://www.rebirthstation.com/marketplace/cubelist/manage/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://rebirthstation.com/download/</loc>
+    <loc>https://www.rebirthstation.com/download/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
 
   <url>
-    <loc>https://rebirthstation.com/blog/</loc>
+    <loc>https://www.rebirthstation.com/blog/</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
 
   <url>
-    <loc>https://rebirthstation.com/faq/</loc>
+    <loc>https://www.rebirthstation.com/faq/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
 
   <url>
-    <loc>https://rebirthstation.com/login/</loc>
+    <loc>https://www.rebirthstation.com/login/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.4</priority>
   </url>
 
   <url>
-    <loc>https://rebirthstation.com/legal/terms/</loc>
+    <loc>https://www.rebirthstation.com/legal/terms/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://rebirthstation.com/legal/privacy/</loc>
+    <loc>https://www.rebirthstation.com/legal/privacy/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://rebirthstation.com/legal/cookies/</loc>
+    <loc>https://www.rebirthstation.com/legal/cookies/</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
