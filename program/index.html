@@ -1,0 +1,105 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#1A237E" />
+<meta name="color-scheme" content="light dark" />
+<title>리버스 스테이션 프로그램 — 큐브 리스트·디스플레이·홈서버 · Rebirth Station</title>
+<meta name="description" content="잠든 디바이스를 깨우는 프로그램들 — 큐브 리스트(출시), 두 번째 디스플레이(개발 중), 홈 서버(리서치). Rebirth Station 4-Layer 사업 구조." />
+<meta name="keywords" content="큐브 리스트, 리버스 스테이션, Rebirth Station, Cube List, 안 쓰는 폰 활용, PC 매크로, 단축키, Stream Deck 대체" />
+
+<!-- Canonical + multilang -->
+<link rel="canonical" href="https://rebirthstation.com/" />
+<link rel="alternate" hreflang="ko" href="https://rebirthstation.com/" />
+<link rel="alternate" hreflang="en" href="https://rebirthstation.com/" />
+<link rel="alternate" hreflang="x-default" href="https://rebirthstation.com/" />
+
+<!-- Open Graph -->
+<meta property="og:site_name" content="Rebirth Station" />
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="ko_KR" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta property="og:title" content="리버스 스테이션 프로그램 — 큐브 리스트·디스플레이·홈서버 · Rebirth Station" />
+<meta property="og:description" content="잠든 디바이스를 깨우는 프로그램들 — 큐브 리스트(출시), 두 번째 디스플레이(개발 중), 홈 서버(리서치). Rebirth Station 4-Layer 사업 구조." />
+<meta property="og:url" content="https://rebirthstation.com/" />
+<meta property="og:image" content="https://rebirthstation.com/og/program.svg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="거치된 폰 화면의 큐브 그리드와 PC가 연결된 일러스트" />
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="리버스 스테이션 프로그램 — 큐브 리스트·디스플레이·홈서버 · Rebirth Station" />
+<meta name="twitter:description" content="잠든 디바이스를 깨우는 프로그램들 — 큐브 리스트(출시), 두 번째 디스플레이(개발 중), 홈 서버(리서치). Rebirth Station 4-Layer 사업 구조." />
+<meta name="twitter:image" content="https://rebirthstation.com/og/program.svg" />
+
+<!-- Favicons (Stage 2 정식 디자인 적용 예정) -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+<!-- Schema.org JSON-LD (Organization + SoftwareApplication) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://rebirthstation.com/#org",
+      "name": "Rebirth Station",
+      "alternateName": ["리버스 스테이션", "Re:S"],
+      "url": "https://rebirthstation.com",
+      "logo": "https://rebirthstation.com/logo.png",
+      "description": "안 쓰는 디바이스를 다용도 단말로 재활용하는 글로벌 플랫폼"
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://rebirthstation.com/#website",
+      "url": "https://rebirthstation.com",
+      "name": "Rebirth Station",
+      "publisher": { "@id": "https://rebirthstation.com/#org" },
+      "inLanguage": "ko-KR"
+    },
+    {
+      "@type": "SoftwareApplication",
+      "name": "Rebirth Station — 큐브 리스트",
+      "operatingSystem": "Windows 10, Windows 11, Android 9+, iOS 13+",
+      "applicationCategory": "ProductivityApplication",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
+      "description": "안 쓰는 폰을 PC 컨트롤러로. 큐브 그리드로 단축키·매크로·링크 즉시 실행"
+    }
+  ]
+}
+</script>
+
+<!-- Pretendard for Korean + Latin -->
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"
+/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+<!-- JetBrains Mono -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="/styles.css?v=20260522am" />
+</head>
+<body>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script src="/i18n.js?v=20260522am"></script>
+<script type="text/babel" src="/tweaks-panel.jsx?v=20260522am"></script>
+<script type="text/babel" src="/logo.jsx?v=20260522am"></script>
+<script type="text/babel" src="/hero.jsx?v=20260522am"></script>
+<script type="text/babel" src="/sections.jsx?v=20260522am"></script>
+<script type="text/babel" src="/pages.jsx?v=20260522am"></script>
+<script type="text/babel" src="/app.jsx?v=20260522am"></script>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1A237E"/><stop offset="1" stop-color="#0D1340"/></linearGradient></defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- stat cards (right) -->
+  <g transform="translate(680, 130)" font-family="'Pretendard',sans-serif">
+    <g><rect x="0"   y="0" width="220" height="100" rx="12" fill="#fff" opacity="0.10"/>
+       <text x="20" y="38" fill="#fff" font-size="12" opacity="0.7" letter-spacing="2">MY CUBES</text>
+       <text x="20" y="76" fill="#fff" font-size="32" font-weight="800">—</text>
+    </g>
+    <g><rect x="240" y="0" width="220" height="100" rx="12" fill="#E91E63" opacity="0.92"/>
+       <text x="260" y="38" fill="#fff" font-size="12" opacity="0.85" letter-spacing="2">PAIRED DEVICES</text>
+       <text x="260" y="76" fill="#fff" font-size="32" font-weight="800">—</text>
+    </g>
+    <g><rect x="0"   y="120" width="220" height="100" rx="12" fill="#fff" opacity="0.10"/>
+       <text x="20" y="158" fill="#fff" font-size="12" opacity="0.7" letter-spacing="2">INSTALLED PACKS</text>
+       <text x="20" y="196" fill="#fff" font-size="32" font-weight="800">—</text>
+    </g>
+    <g><rect x="240" y="120" width="220" height="100" rx="12" fill="#fff" opacity="0.10"/>
+       <text x="260" y="158" fill="#fff" font-size="12" opacity="0.7" letter-spacing="2">ACTIVE LISTS</text>
+       <text x="260" y="196" fill="#fff" font-size="32" font-weight="800">—</text>
+    </g>
+    <g><rect x="0"   y="240" width="460" height="100" rx="12" fill="url(#bg)" stroke="#fff" stroke-opacity="0.3"/>
+       <text x="20" y="278" fill="#fff" font-size="12" opacity="0.7" letter-spacing="2">QUICK ACTIONS</text>
+       <text x="20" y="316" fill="#fff" font-size="20" font-weight="700">+ 큐브 만들기 · 큐브팩 둘러보기</text>
+    </g>
+  </g>
+
+  <g transform="translate(80, 200)" fill="#fff" font-family="'Pretendard',sans-serif">
+    <text x="0" y="0" font-size="18" font-weight="500" letter-spacing="4" opacity="0.7">DASHBOARD</text>
+    <text x="0" y="76" font-size="60" font-weight="800" letter-spacing="-1.5">나의</text>
+    <text x="0" y="142" font-size="60" font-weight="800" letter-spacing="-1.5">큐브 콘솔</text>
+    <text x="0" y="208" font-size="20" opacity="0.78">큐브 · 디바이스 · 구독 · 활동 한 곳에서</text>
+  </g>
+
+  <g transform="translate(80, 560)" fill="#fff" opacity="0.65" font-family="'JetBrains Mono', monospace">
+    <text x="0" y="0" font-size="16" letter-spacing="2">rebirthstation.com/dashboard</text>
+  </g>
+</svg>

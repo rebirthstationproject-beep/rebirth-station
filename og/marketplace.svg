@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A237E"/>
+      <stop offset="1" stop-color="#0D1340"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- 4 category cards (right) -->
+  <g transform="translate(660, 130)" font-family="'Pretendard',sans-serif">
+    <g><rect x="0"   y="0" width="220" height="160" rx="14" fill="#FF9800" opacity="0.92"/>
+       <text x="20" y="40" fill="#fff" font-size="14" opacity="0.85" letter-spacing="2">TRADING</text>
+       <text x="20" y="78" fill="#fff" font-size="22" font-weight="700">트레이더 풀팩</text>
+       <text x="20" y="120" fill="#fff" font-size="14" opacity="0.85">40 큐브 · ₩7,900</text>
+    </g>
+    <g><rect x="240" y="0" width="220" height="160" rx="14" fill="#E91E63" opacity="0.92"/>
+       <text x="260" y="40" fill="#fff" font-size="14" opacity="0.85" letter-spacing="2">DESIGN</text>
+       <text x="260" y="78" fill="#fff" font-size="22" font-weight="700">AI 아티스트</text>
+       <text x="260" y="120" fill="#fff" font-size="14" opacity="0.85">28 큐브 · ₩5,900</text>
+    </g>
+    <g><rect x="0"   y="180" width="220" height="160" rx="14" fill="#5D4037" opacity="0.92"/>
+       <text x="20" y="220" fill="#fff" font-size="14" opacity="0.85" letter-spacing="2">BUSINESS</text>
+       <text x="20" y="258" fill="#fff" font-size="22" font-weight="700">자영업 마스터</text>
+       <text x="20" y="300" fill="#fff" font-size="14" opacity="0.85">32 큐브 · ₩9,900</text>
+    </g>
+    <g><rect x="240" y="180" width="220" height="160" rx="14" fill="#0277BD" opacity="0.92"/>
+       <text x="260" y="220" fill="#fff" font-size="14" opacity="0.85" letter-spacing="2">DEVOPS</text>
+       <text x="260" y="258" fill="#fff" font-size="22" font-weight="700">Docker·k8s</text>
+       <text x="260" y="300" fill="#fff" font-size="14" opacity="0.85">18 큐브 · ₩3,900</text>
+    </g>
+  </g>
+
+  <!-- brand text -->
+  <g transform="translate(80, 200)" fill="#fff" font-family="'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+    <text x="0" y="0" font-size="18" font-weight="500" letter-spacing="4" opacity="0.7">MARKETPLACE</text>
+    <text x="0" y="76" font-size="60" font-weight="800" letter-spacing="-1.5">직군별 큐브팩</text>
+    <text x="0" y="142" font-size="60" font-weight="800" letter-spacing="-1.5">한 번의 클릭</text>
+    <text x="0" y="208" font-size="20" font-weight="400" opacity="0.78">검증된 크리에이터 큐브팩 · 60+ 시드 카탈로그</text>
+  </g>
+
+  <g transform="translate(80, 560)" fill="#fff" opacity="0.65" font-family="'JetBrains Mono', monospace">
+    <text x="0" y="0" font-size="16" letter-spacing="2">rebirthstation.com/marketplace</text>
+  </g>
+</svg>

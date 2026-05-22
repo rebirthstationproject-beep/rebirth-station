@@ -1,0 +1,687 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Rebirth Station — Logo Concepts</title>
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+:root {
+  --bg: #f5f6f8;
+  --surface: #ffffff;
+  --surface-2: #fafbfc;
+  --surface-sunken: #eef0f3;
+  --ink: #0b1220;
+  --ink-2: #1f2a40;
+  --ink-3: #4b5772;
+  --muted: #7c869b;
+  --faint: #aab2c2;
+  --line: #e6e8ee;
+  --line-strong: #d5d9e3;
+  --primary: #1d3a8a;
+  --accent: #3b6df0;
+  --r-3: 10px;
+  --r-4: 14px;
+  --r-5: 20px;
+  --font-sans: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.01em;
+}
+a { color: inherit; text-decoration: none; }
+
+.page {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 80px 32px 120px;
+}
+
+.page-head {
+  margin-bottom: 64px;
+  max-width: 720px;
+}
+.eyebrow {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--primary);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 12px;
+}
+.eyebrow .back {
+  color: var(--muted);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.eyebrow .back:hover { color: var(--ink); }
+.page-head h1 {
+  font-size: clamp(36px, 4vw, 56px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  font-weight: 600;
+  margin: 0 0 20px;
+  text-wrap: balance;
+}
+.page-head p {
+  font-size: 17px;
+  color: var(--ink-3);
+  margin: 0;
+}
+
+.concept {
+  margin-bottom: 96px;
+}
+.concept-header {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 24px;
+  align-items: baseline;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--line);
+}
+.concept-num {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+.concept-title {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  margin: 0;
+  display: flex; align-items: baseline; gap: 14px;
+  flex-wrap: wrap;
+}
+.concept-title .en {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+}
+.concept-desc {
+  grid-column: 2;
+  color: var(--ink-3);
+  font-size: 15px;
+  line-height: 1.55;
+  margin: 8px 0 0;
+  max-width: 60ch;
+}
+
+.variants {
+  display: grid;
+  grid-template-columns: 1fr 1.8fr;
+  gap: 20px;
+}
+@media (max-width: 900px) {
+  .variants { grid-template-columns: 1fr; }
+}
+
+.variant {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: var(--r-5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.variant-canvas {
+  flex: 1;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background:
+    radial-gradient(circle at 1px 1px, rgba(13,23,46,0.06) 1px, transparent 0);
+  background-size: 18px 18px;
+}
+.variant-meta {
+  border-top: 1px solid var(--line);
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--muted);
+}
+.variant-meta .kind {
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.variant-meta .dim {
+  font-family: var(--font-mono);
+}
+
+/* Color reference row for each concept */
+.swatch-row {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+.swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--muted);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 4px 10px 4px 4px;
+}
+.swatch-chip {
+  width: 16px; height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(13,23,46,0.08);
+}
+
+/* Inverted variant card (logo on dark bg) */
+.variant.is-dark .variant-canvas {
+  background: linear-gradient(180deg, #0a0f1c 0%, #0e1424 100%);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
+  background-size: 18px 18px;
+}
+
+/* Horizontal wordmark sizing */
+.lockup {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+}
+.lockup-wordmark {
+  font-weight: 600;
+  font-size: 28px;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  line-height: 1;
+}
+.is-dark .lockup-wordmark,
+.is-dark .lockup-tag { color: #fff; }
+.lockup-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  line-height: 1;
+}
+.lockup-tag {
+  font-size: 11px;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Concept 2 — Cube Row */
+.cube-row {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+/* Concept 3 — Pulse ring */
+@keyframes ring-pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="page-head">
+    <div class="eyebrow">
+      <span>Logo Concepts</span>
+      <a href="index.html" class="back">← 메인 사이트</a>
+    </div>
+    <h1>Rebirth Station 로고 시안</h1>
+    <p>"잠들어 있는 디바이스에 새로운 가치를 더한다"는 미션을 시각화한 3가지 방향. 각 시안마다 정사각형(앱 아이콘) 버전과 가로 락업 버전을 함께 제시합니다.</p>
+  </div>
+
+  <!-- ============ Concept 1: STACK ============ -->
+  <section class="concept">
+    <div class="concept-header">
+      <div class="concept-num">01 / CONCEPT</div>
+      <div>
+        <h2 class="concept-title">스택 <span class="en">STACK · second life</span></h2>
+        <p class="concept-desc">두 개의 둥근 사각형이 겹쳐 있는 모습. 잠든 디바이스 위에 새로운 디바이스가 깨어나는 은유. 우측 상단의 작은 점은 깨어남(wake)을 알리는 신호.</p>
+        <div class="swatch-row">
+          <span class="swatch"><span class="swatch-chip" style="background:#1d3a8a"></span>#1D3A8A · Primary</span>
+          <span class="swatch"><span class="swatch-chip" style="background:#3b6df0"></span>#3B6DF0 · Accent</span>
+          <span class="swatch"><span class="swatch-chip" style="background:#ffffff;border-color:#d5d9e3"></span>#FFFFFF · Spark</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="variants">
+      <!-- Square -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="s1-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b6df0"/>
+                <stop offset="100%" stop-color="#1d3a8a"/>
+              </linearGradient>
+            </defs>
+            <rect x="14" y="14" width="152" height="152" rx="38" fill="url(#s1-grad)"/>
+            <rect x="48" y="48" width="52" height="52" rx="12" fill="rgba(255,255,255,0.32)"/>
+            <rect x="80" y="80" width="52" height="52" rx="12" fill="#fff"/>
+            <circle cx="120" cy="92" r="5" fill="#3b6df0"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">Square · App icon</span>
+          <span class="dim">1024 × 1024</span>
+        </div>
+      </div>
+
+      <!-- Horizontal lockup -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <div class="lockup">
+            <svg width="56" height="56" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="s1-grad-sm" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#3b6df0"/>
+                  <stop offset="100%" stop-color="#1d3a8a"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="28" height="28" rx="7" fill="url(#s1-grad-sm)"/>
+              <rect x="8" y="8" width="11" height="11" rx="2.5" fill="rgba(255,255,255,0.32)"/>
+              <rect x="14" y="14" width="11" height="11" rx="2.5" fill="#fff"/>
+              <circle cx="22.5" cy="16" r="1.2" fill="#3b6df0"/>
+            </svg>
+            <div class="lockup-stack">
+              <span class="lockup-wordmark">Rebirth Station</span>
+              <span class="lockup-tag">Second life of devices</span>
+            </div>
+          </div>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">Horizontal · Lockup</span>
+          <span class="dim">Mark + wordmark</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Concept 2: CUBE ROW (Progression) ============ -->
+  <section class="concept">
+    <div class="concept-header">
+      <div class="concept-num">02 / CONCEPT</div>
+      <div>
+        <h2 class="concept-title">큐브 프로그레션 <span class="en">CUBE PROGRESSION · awakening</span></h2>
+        <p class="concept-desc">세 개의 큐브가 좌에서 우로 진행하며 점점 밝아지는 모습. 디바이스의 '재생' 과정 — 잠듦 → 깨어남 → 활성 — 을 그대로 시각화. 큐브 리스트 제품과도 자연스럽게 연결됩니다.</p>
+        <div class="swatch-row">
+          <span class="swatch"><span class="swatch-chip" style="background:#aab2c2"></span>#AAB2C2 · Sleep</span>
+          <span class="swatch"><span class="swatch-chip" style="background:#1d3a8a"></span>#1D3A8A · Wake</span>
+          <span class="swatch"><span class="swatch-chip" style="background:#3b6df0"></span>#3B6DF0 · Active</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="variants">
+      <!-- Square -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="s2-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b6df0"/>
+                <stop offset="100%" stop-color="#1d3a8a"/>
+              </linearGradient>
+            </defs>
+            <rect x="14" y="14" width="152" height="152" rx="38" fill="url(#s2-grad)"/>
+            <rect x="26"  y="74" width="32" height="32" rx="7" fill="rgba(255,255,255,0.32)"/>
+            <rect x="74"  y="74" width="32" height="32" rx="7" fill="rgba(255,255,255,0.65)"/>
+            <rect x="122" y="74" width="32" height="32" rx="7" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">Square · App icon</span>
+          <span class="dim">1024 × 1024</span>
+        </div>
+      </div>
+
+      <!-- Horizontal lockup -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <div class="lockup">
+            <svg width="56" height="56" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="s2-grad-sm" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#3b6df0"/>
+                  <stop offset="100%" stop-color="#1d3a8a"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="28" height="28" rx="7" fill="url(#s2-grad-sm)"/>
+              <rect x="5"  y="13" width="6" height="6" rx="1.5" fill="rgba(255,255,255,0.32)"/>
+              <rect x="13" y="13" width="6" height="6" rx="1.5" fill="rgba(255,255,255,0.65)"/>
+              <rect x="21" y="13" width="6" height="6" rx="1.5" fill="#fff"/>
+            </svg>
+            <div class="lockup-stack">
+              <span class="lockup-wordmark">Rebirth Station</span>
+              <span class="lockup-tag">Second life of devices</span>
+            </div>
+          </div>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">Horizontal · Lockup</span>
+          <span class="dim">Mark + wordmark</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Concept 3: PULSE / RECYCLE ARROW ============ -->
+  <section class="concept">
+    <div class="concept-header">
+      <div class="concept-num">03 / CONCEPT</div>
+      <div>
+        <h2 class="concept-title">펄스 <span class="en">PULSE · rebirth cycle</span></h2>
+        <p class="concept-desc">둥근 사각형 안에서 화살표가 시계 방향으로 순환하는 형태. 'Reverse(뒤집다) + Rebirth(다시 태어나다)'의 어원을 직접적으로 시각화한 마크. 가장 추상적이고 확장성이 큰 방향.</p>
+        <div class="swatch-row">
+          <span class="swatch"><span class="swatch-chip" style="background:#1d3a8a"></span>#1D3A8A · Primary</span>
+          <span class="swatch"><span class="swatch-chip" style="background:#3b6df0"></span>#3B6DF0 · Accent</span>
+          <span class="swatch"><span class="swatch-chip" style="background:#0b1220"></span>#0B1220 · Ink</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="variants">
+      <!-- Square -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <svg width="180" height="180" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="s3-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b6df0"/>
+                <stop offset="100%" stop-color="#1d3a8a"/>
+              </linearGradient>
+            </defs>
+            <rect x="14" y="14" width="152" height="152" rx="38" fill="url(#s3-grad)"/>
+            <path d="M 56 90 A 34 34 0 1 1 90 124"
+                  stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M 88 113 L 88 135 L 62 124 Z"
+                  fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="82" y="82" width="16" height="16" rx="4" fill="#fff" opacity="0.95"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">Square · App icon</span>
+          <span class="dim">1024 × 1024</span>
+        </div>
+      </div>
+
+      <!-- Horizontal lockup -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <div class="lockup">
+            <svg width="56" height="56" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="s3-grad-sm" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#3b6df0"/>
+                  <stop offset="100%" stop-color="#1d3a8a"/>
+                </linearGradient>
+              </defs>
+              <rect x="2" y="2" width="28" height="28" rx="7" fill="url(#s3-grad-sm)"/>
+              <path d="M 10 16 A 6 6 0 1 1 16 22"
+                    stroke="#fff" stroke-width="2" fill="none" stroke-linecap="round"/>
+              <path d="M 15.5 20 L 15.5 24 L 11 22 Z" fill="#fff" stroke="#fff" stroke-width="0.4" stroke-linejoin="round"/>
+              <rect x="14.5" y="14.5" width="3" height="3" rx="0.8" fill="#fff"/>
+            </svg>
+            <div class="lockup-stack">
+              <span class="lockup-wordmark">Rebirth Station</span>
+              <span class="lockup-tag">Second life of devices</span>
+            </div>
+          </div>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">Horizontal · Lockup</span>
+          <span class="dim">Mark + wordmark</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Dark variants ============ -->
+  <section class="concept" style="margin-bottom: 0;">
+    <div class="concept-header">
+      <div class="concept-num">+ / DARK MODE</div>
+      <div>
+        <h2 class="concept-title">반전 적용 시</h2>
+        <p class="concept-desc">동일한 마크가 다크 배경에서 어떻게 보이는지 확인. 모든 시안의 마크 색은 변경 없이 그대로 사용 가능합니다.</p>
+      </div>
+    </div>
+
+    <div class="variants" style="grid-template-columns: 1fr 1fr 1fr;">
+      <div class="variant is-dark">
+        <div class="variant-canvas">
+          <svg width="120" height="120" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="d1-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b6df0"/>
+                <stop offset="100%" stop-color="#1d3a8a"/>
+              </linearGradient>
+            </defs>
+            <rect x="14" y="14" width="152" height="152" rx="38" fill="url(#d1-grad)"/>
+            <rect x="48" y="48" width="52" height="52" rx="12" fill="rgba(255,255,255,0.32)"/>
+            <rect x="80" y="80" width="52" height="52" rx="12" fill="#fff"/>
+            <circle cx="120" cy="92" r="5" fill="#3b6df0"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">01 · Stack</span>
+        </div>
+      </div>
+
+      <div class="variant is-dark">
+        <div class="variant-canvas">
+          <svg width="120" height="120" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="d2-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b6df0"/>
+                <stop offset="100%" stop-color="#1d3a8a"/>
+              </linearGradient>
+            </defs>
+            <rect x="14" y="14" width="152" height="152" rx="38" fill="url(#d2-grad)"/>
+            <rect x="26"  y="74" width="32" height="32" rx="7" fill="rgba(255,255,255,0.32)"/>
+            <rect x="74"  y="74" width="32" height="32" rx="7" fill="rgba(255,255,255,0.65)"/>
+            <rect x="122" y="74" width="32" height="32" rx="7" fill="#fff"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">02 · Progression</span>
+        </div>
+      </div>
+
+      <div class="variant is-dark">
+        <div class="variant-canvas">
+          <svg width="120" height="120" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="d3-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b6df0"/>
+                <stop offset="100%" stop-color="#1d3a8a"/>
+              </linearGradient>
+            </defs>
+            <rect x="14" y="14" width="152" height="152" rx="38" fill="url(#d3-grad)"/>
+            <path d="M 56 90 A 34 34 0 1 1 90 124"
+                  stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M 88 113 L 88 135 L 62 124 Z"
+                  fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="82" y="82" width="16" height="16" rx="4" fill="#fff" opacity="0.95"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">03 · Pulse</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ Pulse — variations ============ -->
+  <section class="concept" style="margin-bottom: 0;">
+    <div class="concept-header">
+      <div class="concept-num">03+ / VARIATIONS</div>
+      <div>
+        <h2 class="concept-title">펄스 응용 시안 <span class="en">PULSE · app-icon variations</span></h2>
+        <p class="concept-desc">동일한 펄스 마크를 색상·톤·표면 처리만 달리해 6가지로 확장. 마스터 브랜드 외 큐브 리스트·마켓플레이스 등 하위 프로덕트마다 다른 변형을 사용하면 시각적 시리즈로 묶을 수 있습니다.</p>
+      </div>
+    </div>
+
+    <div class="pulse-grid">
+      <!-- V1 · Default gradient -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <svg width="140" height="140" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="pv1-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b6df0"/>
+                <stop offset="100%" stop-color="#1d3a8a"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="180" height="180" rx="40" fill="url(#pv1-grad)"/>
+            <path d="M 56 90 A 34 34 0 1 1 90 124" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M 88 113 L 88 135 L 62 124 Z" fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="82" y="82" width="16" height="16" rx="4" fill="#fff" opacity="0.95"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">V1 · Gradient</span>
+          <span class="dim">#3B6DF0 → #1D3A8A</span>
+        </div>
+      </div>
+
+      <!-- V2 · Inverted (light) -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <svg width="140" height="140" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="pv2-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b6df0"/>
+                <stop offset="100%" stop-color="#1d3a8a"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="180" height="180" rx="40" fill="#ffffff" stroke="#e6e8ee" stroke-width="2"/>
+            <path d="M 56 90 A 34 34 0 1 1 90 124" stroke="url(#pv2-grad)" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M 88 113 L 88 135 L 62 124 Z" fill="#1d3a8a" stroke="#1d3a8a" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="82" y="82" width="16" height="16" rx="4" fill="#1d3a8a"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">V2 · Inverted</span>
+          <span class="dim">Light on white</span>
+        </div>
+      </div>
+
+      <!-- V3 · Flat navy -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <svg width="140" height="140" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="180" height="180" rx="40" fill="#1d3a8a"/>
+            <path d="M 56 90 A 34 34 0 1 1 90 124" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M 88 113 L 88 135 L 62 124 Z" fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="82" y="82" width="16" height="16" rx="4" fill="#fff" opacity="0.95"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">V3 · Flat navy</span>
+          <span class="dim">#1D3A8A solid</span>
+        </div>
+      </div>
+
+      <!-- V4 · Flat accent -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <svg width="140" height="140" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <rect x="0" y="0" width="180" height="180" rx="40" fill="#3b6df0"/>
+            <path d="M 56 90 A 34 34 0 1 1 90 124" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M 88 113 L 88 135 L 62 124 Z" fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="82" y="82" width="16" height="16" rx="4" fill="#fff" opacity="0.95"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">V4 · Flat blue</span>
+          <span class="dim">#3B6DF0 solid</span>
+        </div>
+      </div>
+
+      <!-- V5 · Two-tone arc (cycle hint) -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <svg width="140" height="140" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="pv5-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#3b6df0"/>
+                <stop offset="100%" stop-color="#1d3a8a"/>
+              </linearGradient>
+            </defs>
+            <rect x="0" y="0" width="180" height="180" rx="40" fill="url(#pv5-grad)"/>
+            <!-- Dim half (sleeping phase) -->
+            <path d="M 56 90 A 34 34 0 0 1 90 56" stroke="rgba(255,255,255,0.32)" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <!-- Bright half (awakened phase) -->
+            <path d="M 90 56 A 34 34 0 0 1 90 124" stroke="#fff" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M 88 113 L 88 135 L 62 124 Z" fill="#fff" stroke="#fff" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="82" y="82" width="16" height="16" rx="4" fill="#fff" opacity="0.95"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">V5 · Two-tone</span>
+          <span class="dim">Sleep → Wake</span>
+        </div>
+      </div>
+
+      <!-- V6 · Outline -->
+      <div class="variant">
+        <div class="variant-canvas">
+          <svg width="140" height="140" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+            <rect x="6" y="6" width="168" height="168" rx="38" fill="#ffffff" stroke="#1d3a8a" stroke-width="6"/>
+            <path d="M 56 90 A 34 34 0 1 1 90 124" stroke="#1d3a8a" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M 88 113 L 88 135 L 62 124 Z" fill="#1d3a8a" stroke="#1d3a8a" stroke-width="2" stroke-linejoin="round"/>
+            <rect x="82" y="82" width="16" height="16" rx="4" fill="#1d3a8a"/>
+          </svg>
+        </div>
+        <div class="variant-meta">
+          <span class="kind">V6 · Outline</span>
+          <span class="dim">Single-color line</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <style>
+    .pulse-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    @media (max-width: 900px) { .pulse-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) { .pulse-grid { grid-template-columns: 1fr; } }
+    .pulse-grid .variant-canvas { padding: 24px; min-height: 200px; }
+  </style>
+</div>
+</body>
+</html>

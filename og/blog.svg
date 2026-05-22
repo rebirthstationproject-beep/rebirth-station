@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A237E"/>
+      <stop offset="1" stop-color="#0D1340"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- post stack (right side) -->
+  <g transform="translate(660, 110)" font-family="'Pretendard',sans-serif">
+    <g><rect x="0" y="0" width="460" height="64" rx="10" fill="#fff" opacity="0.10"/>
+       <text x="22" y="28" fill="#fff" font-size="12" opacity="0.65" letter-spacing="2">#01 · 소개</text>
+       <text x="22" y="50" fill="#fff" font-size="16" font-weight="600">큐브 리스트가 뭔가요?</text>
+    </g>
+    <g><rect x="0" y="76" width="460" height="64" rx="10" fill="#fff" opacity="0.10"/>
+       <text x="22" y="104" fill="#fff" font-size="12" opacity="0.65" letter-spacing="2">#03 · 교육</text>
+       <text x="22" y="126" fill="#fff" font-size="16" font-weight="600">큐브·리스트·큐브팩 3단계</text>
+    </g>
+    <g><rect x="0" y="152" width="460" height="64" rx="10" fill="#fff" opacity="0.14"/>
+       <text x="22" y="180" fill="#fff" font-size="12" opacity="0.65" letter-spacing="2">#06 · 사용 사례</text>
+       <text x="22" y="202" fill="#fff" font-size="16" font-weight="600">개발자의 워크플로우</text>
+    </g>
+    <g><rect x="0" y="228" width="460" height="64" rx="10" fill="#fff" opacity="0.10"/>
+       <text x="22" y="256" fill="#fff" font-size="12" opacity="0.65" letter-spacing="2">#09 · 위젯</text>
+       <text x="22" y="278" fill="#fff" font-size="16" font-weight="600">주식·코인 실시간 티커</text>
+    </g>
+    <g><rect x="0" y="304" width="460" height="64" rx="10" fill="#fff" opacity="0.10"/>
+       <text x="22" y="332" fill="#fff" font-size="12" opacity="0.65" letter-spacing="2">#16 · 콜라보</text>
+       <text x="22" y="354" fill="#fff" font-size="16" font-weight="600">주소모아 × 큐브 리스트</text>
+    </g>
+    <g><rect x="0" y="380" width="460" height="64" rx="10" fill="url(#bg)" stroke="#E91E63" stroke-width="2"/>
+       <text x="22" y="408" fill="#E91E63" font-size="12" letter-spacing="2">#20 · 환경</text>
+       <text x="22" y="430" fill="#fff" font-size="16" font-weight="600">e-waste · 220만톤 CO2</text>
+    </g>
+  </g>
+
+  <!-- brand text -->
+  <g transform="translate(80, 200)" fill="#fff" font-family="'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+    <text x="0" y="0" font-size="18" font-weight="500" letter-spacing="4" opacity="0.7">BLOG · SEED</text>
+    <text x="0" y="76" font-size="62" font-weight="800" letter-spacing="-1.5">큐브 리스트</text>
+    <text x="0" y="142" font-size="62" font-weight="800" letter-spacing="-1.5">블로그</text>
+    <text x="0" y="208" font-size="20" font-weight="400" opacity="0.78">시드 본문 20편 · 사용법·사례·기술 가이드</text>
+  </g>
+
+  <g transform="translate(80, 560)" fill="#fff" opacity="0.65" font-family="'JetBrains Mono', monospace">
+    <text x="0" y="0" font-size="16" letter-spacing="2">rebirthstation.com/blog</text>
+  </g>
+</svg>

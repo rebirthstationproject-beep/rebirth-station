@@ -1,0 +1,33 @@
+{
+  "converted_at": "2026-05-22T07:07:59.860Z",
+  "source": "E:/Claude-Workspace/jusomoa/data/sites.json",
+  "total_sites": 1431,
+  "active_sites": 1431,
+  "cubes_created": 1431,
+  "cubelists_created": 69,
+  "categories": {
+    "음식": 20,
+    "쇼핑": 57,
+    "스트리밍/OTT": 58,
+    "여행": 40,
+    "웹툰/웹소설": 23,
+    "구직/구인": 28,
+    "포털사이트": 38,
+    "생산성/클라우드": 58,
+    "취미/게임": 20,
+    "스포츠": 59,
+    "교육/학습": 21,
+    "유튜브 채널": 323,
+    "은행/금융": 26,
+    "부동산": 23,
+    "AI 도구": 449,
+    "SNS/커뮤니티": 56,
+    "코인": 47,
+    "제휴/협력사": 2,
+    "음악": 28,
+    "뷰티/헬스": 24,
+    "뉴스": 31
+  },
+  "spec": "docs/site/jusomoa-links-to-cubes-spec.md",
+  "policy": "정책 v3 (project_cubepack_policy_v2.md)"
+}

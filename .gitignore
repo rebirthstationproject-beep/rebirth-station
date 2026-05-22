@@ -1,0 +1,33 @@
+# 환경변수 (절대 commit 금지)
+.env
+.env.local
+.env.*.local
+
+# 의존성·빌드 산출 (현재 React UMD = node_modules 없음, 향후 SSR 마이그레이션 대비)
+node_modules/
+.next/
+out/
+dist/
+build/
+
+# OS·에디터
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*~
+
+# 로그
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 임시
+.tmp/
+.cache/
+*.tmp
+
+# uploads/ 안 사용자 업로드 (Stage 2~)
+# uploads/  # 필요 시 주석 해제

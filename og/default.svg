@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A237E"/>
+      <stop offset="1" stop-color="#0D1340"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#E91E63"/>
+      <stop offset="1" stop-color="#FF80AB"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- decorative cube grid (right side) -->
+  <g transform="translate(720, 130)" opacity="0.95">
+    <g fill="#fff" opacity="0.10">
+      <rect x="0"   y="0"   width="86" height="86" rx="14"/>
+      <rect x="100" y="0"   width="86" height="86" rx="14"/>
+      <rect x="200" y="0"   width="86" height="86" rx="14"/>
+      <rect x="300" y="0"   width="86" height="86" rx="14"/>
+      <rect x="0"   y="100" width="86" height="86" rx="14"/>
+      <rect x="200" y="100" width="86" height="86" rx="14"/>
+      <rect x="300" y="100" width="86" height="86" rx="14"/>
+      <rect x="0"   y="200" width="86" height="86" rx="14"/>
+      <rect x="100" y="200" width="86" height="86" rx="14"/>
+      <rect x="300" y="200" width="86" height="86" rx="14"/>
+      <rect x="0"   y="300" width="86" height="86" rx="14"/>
+      <rect x="100" y="300" width="86" height="86" rx="14"/>
+      <rect x="200" y="300" width="86" height="86" rx="14"/>
+    </g>
+    <!-- highlighted cubes -->
+    <rect x="100" y="100" width="86" height="86" rx="14" fill="url(#accent)"/>
+    <rect x="200" y="200" width="86" height="86" rx="14" fill="#fff" opacity="0.85"/>
+  </g>
+
+  <!-- brand text (left side) -->
+  <g transform="translate(80, 200)" fill="#fff" font-family="'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+    <text x="0" y="0" font-size="20" font-weight="500" letter-spacing="4" opacity="0.7">REBIRTH STATION</text>
+    <text x="0" y="84" font-size="64" font-weight="800" letter-spacing="-1.5">잠자는 디바이스를</text>
+    <text x="0" y="154" font-size="64" font-weight="800" letter-spacing="-1.5">다시 깨운다</text>
+    <text x="0" y="224" font-size="22" font-weight="400" opacity="0.78" letter-spacing="-0.2">
+      안 쓰는 폰을 큐브 컨트롤러로 — PC 단축키·매크로·링크 즉시 실행
+    </text>
+  </g>
+
+  <!-- footer line -->
+  <g transform="translate(80, 560)" fill="#fff" opacity="0.65" font-family="'JetBrains Mono', monospace">
+    <text x="0" y="0" font-size="16" letter-spacing="2">rebirthstation.com  ·  서울 · 도쿄 · 샌프란시스코</text>
+  </g>
+</svg>

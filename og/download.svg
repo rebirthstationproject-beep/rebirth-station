@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A237E"/>
+      <stop offset="1" stop-color="#0D1340"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- platform tiles (right side) -->
+  <g transform="translate(660, 100)" font-family="'Pretendard',sans-serif">
+    <g><rect x="0"   y="0"   width="220" height="180" rx="16" fill="#fff" opacity="0.10"/>
+       <text x="20" y="50" fill="#fff" font-size="20" font-weight="700">PC 앱</text>
+       <text x="20" y="90" fill="#fff" font-size="16" opacity="0.78">Windows · macOS</text>
+       <text x="20" y="130" fill="#fff" font-size="14" opacity="0.55">2026 Q3 베타</text>
+    </g>
+    <g><rect x="240" y="0"   width="220" height="180" rx="16" fill="url(#bg)" stroke="#E91E63" stroke-width="2"/>
+       <text x="260" y="50" fill="#fff" font-size="20" font-weight="700">모바일 앱</text>
+       <text x="260" y="90" fill="#fff" font-size="16" opacity="0.78">Android · iOS</text>
+       <text x="260" y="130" fill="#E91E63" font-size="14">IAP 통합</text>
+    </g>
+    <g><rect x="0"   y="200" width="220" height="180" rx="16" fill="#fff" opacity="0.10"/>
+       <text x="20" y="250" fill="#fff" font-size="20" font-weight="700">웹 콘솔</text>
+       <text x="20" y="290" fill="#fff" font-size="16" opacity="0.78">브라우저 즉시</text>
+       <text x="20" y="330" fill="#fff" font-size="14" opacity="0.55">/console</text>
+    </g>
+    <g><rect x="240" y="200" width="220" height="180" rx="16" fill="#fff" opacity="0.10"/>
+       <text x="260" y="250" fill="#fff" font-size="20" font-weight="700">Google OAuth</text>
+       <text x="260" y="290" fill="#fff" font-size="16" opacity="0.78">Gmail 1개 = 모든 ver.</text>
+       <text x="260" y="330" fill="#fff" font-size="14" opacity="0.55">자동 entitlement</text>
+    </g>
+  </g>
+
+  <!-- brand text -->
+  <g transform="translate(80, 200)" fill="#fff" font-family="'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+    <text x="0" y="0" font-size="18" font-weight="500" letter-spacing="4" opacity="0.7">DOWNLOAD</text>
+    <text x="0" y="76" font-size="60" font-weight="800" letter-spacing="-1.5">큐브 리스트</text>
+    <text x="0" y="142" font-size="60" font-weight="800" letter-spacing="-1.5">받기</text>
+    <text x="0" y="208" font-size="20" font-weight="400" opacity="0.78">PC + 모바일 무료 · IAP 1회 = 모든 ver.</text>
+  </g>
+
+  <g transform="translate(80, 560)" fill="#fff" opacity="0.65" font-family="'JetBrains Mono', monospace">
+    <text x="0" y="0" font-size="16" letter-spacing="2">rebirthstation.com/download</text>
+  </g>
+</svg>

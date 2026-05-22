@@ -1,0 +1,11 @@
+# Rebirth Station — robots.txt
+# 2026-05-22
+
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://rebirthstation.com/sitemap.xml
+
+# 미공개 영역은 Stage 2 정식 출시 후 별도 지정
+# (현재는 정적 자산만 노출)

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1A237E"/>
+      <stop offset="1" stop-color="#0D1340"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- program flow chart (right side) -->
+  <g transform="translate(680, 180)" font-family="'Pretendard',sans-serif">
+    <!-- program 1: Cube List (released) -->
+    <g>
+      <rect x="0" y="0" width="220" height="84" rx="12" fill="#E91E63"/>
+      <text x="20" y="34" fill="#fff" font-size="14" opacity="0.8" letter-spacing="2">RELEASED</text>
+      <text x="20" y="64" fill="#fff" font-size="22" font-weight="700">큐브 리스트</text>
+    </g>
+
+    <line x1="110" y1="86" x2="110" y2="110" stroke="#fff" stroke-width="2" opacity="0.4"/>
+
+    <!-- program 2: in dev -->
+    <g>
+      <rect x="0" y="112" width="220" height="84" rx="12" fill="#fff" opacity="0.10"/>
+      <text x="20" y="146" fill="#fff" font-size="14" opacity="0.6" letter-spacing="2">개발 중</text>
+      <text x="20" y="176" fill="#fff" font-size="22" font-weight="700">프로그램 02</text>
+    </g>
+
+    <line x1="110" y1="198" x2="110" y2="222" stroke="#fff" stroke-width="2" opacity="0.4"/>
+
+    <!-- program 3: research -->
+    <g>
+      <rect x="0" y="224" width="220" height="84" rx="12" fill="#fff" opacity="0.06"/>
+      <text x="20" y="258" fill="#fff" font-size="14" opacity="0.45" letter-spacing="2">리서치</text>
+      <text x="20" y="288" fill="#fff" font-size="22" font-weight="700">프로그램 03</text>
+    </g>
+  </g>
+
+  <!-- brand text -->
+  <g transform="translate(80, 200)" fill="#fff" font-family="'Pretendard','Apple SD Gothic Neo','Noto Sans KR',sans-serif">
+    <text x="0" y="0" font-size="18" font-weight="500" letter-spacing="4" opacity="0.7">PROGRAMS</text>
+    <text x="0" y="76" font-size="58" font-weight="800" letter-spacing="-1.5">리버스 스테이션이</text>
+    <text x="0" y="142" font-size="58" font-weight="800" letter-spacing="-1.5">만들고 있는 것</text>
+    <text x="0" y="208" font-size="20" font-weight="400" opacity="0.78">잠든 디바이스를 깨우는 도구를 차례대로 공개합니다.</text>
+  </g>
+
+  <g transform="translate(80, 560)" fill="#fff" opacity="0.65" font-family="'JetBrains Mono', monospace">
+    <text x="0" y="0" font-size="16" letter-spacing="2">rebirthstation.com/program</text>
+  </g>
+</svg>
