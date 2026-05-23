@@ -37,15 +37,26 @@ import {
 import { ACTIONS, defaultPayloadFor } from './lib/actions';
 import { ActionPayloadForm } from './components/ActionPayloadForm';
 import { describeExecuteError, executeCube, isTauri } from './lib/tauri-bridge';
+import {
+  buildPluginActionPayload,
+  parseQualifiedId,
+  QUALIFIED_PREFIX,
+  usePluginRegistry,
+} from './lib/plugin-registry';
 import type { Cube, CubeList } from './types/cube';
 
 export function App() {
   const pack = useEditor((s) => s.pack);
   const loadPack = useEditor((s) => s.loadPack);
+  const refreshPlugins = usePluginRegistry((s) => s.refresh);
 
   useEffect(() => {
     if (!pack) loadPack(buildDemoPack());
   }, [pack, loadPack]);
+
+  useEffect(() => {
+    void refreshPlugins();
+  }, [refreshPlugins]);
 
   return (
     <div className="app">
@@ -68,6 +79,8 @@ function TopBar() {
   const activeListId = useEditor((s) => s.list_id);
   const selectList = useEditor((s) => s.selectList);
   const loadPack = useEditor((s) => s.loadPack);
+  const installedPlugins = usePluginRegistry((s) => s.installed);
+  const installPlugin = usePluginRegistry((s) => s.install);
 
   async function handleExport(): Promise<void> {
     if (!pack) return;
@@ -94,6 +107,29 @@ function TopBar() {
       } catch (e) {
         const msg = e instanceof CubepackFormatError ? e.message : '가져오기 실패';
         window.alert(`큐브팩 가져오기 오류: ${msg}`);
+      }
+    };
+    input.click();
+  }
+
+  function handleInstallPlugin(): void {
+    if (!isTauri()) {
+      window.alert('플러그인 설치는 Tauri 환경에서만 가능합니다.');
+      return;
+    }
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.cubeplugin,application/zip';
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      try {
+        const buf = await file.arrayBuffer();
+        const manifest = await installPlugin(new Uint8Array(buf));
+        window.alert(`설치 완료: ${manifest.name} v${manifest.version} (${manifest.actions.length} 액션)`);
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : String(e);
+        window.alert(`플러그인 설치 실패: ${msg}`);
       }
     };
     input.click();
@@ -138,6 +174,14 @@ function TopBar() {
           title="현재 큐브팩 내보내기 (.cubepack)"
         >
           내보내기
+        </button>
+        <button
+          type="button"
+          className="btn-ghost"
+          onClick={handleInstallPlugin}
+          title={`.cubeplugin 설치 (현재 ${installedPlugins.length}개 설치됨)`}
+        >
+          + 플러그인
         </button>
         <button className="icon-btn" title="설정" aria-label="설정">⚙</button>
       </div>
@@ -301,6 +345,7 @@ function Inspector() {
   const list_id = useEditor((s) => s.list_id);
   const upsertCube = useEditor((s) => s.upsertCube);
   const removeCube = useEditor((s) => s.removeCube);
+  const pluginActions = usePluginRegistry((s) => s.allActions());
 
   const cube =
     pack?.lists.find((l) => l.id === list_id)?.cubes.find((c) => c.id === cube_id) ?? null;
@@ -342,17 +387,23 @@ function Inspector() {
         <dt>액션 타입</dt>
         <dd>
           <select
-            value={cube.action_type}
-            onChange={(e) =>
-              patch({
-                action_type: e.target.value as Cube['action_type'],
-                action_payload: defaultPayloadFor(e.target.value as Cube['action_type']),
-              })
-            }
+            value={inferSelectValue(cube)}
+            onChange={(e) => handleActionTypeChange(e.target.value, patch, pluginActions)}
           >
-            {ACTIONS.map((a) => (
-              <option key={a.id} value={a.id}>{a.id} · {a.label}</option>
-            ))}
+            <optgroup label="빌트인">
+              {ACTIONS.map((a) => (
+                <option key={a.id} value={a.id}>{a.id} · {a.label}</option>
+              ))}
+            </optgroup>
+            {pluginActions.length > 0 && (
+              <optgroup label={`플러그인 (${pluginActions.length})`}>
+                {pluginActions.map((p) => (
+                  <option key={p.qualified_id} value={p.qualified_id}>
+                    {p.package_id}/{p.action_id} · {p.label}
+                  </option>
+                ))}
+              </optgroup>
+            )}
           </select>
         </dd>
       </dl>
@@ -384,4 +435,44 @@ function Inspector() {
       </div>
     </aside>
   );
+}
+
+/**
+ * 큐브가 플러그인 액션인 경우 → qualified_id ("plugin:<pkg>:<id>") 표시.
+ * 일반 빌트인은 그대로 action_type.
+ */
+function inferSelectValue(cube: Cube): string {
+  if (cube.action_type === 'plugin_action') {
+    const p = cube.action_payload as { plugin_uuid?: string; action_id?: string };
+    if (p.plugin_uuid && p.action_id) {
+      return `${QUALIFIED_PREFIX}${p.plugin_uuid}:${p.action_id}`;
+    }
+  }
+  return cube.action_type;
+}
+
+function handleActionTypeChange(
+  selected: string,
+  patch: (next: Partial<Cube>) => void,
+  pluginActions: ReturnType<typeof usePluginRegistry.getState>['installed'] extends never
+    ? never
+    : ReturnType<ReturnType<typeof usePluginRegistry.getState>['allActions']>,
+): void {
+  const parsed = parseQualifiedId(selected);
+  if (parsed) {
+    // 플러그인 액션 → action_type = 'plugin_action', payload = { plugin_uuid, action_id, payload }
+    const entry = pluginActions.find((a) => a.qualified_id === selected);
+    if (!entry) return;
+    patch({
+      action_type: 'plugin_action',
+      action_payload: buildPluginActionPayload(entry),
+    });
+    return;
+  }
+  // 빌트인 액션 타입
+  const builtin = selected as Cube['action_type'];
+  patch({
+    action_type: builtin,
+    action_payload: defaultPayloadFor(builtin),
+  });
 }
