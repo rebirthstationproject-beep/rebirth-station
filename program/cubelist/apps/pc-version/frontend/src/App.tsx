@@ -190,6 +190,8 @@ function GridArea() {
 
 function CubeGrid({ list }: { list: CubeList }) {
   const reorderCubes = useEditor((s) => s.reorderCubes);
+  const upsertCube = useEditor((s) => s.upsertCube);
+  const selectCube = useEditor((s) => s.selectCube);
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -205,6 +207,20 @@ function CubeGrid({ list }: { list: CubeList }) {
     reorderCubes(list.id, String(active.id), String(over.id));
   }
 
+  function handleAddCube(): void {
+    const maxSort = sorted.length === 0 ? 0 : sorted[sorted.length - 1].sort_order;
+    const newCube: Cube = {
+      id: crypto.randomUUID(),
+      sort_order: maxSort + 1,
+      label: '새 큐브',
+      icon_url: null,
+      action_type: 'link',
+      action_payload: { url: '' },
+    };
+    upsertCube(list.id, newCube);
+    selectCube(newCube.id);
+  }
+
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={sorted.map((c) => c.id)} strategy={rectSortingStrategy}>
@@ -218,14 +234,18 @@ function CubeGrid({ list }: { list: CubeList }) {
             <SortableCubeCell key={cube.id} cube={cube} />
           ))}
           {Array.from({ length: emptySlots }, (_, i) => (
-            <div
+            <button
               key={`empty-${i}`}
+              type="button"
               role="gridcell"
               className="cube-cell is-empty"
-              aria-label="빈 슬롯"
+              aria-label="새 큐브 추가"
+              onClick={i === 0 ? handleAddCube : undefined}
+              tabIndex={i === 0 ? 0 : -1}
+              title={i === 0 ? '클릭하여 큐브 추가' : ''}
             >
-              <span className="cube-empty">＋</span>
-            </div>
+              <span className="cube-empty">{i === 0 ? '＋' : ''}</span>
+            </button>
           ))}
         </div>
       </SortableContext>
@@ -276,16 +296,29 @@ function Inspector() {
   const cube_id = useEditor((s) => s.cube_id);
   const pack = useEditor((s) => s.pack);
   const list_id = useEditor((s) => s.list_id);
+  const upsertCube = useEditor((s) => s.upsertCube);
+  const removeCube = useEditor((s) => s.removeCube);
 
   const cube =
     pack?.lists.find((l) => l.id === list_id)?.cubes.find((c) => c.id === cube_id) ?? null;
 
-  if (!cube) {
+  if (!cube || !list_id) {
     return (
       <aside className="inspector" aria-label="큐브 인스펙터">
-        <div className="inspector-empty">큐브를 선택하세요</div>
+        <div className="inspector-empty">큐브를 선택하세요<br /><span className="muted">또는 빈 슬롯 ＋ 클릭으로 추가</span></div>
       </aside>
     );
+  }
+
+  function patch(next: Partial<Cube>): void {
+    if (!cube || !list_id) return;
+    upsertCube(list_id, { ...cube, ...next });
+  }
+
+  function handleDelete(): void {
+    if (!cube || !list_id) return;
+    if (!window.confirm(`"${cube.label}" 큐브를 삭제할까요?`)) return;
+    removeCube(list_id, cube.id);
   }
 
   return (
@@ -295,10 +328,25 @@ function Inspector() {
         <dt>ID</dt>
         <dd className="muted">{cube.id}</dd>
         <dt>라벨</dt>
-        <dd><input type="text" defaultValue={cube.label} placeholder="(라벨)" /></dd>
+        <dd>
+          <input
+            type="text"
+            value={cube.label}
+            placeholder="(라벨)"
+            onChange={(e) => patch({ label: e.target.value })}
+          />
+        </dd>
         <dt>액션 타입</dt>
         <dd>
-          <select defaultValue={cube.action_type}>
+          <select
+            value={cube.action_type}
+            onChange={(e) =>
+              patch({
+                action_type: e.target.value as Cube['action_type'],
+                action_payload: defaultPayloadFor(e.target.value as Cube['action_type']),
+              })
+            }
+          >
             <option value="link">link · 링크 열기</option>
             <option value="shortcut">shortcut · 단축키</option>
             <option value="macro">macro · 매크로</option>
@@ -316,7 +364,39 @@ function Inspector() {
           <code>{JSON.stringify(cube.action_payload)}</code>
         </dd>
       </dl>
-      <div className="inspector-hint">M3 단계: 액션 트레이트 + JSON Schema 동적 폼</div>
+      <div className="inspector-actions">
+        <button type="button" className="btn-ghost btn-danger" onClick={handleDelete}>
+          큐브 삭제
+        </button>
+      </div>
+      <div className="inspector-hint">M3 단계: 액션 트레이트 + JSON Schema 동적 폼 (payload 편집)</div>
     </aside>
   );
+}
+
+/**
+ * 액션 타입 변경 시 payload 기본값 — M3 에서 actions/ 폴더로 이전 예정.
+ */
+function defaultPayloadFor(type: Cube['action_type']): Record<string, unknown> {
+  switch (type) {
+    case 'link':
+      return { url: '' };
+    case 'shortcut':
+      return { keys: [] };
+    case 'macro':
+      return { steps: [] };
+    case 'folder':
+      return { cube_ids: [] };
+    case 'text_insert':
+    case 'clipboard_copy':
+      return { text: '' };
+    case 'app_launch':
+      return { path: '' };
+    case 'focus_window':
+      return { title_pattern: '' };
+    case 'mouse_click':
+      return { x: 0, y: 0, button: 'left', relative: false };
+    case 'plugin_action':
+      return { plugin_uuid: '', payload: {} };
+  }
 }
