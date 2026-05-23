@@ -1705,17 +1705,36 @@ function ManagePage({ t }) {
 }
 
 function Breadcrumb({ items }) {
+  // BreadcrumbList JSON-LD (답변엔진 위계 인식 — AEO L02·L06).
+  // 영구 정책 `feedback_breadcrumb_policy.md` 호환·외과수술적 (기존 시각 nav 유지).
+  const siteUrl = "https://www.rebirthstation.com";
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((it, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: it.label,
+      ...(it.href ? { item: it.href.startsWith("http") ? it.href : `${siteUrl}${it.href}` } : {}),
+    })),
+  };
   return (
-    <nav className="breadcrumb" aria-label="페이지 경로" style={{ marginBottom: 20, fontSize: 13, color: "var(--muted)" }}>
-      {items.map((it, i) => (
-        <span key={i}>
-          {i > 0 && <span style={{ margin: "0 8px" }}>/</span>}
-          {it.href
-            ? <a href={it.href} style={{ color: "var(--muted)" }}>{it.label}</a>
-            : <span style={{ color: "var(--ink)" }}>{it.label}</span>}
-        </span>
-      ))}
-    </nav>
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <nav className="breadcrumb" aria-label="페이지 경로" style={{ marginBottom: 20, fontSize: 13, color: "var(--muted)" }}>
+        {items.map((it, i) => (
+          <span key={i}>
+            {i > 0 && <span style={{ margin: "0 8px" }}>/</span>}
+            {it.href
+              ? <a href={it.href} style={{ color: "var(--muted)" }}>{it.label}</a>
+              : <span style={{ color: "var(--ink)" }}>{it.label}</span>}
+          </span>
+        ))}
+      </nav>
+    </>
   );
 }
 
