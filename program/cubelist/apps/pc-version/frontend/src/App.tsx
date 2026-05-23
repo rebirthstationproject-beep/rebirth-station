@@ -36,6 +36,7 @@ import {
 } from './lib/cubepack-io';
 import { ACTIONS, defaultPayloadFor } from './lib/actions';
 import { ActionPayloadForm } from './components/ActionPayloadForm';
+import { describeExecuteError, executeCube, isTauri } from './lib/tauri-bridge';
 import type { Cube, CubeList } from './types/cube';
 
 export function App() {
@@ -361,6 +362,22 @@ function Inspector() {
         onChange={(next) => patch({ action_payload: next })}
       />
       <div className="inspector-actions">
+        <button
+          type="button"
+          className="btn-ghost"
+          onClick={async () => {
+            try {
+              const r = await executeCube(cube);
+              const env = isTauri() ? 'Tauri' : 'browser-dev';
+              window.alert(`실행 OK · ${env} · ${r.elapsed_ms} ms`);
+            } catch (err) {
+              window.alert(describeExecuteError(err));
+            }
+          }}
+          title={isTauri() ? 'PC 헬퍼로 실행' : '브라우저 dev — link 만 즉시, 나머지는 mock'}
+        >
+          ▶ 테스트 실행
+        </button>
         <button type="button" className="btn-ghost btn-danger" onClick={handleDelete}>
           큐브 삭제
         </button>

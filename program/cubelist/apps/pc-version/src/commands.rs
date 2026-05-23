@@ -5,10 +5,12 @@
 //! - Tier 2 (사용자 동의 prompt): 외부 URL 오픈 (브라우저)
 //! - Tier 3 (영구 토글): 셸 실행, 레지스트리 — 본 모듈에 없음
 
+use crate::actions::{self, ActionError};
 use crate::auth::{
     pairing::PairingPayload,
     secret_store::{DefaultStore, SecretStore},
 };
+use crate::protocol::messages::ActionPayload;
 
 /// WS 서버 상태 조회
 #[cfg_attr(feature = "gui", tauri::command)]
@@ -83,6 +85,65 @@ pub fn reset_pairing_secret() -> Result<(), String> {
     let store = DefaultStore::new();
     store.rotate().map_err(|e| e.to_string())?;
     Ok(())
+}
+
+/// 큐브 액션 실행 — 편집기에서 "테스트 실행" 시 호출 (M3 cron #8).
+///
+/// 입력: frontend `Cube` 의 `{ action_type, ...action_payload }` 평면 JSON.
+/// 예: `{ "action_type": "link", "url": "https://example.com" }`
+///
+/// 내부 흐름: serde → `ActionPayload` → `guard::validate` → `actions::execute` (async).
+#[cfg_attr(feature = "gui", tauri::command)]
+pub async fn execute_cube(action: serde_json::Value) -> Result<ExecuteResultDto, ExecuteErrorDto> {
+    let payload: ActionPayload = serde_json::from_value(action).map_err(|e| ExecuteErrorDto {
+        kind: "deserialize".into(),
+        message: e.to_string(),
+        tier: None,
+    })?;
+
+    match actions::execute(&payload).await {
+        Ok(r) => Ok(ExecuteResultDto {
+            elapsed_ms: r.elapsed_ms,
+        }),
+        Err(e) => Err(execute_error_to_dto(&e)),
+    }
+}
+
+#[derive(serde::Serialize)]
+pub struct ExecuteResultDto {
+    pub elapsed_ms: u32,
+}
+
+#[derive(serde::Serialize)]
+pub struct ExecuteErrorDto {
+    pub kind: String,
+    pub message: String,
+    pub tier: Option<u8>,
+}
+
+fn execute_error_to_dto(e: &ActionError) -> ExecuteErrorDto {
+    match e {
+        ActionError::UnsafeScheme(_) => ExecuteErrorDto {
+            kind: "unsafe_scheme".into(),
+            message: e.to_string(),
+            tier: None,
+        },
+        ActionError::OsCommand(_) => ExecuteErrorDto {
+            kind: "os_command".into(),
+            message: e.to_string(),
+            tier: None,
+        },
+        ActionError::FeatureDisabled(_) => ExecuteErrorDto {
+            kind: "feature_disabled".into(),
+            message: e.to_string(),
+            tier: None,
+        },
+        ActionError::PermissionRequired(tier) => ExecuteErrorDto {
+            kind: "permission_required".into(),
+            message: e.to_string(),
+            tier: Some(*tier),
+        },
+    }
 }
 
 #[cfg(test)]

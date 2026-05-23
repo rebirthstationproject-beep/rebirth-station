@@ -38,6 +38,7 @@ pub fn run_tauri() -> tauri::Result<()> {
             commands::open_external_url,
             commands::generate_pairing_qr,
             commands::reset_pairing_secret,
+            commands::execute_cube,
         ])
         .setup(|app| {
             // 시스템 트레이 메뉴
