@@ -13,6 +13,7 @@
       "action_type": "app_launch",
       "default_payload": { "path": "", "args": [] },
       "tier": 2,
+      "category": "시스템",
       "icon_ref": "icons/launch.png",
       "schema": [
         {

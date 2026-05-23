@@ -67,6 +67,10 @@ pub struct ManifestAction {
     /// 아이콘 ZIP 내부 경로 (예: "icons/open.png")
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub icon_ref: Option<String>,
+    /// 사이드바 카테고리 — frontend `ActionCategory` 와 동기 (M6 cron #18)
+    /// 한글 표기: 생산성·미디어·개발·디자인·게이밍·시스템·웹
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub category: Option<String>,
 }
 
 /// 요청 권한 — serde 직렬화는 `tier_1` / `tier_2` / `tier_3` 형식 고정.

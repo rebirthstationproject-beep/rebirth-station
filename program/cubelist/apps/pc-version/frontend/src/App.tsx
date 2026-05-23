@@ -222,7 +222,9 @@ function Sidebar() {
   const builtinFiltered = ACTIONS.filter(
     (a) => filter === null || a.category === filter,
   );
-  const pluginFiltered = pluginActions; // 플러그인 카테고리 매핑은 manifest 측 후속
+  const pluginFiltered = pluginActions.filter(
+    (p) => filter === null || p.category === filter,
+  );
 
   return (
     <aside className="sidebar" aria-label="액션 카탈로그">

@@ -14,7 +14,7 @@
  */
 
 import { create } from 'zustand';
-import type { FieldSchema } from './actions';
+import type { ActionCategory, FieldSchema } from './actions';
 import { isTauri } from './tauri-bridge';
 
 /** Rust `PluginManifest` 의 TS 미러 — `apps/pc-version/src/plugins/manifest.rs` 와 1:1 */
@@ -37,6 +37,8 @@ export interface ManifestAction {
   description?: string;
   tier?: 1 | 2 | 3;
   icon_ref?: string;
+  /** 사이드바 카테고리 — M6 cron #18, frontend ActionCategory enum 과 동기 */
+  category?: ActionCategory;
 }
 
 /** 인스펙터에서 사용하는 flat 형태 — plugin × action 조합 */
@@ -51,6 +53,8 @@ export interface PluginActionEntry {
   schema?: FieldSchema[];
   description?: string;
   tier?: 1 | 2 | 3;
+  /** 카테고리 — Sidebar 필터링 (M6 cron #18) */
+  category?: ActionCategory;
 }
 
 interface RegistryState {
@@ -136,6 +140,7 @@ export const usePluginRegistry = create<RegistryState>((set, get) => ({
           schema: action.schema,
           description: action.description,
           tier: action.tier,
+          category: action.category,
         });
       }
     }
