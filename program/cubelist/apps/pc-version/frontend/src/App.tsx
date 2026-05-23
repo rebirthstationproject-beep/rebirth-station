@@ -337,6 +337,11 @@ function GridArea() {
   const list = pack?.lists.find((l) => l.id === listId) ?? null;
   const currentFolder = useEditor((s) => s.currentFolder());
   const visibleCubes = useEditor((s) => s.visibleCubes());
+  const scopedTotal = useEditor((s) => s.scopedCubes().length);
+  const totalPages = useEditor((s) => s.totalPages());
+  const currentPage = useEditor((s) => s.current_page);
+  const nextPage = useEditor((s) => s.nextPage);
+  const prevPage = useEditor((s) => s.prevPage);
   const exitFolder = useEditor((s) => s.exitFolder);
 
   if (!list) {
@@ -346,6 +351,9 @@ function GridArea() {
       </main>
     );
   }
+
+  const hasPrev = currentPage > 0;
+  const hasNext = currentPage + 1 < totalPages;
 
   return (
     <main className="grid-area">
@@ -361,16 +369,35 @@ function GridArea() {
       )}
       <div className="grid-meta">
         <span>
-          {currentFolder ? `${currentFolder.label} (폴더)` : list.name} · 큐브 {visibleCubes.length}개
+          {currentFolder ? `${currentFolder.label} (폴더)` : list.name} · 큐브 {scopedTotal}개
+          {totalPages > 1 && (
+            <span className="page-indicator"> · 페이지 {currentPage + 1}/{totalPages}</span>
+          )}
         </span>
         <div className="grid-meta-actions">
-          <button className="btn-ghost" type="button">이전 페이지</button>
-          <button className="btn-ghost" type="button">다음 페이지</button>
+          <button
+            className="btn-ghost"
+            type="button"
+            onClick={prevPage}
+            disabled={!hasPrev}
+            title="Page Up"
+          >
+            ◀ 이전
+          </button>
+          <button
+            className="btn-ghost"
+            type="button"
+            onClick={nextPage}
+            disabled={!hasNext}
+            title="Page Down"
+          >
+            다음 ▶
+          </button>
         </div>
       </div>
       <CubeGrid list={list} visibleCubes={visibleCubes} />
       <div className="grid-hint">
-        M7: folder 큐브 더블클릭 → 진입 · cube_ids 부분집합 표시 · "↩ 상위" 로 탈출
+        M7: 폴더 진입 · 페이지네이션 (cubes_per_page 초과 자동 페이지) · 멀티액션 대기
       </div>
     </main>
   );
@@ -380,14 +407,16 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
   const reorderCubes = useEditor((s) => s.reorderCubes);
   const upsertCube = useEditor((s) => s.upsertCube);
   const selectCube = useEditor((s) => s.selectCube);
+  const pageSize = useEditor((s) => s.pageSize());
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
   const cols = list.cols ?? 5;
-  const sorted = [...visibleCubes].sort((a, b) => a.sort_order - b.sort_order);
-  const minSlots = cols * 3;
-  const emptySlots = Math.max(0, minSlots - sorted.length);
+  // visibleCubes 는 store 에서 이미 sort + page slice 완료
+  const sorted = visibleCubes;
+  // 현재 페이지에 빈 슬롯이 채워져야 할 만큼 (pageSize - 실 큐브)
+  const emptySlots = Math.max(0, pageSize - sorted.length);
 
   function handleDragEnd(e: DragEndEvent): void {
     const { active, over } = e;

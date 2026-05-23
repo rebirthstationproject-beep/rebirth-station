@@ -212,6 +212,16 @@ html, body, #root {
 .breadcrumb-path { color: var(--text-muted); }
 .breadcrumb-path strong { color: var(--text); }
 .breadcrumb-sep { margin: 0 6px; opacity: 0.5; }
+
+.page-indicator {
+  margin-left: 12px;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: var(--bg-surface-2);
+  font-size: 11px;
+  color: var(--text);
+  font-family: 'Consolas', monospace;
+}
 .cube-cell.is-empty {
   background: transparent;
   border-style: dashed;

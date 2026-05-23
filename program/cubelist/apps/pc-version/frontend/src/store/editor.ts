@@ -17,13 +17,23 @@ interface EditorState extends EditorSelection {
   /** 뒤로 가기 스택 (다중 깊이 폴더 지원) */
   folder_stack: string[];
 
+  // === M7 페이지 (cron #20) ===
+  /** 0-based 페이지 인덱스 (current_folder / list 전환 시 0 리셋) */
+  current_page: number;
+
   // === 셀렉터 ===
   activeList(): CubeList | null;
   selectedCube(): Cube | null;
-  /** 현재 뷰에서 보여야 할 큐브들 (루트 = folder 안 큐브 제외, 폴더 안 = cube_ids 매칭) */
+  /** 현재 뷰에서 보여야 할 큐브들 (루트 vs 폴더 안 + page slice) */
   visibleCubes(): Cube[];
+  /** 페이지 슬라이스 전 = 루트/폴더 격리만 적용 (총 페이지 수 계산용) */
+  scopedCubes(): Cube[];
   /** 현재 진입 중인 폴더 큐브 (있으면) */
   currentFolder(): Cube | null;
+  /** 페이지 크기 — list.cubes_per_page 또는 cols*3 */
+  pageSize(): number;
+  /** 총 페이지 수 (최소 1) */
+  totalPages(): number;
 
   // === 액션 (큐브팩 수준) ===
   loadPack(pack: CubePack): void;
@@ -41,6 +51,11 @@ interface EditorState extends EditorSelection {
   // === M7 폴더 진입/탈출 ===
   enterFolder(folderCubeId: string): void;
   exitFolder(): void;
+
+  // === M7 페이지 (cron #20) ===
+  setPage(page: number): void;
+  nextPage(): void;
+  prevPage(): void;
 }
 
 export const useEditor = create<EditorState>((set, get) => ({
@@ -50,6 +65,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   cube_id: null,
   current_folder_id: null,
   folder_stack: [],
+  current_page: 0,
 
   activeList(): CubeList | null {
     const { pack, list_id } = get();
@@ -65,11 +81,9 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   /**
-   * 현재 뷰의 가시 큐브 집합.
-   * 루트: 다른 folder 큐브의 `cube_ids` 에 포함된 큐브는 숨김 (서브덱 격리).
-   * 폴더 안: 현재 폴더의 `cube_ids` 와 매칭되는 큐브만.
+   * 페이지 적용 전 — 루트/폴더 격리만 적용 (총 페이지 수 계산용).
    */
-  visibleCubes(): Cube[] {
+  scopedCubes(): Cube[] {
     const list = get().activeList();
     if (!list) return [];
     const { current_folder_id } = get();
@@ -91,6 +105,30 @@ export const useEditor = create<EditorState>((set, get) => ({
     return list.cubes.filter((c) => ids.has(c.id));
   },
 
+  /**
+   * 현재 뷰의 가시 큐브 집합 — scopedCubes() 결과를 sort_order 정렬 후 페이지 슬라이스.
+   */
+  visibleCubes(): Cube[] {
+    const scoped = get().scopedCubes();
+    const sorted = [...scoped].sort((a, b) => a.sort_order - b.sort_order);
+    const size = get().pageSize();
+    const page = get().current_page;
+    return sorted.slice(page * size, (page + 1) * size);
+  },
+
+  pageSize(): number {
+    const list = get().activeList();
+    if (!list) return 15;
+    const cols = list.cols ?? 5;
+    return list.cubes_per_page ?? cols * 3;
+  },
+
+  totalPages(): number {
+    const total = get().scopedCubes().length;
+    const size = get().pageSize();
+    return Math.max(1, Math.ceil(total / size));
+  },
+
   currentFolder(): Cube | null {
     const { current_folder_id } = get();
     if (!current_folder_id) return null;
@@ -107,6 +145,7 @@ export const useEditor = create<EditorState>((set, get) => ({
       cube_id: null,
       current_folder_id: null,
       folder_stack: [],
+      current_page: 0,
     });
   },
 
@@ -118,12 +157,19 @@ export const useEditor = create<EditorState>((set, get) => ({
       cube_id: null,
       current_folder_id: null,
       folder_stack: [],
+      current_page: 0,
     });
   },
 
   selectList(listId: string | null): void {
-    // 리스트 전환 시 폴더 스택 초기화
-    set({ list_id: listId, cube_id: null, current_folder_id: null, folder_stack: [] });
+    // 리스트 전환 시 폴더 스택 + 페이지 초기화
+    set({
+      list_id: listId,
+      cube_id: null,
+      current_folder_id: null,
+      folder_stack: [],
+      current_page: 0,
+    });
   },
 
   selectCube(cubeId: string | null): void {
@@ -201,17 +247,37 @@ export const useEditor = create<EditorState>((set, get) => ({
       current_folder_id: folderCubeId,
       folder_stack: current_folder_id ? [...folder_stack, current_folder_id] : folder_stack,
       cube_id: null,
+      current_page: 0,
     });
   },
 
   exitFolder(): void {
     const { folder_stack } = get();
     if (folder_stack.length === 0) {
-      set({ current_folder_id: null, cube_id: null });
+      set({ current_folder_id: null, cube_id: null, current_page: 0 });
       return;
     }
     const next = [...folder_stack];
     const prev = next.pop() ?? null;
-    set({ current_folder_id: prev, folder_stack: next, cube_id: null });
+    set({ current_folder_id: prev, folder_stack: next, cube_id: null, current_page: 0 });
+  },
+
+  // === M7 페이지 ===
+
+  setPage(page: number): void {
+    const total = get().totalPages();
+    const clamped = Math.max(0, Math.min(page, total - 1));
+    set({ current_page: clamped });
+  },
+
+  nextPage(): void {
+    const { current_page } = get();
+    const total = get().totalPages();
+    if (current_page + 1 < total) set({ current_page: current_page + 1 });
+  },
+
+  prevPage(): void {
+    const { current_page } = get();
+    if (current_page > 0) set({ current_page: current_page - 1 });
   },
 }));

@@ -53,6 +53,8 @@ export interface CubeList {
   cubes: Cube[];
   /** grid 컬럼 수 (3~8 사용자 선택, 기본 5) */
   cols?: number;
+  /** 한 페이지에 표시할 큐브 수 (기본 = cols × 3). M7 페이지네이션 (cron #20) */
+  cubes_per_page?: number;
   metadata?: Record<string, unknown>;
 }
 
