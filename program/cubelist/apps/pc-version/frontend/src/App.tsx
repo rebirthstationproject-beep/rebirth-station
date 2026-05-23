@@ -28,6 +28,12 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { useEditor } from './store/editor';
 import { buildDemoPack } from './lib/demo-pack';
+import {
+  CubepackFormatError,
+  downloadCubepack,
+  exportCubepack,
+  importCubepack,
+} from './lib/cubepack-io';
 import type { Cube, CubeList } from './types/cube';
 
 export function App() {
@@ -58,6 +64,37 @@ function TopBar() {
   const pack = useEditor((s) => s.pack);
   const activeListId = useEditor((s) => s.list_id);
   const selectList = useEditor((s) => s.selectList);
+  const loadPack = useEditor((s) => s.loadPack);
+
+  async function handleExport(): Promise<void> {
+    if (!pack) return;
+    try {
+      const blob = await exportCubepack(pack);
+      downloadCubepack(blob, pack.name || pack.id);
+    } catch (e) {
+      const msg = e instanceof CubepackFormatError ? e.message : '내보내기 실패';
+      window.alert(`큐브팩 내보내기 오류: ${msg}`);
+    }
+  }
+
+  function handleImportClick(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.cubepack,application/zip';
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      try {
+        const buf = await file.arrayBuffer();
+        const next = await importCubepack(buf);
+        loadPack(next);
+      } catch (e) {
+        const msg = e instanceof CubepackFormatError ? e.message : '가져오기 실패';
+        window.alert(`큐브팩 가져오기 오류: ${msg}`);
+      }
+    };
+    input.click();
+  }
 
   return (
     <header className="topbar">
@@ -82,6 +119,23 @@ function TopBar() {
       </div>
       <div className="topbar-right">
         <span className="pack-meta">{pack?.name ?? '(큐브팩 없음)'}</span>
+        <button
+          type="button"
+          className="btn-ghost"
+          onClick={handleImportClick}
+          title="큐브팩 가져오기 (.cubepack)"
+        >
+          가져오기
+        </button>
+        <button
+          type="button"
+          className="btn-ghost"
+          onClick={handleExport}
+          disabled={!pack}
+          title="현재 큐브팩 내보내기 (.cubepack)"
+        >
+          내보내기
+        </button>
         <button className="icon-btn" title="설정" aria-label="설정">⚙</button>
       </div>
     </header>
