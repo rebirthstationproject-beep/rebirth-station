@@ -190,6 +190,28 @@ html, body, #root {
 .cube-cell:hover { background: var(--bg-hover); border-color: var(--accent); }
 .cube-cell.is-selected { background: var(--bg-selected); border-color: var(--accent); }
 .cube-cell.is-dragging { z-index: 2; box-shadow: 0 8px 16px rgba(0,0,0,0.35); }
+.cube-cell.is-folder {
+  background: linear-gradient(135deg, var(--bg-surface), var(--bg-surface-2));
+  border-style: solid;
+  border-color: #4a4a4a;
+}
+.cube-cell.is-folder:hover { border-color: var(--accent); }
+
+/* M7 breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+  padding: 8px 12px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 12px;
+}
+.breadcrumb-path { color: var(--text-muted); }
+.breadcrumb-path strong { color: var(--text); }
+.breadcrumb-sep { margin: 0 6px; opacity: 0.5; }
 .cube-cell.is-empty {
   background: transparent;
   border-style: dashed;

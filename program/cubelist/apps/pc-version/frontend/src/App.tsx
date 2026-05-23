@@ -335,6 +335,9 @@ function GridArea() {
   const pack = useEditor((s) => s.pack);
   const listId = useEditor((s) => s.list_id);
   const list = pack?.lists.find((l) => l.id === listId) ?? null;
+  const currentFolder = useEditor((s) => s.currentFolder());
+  const visibleCubes = useEditor((s) => s.visibleCubes());
+  const exitFolder = useEditor((s) => s.exitFolder);
 
   if (!list) {
     return (
@@ -346,20 +349,34 @@ function GridArea() {
 
   return (
     <main className="grid-area">
+      {currentFolder && (
+        <div className="breadcrumb">
+          <button type="button" className="btn-ghost" onClick={exitFolder} title="상위로">
+            ↩ 상위
+          </button>
+          <span className="breadcrumb-path">
+            {list.name} <span className="breadcrumb-sep">›</span> <strong>{currentFolder.label}</strong>
+          </span>
+        </div>
+      )}
       <div className="grid-meta">
-        <span>{list.name} · 큐브 {list.cubes.length}개</span>
+        <span>
+          {currentFolder ? `${currentFolder.label} (폴더)` : list.name} · 큐브 {visibleCubes.length}개
+        </span>
         <div className="grid-meta-actions">
           <button className="btn-ghost" type="button">이전 페이지</button>
           <button className="btn-ghost" type="button">다음 페이지</button>
         </div>
       </div>
-      <CubeGrid list={list} />
-      <div className="grid-hint">M2: @dnd-kit reorder 활성 · M2 후반: .cubepack ZIP 로드/저장 · M7: 페이지(서브덱)</div>
+      <CubeGrid list={list} visibleCubes={visibleCubes} />
+      <div className="grid-hint">
+        M7: folder 큐브 더블클릭 → 진입 · cube_ids 부분집합 표시 · "↩ 상위" 로 탈출
+      </div>
     </main>
   );
 }
 
-function CubeGrid({ list }: { list: CubeList }) {
+function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[] }) {
   const reorderCubes = useEditor((s) => s.reorderCubes);
   const upsertCube = useEditor((s) => s.upsertCube);
   const selectCube = useEditor((s) => s.selectCube);
@@ -368,7 +385,7 @@ function CubeGrid({ list }: { list: CubeList }) {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
   const cols = list.cols ?? 5;
-  const sorted = [...list.cubes].sort((a, b) => a.sort_order - b.sort_order);
+  const sorted = [...visibleCubes].sort((a, b) => a.sort_order - b.sort_order);
   const minSlots = cols * 3;
   const emptySlots = Math.max(0, minSlots - sorted.length);
 
@@ -427,7 +444,9 @@ function CubeGrid({ list }: { list: CubeList }) {
 function SortableCubeCell({ cube }: { cube: Cube }) {
   const cube_id = useEditor((s) => s.cube_id);
   const selectCube = useEditor((s) => s.selectCube);
+  const enterFolder = useEditor((s) => s.enterFolder);
   const selected = cube_id === cube.id;
+  const isFolder = cube.action_type === 'folder';
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: cube.id,
@@ -450,14 +469,19 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       style={style}
       type="button"
       role="gridcell"
-      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''}`}
+      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''}`}
       onClick={() => selectCube(selected ? null : cube.id)}
+      onDoubleClick={() => {
+        if (isFolder) enterFolder(cube.id);
+      }}
       aria-pressed={selected}
-      title={`${cube.label} (${cube.action_type})`}
+      title={`${cube.label} (${cube.action_type})${isFolder ? '\n더블클릭 → 진입' : ''}`}
       {...restAttrs}
       {...listeners}
     >
-      <span className="cube-label">{cube.label}</span>
+      <span className="cube-label">
+        {isFolder ? '📁 ' : ''}{cube.label}
+      </span>
       <span className="cube-action-badge">{cube.action_type}</span>
     </button>
   );

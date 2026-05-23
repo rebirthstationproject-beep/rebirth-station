@@ -11,9 +11,19 @@ import type { Cube, CubeList, CubePack, EditorSelection } from '../types/cube';
 interface EditorState extends EditorSelection {
   pack: CubePack | null;
 
+  // === M7 폴더 스택 ===
+  /** 현재 진입한 폴더 큐브 ID. null = 루트 */
+  current_folder_id: string | null;
+  /** 뒤로 가기 스택 (다중 깊이 폴더 지원) */
+  folder_stack: string[];
+
   // === 셀렉터 ===
   activeList(): CubeList | null;
   selectedCube(): Cube | null;
+  /** 현재 뷰에서 보여야 할 큐브들 (루트 = folder 안 큐브 제외, 폴더 안 = cube_ids 매칭) */
+  visibleCubes(): Cube[];
+  /** 현재 진입 중인 폴더 큐브 (있으면) */
+  currentFolder(): Cube | null;
 
   // === 액션 (큐브팩 수준) ===
   loadPack(pack: CubePack): void;
@@ -27,6 +37,10 @@ interface EditorState extends EditorSelection {
   upsertCube(listId: string, cube: Cube): void;
   removeCube(listId: string, cubeId: string): void;
   reorderCubes(listId: string, fromId: string, toId: string): void;
+
+  // === M7 폴더 진입/탈출 ===
+  enterFolder(folderCubeId: string): void;
+  exitFolder(): void;
 }
 
 export const useEditor = create<EditorState>((set, get) => ({
@@ -34,6 +48,8 @@ export const useEditor = create<EditorState>((set, get) => ({
   pack_id: null,
   list_id: null,
   cube_id: null,
+  current_folder_id: null,
+  folder_stack: [],
 
   activeList(): CubeList | null {
     const { pack, list_id } = get();
@@ -48,6 +64,40 @@ export const useEditor = create<EditorState>((set, get) => ({
     return list.cubes.find((c) => c.id === cube_id) ?? null;
   },
 
+  /**
+   * 현재 뷰의 가시 큐브 집합.
+   * 루트: 다른 folder 큐브의 `cube_ids` 에 포함된 큐브는 숨김 (서브덱 격리).
+   * 폴더 안: 현재 폴더의 `cube_ids` 와 매칭되는 큐브만.
+   */
+  visibleCubes(): Cube[] {
+    const list = get().activeList();
+    if (!list) return [];
+    const { current_folder_id } = get();
+
+    if (!current_folder_id) {
+      const inAnyFolder = new Set<string>();
+      for (const c of list.cubes) {
+        if (c.action_type === 'folder') {
+          const ids = (c.action_payload as { cube_ids?: string[] }).cube_ids ?? [];
+          ids.forEach((id) => inAnyFolder.add(id));
+        }
+      }
+      return list.cubes.filter((c) => !inAnyFolder.has(c.id));
+    }
+
+    const folder = list.cubes.find((c) => c.id === current_folder_id);
+    if (!folder || folder.action_type !== 'folder') return [];
+    const ids = new Set((folder.action_payload as { cube_ids?: string[] }).cube_ids ?? []);
+    return list.cubes.filter((c) => ids.has(c.id));
+  },
+
+  currentFolder(): Cube | null {
+    const { current_folder_id } = get();
+    if (!current_folder_id) return null;
+    const list = get().activeList();
+    return list?.cubes.find((c) => c.id === current_folder_id) ?? null;
+  },
+
   loadPack(pack: CubePack): void {
     const firstListId = pack.lists[0]?.id ?? null;
     set({
@@ -55,15 +105,25 @@ export const useEditor = create<EditorState>((set, get) => ({
       pack_id: pack.id,
       list_id: firstListId,
       cube_id: null,
+      current_folder_id: null,
+      folder_stack: [],
     });
   },
 
   closePack(): void {
-    set({ pack: null, pack_id: null, list_id: null, cube_id: null });
+    set({
+      pack: null,
+      pack_id: null,
+      list_id: null,
+      cube_id: null,
+      current_folder_id: null,
+      folder_stack: [],
+    });
   },
 
   selectList(listId: string | null): void {
-    set({ list_id: listId, cube_id: null });
+    // 리스트 전환 시 폴더 스택 초기화
+    set({ list_id: listId, cube_id: null, current_folder_id: null, folder_stack: [] });
   },
 
   selectCube(cubeId: string | null): void {
@@ -128,5 +188,30 @@ export const useEditor = create<EditorState>((set, get) => ({
     });
 
     set({ pack: { ...pack, lists: nextLists } });
+  },
+
+  // === M7 폴더 진입/탈출 ===
+
+  enterFolder(folderCubeId: string): void {
+    const list = get().activeList();
+    const target = list?.cubes.find((c) => c.id === folderCubeId);
+    if (!target || target.action_type !== 'folder') return;
+    const { current_folder_id, folder_stack } = get();
+    set({
+      current_folder_id: folderCubeId,
+      folder_stack: current_folder_id ? [...folder_stack, current_folder_id] : folder_stack,
+      cube_id: null,
+    });
+  },
+
+  exitFolder(): void {
+    const { folder_stack } = get();
+    if (folder_stack.length === 0) {
+      set({ current_folder_id: null, cube_id: null });
+      return;
+    }
+    const next = [...folder_stack];
+    const prev = next.pop() ?? null;
+    set({ current_folder_id: prev, folder_stack: next, cube_id: null });
   },
 }));
