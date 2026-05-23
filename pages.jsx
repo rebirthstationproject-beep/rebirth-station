@@ -1833,9 +1833,26 @@ function BlogIndexPage({ t }) {
 function FaqPage({ t }) {
   const F = t.faqPage;
   const items = (t && t.faq && t.faq.items) || [];
+  // FAQPage JSON-LD (답변엔진 Q&A 직접 인용 — AEO L02·L08).
+  // 영구 정책 `feedback_content_four_prohibitions.md` 호환 — i18n.js FAQ 데이터만 사용 (날조 X).
+  const faqSchema = items.length > 0 ? {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((q) => ({
+      "@type": "Question",
+      name: q.q,
+      acceptedAnswer: { "@type": "Answer", text: q.a },
+    })),
+  } : null;
   return (
     <section className="section" data-screen-label="FAQ Full" style={{ paddingTop: 120 }}>
       <div className="container">
+        {faqSchema && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+          />
+        )}
         <Breadcrumb items={[{ label: "홈", href: "/" }, { label: "고객센터" }]} />
         <header className="section-head">
           <div className="eyebrow">{F.eyebrow}</div>
