@@ -16,12 +16,109 @@ const MAX_DELAY_MS: u32 = 5_000;
 const MAX_LABEL_LEN: usize = 256;
 
 /// 액션 실행 전 정적 검사. Err면 거부.
+///
+/// M3 cron #7: 7종 추가 검증. 신규 variant 는 길이·범위 기본 검증.
 pub fn validate(payload: &ActionPayload) -> Result<(), ActionError> {
     match payload {
         ActionPayload::Link { url } => validate_link(url),
         ActionPayload::Shortcut { keys } => validate_shortcut(keys),
         ActionPayload::Macro { steps } => validate_macro(steps),
+        ActionPayload::Folder { cube_ids } => validate_folder(cube_ids),
+        ActionPayload::TextInsert { text } => validate_text(text),
+        ActionPayload::ClipboardCopy { text } => validate_text(text),
+        ActionPayload::AppLaunch { path, args } => validate_app_launch(path, args),
+        ActionPayload::FocusWindow { title_pattern } => validate_focus_window(title_pattern),
+        ActionPayload::MouseClick { x, y, .. } => validate_mouse_click(*x, *y),
+        ActionPayload::PluginAction { plugin_uuid, payload } => {
+            validate_plugin_action(plugin_uuid, payload)
+        }
     }
+}
+
+const MAX_TEXT_LEN: usize = 16_384;
+const MAX_FOLDER_CUBES: usize = 256;
+const MAX_PLUGIN_PAYLOAD_BYTES: usize = 65_536;
+
+fn validate_folder(cube_ids: &[String]) -> Result<(), ActionError> {
+    if cube_ids.len() > MAX_FOLDER_CUBES {
+        return Err(ActionError::OsCommand(format!(
+            "folder cube_ids too many ({}, max {MAX_FOLDER_CUBES})",
+            cube_ids.len()
+        )));
+    }
+    for id in cube_ids {
+        if id.is_empty() || id.len() > 128 {
+            return Err(ActionError::OsCommand("folder cube_id invalid".into()));
+        }
+    }
+    Ok(())
+}
+
+fn validate_text(text: &str) -> Result<(), ActionError> {
+    if text.len() > MAX_TEXT_LEN {
+        return Err(ActionError::OsCommand(format!(
+            "text too long ({}, max {MAX_TEXT_LEN})",
+            text.len()
+        )));
+    }
+    Ok(())
+}
+
+fn validate_app_launch(path: &str, args: &[String]) -> Result<(), ActionError> {
+    if path.is_empty() || path.len() > 1024 {
+        return Err(ActionError::OsCommand("app_launch path invalid".into()));
+    }
+    let lower = path.to_ascii_lowercase();
+    for danger in &[
+        "cmd.exe",
+        "powershell",
+        "wscript",
+        "cscript",
+        "/bin/sh",
+        "/bin/bash",
+        "rundll32",
+        "regsvr32",
+        "mshta",
+    ] {
+        if lower.contains(danger) {
+            return Err(ActionError::PermissionRequired(3));
+        }
+    }
+    let total_args: usize = args.iter().map(|s| s.len()).sum();
+    if total_args > 4096 || args.len() > 32 {
+        return Err(ActionError::OsCommand("app_launch args too large".into()));
+    }
+    Ok(())
+}
+
+fn validate_focus_window(pattern: &str) -> Result<(), ActionError> {
+    if pattern.is_empty() || pattern.len() > MAX_LABEL_LEN {
+        return Err(ActionError::OsCommand("focus_window pattern invalid".into()));
+    }
+    Ok(())
+}
+
+fn validate_mouse_click(x: i32, y: i32) -> Result<(), ActionError> {
+    if !(-1_000..=16_000).contains(&x) || !(-1_000..=16_000).contains(&y) {
+        return Err(ActionError::OsCommand(format!(
+            "mouse_click coords out of range: ({x}, {y})"
+        )));
+    }
+    Ok(())
+}
+
+fn validate_plugin_action(uuid: &str, payload: &serde_json::Value) -> Result<(), ActionError> {
+    if uuid.is_empty() || uuid.len() > 256 {
+        return Err(ActionError::OsCommand("plugin_uuid invalid".into()));
+    }
+    let bytes = serde_json::to_vec(payload).map_err(|e| ActionError::OsCommand(e.to_string()))?;
+    if bytes.len() > MAX_PLUGIN_PAYLOAD_BYTES {
+        return Err(ActionError::OsCommand(format!(
+            "plugin payload too large ({}, max {MAX_PLUGIN_PAYLOAD_BYTES})",
+            bytes.len()
+        )));
+    }
+    Ok(())
 }
 
 fn validate_link(url: &str) -> Result<(), ActionError> {

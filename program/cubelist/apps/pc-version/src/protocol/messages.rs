@@ -162,6 +162,10 @@ pub enum NoticeLevel {
 // ===========================================================================
 
 /// `action_payload` JSON 파싱 결과 (action_type별 분기)
+///
+/// 10 enum (M3 cron #7 확장): link · shortcut · macro · folder · text_insert ·
+/// clipboard_copy · app_launch · focus_window · mouse_click · plugin_action.
+/// frontend `src/lib/actions/index.ts` ACTIONS 와 1:1 대응 — 변경 시 양쪽 동시 갱신.
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(tag = "action_type", rename_all = "snake_case")]
 pub enum ActionPayload {
@@ -173,9 +177,51 @@ pub enum ActionPayload {
         keys: Vec<String>,
     },
     Macro {
-        /// 최대 20 step (DB CHECK)
+        /// 최대 50 step (guard 검증)
         steps: Vec<MacroStepDto>,
     },
+    /// 폴더(서브덱) — 큐브 모음 진입. PC 헬퍼는 직접 실행 X (frontend UI 처리)
+    Folder {
+        #[serde(default)]
+        cube_ids: Vec<String>,
+    },
+    /// 텍스트 입력 (Tier 1)
+    TextInsert {
+        text: String,
+    },
+    /// 클립보드 복사 (Tier 1)
+    ClipboardCopy {
+        text: String,
+    },
+    /// 외부 앱 실행 (Tier 2)
+    AppLaunch {
+        path: String,
+        #[serde(default)]
+        args: Vec<String>,
+    },
+    /// 창 포커스 (Tier 2)
+    FocusWindow {
+        title_pattern: String,
+    },
+    /// 마우스 클릭 (Tier 2)
+    MouseClick {
+        x: i32,
+        y: i32,
+        #[serde(default = "default_mouse_button")]
+        button: MouseButton,
+        #[serde(default)]
+        relative: bool,
+    },
+    /// 플러그인 액션 — M4 SDK 도입 후 활성 (Tier 3)
+    PluginAction {
+        plugin_uuid: String,
+        #[serde(default)]
+        payload: serde_json::Value,
+    },
+}
+
+fn default_mouse_button() -> MouseButton {
+    MouseButton::Left
 }
 
 /// `MacroStep`의 wire format (Rust 내부 enum과 별개. 외부 직렬화 전용)

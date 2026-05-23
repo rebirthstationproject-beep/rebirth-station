@@ -44,6 +44,9 @@ pub struct ExecutionResult {
 /// 주 진입점 — `ActionPayload`를 받아 적절한 실행자로 dispatch.
 ///
 /// 보안: 실행 전 `guard::validate`로 정적 검증 → 위험 패턴은 즉시 거부.
+///
+/// M3 cron #7 (2026-05-24): 10 variant 매칭 — 새 7종은 시그니처만 통과, 실 OS 호출은
+/// 다음 사이클에 추가 (현재는 `PermissionRequired(tier)` 또는 `FeatureDisabled` 반환).
 pub async fn execute(payload: &ActionPayload) -> Result<ExecutionResult, ActionError> {
     guard::validate(payload)?;
 
@@ -58,6 +61,28 @@ pub async fn execute(payload: &ActionPayload) -> Result<ExecutionResult, ActionE
         }
         ActionPayload::Macro { steps } => {
             execute_macro(steps).await?;
+        }
+        // M3 cron #7 신규 — 실 OS 호출은 cron #8 채움
+        ActionPayload::Folder { .. } => {
+            // 폴더 진입은 UI 측 처리 — 헬퍼는 no-op
+        }
+        ActionPayload::TextInsert { .. } => {
+            return Err(ActionError::FeatureDisabled("text_insert (impl pending)"));
+        }
+        ActionPayload::ClipboardCopy { .. } => {
+            return Err(ActionError::FeatureDisabled("clipboard_copy (impl pending)"));
+        }
+        ActionPayload::AppLaunch { .. } => {
+            return Err(ActionError::PermissionRequired(2));
+        }
+        ActionPayload::FocusWindow { .. } => {
+            return Err(ActionError::FeatureDisabled("focus_window (impl pending)"));
+        }
+        ActionPayload::MouseClick { .. } => {
+            return Err(ActionError::PermissionRequired(2));
+        }
+        ActionPayload::PluginAction { .. } => {
+            return Err(ActionError::PermissionRequired(3));
         }
     }
 
