@@ -2508,6 +2508,87 @@ function EditorPage({ t }) {
   );
 }
 
+// 리버스 프로젝트 — 다음 프로젝트 의견 받기 (사용자 명시 2026-05-23)
+function ProjectPage({ t }) {
+  return (
+    <section className="section" data-screen-label="Rebirth Project" style={{ paddingTop: 120 }}>
+      <div className="container">
+        <Breadcrumb items={[{ label: "홈", href: "/" }, { label: "리버스 프로젝트" }]} />
+        <header className="section-head">
+          <div className="eyebrow">REBIRTH PROJECT</div>
+          <h1 className="section-title">여러분의 의견으로 제작됩니다.</h1>
+          <p className="section-sub">
+            유휴 디바이스를 이용한 프로그램·어플리케이션 개발 의견을 주시면 함께 반영하여 제작합니다.
+          </p>
+        </header>
+
+        <div style={{ marginTop: 48, maxWidth: 720 }}>
+          <p style={{ color: "var(--ink-3)", lineHeight: 1.7, marginBottom: 32 }}>
+            리버스 스테이션의 다음 프로그램은 사용자 제안에서 시작됩니다.
+            현재 큐브 리스트(첫 프로그램)에 이어 만들고 싶은 유휴 디바이스 활용 도구가 있다면 알려 주세요.
+            우선순위·실현 가능성·커뮤니티 관심도를 바탕으로 함께 검토하고 제작 단계로 옮깁니다.
+          </p>
+
+          <form
+            method="POST"
+            action="https://formspree.io/f/placeholder"
+            onSubmit={(e) => {
+              // Stage 1: 폼 백엔드 미연결 — mailto fallback (사용자 직접 메일 발송).
+              // Stage 2: Supabase / Formspree 등 백엔드 연결 시 본 핸들러 교체.
+              e.preventDefault();
+              const subject = encodeURIComponent("[Rebirth Project] 의견 제안");
+              const idea = e.target.idea?.value?.trim() || "";
+              const ctx = e.target.context?.value?.trim() || "";
+              const body = encodeURIComponent(`아이디어:\n${idea}\n\n사용 맥락·필요성:\n${ctx}`);
+              window.location.href = `mailto:rebirthstationproject@gmail.com?subject=${subject}&body=${body}`;
+            }}
+          >
+            <label style={{ display: "block", fontWeight: 600, marginBottom: 8 }}>
+              어떤 프로그램·어플리케이션이 필요하신가요?
+            </label>
+            <textarea
+              name="idea"
+              required
+              rows={4}
+              placeholder="예: 유휴 태블릿으로 가족 캘린더·메모·할 일을 한 화면에 띄우는 도구"
+              style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid var(--line)", marginBottom: 20, fontFamily: "inherit", fontSize: 14, resize: "vertical" }}
+            />
+
+            <label style={{ display: "block", fontWeight: 600, marginBottom: 8 }}>
+              어떤 상황·필요성에서 떠올린 아이디어인가요? (선택)
+            </label>
+            <textarea
+              name="context"
+              rows={3}
+              placeholder="예: 안 쓰는 패드가 서랍에 있는데, 매번 사진·메모 정리하기 번거로워서…"
+              style={{ width: "100%", padding: 12, borderRadius: 8, border: "1px solid var(--line)", marginBottom: 24, fontFamily: "inherit", fontSize: 14, resize: "vertical" }}
+            />
+
+            <button type="submit" className="btn btn-primary" style={{ minWidth: 200 }}>
+              의견 보내기
+            </button>
+          </form>
+
+          <p style={{ marginTop: 24, fontSize: 13, color: "var(--ink-3)" }}>
+            * 제출 시 기본 메일 클라이언트가 열립니다. 직접 메일이 어려우시면
+            <a href="mailto:rebirthstationproject@gmail.com" style={{ color: "var(--primary)", marginLeft: 4 }}>rebirthstationproject@gmail.com</a>으로 보내 주세요.
+          </p>
+        </div>
+
+        <div style={{ marginTop: 64, padding: 24, background: "var(--surface)", borderRadius: 12 }}>
+          <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>현재까지 진행 중인 프로그램</h2>
+          <ul style={{ listStyle: "disc", marginLeft: 20, color: "var(--ink-3)", lineHeight: 1.8 }}>
+            <li><strong>큐브 리스트</strong> — 안 쓰는 폰을 PC 매크로 컨트롤러로 (Stage 1·MVP 진행 중)</li>
+          </ul>
+          <p style={{ marginTop: 16, fontSize: 13, color: "var(--ink-3)" }}>
+            다음 프로그램은 여러분의 의견 + 커뮤니티 우선순위 + 기술 실현 가능성을 함께 검토하여 결정됩니다.
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 window.DownloadPage = DownloadPage;
 window.BlogIndexPage = BlogIndexPage;
 window.FaqPage = FaqPage;
@@ -2517,3 +2598,4 @@ window.LegalPage = LegalPage;
 window.OnboardingPage = OnboardingPage;
 window.DashboardPage = DashboardPage;
 window.EditorPage = EditorPage;
+window.ProjectPage = ProjectPage;

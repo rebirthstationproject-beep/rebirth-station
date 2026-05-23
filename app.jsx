@@ -303,10 +303,11 @@ function Nav({ t, lang, setLang, scrolled, ver, pro }) {
               <a href="/marketplace/" role="menuitem">{t.nav.market} 홈</a>
               <a href="/marketplace/cubelist/" role="menuitem">{t.nav.marketCube}</a>
               <a href="/marketplace/cubelist/?tab=plugin" role="menuitem">{t.nav.marketPlugin}</a>
+              <a href="/editor/" role="menuitem">에디터</a>
             </div>
           </div>
 
-          <a href="/editor/">에디터</a>
+          <a href="/project/">{t.nav.project}</a>
           <a href="/faq/">{t.nav.faq}</a>
         </div>
         <div className="nav-cta">
@@ -399,6 +400,7 @@ function App() {
   const isDownload = /^\/download\/?$/.test(path);
   const isBlogIndex = /^\/blog\/?$/.test(path);
   const isFaq = /^\/faq\/?$/.test(path);
+  const isProject = /^\/project\/?$/.test(path);
   const isLogin = /^\/login\/?$/.test(path);
   const legalMatch = path.match(/^\/legal\/(terms|privacy|cookies)\/?$/);
   const isOnboarding = /^\/onboarding\/?$/.test(path);
@@ -420,6 +422,8 @@ function App() {
     body = <window.BlogIndexPage t={t} />;
   } else if (isFaq) {
     body = <window.FaqPage t={t} />;
+  } else if (isProject) {
+    body = <window.ProjectPage t={t} />;
   } else if (isLogin) {
     body = <window.LoginPage t={t} />;
   } else if (isCreateCube) {

@@ -4,7 +4,7 @@ const I18N = {
   ko: {
     brand: { name: "Rebirth Station", krName: "리버스 스테이션" },
     nav: {
-      about: "리버스 프로젝트",
+      about: "리버스 스테이션",
       programs: "프로그램",
       cube: "큐브 리스트",
       market: "마켓플레이스",
@@ -12,6 +12,7 @@ const I18N = {
       marketPlugin: "플러그인",
       how: "작동 원리",
       faq: "고객센터",
+      project: "리버스 프로젝트",
       cta: "무료로 시작",
     },
 
@@ -339,7 +340,7 @@ const I18N = {
   en: {
     brand: { name: "Rebirth Station", krName: "Rebirth Station" },
     nav: {
-      about: "Rebirth Project",
+      about: "Rebirth Station",
       programs: "Programs",
       cube: "Cube List",
       market: "Marketplace",
@@ -347,6 +348,7 @@ const I18N = {
       marketPlugin: "Plugins",
       how: "How",
       faq: "Support",
+      project: "Rebirth Project",
       cta: "Get started",
     },
 
