@@ -177,15 +177,49 @@ html, body, #root {
   border-radius: 8px;
   cursor: pointer;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  gap: 4px;
+  color: var(--text);
   font-size: 11px;
+  padding: 6px;
   transition: background 0.1s, border-color 0.1s;
 }
 .cube-cell:hover { background: var(--bg-hover); border-color: var(--accent); }
 .cube-cell.is-selected { background: var(--bg-selected); border-color: var(--accent); }
-.cube-empty { opacity: 0.6; }
+.cube-cell.is-empty {
+  background: transparent;
+  border-style: dashed;
+  color: var(--text-muted);
+  font-size: 18px;
+}
+.cube-label {
+  font-weight: 500;
+  text-align: center;
+  line-height: 1.2;
+  word-break: keep-all;
+}
+.cube-action-badge {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.cube-empty { opacity: 0.7; }
+.grid-empty {
+  color: var(--text-muted);
+  text-align: center;
+  padding-top: 80px;
+  font-size: 13px;
+}
+.pack-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-right: 12px;
+}
+.muted { color: var(--text-muted); font-size: 11px; }
+.muted code { font-family: 'Consolas', monospace; }
 
 .inspector {
   background: var(--bg-surface);
