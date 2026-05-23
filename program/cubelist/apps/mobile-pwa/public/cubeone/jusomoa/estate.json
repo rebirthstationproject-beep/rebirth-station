@@ -1,0 +1,190 @@
+{
+  "category": "estate",
+  "count": 23,
+  "items": [
+    {
+      "slug": "applyhome",
+      "label": "청약홈",
+      "icon_src": "/cubeone/jusomoa/icons/estate/applyhome.webp",
+      "action_type": "link",
+      "url": "https://www.applyhome.co.kr",
+      "category": "estate"
+    },
+    {
+      "slug": "aptrank",
+      "label": "아파트랭킹",
+      "icon_src": "/cubeone/jusomoa/icons/estate/aptrank.webp",
+      "action_type": "link",
+      "url": "https://www.aptrank.com",
+      "category": "estate"
+    },
+    {
+      "slug": "asil",
+      "label": "아실",
+      "icon_src": "/cubeone/jusomoa/icons/estate/asil.webp",
+      "action_type": "link",
+      "url": "https://asil.kr",
+      "category": "estate"
+    },
+    {
+      "slug": "bdsplanet",
+      "label": "부동산플래닛",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/bdsplanet.webp",
+      "action_type": "link",
+      "url": "https://www.bdsplanet.com",
+      "category": "estate"
+    },
+    {
+      "slug": "dabangapp",
+      "label": "다방",
+      "icon_src": "/cubeone/jusomoa/icons/estate/dabangapp.webp",
+      "action_type": "link",
+      "url": "https://www.dabangapp.com",
+      "category": "estate"
+    },
+    {
+      "slug": "ggi",
+      "label": "경매나라",
+      "icon_src": "/cubeone/jusomoa/icons/estate/ggi.webp",
+      "action_type": "link",
+      "url": "https://www.ggi.co.kr",
+      "category": "estate"
+    },
+    {
+      "slug": "hogangnono",
+      "label": "호갱노노",
+      "icon_src": "/cubeone/jusomoa/icons/estate/hogangnono.webp",
+      "action_type": "link",
+      "url": "https://hogangnono.com",
+      "category": "estate"
+    },
+    {
+      "slug": "houseranking",
+      "label": "집순위",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/houseranking.webp",
+      "action_type": "link",
+      "url": "https://houseranking.kr",
+      "category": "estate"
+    },
+    {
+      "slug": "kbland",
+      "label": "KB부동산",
+      "icon_src": "/cubeone/jusomoa/icons/estate/kbland.webp",
+      "action_type": "link",
+      "url": "https://kbland.kr",
+      "category": "estate"
+    },
+    {
+      "slug": "land",
+      "label": "네이버 부동산",
+      "icon_src": "/cubeone/jusomoa/icons/estate/land.webp",
+      "action_type": "link",
+      "url": "https://land.naver.com",
+      "category": "estate"
+    },
+    {
+      "slug": "landbook",
+      "label": "랜드북",
+      "icon_src": "/cubeone/jusomoa/icons/estate/landbook.webp",
+      "action_type": "link",
+      "url": "https://www.landbook.net",
+      "category": "estate"
+    },
+    {
+      "slug": "onbid",
+      "label": "온비드",
+      "icon_src": "/cubeone/jusomoa/icons/estate/onbid.webp",
+      "action_type": "link",
+      "url": "https://www.onbid.co.kr",
+      "category": "estate"
+    },
+    {
+      "slug": "peterpan",
+      "label": "피터팬",
+      "icon_src": "/cubeone/jusomoa/icons/estate/peterpan.webp",
+      "action_type": "link",
+      "url": "https://www.peterpan.com",
+      "category": "estate"
+    },
+    {
+      "slug": "peterpanz",
+      "label": "피터팬의 좋은방 구하기",
+      "icon_src": "/cubeone/jusomoa/icons/estate/peterpanz.webp",
+      "action_type": "link",
+      "url": "https://www.peterpanz.com",
+      "category": "estate"
+    },
+    {
+      "slug": "r114",
+      "label": "부동산114",
+      "icon_src": "/cubeone/jusomoa/icons/estate/r114.webp",
+      "action_type": "link",
+      "url": "https://www.r114.com",
+      "category": "estate"
+    },
+    {
+      "slug": "realestate",
+      "label": "다음 부동산",
+      "icon_src": "/cubeone/jusomoa/icons/estate/realestate.webp",
+      "action_type": "link",
+      "url": "https://realestate.daum.net",
+      "category": "estate"
+    },
+    {
+      "slug": "realtybank",
+      "label": "리얼티뱅크",
+      "icon_src": "/cubeone/jusomoa/icons/estate/realtybank.webp",
+      "action_type": "link",
+      "url": "https://www.realtybank.com",
+      "category": "estate"
+    },
+    {
+      "slug": "richgo",
+      "label": "리치고",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/richgo.webp",
+      "action_type": "link",
+      "url": "https://richgo.ai",
+      "category": "estate"
+    },
+    {
+      "slug": "tankauction",
+      "label": "탱크옥션",
+      "icon_src": "/cubeone/jusomoa/icons/estate/tankauction.webp",
+      "action_type": "link",
+      "url": "https://www.tankauction.com",
+      "category": "estate"
+    },
+    {
+      "slug": "valuemap",
+      "label": "밸류맵",
+      "icon_src": "/cubeone/jusomoa/icons/estate/valuemap.webp",
+      "action_type": "link",
+      "url": "https://www.valuemap.com",
+      "category": "estate"
+    },
+    {
+      "slug": "zigbang",
+      "label": "직방",
+      "icon_src": "/cubeone/jusomoa/icons/estate/zigbang.webp",
+      "action_type": "link",
+      "url": "https://www.zigbang.com",
+      "category": "estate"
+    },
+    {
+      "slug": "zippoocom",
+      "label": "집품",
+      "icon_src": "/cubeone/jusomoa/icons/estate/zippoocom.webp",
+      "action_type": "link",
+      "url": "https://zippoom.com",
+      "category": "estate"
+    },
+    {
+      "slug": "ziptoss",
+      "label": "집토스",
+      "icon_src": "/cubeone/jusomoa/icons/estate/ziptoss.webp",
+      "action_type": "link",
+      "url": "https://www.ziptoss.com",
+      "category": "estate"
+    }
+  ]
+}

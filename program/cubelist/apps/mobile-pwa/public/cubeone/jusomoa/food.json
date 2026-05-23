@@ -1,0 +1,166 @@
+{
+  "category": "food",
+  "count": 20,
+  "items": [
+    {
+      "slug": "10000recipe",
+      "label": "만개의레시피",
+      "icon_src": "/cubeone/jusomoa/icons/food/10000recipe.webp",
+      "action_type": "link",
+      "url": "https://www.10000recipe.com",
+      "category": "food"
+    },
+    {
+      "slug": "baemin",
+      "label": "배달의민족",
+      "icon_src": "/cubeone/jusomoa/icons/food/baemin.webp",
+      "action_type": "link",
+      "url": "https://www.baemin.com",
+      "category": "food"
+    },
+    {
+      "slug": "catchtable",
+      "label": "캐치테이블",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/catchtable.webp",
+      "action_type": "link",
+      "url": "https://www.catchtable.co.kr",
+      "category": "food"
+    },
+    {
+      "slug": "coupangeats",
+      "label": "쿠팡이츠",
+      "icon_src": "/cubeone/jusomoa/icons/food/coupangeats.webp",
+      "action_type": "link",
+      "url": "https://www.coupangeats.com",
+      "category": "food"
+    },
+    {
+      "slug": "diningcode",
+      "label": "다이닝코드",
+      "icon_src": "/cubeone/jusomoa/icons/food/diningcode.webp",
+      "action_type": "link",
+      "url": "https://www.diningcode.com",
+      "category": "food"
+    },
+    {
+      "slug": "emart",
+      "label": "이마트몰",
+      "icon_src": "/cubeone/jusomoa/icons/food/emart.webp",
+      "action_type": "link",
+      "url": "https://emart.ssg.com",
+      "category": "food"
+    },
+    {
+      "slug": "front",
+      "label": "홈플러스 온라인",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/front.webp",
+      "action_type": "link",
+      "url": "https://front.homeplus.co.kr",
+      "category": "food"
+    },
+    {
+      "slug": "gift",
+      "label": "카카오톡 선물하기",
+      "icon_src": "/cubeone/jusomoa/icons/food/gift.webp",
+      "action_type": "link",
+      "url": "https://gift.kakao.com",
+      "category": "food"
+    },
+    {
+      "slug": "guide",
+      "label": "미쉐린가이드 서울",
+      "icon_src": "/cubeone/jusomoa/icons/food/guide.webp",
+      "action_type": "link",
+      "url": "https://guide.michelin.com/kr/ko",
+      "category": "food"
+    },
+    {
+      "slug": "joongang-food",
+      "label": "중앙 쿠킹",
+      "icon_src": "/cubeone/jusomoa/icons/food/joongang-food.webp",
+      "action_type": "link",
+      "url": "https://www.joongang.co.kr/cooking",
+      "category": "food"
+    },
+    {
+      "slug": "kurly-food",
+      "label": "컬리",
+      "icon_src": "/cubeone/jusomoa/icons/food/kurly-food.webp",
+      "action_type": "link",
+      "url": "https://www.kurly.com",
+      "category": "food"
+    },
+    {
+      "slug": "map",
+      "label": "카카오맵 맛집",
+      "icon_src": "/cubeone/jusomoa/icons/food/map.webp",
+      "action_type": "link",
+      "url": "https://map.kakao.com",
+      "category": "food"
+    },
+    {
+      "slug": "oasis",
+      "label": "오아시스마켓",
+      "icon_src": "/cubeone/jusomoa/icons/food/oasis.webp",
+      "action_type": "link",
+      "url": "https://www.oasis.co.kr",
+      "category": "food"
+    },
+    {
+      "slug": "order",
+      "label": "네이버 주문",
+      "icon_src": "/cubeone/jusomoa/icons/food/order.webp",
+      "action_type": "link",
+      "url": "https://order.naver.com",
+      "category": "food"
+    },
+    {
+      "slug": "siksinhot",
+      "label": "식신",
+      "icon_src": "/cubeone/jusomoa/icons/food/siksinhot.webp",
+      "action_type": "link",
+      "url": "https://www.siksinhot.com",
+      "category": "food"
+    },
+    {
+      "slug": "starbucks-korea",
+      "label": "스타벅스 코리아",
+      "icon_src": "/cubeone/jusomoa/icons/food/starbucks-korea.webp",
+      "action_type": "link",
+      "url": "https://www.starbucks.co.kr",
+      "category": "food"
+    },
+    {
+      "slug": "store-food",
+      "label": "쿠팡이츠 스토어",
+      "icon_src": "/cubeone/jusomoa/icons/food/store-food.webp",
+      "action_type": "link",
+      "url": "https://store.coupangeats.com",
+      "category": "food"
+    },
+    {
+      "slug": "tabling",
+      "label": "테이블링",
+      "icon_src": "/cubeone/jusomoa/icons/food/tabling.webp",
+      "action_type": "link",
+      "url": "https://www.tabling.co.kr",
+      "category": "food"
+    },
+    {
+      "slug": "wemakeprice-o",
+      "label": "위메프오",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/wemakeprice-o.webp",
+      "action_type": "link",
+      "url": "https://o.wemakeprice.com",
+      "category": "food"
+    },
+    {
+      "slug": "yogiyo",
+      "label": "요기요",
+      "icon_src": "/cubeone/jusomoa/icons/food/yogiyo.webp",
+      "action_type": "link",
+      "url": "https://www.yogiyo.co.kr",
+      "category": "food"
+    }
+  ]
+}

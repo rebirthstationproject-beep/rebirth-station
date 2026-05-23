@@ -1,0 +1,77 @@
+{
+  "manifest_version": 1,
+  "id": "com.cubelist.plugin.streamdeck-system-2",
+  "name": "Stream Deck System (2)",
+  "name_en": "Stream Deck System (2)",
+  "name_ja": "Stream Deck システム (2)",
+  "description": "Stream Deck 7.4.2 system 액션 호환 2단계 — Open App · Multimedia · Mouse · Close",
+  "description_en": "Stream Deck 7.4.2 system action compatibility wave 2 — Open App, Multimedia, Mouse, Close",
+  "description_ja": "Stream Deck 7.4.2 システムアクション互換 第2弾 — アプリ起動・マルチメディア・マウス・閉じる",
+  "author": "Rebirth Station",
+  "version": "1.0.0",
+  "license": "free",
+  "actions": [
+    {
+      "uuid": "com.elgato.streamdeck.system.openapp",
+      "name": "앱 실행",
+      "name_en": "Open App",
+      "name_ja": "アプリ起動",
+      "tooltip": "지정된 실행 파일을 실행 (PC 헬퍼 Tier 2 필요)",
+      "tooltip_en": "Launches the specified executable (requires PC helper Tier 2)",
+      "tooltip_ja": "指定された実行ファイルを起動 (PC ヘルパー Tier 2 必須)",
+      "icon": "🚀",
+      "action_type": "macro",
+      "default_payload": { "steps": [{ "kind": "launch_app", "path": "" }] },
+      "supported_in_multi": true,
+      "tier": 2
+    },
+    {
+      "uuid": "com.elgato.streamdeck.system.multimedia",
+      "name": "미디어 컨트롤",
+      "name_en": "Multimedia",
+      "name_ja": "メディアコントロール",
+      "tooltip": "재생/일시정지/다음/이전/음소거 등 미디어 키",
+      "tooltip_en": "Play/pause/next/prev/mute media keys",
+      "tooltip_ja": "再生・一時停止・次へ・前へ・ミュート",
+      "icon": "🎵",
+      "action_type": "shortcut",
+      "default_payload": { "keys": ["MediaPlayPause"] },
+      "supported_in_multi": true,
+      "tier": 2,
+      "states": [
+        { "key": "play", "label": "재생/일시정지", "keys": ["MediaPlayPause"] },
+        { "key": "next", "label": "다음 트랙", "keys": ["MediaNextTrack"] },
+        { "key": "prev", "label": "이전 트랙", "keys": ["MediaPrevTrack"] },
+        { "key": "mute", "label": "음소거", "keys": ["MediaVolumeMute"] }
+      ]
+    },
+    {
+      "uuid": "com.elgato.streamdeck.system.mouse",
+      "name": "마우스",
+      "name_en": "Mouse",
+      "name_ja": "マウス",
+      "tooltip": "마우스 클릭·이동·스크롤 (PC 헬퍼 Tier 2)",
+      "tooltip_en": "Mouse click/move/scroll (PC helper Tier 2)",
+      "tooltip_ja": "マウスクリック・移動・スクロール (PC ヘルパー Tier 2)",
+      "icon": "🖱",
+      "action_type": "macro",
+      "default_payload": { "steps": [{ "kind": "mouse_click", "x": 0, "y": 0, "button": "left" }] },
+      "supported_in_multi": true,
+      "tier": 2
+    },
+    {
+      "uuid": "com.elgato.streamdeck.system.close",
+      "name": "창 닫기",
+      "name_en": "Close Window",
+      "name_ja": "ウィンドウを閉じる",
+      "tooltip": "활성 창 닫기 (Alt+F4)",
+      "tooltip_en": "Close active window (Alt+F4)",
+      "tooltip_ja": "アクティブウィンドウを閉じる (Alt+F4)",
+      "icon": "✕",
+      "action_type": "shortcut",
+      "default_payload": { "keys": ["Alt", "F4"] },
+      "supported_in_multi": true,
+      "tier": 2
+    }
+  ]
+}

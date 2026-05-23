@@ -1,0 +1,214 @@
+{
+  "category": "financial",
+  "count": 26,
+  "items": [
+    {
+      "slug": "banksalad",
+      "label": "뱅크샐러드",
+      "icon_src": "/cubeone/jusomoa/icons/financial/banksalad.webp",
+      "action_type": "link",
+      "url": "https://www.banksalad.com",
+      "category": "financial"
+    },
+    {
+      "slug": "cardgorilla",
+      "label": "카드고릴라",
+      "icon_src": "/cubeone/jusomoa/icons/financial/cardgorilla.webp",
+      "action_type": "link",
+      "url": "https://www.card-gorilla.com",
+      "category": "financial"
+    },
+    {
+      "slug": "finda",
+      "label": "핀다",
+      "icon_src": "/cubeone/jusomoa/icons/financial/finda.webp",
+      "action_type": "link",
+      "url": "https://finda.co.kr",
+      "category": "financial"
+    },
+    {
+      "slug": "hmsec",
+      "label": "현대차증권",
+      "icon_src": "/cubeone/jusomoa/icons/financial/hmsec.webp",
+      "action_type": "link",
+      "url": "https://www.hmsec.com",
+      "category": "financial"
+    },
+    {
+      "slug": "hyundaicard",
+      "label": "현대카드",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/hyundaicard.webp",
+      "action_type": "link",
+      "url": "https://www.hyundaicard.com",
+      "category": "financial"
+    },
+    {
+      "slug": "imbank",
+      "label": "iM뱅크",
+      "icon_src": "/cubeone/jusomoa/icons/financial/imbank.webp",
+      "action_type": "link",
+      "url": "https://www.imbank.com",
+      "category": "financial"
+    },
+    {
+      "slug": "kakaobank",
+      "label": "카카오뱅크",
+      "icon_src": "/cubeone/jusomoa/icons/financial/kakaobank.webp",
+      "action_type": "link",
+      "url": "https://www.kakaobank.com",
+      "category": "financial"
+    },
+    {
+      "slug": "kakaopay",
+      "label": "카카오페이",
+      "icon_src": "/cubeone/jusomoa/icons/financial/kakaopay.webp",
+      "action_type": "link",
+      "url": "https://www.kakaopay.com",
+      "category": "financial"
+    },
+    {
+      "slug": "kakaopaysec",
+      "label": "카카오페이증권",
+      "icon_src": "/cubeone/jusomoa/icons/financial/kakaopaysec.webp",
+      "action_type": "link",
+      "url": "https://www.kakaopaysec.com",
+      "category": "financial"
+    },
+    {
+      "slug": "kbanknow",
+      "label": "케이뱅크",
+      "icon_src": "/cubeone/jusomoa/icons/financial/kbanknow.webp",
+      "action_type": "link",
+      "url": "https://www.kbanknow.com",
+      "category": "financial"
+    },
+    {
+      "slug": "kbsec",
+      "label": "KB증권",
+      "icon_src": "/cubeone/jusomoa/icons/financial/kbsec.webp",
+      "action_type": "link",
+      "url": "https://www.kbsec.com",
+      "category": "financial"
+    },
+    {
+      "slug": "kbstar",
+      "label": "KB국민은행",
+      "icon_src": "/cubeone/jusomoa/icons/financial/kbstar.webp",
+      "action_type": "link",
+      "url": "https://www.kbstar.com",
+      "category": "financial"
+    },
+    {
+      "slug": "kebhana",
+      "label": "하나은행",
+      "icon_src": "/cubeone/jusomoa/icons/financial/kebhana.webp",
+      "action_type": "link",
+      "url": "https://www.kebhana.com",
+      "category": "financial"
+    },
+    {
+      "slug": "lifeplanet",
+      "label": "교보라이프플래닛",
+      "icon_src": "/cubeone/jusomoa/icons/financial/lifeplanet.webp",
+      "action_type": "link",
+      "url": "https://www.lifeplanet.com",
+      "category": "financial"
+    },
+    {
+      "slug": "okbank",
+      "label": "OK저축은행",
+      "icon_src": "/cubeone/jusomoa/icons/financial/okbank.webp",
+      "action_type": "link",
+      "url": "https://www.okbank.com",
+      "category": "financial"
+    },
+    {
+      "slug": "pay",
+      "label": "네이버페이",
+      "icon_src": "/cubeone/jusomoa/icons/financial/pay.webp",
+      "action_type": "link",
+      "url": "https://pay.naver.com",
+      "category": "financial"
+    },
+    {
+      "slug": "paypal",
+      "label": "페이팔",
+      "icon_src": "/cubeone/jusomoa/icons/financial/paypal.webp",
+      "action_type": "link",
+      "url": "https://www.paypal.com",
+      "category": "financial"
+    },
+    {
+      "slug": "samsungpay",
+      "label": "삼성페이",
+      "icon_src": "/cubeone/jusomoa/icons/financial/samsungpay.webp",
+      "action_type": "link",
+      "url": "https://www.samsungpay.com",
+      "category": "financial"
+    },
+    {
+      "slug": "samsungpop",
+      "label": "삼성증권",
+      "icon_src": "/cubeone/jusomoa/icons/financial/samsungpop.webp",
+      "action_type": "link",
+      "url": "https://www.samsungpop.com",
+      "category": "financial"
+    },
+    {
+      "slug": "securities",
+      "label": "미래에셋증권",
+      "icon_src": "/cubeone/jusomoa/icons/financial/securities.webp",
+      "action_type": "link",
+      "url": "https://securities.miraeasset.com",
+      "category": "financial"
+    },
+    {
+      "slug": "sentbe",
+      "label": "센트비",
+      "icon_src": "/cubeone/jusomoa/icons/financial/sentbe.webp",
+      "action_type": "link",
+      "url": "https://www.sentbe.com",
+      "category": "financial"
+    },
+    {
+      "slug": "shinhan",
+      "label": "신한은행",
+      "icon_src": "/cubeone/jusomoa/icons/financial/shinhan.webp",
+      "action_type": "link",
+      "url": "https://www.shinhan.com",
+      "category": "financial"
+    },
+    {
+      "slug": "toss",
+      "label": "토스",
+      "icon_src": "/cubeone/jusomoa/icons/financial/toss.webp",
+      "action_type": "link",
+      "url": "https://toss.im",
+      "category": "financial"
+    },
+    {
+      "slug": "tossinvest",
+      "label": "토스증권",
+      "icon_src": "/cubeone/jusomoa/icons/financial/tossinvest.webp",
+      "action_type": "link",
+      "url": "https://tossinvest.com",
+      "category": "financial"
+    },
+    {
+      "slug": "wise",
+      "label": "와이즈",
+      "icon_src": "/cubeone/jusomoa/icons/financial/wise.webp",
+      "action_type": "link",
+      "url": "https://wise.com",
+      "category": "financial"
+    },
+    {
+      "slug": "wooribank",
+      "label": "우리은행",
+      "icon_src": "/cubeone/jusomoa/icons/financial/wooribank.webp",
+      "action_type": "link",
+      "url": "https://www.wooribank.com",
+      "category": "financial"
+    }
+  ]
+}

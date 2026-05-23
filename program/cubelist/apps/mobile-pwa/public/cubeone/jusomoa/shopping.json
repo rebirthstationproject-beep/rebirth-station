@@ -1,0 +1,462 @@
+{
+  "category": "shopping",
+  "count": 57,
+  "items": [
+    {
+      "slug": "11st",
+      "label": "11번가",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/11st.webp",
+      "action_type": "link",
+      "url": "https://www.11st.co.kr",
+      "category": "shopping"
+    },
+    {
+      "slug": "29cm",
+      "label": "29cm",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/29cm.webp",
+      "action_type": "link",
+      "url": "https://www.29cm.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "a-bly",
+      "label": "에이블리",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/a-bly.webp",
+      "action_type": "link",
+      "url": "https://www.a-bly.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "aliexpress",
+      "label": "알리익스프레스",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/aliexpress.webp",
+      "action_type": "link",
+      "url": "https://www.aliexpress.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "amazon",
+      "label": "아마존",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/amazon.webp",
+      "action_type": "link",
+      "url": "https://www.amazon.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "amorepacific",
+      "label": "아모레퍼시픽",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/amorepacific.webp",
+      "action_type": "link",
+      "url": "https://www.amorepacific.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "auction",
+      "label": "옥션",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/auction.webp",
+      "action_type": "link",
+      "url": "https://www.auction.co.kr",
+      "category": "shopping"
+    },
+    {
+      "slug": "bgzt",
+      "label": "Bgzt",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/bgzt.webp",
+      "action_type": "link",
+      "url": "https://www.bgzt.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "brandi",
+      "label": "브랜디",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/brandi.webp",
+      "action_type": "link",
+      "url": "https://www.brandi.co.kr",
+      "category": "shopping"
+    },
+    {
+      "slug": "bunjang",
+      "label": "번개장터",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/bunjang.webp",
+      "action_type": "link",
+      "url": "https://www.bunjang.co.kr",
+      "category": "shopping"
+    },
+    {
+      "slug": "cjonstyle",
+      "label": "CJ온스타일",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/cjonstyle.webp",
+      "action_type": "link",
+      "url": "https://www.cjonstyle.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "coupang",
+      "label": "쿠팡",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/coupang.webp",
+      "action_type": "link",
+      "url": "https://www.coupang.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "daangn",
+      "label": "당근",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/daangn.webp",
+      "action_type": "link",
+      "url": "https://www.daangn.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "danawa",
+      "label": "다나와",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/danawa.webp",
+      "action_type": "link",
+      "url": "https://www.danawa.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "ebay",
+      "label": "이베이",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/ebay.webp",
+      "action_type": "link",
+      "url": "https://www.ebay.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "esteelauder",
+      "label": "에스티",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/esteelauder.webp",
+      "action_type": "link",
+      "url": "https://www.esteelauder.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "gmarket",
+      "label": "G마켓",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/gmarket.webp",
+      "action_type": "link",
+      "url": "https://www.gmarket.co.kr",
+      "category": "shopping"
+    },
+    {
+      "slug": "gongyoung",
+      "label": "공영쇼핑",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/gongyoung.webp",
+      "action_type": "link",
+      "url": "https://www.gongyoung.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "gsshop",
+      "label": "GS샵",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/gsshop.webp",
+      "action_type": "link",
+      "url": "https://www.gsshop.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "hiver",
+      "label": "Hiver",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/hiver.webp",
+      "action_type": "link",
+      "url": "https://www.hiver.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "hmall",
+      "label": "현대Hmall",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/hmall.webp",
+      "action_type": "link",
+      "url": "https://www.hmall.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "homeandshopping",
+      "label": "Homeandshopping",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/homeandshopping.webp",
+      "action_type": "link",
+      "url": "https://www.homeandshopping.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "idus",
+      "label": "아이디어스",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/idus.webp",
+      "action_type": "link",
+      "url": "https://www.idus.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "iherb",
+      "label": "아이허브",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/iherb.webp",
+      "action_type": "link",
+      "url": "https://www.iherb.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "innisfree",
+      "label": "이니스프리",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/innisfree.webp",
+      "action_type": "link",
+      "url": "https://www.innisfree.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "interpark",
+      "label": "인터파크",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/interpark.webp",
+      "action_type": "link",
+      "url": "https://www.interpark.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "junggonaara",
+      "label": "중고나라",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/junggonaara.webp",
+      "action_type": "link",
+      "url": "https://www.joongna.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "karrot",
+      "label": "Karrot",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/karrot.webp",
+      "action_type": "link",
+      "url": "https://www.karrot.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "kolonmall",
+      "label": "코오롱몰",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/kolonmall.webp",
+      "action_type": "link",
+      "url": "https://www.kolonmall.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "kreaco",
+      "label": "크림",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/kreaco.webp",
+      "action_type": "link",
+      "url": "https://kream.co.kr",
+      "category": "shopping"
+    },
+    {
+      "slug": "kurly",
+      "label": "컬리",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/kurly.webp",
+      "action_type": "link",
+      "url": "https://www.kurly.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "laneige",
+      "label": "라네즈",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/laneige.webp",
+      "action_type": "link",
+      "url": "https://www.laneige.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "lfmall",
+      "label": "LF몰",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/lfmall.webp",
+      "action_type": "link",
+      "url": "https://www.lfmall.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "lgcare",
+      "label": "LG생활건강",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/lgcare.webp",
+      "action_type": "link",
+      "url": "https://www.lgcare.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "lotteon",
+      "label": "롯데온",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/lotteon.webp",
+      "action_type": "link",
+      "url": "https://www.lotteon.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "malltail",
+      "label": "몰테일",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/malltail.webp",
+      "action_type": "link",
+      "url": "https://www.malltail.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "musinsa",
+      "label": "무신사",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/musinsa.webp",
+      "action_type": "link",
+      "url": "https://www.musinsa.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "mustit",
+      "label": "머스트잇",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/mustit.webp",
+      "action_type": "link",
+      "url": "https://www.mustit.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "navershopping",
+      "label": "Navershopping",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/navershopping.webp",
+      "action_type": "link",
+      "url": "https://www.navershopping.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "nshomeshopping",
+      "label": "NS홈쇼핑",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/nshomeshopping.webp",
+      "action_type": "link",
+      "url": "https://www.nshomeshopping.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "ohou",
+      "label": "오늘의집",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/ohou.webp",
+      "action_type": "link",
+      "url": "https://ohou.se",
+      "category": "shopping"
+    },
+    {
+      "slug": "oliveyoung",
+      "label": "올리브영",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/oliveyoung.webp",
+      "action_type": "link",
+      "url": "https://www.oliveyoung.co.kr",
+      "category": "shopping"
+    },
+    {
+      "slug": "posty",
+      "label": "포스티",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/posty.webp",
+      "action_type": "link",
+      "url": "https://www.posty.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "qoo10",
+      "label": "큐텐",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/qoo10.webp",
+      "action_type": "link",
+      "url": "https://www.qoo10.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "queenit",
+      "label": "퀸잇",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/queenit.webp",
+      "action_type": "link",
+      "url": "https://www.queenit.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "shein",
+      "label": "쉬인",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/shein.webp",
+      "action_type": "link",
+      "url": "https://www.shein.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "shopping",
+      "label": "네이버 쇼핑",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/shopping.webp",
+      "action_type": "link",
+      "url": "https://shopping.naver.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "sivillage",
+      "label": "시코르",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/sivillage.webp",
+      "action_type": "link",
+      "url": "https://www.sivillage.com/display/category/SICOR",
+      "category": "shopping"
+    },
+    {
+      "slug": "ssf",
+      "label": "SSF샵",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/ssf.webp",
+      "action_type": "link",
+      "url": "https://www.ssf.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "ssg",
+      "label": "SSG닷컴",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/ssg.webp",
+      "action_type": "link",
+      "url": "https://www.ssg.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "styleshare",
+      "label": "스타일쉐어",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/styleshare.webp",
+      "action_type": "link",
+      "url": "https://www.styleshare.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "temu",
+      "label": "테무",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/temu.webp",
+      "action_type": "link",
+      "url": "https://www.temu.com/kr",
+      "category": "shopping"
+    },
+    {
+      "slug": "thehyundai",
+      "label": "더현대",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/thehyundai.webp",
+      "action_type": "link",
+      "url": "https://www.thehyundai.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "tmon",
+      "label": "티몬",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/tmon.webp",
+      "action_type": "link",
+      "url": "https://www.tmon.co.kr",
+      "category": "shopping"
+    },
+    {
+      "slug": "trenbe",
+      "label": "트렌비",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/trenbe.webp",
+      "action_type": "link",
+      "url": "https://www.trenbe.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "yozm",
+      "label": "Yozm",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/yozm.webp",
+      "action_type": "link",
+      "url": "https://www.yozm.com",
+      "category": "shopping"
+    },
+    {
+      "slug": "zigzag",
+      "label": "지그재그",
+      "icon_src": "/cubeone/jusomoa/icons/shopping/zigzag.webp",
+      "action_type": "link",
+      "url": "https://zigzag.kr",
+      "category": "shopping"
+    }
+  ]
+}

@@ -1,0 +1,230 @@
+{
+  "category": "job",
+  "count": 28,
+  "items": [
+    {
+      "slug": "alba",
+      "label": "알바천국",
+      "icon_src": "/cubeone/jusomoa/icons/job/alba.webp",
+      "action_type": "link",
+      "url": "https://www.alba.co.kr",
+      "category": "job"
+    },
+    {
+      "slug": "albamon",
+      "label": "알바몬",
+      "icon_src": "/cubeone/jusomoa/icons/job/albamon.webp",
+      "action_type": "link",
+      "url": "https://www.albamon.com",
+      "category": "job"
+    },
+    {
+      "slug": "catch",
+      "label": "캐치",
+      "icon_src": "/cubeone/jusomoa/icons/job/catch.webp",
+      "action_type": "link",
+      "url": "https://www.catch.co.kr",
+      "category": "job"
+    },
+    {
+      "slug": "flex",
+      "label": "플렉스",
+      "icon_src": "/cubeone/jusomoa/icons/job/flex.webp",
+      "action_type": "link",
+      "url": "https://www.flex.com",
+      "category": "job"
+    },
+    {
+      "slug": "glassdoor",
+      "label": "글래스도어",
+      "icon_src": "/cubeone/jusomoa/icons/job/glassdoor.webp",
+      "action_type": "link",
+      "url": "https://www.glassdoor.com",
+      "category": "job"
+    },
+    {
+      "slug": "gogox",
+      "label": "고고엑스",
+      "icon_src": "/cubeone/jusomoa/icons/job/gogox.webp",
+      "action_type": "link",
+      "url": "https://www.gogox.com",
+      "category": "job"
+    },
+    {
+      "slug": "incruit",
+      "label": "인크루트",
+      "icon_src": "/cubeone/jusomoa/icons/job/incruit.webp",
+      "action_type": "link",
+      "url": "https://www.incruit.com",
+      "category": "job"
+    },
+    {
+      "slug": "indeed",
+      "label": "인디드",
+      "icon_src": "/cubeone/jusomoa/icons/job/indeed.webp",
+      "action_type": "link",
+      "url": "https://www.indeed.com",
+      "category": "job"
+    },
+    {
+      "slug": "jasoseol",
+      "label": "자소설닷컴",
+      "icon_src": "/cubeone/jusomoa/icons/job/jasoseol.webp",
+      "action_type": "link",
+      "url": "https://jasoseol.com",
+      "category": "job"
+    },
+    {
+      "slug": "jobindexworld",
+      "label": "잡인덱스",
+      "icon_src": "/cubeone/jusomoa/icons/job/jobindexworld.webp",
+      "action_type": "link",
+      "url": "https://www.jobindexworld.com",
+      "category": "job"
+    },
+    {
+      "slug": "jobkorea",
+      "label": "잡코리아",
+      "icon_src": "/cubeone/jusomoa/icons/job/jobkorea.webp",
+      "action_type": "link",
+      "url": "https://www.jobkorea.co.kr",
+      "category": "job"
+    },
+    {
+      "slug": "jobplanet",
+      "label": "잡플래닛",
+      "icon_src": "/cubeone/jusomoa/icons/job/jobplanet.webp",
+      "action_type": "link",
+      "url": "https://www.jobplanet.co.kr",
+      "category": "job"
+    },
+    {
+      "slug": "jumpit",
+      "label": "점핏",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/jumpit.webp",
+      "action_type": "link",
+      "url": "https://www.jumpit.co.kr",
+      "category": "job"
+    },
+    {
+      "slug": "kmong",
+      "label": "크몽",
+      "icon_src": "/cubeone/jusomoa/icons/job/kmong.webp",
+      "action_type": "link",
+      "url": "https://kmong.com",
+      "category": "job"
+    },
+    {
+      "slug": "lalajob",
+      "label": "라라잡",
+      "icon_src": "/cubeone/jusomoa/icons/job/lalajob.webp",
+      "action_type": "link",
+      "url": "https://www.lalajob.com",
+      "category": "job"
+    },
+    {
+      "slug": "linkareer",
+      "label": "링커리어",
+      "icon_src": "/cubeone/jusomoa/icons/job/linkareer.webp",
+      "action_type": "link",
+      "url": "https://www.linkareer.com",
+      "category": "job"
+    },
+    {
+      "slug": "linkedin-kr",
+      "label": "링크드인 코리아",
+      "icon_src": "/cubeone/jusomoa/icons/job/linkedin-kr.webp",
+      "action_type": "link",
+      "url": "https://kr.linkedin.com",
+      "category": "job"
+    },
+    {
+      "slug": "peoplenjob",
+      "label": "피플앤잡",
+      "icon_src": "/cubeone/jusomoa/icons/job/peoplenjob.webp",
+      "action_type": "link",
+      "url": "https://www.peoplenjob.com",
+      "category": "job"
+    },
+    {
+      "slug": "programmers",
+      "label": "프로그래머스",
+      "icon_src": "/cubeone/jusomoa/icons/job/programmers.webp",
+      "action_type": "link",
+      "url": "https://programmers.co.kr",
+      "category": "job"
+    },
+    {
+      "slug": "rallit",
+      "label": "랠릿",
+      "icon_src": "/cubeone/jusomoa/icons/job/rallit.webp",
+      "action_type": "link",
+      "url": "https://www.rallit.com",
+      "category": "job"
+    },
+    {
+      "slug": "rememberapp",
+      "label": "리멤버",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/rememberapp.webp",
+      "action_type": "link",
+      "url": "https://www.rememberapp.co.kr",
+      "category": "job"
+    },
+    {
+      "slug": "rocketpunch",
+      "label": "로켓펀치",
+      "icon_src": "/cubeone/jusomoa/icons/job/rocketpunch.webp",
+      "action_type": "link",
+      "url": "https://www.rocketpunch.com",
+      "category": "job"
+    },
+    {
+      "slug": "saramin",
+      "label": "사람인",
+      "icon_src": "/cubeone/jusomoa/icons/job/saramin.webp",
+      "action_type": "link",
+      "url": "https://www.saramin.co.kr",
+      "category": "job"
+    },
+    {
+      "slug": "soomgo",
+      "label": "숨고",
+      "icon_src": "/cubeone/jusomoa/icons/job/soomgo.webp",
+      "action_type": "link",
+      "url": "https://www.soomgo.com",
+      "category": "job"
+    },
+    {
+      "slug": "teamblind-job",
+      "label": "블라인드 하이어",
+      "icon_src": "/cubeone/jusomoa/icons/job/teamblind-job.webp",
+      "action_type": "link",
+      "url": "https://www.teamblind.com",
+      "category": "job"
+    },
+    {
+      "slug": "upwork",
+      "label": "업워크",
+      "icon_src": "/cubeone/jusomoa/icons/job/upwork.webp",
+      "action_type": "link",
+      "url": "https://www.upwork.com",
+      "category": "job"
+    },
+    {
+      "slug": "wanted",
+      "label": "원티드",
+      "icon_src": "/cubeone/jusomoa/icons/job/wanted.webp",
+      "action_type": "link",
+      "url": "https://www.wanted.co.kr",
+      "category": "job"
+    },
+    {
+      "slug": "work",
+      "label": "워크넷",
+      "icon_src": "/cubeone/jusomoa/icons/job/work.webp",
+      "action_type": "link",
+      "url": "https://www.work.go.kr",
+      "category": "job"
+    }
+  ]
+}

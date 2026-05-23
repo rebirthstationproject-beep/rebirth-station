@@ -1,0 +1,48 @@
+{
+  "manifest_version": 1,
+  "generated_at": "2026-05-23T11:40:21.392Z",
+  "description": "Plugin 카탈로그 마스터 인덱스 — Stream Deck 7.4.2 system + profile 액션 호환 시드",
+  "entries": [
+    {
+      "file": "streamdeck-system-1.json",
+      "id": "com.cubelist.plugin.streamdeck-system-1",
+      "name": "Stream Deck System (1)",
+      "name_en": "Stream Deck System (1)",
+      "name_ja": "Stream Deck システム (1)",
+      "action_count": 4,
+      "category": "system",
+      "summary": "Open URL · Hotkey · Text · Sleep — 기본 system 액션 4종"
+    },
+    {
+      "file": "streamdeck-system-2.json",
+      "id": "com.cubelist.plugin.streamdeck-system-2",
+      "name": "Stream Deck System (2)",
+      "name_en": "Stream Deck System (2)",
+      "name_ja": "Stream Deck システム (2)",
+      "action_count": 4,
+      "category": "system",
+      "summary": "Open App · Multimedia (4 states) · Mouse · Close — 고급 system 액션 4종"
+    },
+    {
+      "file": "streamdeck-profile-1.json",
+      "id": "com.cubelist.plugin.streamdeck-profile-1",
+      "name": "Stream Deck Profile + Multi-actions",
+      "name_en": "Stream Deck Profile + Multi-actions",
+      "name_ja": "Stream Deck プロファイル + マルチアクション",
+      "action_count": 4,
+      "category": "profile",
+      "summary": "Open File/Folder · openchild · backtoparent (auto) · multi-actions"
+    },
+    {
+      "file": "cubelist-10enum-demo.json",
+      "id": "com.cubelist.plugin.10enum-demo",
+      "name": "10 Enum Demo",
+      "name_en": "10 Enum Demo",
+      "name_ja": "10 Enum デモ",
+      "action_count": 10,
+      "category": "demo",
+      "summary": "SD-AQ~AV 10 enum 각 1개씩 — 사용자 동작 테스트용 데모"
+    }
+  ],
+  "total_actions": 22
+}

@@ -1,0 +1,230 @@
+{
+  "category": "music",
+  "count": 28,
+  "items": [
+    {
+      "slug": "8tracks",
+      "label": "8트랙스",
+      "icon_src": "/cubeone/jusomoa/icons/music/8tracks.webp",
+      "action_type": "link",
+      "url": "https://www.8tracks.com",
+      "category": "music"
+    },
+    {
+      "slug": "allmusic",
+      "label": "올뮤직",
+      "icon_src": "/cubeone/jusomoa/icons/music/allmusic.webp",
+      "action_type": "link",
+      "url": "https://www.allmusic.com",
+      "category": "music"
+    },
+    {
+      "slug": "audiomack",
+      "label": "오디오맥",
+      "icon_src": "/cubeone/jusomoa/icons/music/audiomack.webp",
+      "action_type": "link",
+      "url": "https://audiomack.com",
+      "category": "music"
+    },
+    {
+      "slug": "awa",
+      "label": "AWA",
+      "icon_src": "/cubeone/jusomoa/icons/music/awa.webp",
+      "action_type": "link",
+      "url": "https://www.awa.com",
+      "category": "music"
+    },
+    {
+      "slug": "bandcamp",
+      "label": "밴드캠프",
+      "icon_src": "/cubeone/jusomoa/icons/music/bandcamp.webp",
+      "action_type": "link",
+      "url": "https://bandcamp.com",
+      "category": "music"
+    },
+    {
+      "slug": "beatport",
+      "label": "비트포트",
+      "icon_src": "/cubeone/jusomoa/icons/music/beatport.webp",
+      "action_type": "link",
+      "url": "https://www.beatport.com",
+      "category": "music"
+    },
+    {
+      "slug": "billboard",
+      "label": "빌보드",
+      "icon_src": "/cubeone/jusomoa/icons/music/billboard.webp",
+      "action_type": "link",
+      "url": "https://www.billboard.com",
+      "category": "music"
+    },
+    {
+      "slug": "cuomusic",
+      "label": "쿠오뮤직",
+      "icon_src": "/cubeone/jusomoa/icons/music/cuomusic.webp",
+      "action_type": "link",
+      "url": "https://www.cuomusic.com",
+      "category": "music"
+    },
+    {
+      "slug": "deezer",
+      "label": "디저",
+      "icon_src": "/cubeone/jusomoa/icons/music/deezer.webp",
+      "action_type": "link",
+      "url": "https://www.deezer.com",
+      "category": "music"
+    },
+    {
+      "slug": "geniemusic",
+      "label": "지니뮤직",
+      "icon_src": "/cubeone/jusomoa/icons/music/geniemusic.webp",
+      "action_type": "link",
+      "url": "https://www.genie.co.kr",
+      "category": "music"
+    },
+    {
+      "slug": "genius",
+      "label": "지니어스",
+      "icon_src": "/cubeone/jusomoa/icons/music/genius.webp",
+      "action_type": "link",
+      "url": "https://genius.com",
+      "category": "music"
+    },
+    {
+      "slug": "kakaocorp",
+      "label": "카카오뮤직",
+      "icon_src": "/cubeone/jusomoa/icons/music/kakaocorp.webp",
+      "action_type": "link",
+      "url": "https://www.kakaocorp.com/page/service/service/KakaoMusic",
+      "category": "music"
+    },
+    {
+      "slug": "melon",
+      "label": "멜론",
+      "icon_src": "/cubeone/jusomoa/icons/music/melon.webp",
+      "action_type": "link",
+      "url": "https://www.melon.com",
+      "category": "music"
+    },
+    {
+      "slug": "mixcloud",
+      "label": "믹스클라우드",
+      "icon_src": "/cubeone/jusomoa/icons/music/mixcloud.webp",
+      "action_type": "link",
+      "url": "https://www.mixcloud.com",
+      "category": "music"
+    },
+    {
+      "slug": "music-flo",
+      "label": "플로",
+      "icon_src": "/cubeone/jusomoa/icons/music/music-flo.webp",
+      "action_type": "link",
+      "url": "https://www.music-flo.com",
+      "category": "music"
+    },
+    {
+      "slug": "music",
+      "label": "유튜브 뮤직",
+      "icon_src": "/cubeone/jusomoa/icons/music/music.webp",
+      "action_type": "link",
+      "url": "https://music.youtube.com",
+      "category": "music"
+    },
+    {
+      "slug": "musicow",
+      "label": "뮤직카우",
+      "icon_src": "/cubeone/jusomoa/icons/music/musicow.webp",
+      "action_type": "link",
+      "url": "https://www.musicow.com",
+      "category": "music"
+    },
+    {
+      "slug": "pitchfork",
+      "label": "피치포크",
+      "icon_src": "/cubeone/jusomoa/icons/music/pitchfork.webp",
+      "action_type": "link",
+      "url": "https://www.pitchfork.com",
+      "category": "music"
+    },
+    {
+      "slug": "qqmusic",
+      "label": "QQ뮤직",
+      "icon_src": "/cubeone/jusomoa/icons/music/qqmusic.webp",
+      "action_type": "link",
+      "url": "https://www.qqmusic.com",
+      "category": "music"
+    },
+    {
+      "slug": "shazacom",
+      "label": "샤잠",
+      "icon_src": "/cubeone/jusomoa/icons/music/shazacom.webp",
+      "action_type": "link",
+      "url": "https://www.shazam.com",
+      "category": "music"
+    },
+    {
+      "slug": "soribada",
+      "label": "소리바다",
+      "icon_src": "/cubeone/jusomoa/icons/music/soribada.webp",
+      "action_type": "link",
+      "url": "https://www.soribada.com",
+      "category": "music"
+    },
+    {
+      "slug": "soundcloud",
+      "label": "사운드클라우드",
+      "icon_src": "/cubeone/jusomoa/icons/music/soundcloud.webp",
+      "action_type": "link",
+      "url": "https://soundcloud.com",
+      "category": "music"
+    },
+    {
+      "slug": "spinninrecords",
+      "label": "스피니",
+      "icon_src": "/cubeone/jusomoa/icons/music/spinninrecords.webp",
+      "action_type": "link",
+      "url": "https://www.spinninrecords.com",
+      "category": "music"
+    },
+    {
+      "slug": "spotify",
+      "label": "Spotify",
+      "icon_src": "/cubeone/jusomoa/icons/music/spotify.webp",
+      "action_type": "link",
+      "url": "https://www.spotify.com",
+      "category": "music"
+    },
+    {
+      "slug": "tidal",
+      "label": "타이달",
+      "icon_src": "/cubeone/jusomoa/icons/music/tidal.webp",
+      "action_type": "link",
+      "url": "https://tidal.com",
+      "category": "music"
+    },
+    {
+      "slug": "tunein",
+      "label": "튠인",
+      "icon_src": "/cubeone/jusomoa/icons/music/tunein.webp",
+      "action_type": "link",
+      "url": "https://www.tunein.com",
+      "category": "music"
+    },
+    {
+      "slug": "vibe",
+      "label": "바이브",
+      "icon_src": "/cubeone/jusomoa/icons/music/vibe.webp",
+      "action_type": "link",
+      "url": "https://vibe.naver.com",
+      "category": "music"
+    },
+    {
+      "slug": "whosampled",
+      "label": "후샘플드",
+      "icon_src": "/cubeone/jusomoa/icons/music/whosampled.webp",
+      "action_type": "link",
+      "url": "https://www.whosampled.com",
+      "category": "music"
+    }
+  ]
+}

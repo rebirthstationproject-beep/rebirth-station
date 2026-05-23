@@ -1,0 +1,174 @@
+{
+  "category": "education",
+  "count": 21,
+  "items": [
+    {
+      "slug": "class101",
+      "label": "클래스101",
+      "icon_src": "/cubeone/jusomoa/icons/education/class101.webp",
+      "action_type": "link",
+      "url": "https://class101.net",
+      "category": "education"
+    },
+    {
+      "slug": "codecademy",
+      "label": "코드카데미",
+      "icon_src": "/cubeone/jusomoa/icons/education/codecademy.webp",
+      "action_type": "link",
+      "url": "https://www.codecademy.com",
+      "category": "education"
+    },
+    {
+      "slug": "coursehero",
+      "label": "코스히어로",
+      "icon_src": "/cubeone/jusomoa/icons/education/coursehero.webp",
+      "action_type": "link",
+      "url": "https://www.coursehero.com",
+      "category": "education"
+    },
+    {
+      "slug": "coursera",
+      "label": "코세라",
+      "icon_src": "/cubeone/jusomoa/icons/education/coursera.webp",
+      "action_type": "link",
+      "url": "https://www.coursera.org",
+      "category": "education"
+    },
+    {
+      "slug": "daekyo",
+      "label": "대교",
+      "icon_src": "/cubeone/jusomoa/icons/education/daekyo.webp",
+      "action_type": "link",
+      "url": "https://www.daekyo.com",
+      "category": "education"
+    },
+    {
+      "slug": "duolingo",
+      "label": "듀오링고",
+      "icon_src": "/cubeone/jusomoa/icons/education/duolingo.webp",
+      "action_type": "link",
+      "url": "https://www.duolingo.com",
+      "category": "education"
+    },
+    {
+      "slug": "ebsi",
+      "label": "EBSi",
+      "icon_src": "/cubeone/jusomoa/icons/education/ebsi.webp",
+      "action_type": "link",
+      "url": "https://www.ebsi.co.kr",
+      "category": "education"
+    },
+    {
+      "slug": "eduwill",
+      "label": "에듀윌",
+      "icon_src": "/cubeone/jusomoa/icons/education/eduwill.webp",
+      "action_type": "link",
+      "url": "https://www.eduwill.net",
+      "category": "education"
+    },
+    {
+      "slug": "edx",
+      "label": "에드엑스",
+      "icon_src": "/cubeone/jusomoa/icons/education/edx.webp",
+      "action_type": "link",
+      "url": "https://www.edx.org",
+      "category": "education"
+    },
+    {
+      "slug": "fastcampus",
+      "label": "패스트캠퍼스",
+      "icon_src": "/cubeone/jusomoa/icons/education/fastcampus.webp",
+      "action_type": "link",
+      "url": "https://fastcampus.co.kr",
+      "category": "education"
+    },
+    {
+      "slug": "inflearn",
+      "label": "인프런",
+      "icon_src": "/cubeone/jusomoa/icons/education/inflearn.webp",
+      "action_type": "link",
+      "url": "https://www.inflearn.com",
+      "category": "education"
+    },
+    {
+      "slug": "khan-academy",
+      "label": "칸아카데미",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/khan-academy.webp",
+      "action_type": "link",
+      "url": "https://ko.khanacademy.org",
+      "category": "education"
+    },
+    {
+      "slug": "kmooc",
+      "label": "K-MOOC",
+      "icon_src": "/cubeone/jusomoa/icons/education/kmooc.webp",
+      "action_type": "link",
+      "url": "https://www.kmooc.kr",
+      "category": "education"
+    },
+    {
+      "slug": "kocw",
+      "label": "KOCW",
+      "icon_src": "/cubeone/jusomoa/icons/education/kocw.webp",
+      "action_type": "link",
+      "url": "https://www.kocw.net",
+      "category": "education"
+    },
+    {
+      "slug": "megastudy",
+      "label": "메가스터디",
+      "icon_src": "/cubeone/jusomoa/icons/education/megastudy.webp",
+      "action_type": "link",
+      "url": "https://www.megastudy.net",
+      "category": "education"
+    },
+    {
+      "slug": "nomadcoders-education",
+      "label": "노마드코더 아카데미",
+      "icon_src": "/cubeone/jusomoa/icons/education/nomadcoders-education.webp",
+      "action_type": "link",
+      "url": "https://nomadcoders.co",
+      "category": "education"
+    },
+    {
+      "slug": "riss",
+      "label": "RISS",
+      "icon_src": "/cubeone/jusomoa/icons/education/riss.webp",
+      "action_type": "link",
+      "url": "https://www.riss.kr",
+      "category": "education"
+    },
+    {
+      "slug": "school",
+      "label": "프로그래머스 스쿨",
+      "icon_src": "/cubeone/jusomoa/icons/education/school.webp",
+      "action_type": "link",
+      "url": "https://school.programmers.co.kr",
+      "category": "education"
+    },
+    {
+      "slug": "skillshare",
+      "label": "스킬쉐어",
+      "icon_src": "/cubeone/jusomoa/icons/education/skillshare.webp",
+      "action_type": "link",
+      "url": "https://www.skillshare.com",
+      "category": "education"
+    },
+    {
+      "slug": "sll",
+      "label": "평생학습포털",
+      "icon_src": "/cubeone/jusomoa/icons/education/sll.webp",
+      "action_type": "link",
+      "url": "https://sll.seoul.go.kr",
+      "category": "education"
+    },
+    {
+      "slug": "udemy",
+      "label": "유데미",
+      "icon_src": "/cubeone/jusomoa/icons/education/udemy.webp",
+      "action_type": "link",
+      "url": "https://www.udemy.com",
+      "category": "education"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "manifest_version": 1,
+  "id": "com.cubelist.plugin.streamdeck-system-1",
+  "name": "Stream Deck System (1)",
+  "name_en": "Stream Deck System (1)",
+  "name_ja": "Stream Deck システム (1)",
+  "description": "Stream Deck 7.4.2 system 액션 호환 1단계 — Open URL · Hotkey · Text · Sleep",
+  "description_en": "Stream Deck 7.4.2 system action compatibility wave 1 — Open URL, Hotkey, Text, Sleep",
+  "description_ja": "Stream Deck 7.4.2 システムアクション互換 第1弾 — URL を開く・ホットキー・テキスト・スリープ",
+  "author": "Rebirth Station",
+  "version": "1.0.0",
+  "license": "free",
+  "actions": [
+    {
+      "uuid": "com.elgato.streamdeck.system.openurl",
+      "name": "URL 열기",
+      "name_en": "Open URL",
+      "name_ja": "URL を開く",
+      "tooltip": "지정된 URL을 기본 브라우저에서 엽니다",
+      "tooltip_en": "Opens the specified URL in the default browser",
+      "tooltip_ja": "指定された URL を既定のブラウザで開きます",
+      "icon": "🔗",
+      "action_type": "link",
+      "default_payload": { "url": "https://" },
+      "supported_in_multi": true
+    },
+    {
+      "uuid": "com.elgato.streamdeck.system.hotkey",
+      "name": "단축키",
+      "name_en": "Hotkey",
+      "name_ja": "ホットキー",
+      "tooltip": "키보드 단축키를 호출합니다 (PC 헬퍼 필요)",
+      "tooltip_en": "Sends a keyboard shortcut (requires PC helper)",
+      "tooltip_ja": "キーボードショートカットを送信します (PC ヘルパー必須)",
+      "icon": "⌨",
+      "action_type": "shortcut",
+      "default_payload": { "keys": [] },
+      "supported_in_multi": true,
+      "tier": 2
+    },
+    {
+      "uuid": "com.elgato.streamdeck.system.text",
+      "name": "텍스트 입력",
+      "name_en": "Type text",
+      "name_ja": "テキスト入力",
+      "tooltip": "지정된 텍스트를 입력합니다 (매크로 step, PC 헬퍼 필요)",
+      "tooltip_en": "Types the specified text (macro step, requires PC helper)",
+      "tooltip_ja": "指定されたテキストを入力します (マクロステップ・PC ヘルパー必須)",
+      "icon": "📝",
+      "action_type": "macro",
+      "default_payload": { "steps": [{ "kind": "text", "value": "" }] },
+      "supported_in_multi": true,
+      "tier": 2
+    },
+    {
+      "uuid": "com.elgato.streamdeck.system.sleep",
+      "name": "대기",
+      "name_en": "Sleep",
+      "name_ja": "スリープ",
+      "tooltip": "다음 매크로 step까지 대기 (밀리초)",
+      "tooltip_en": "Wait before the next macro step (milliseconds)",
+      "tooltip_ja": "次のマクロステップまで待機 (ミリ秒)",
+      "icon": "⏱",
+      "action_type": "macro",
+      "default_payload": { "steps": [{ "kind": "delay", "ms": 500 }] },
+      "supported_in_multi": true
+    }
+  ]
+}

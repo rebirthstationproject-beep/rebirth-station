@@ -1,0 +1,166 @@
+{
+  "category": "game",
+  "count": 20,
+  "items": [
+    {
+      "slug": "battlenet-kr",
+      "label": "배틀넷",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/battlenet-kr.webp",
+      "action_type": "link",
+      "url": "https://kr.shop.battle.net",
+      "category": "game"
+    },
+    {
+      "slug": "gamemeca",
+      "label": "게임메카",
+      "icon_src": "/cubeone/jusomoa/icons/game/gamemeca.webp",
+      "action_type": "link",
+      "url": "https://www.gamemeca.com",
+      "category": "game"
+    },
+    {
+      "slug": "gametrics",
+      "label": "게임트릭스",
+      "icon_src": "/cubeone/jusomoa/icons/game/gametrics.webp",
+      "action_type": "link",
+      "url": "https://www.gametrics.com",
+      "category": "game"
+    },
+    {
+      "slug": "inven",
+      "label": "인벤",
+      "icon_src": "/cubeone/jusomoa/icons/game/inven.webp",
+      "action_type": "link",
+      "url": "https://www.inven.co.kr",
+      "category": "game"
+    },
+    {
+      "slug": "kakaogames",
+      "label": "카카오게임즈",
+      "icon_src": "/cubeone/jusomoa/icons/game/kakaogames.webp",
+      "action_type": "link",
+      "url": "https://www.kakaogames.com",
+      "category": "game"
+    },
+    {
+      "slug": "krafton",
+      "label": "크래프톤",
+      "icon_src": "/cubeone/jusomoa/icons/game/krafton.webp",
+      "action_type": "link",
+      "url": "https://www.krafton.com",
+      "category": "game"
+    },
+    {
+      "slug": "ncsoft",
+      "label": "엔씨소프트",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/ncsoft.webp",
+      "action_type": "link",
+      "url": "https://www.ncsoft.com",
+      "category": "game"
+    },
+    {
+      "slug": "netmarble",
+      "label": "넷마블",
+      "icon_src": "/cubeone/jusomoa/icons/game/netmarble.webp",
+      "action_type": "link",
+      "url": "https://www.netmarble.com",
+      "category": "game"
+    },
+    {
+      "slug": "nexon",
+      "label": "넥슨",
+      "icon_src": "/cubeone/jusomoa/icons/game/nexon.webp",
+      "action_type": "link",
+      "url": "https://www.nexon.com",
+      "category": "game"
+    },
+    {
+      "slug": "nintendo",
+      "label": "닌텐도 코리아",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/nintendo.webp",
+      "action_type": "link",
+      "url": "https://www.nintendo.co.kr",
+      "category": "game"
+    },
+    {
+      "slug": "op-gg",
+      "label": "오피지지",
+      "icon_src": "/cubeone/jusomoa/icons/game/op-gg.webp",
+      "action_type": "link",
+      "url": "https://www.op.gg",
+      "category": "game"
+    },
+    {
+      "slug": "pearlabyss",
+      "label": "펄어비스",
+      "icon_src": "/cubeone/jusomoa/icons/game/pearlabyss.webp",
+      "action_type": "link",
+      "url": "https://www.pearlabyss.com",
+      "category": "game"
+    },
+    {
+      "slug": "play",
+      "label": "넥슨 플레이",
+      "icon_src": "/cubeone/jusomoa/icons/game/play.webp",
+      "action_type": "link",
+      "url": "https://play.nexon.com",
+      "category": "game"
+    },
+    {
+      "slug": "playstation",
+      "label": "PlayStation",
+      "icon_src": "/cubeone/jusomoa/icons/game/playstation.webp",
+      "action_type": "link",
+      "url": "https://www.playstation.com/ko-kr",
+      "category": "game"
+    },
+    {
+      "slug": "riotgames",
+      "label": "라이엇",
+      "icon_src": "/cubeone/jusomoa/icons/game/riotgames.webp",
+      "action_type": "link",
+      "url": "https://www.riotgames.com",
+      "category": "game"
+    },
+    {
+      "slug": "roblox",
+      "label": "로블록스",
+      "icon_src": "/cubeone/jusomoa/icons/game/roblox.webp",
+      "action_type": "link",
+      "url": "https://www.roblox.com",
+      "category": "game"
+    },
+    {
+      "slug": "smilegate",
+      "label": "스마일게이트",
+      "icon_src": "/cubeone/jusomoa/icons/game/smilegate.webp",
+      "action_type": "link",
+      "url": "https://www.smilegate.com",
+      "category": "game"
+    },
+    {
+      "slug": "store",
+      "label": "스팀",
+      "icon_src": "/cubeone/jusomoa/icons/game/store.webp",
+      "action_type": "link",
+      "url": "https://store.steampowered.com",
+      "category": "game"
+    },
+    {
+      "slug": "trees",
+      "label": "국민트리",
+      "icon_src": "/cubeone/jusomoa/icons/game/trees.webp",
+      "action_type": "link",
+      "url": "https://trees.gamemeca.com",
+      "category": "game"
+    },
+    {
+      "slug": "xbox",
+      "label": "Xbox 한국",
+      "icon_src": "/cubeone/jusomoa/icons/game/xbox.webp",
+      "action_type": "link",
+      "url": "https://www.xbox.com/ko-KR",
+      "category": "game"
+    }
+  ]
+}

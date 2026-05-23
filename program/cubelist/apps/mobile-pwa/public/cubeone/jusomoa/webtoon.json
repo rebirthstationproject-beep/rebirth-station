@@ -1,0 +1,190 @@
+{
+  "category": "webtoon",
+  "count": 23,
+  "items": [
+    {
+      "slug": "bomtoon",
+      "label": "봄툰",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/bomtoon.webp",
+      "action_type": "link",
+      "url": "https://www.bomtoon.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "bookcube",
+      "label": "북큐브",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/bookcube.webp",
+      "action_type": "link",
+      "url": "https://www.bookcube.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "bookpal",
+      "label": "북팔",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/bookpal.webp",
+      "action_type": "link",
+      "url": "https://www.bookpal.co.kr/",
+      "category": "webtoon"
+    },
+    {
+      "slug": "bufftoon",
+      "label": "버프툰",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/bufftoon.webp",
+      "action_type": "link",
+      "url": "https://bufftoon.plaync.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "comic",
+      "label": "네이버 웹툰",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/comic.webp",
+      "action_type": "link",
+      "url": "https://comic.naver.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "joara",
+      "label": "조아라",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/joara.webp",
+      "action_type": "link",
+      "url": "https://www.joara.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "lezhin",
+      "label": "레진코믹스",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/lezhin.webp",
+      "action_type": "link",
+      "url": "https://www.lezhin.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "linemanga",
+      "label": "라인망가",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/linemanga.webp",
+      "action_type": "link",
+      "url": "https://www.linemanga.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "millie",
+      "label": "밀리의 서재",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/millie.webp",
+      "action_type": "link",
+      "url": "https://www.millie.co.kr",
+      "category": "webtoon"
+    },
+    {
+      "slug": "mrblue",
+      "label": "미스터블루",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/mrblue.webp",
+      "action_type": "link",
+      "url": "https://www.mrblue.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "munpia",
+      "label": "문피아",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/munpia.webp",
+      "action_type": "link",
+      "url": "https://www.munpia.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "novelpia",
+      "label": "노벨피아",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/novelpia.webp",
+      "action_type": "link",
+      "url": "https://novelpia.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "page",
+      "label": "카카오페이지",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/page.webp",
+      "action_type": "link",
+      "url": "https://page.kakao.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "peanutoon",
+      "label": "피너툰",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/peanutoon.webp",
+      "action_type": "link",
+      "url": "https://www.peanutoon.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "postype",
+      "label": "포스타입",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/postype.webp",
+      "action_type": "link",
+      "url": "https://www.postype.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "ridibooks",
+      "label": "리디",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/ridibooks.webp",
+      "action_type": "link",
+      "url": "https://ridibooks.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "series",
+      "label": "네이버 시리즈",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/series.webp",
+      "action_type": "link",
+      "url": "https://series.naver.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "tapas",
+      "label": "Tapas",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/tapas.webp",
+      "action_type": "link",
+      "url": "https://tapas.io",
+      "category": "webtoon"
+    },
+    {
+      "slug": "tappytoon",
+      "label": "태피툰",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/tappytoon.webp",
+      "action_type": "link",
+      "url": "https://www.tappytoon.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "toomics",
+      "label": "투믹스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/toomics.webp",
+      "action_type": "link",
+      "url": "https://www.toomics.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "toptoon",
+      "label": "탑툰",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/toptoon.webp",
+      "action_type": "link",
+      "url": "https://toptoon.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "webtoon",
+      "label": "카카오 웹툰",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/webtoon.webp",
+      "action_type": "link",
+      "url": "https://webtoon.kakao.com",
+      "category": "webtoon"
+    },
+    {
+      "slug": "webtoons",
+      "label": "WEBTOON (글로벌)",
+      "icon_src": "/cubeone/jusomoa/icons/webtoon/webtoons.webp",
+      "action_type": "link",
+      "url": "https://www.webtoons.com",
+      "category": "webtoon"
+    }
+  ]
+}

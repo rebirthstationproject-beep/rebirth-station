@@ -1,0 +1,3598 @@
+{
+  "category": "ai",
+  "count": 449,
+  "items": [
+    {
+      "slug": "a-dot",
+      "label": "에이닷",
+      "icon_src": "/cubeone/jusomoa/icons/ai/a-dot.webp",
+      "action_type": "link",
+      "url": "https://adot.ai",
+      "category": "ai"
+    },
+    {
+      "slug": "a",
+      "label": "에이닷",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/a.webp",
+      "action_type": "link",
+      "url": "https://adot.ai",
+      "category": "ai"
+    },
+    {
+      "slug": "aadhaar-ai-uidai",
+      "label": "Aadhaar Ai (Uidai)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/aadhaar-ai-uidai.webp",
+      "action_type": "link",
+      "url": "https://www.aadhaaraiuidai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "abnormal-security",
+      "label": "어브노멀 시큐리티",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/abnormal-security.webp",
+      "action_type": "link",
+      "url": "https://www.abnormalsecurity.com",
+      "category": "ai"
+    },
+    {
+      "slug": "accuknox",
+      "label": "Accuknox",
+      "icon_src": "/cubeone/jusomoa/icons/ai/accuknox.webp",
+      "action_type": "link",
+      "url": "https://www.accuknox.com",
+      "category": "ai"
+    },
+    {
+      "slug": "adobe-express",
+      "label": "어도비 익스프레스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/adobe-express.webp",
+      "action_type": "link",
+      "url": "https://www.adobeexpress.com",
+      "category": "ai"
+    },
+    {
+      "slug": "adobe-firefly",
+      "label": "어도비 파이어플라이",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/adobe-firefly.webp",
+      "action_type": "link",
+      "url": "https://www.adobefirefly.com",
+      "category": "ai"
+    },
+    {
+      "slug": "adobe-lightroom-ai",
+      "label": "Adobe Lightroom Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/adobe-lightroom-ai.webp",
+      "action_type": "link",
+      "url": "https://www.adobelightroomai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "adobe-podcast-ai",
+      "label": "Adobe Podcast Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/adobe-podcast-ai.webp",
+      "action_type": "link",
+      "url": "https://www.adobepodcastai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "adobe-podcast",
+      "label": "어도비 팟캐스트",
+      "icon_src": "/cubeone/jusomoa/icons/ai/adobe-podcast.webp",
+      "action_type": "link",
+      "url": "https://www.adobepodcast.com",
+      "category": "ai"
+    },
+    {
+      "slug": "adobe-premiere-pro",
+      "label": "Adobe Premiere Pro",
+      "icon_src": "/cubeone/jusomoa/icons/ai/adobe-premiere-pro.webp",
+      "action_type": "link",
+      "url": "https://www.adobepremierepro.com",
+      "category": "ai"
+    },
+    {
+      "slug": "adobe-sensei",
+      "label": "Adobe Sensei",
+      "icon_src": "/cubeone/jusomoa/icons/ai/adobe-sensei.webp",
+      "action_type": "link",
+      "url": "https://www.adobesensei.com",
+      "category": "ai"
+    },
+    {
+      "slug": "adobe-stock-ai",
+      "label": "Adobe Stock Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/adobe-stock-ai.webp",
+      "action_type": "link",
+      "url": "https://www.adobestockai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "affectiva-smart-eye",
+      "label": "Affectiva (Smart Eye)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/affectiva-smart-eye.webp",
+      "action_type": "link",
+      "url": "https://www.affectivasmarteye.com",
+      "category": "ai"
+    },
+    {
+      "slug": "agentgpt",
+      "label": "에이전트GPT",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/agentgpt.webp",
+      "action_type": "link",
+      "url": "https://www.agentgpt.com",
+      "category": "ai"
+    },
+    {
+      "slug": "aiklink",
+      "label": "AI K LINK",
+      "icon_src": "/cubeone/jusomoa/icons/ai/aiklink.webp",
+      "action_type": "link",
+      "url": "https://www.aiklink.com",
+      "category": "ai"
+    },
+    {
+      "slug": "akkio",
+      "label": "아키오",
+      "icon_src": "/cubeone/jusomoa/icons/ai/akkio.webp",
+      "action_type": "link",
+      "url": "https://www.akkio.com",
+      "category": "ai"
+    },
+    {
+      "slug": "albert-ai",
+      "label": "Albert Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/albert-ai.webp",
+      "action_type": "link",
+      "url": "https://www.albertai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "alphasense",
+      "label": "알파센스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/alphasense.webp",
+      "action_type": "link",
+      "url": "https://www.alphasense.com",
+      "category": "ai"
+    },
+    {
+      "slug": "altered-studio",
+      "label": "Altered Studio",
+      "icon_src": "/cubeone/jusomoa/icons/ai/altered-studio.webp",
+      "action_type": "link",
+      "url": "https://www.alteredstudio.com",
+      "category": "ai"
+    },
+    {
+      "slug": "alteryx-aidin",
+      "label": "Alteryx Aidin",
+      "icon_src": "/cubeone/jusomoa/icons/ai/alteryx-aidin.webp",
+      "action_type": "link",
+      "url": "https://www.alteryxaidin.com",
+      "category": "ai"
+    },
+    {
+      "slug": "andi-search",
+      "label": "안디 서치",
+      "icon_src": "/cubeone/jusomoa/icons/ai/andi-search.webp",
+      "action_type": "link",
+      "url": "https://www.andisearch.com",
+      "category": "ai"
+    },
+    {
+      "slug": "answerthepublic",
+      "label": "앤서더퍼블릭",
+      "icon_src": "/cubeone/jusomoa/icons/ai/answerthepublic.webp",
+      "action_type": "link",
+      "url": "https://www.answerthepublic.com",
+      "category": "ai"
+    },
+    {
+      "slug": "ansys-simai",
+      "label": "Ansys Simai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/ansys-simai.webp",
+      "action_type": "link",
+      "url": "https://www.ansyssimai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "anthropic-console",
+      "label": "Anthropic Console",
+      "icon_src": "/cubeone/jusomoa/icons/ai/anthropic-console.webp",
+      "action_type": "link",
+      "url": "https://www.anthropicconsole.com",
+      "category": "ai"
+    },
+    {
+      "slug": "anyword",
+      "label": "애니워드",
+      "icon_src": "/cubeone/jusomoa/icons/ai/anyword.webp",
+      "action_type": "link",
+      "url": "https://www.anyword.com",
+      "category": "ai"
+    },
+    {
+      "slug": "apollo-ai",
+      "label": "Apollo.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/apollo-ai.webp",
+      "action_type": "link",
+      "url": "https://www.apolloai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "apple-intelligence",
+      "label": "애플 인텔리전스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/apple-intelligence.webp",
+      "action_type": "link",
+      "url": "https://www.appleintelligence.com",
+      "category": "ai"
+    },
+    {
+      "slug": "applied-intuition",
+      "label": "어플라이드 인튜이션",
+      "icon_src": "/cubeone/jusomoa/icons/ai/applied-intuition.webp",
+      "action_type": "link",
+      "url": "https://www.appliedintuition.com",
+      "category": "ai"
+    },
+    {
+      "slug": "archer-midnight",
+      "label": "Archer Midnight",
+      "icon_src": "/cubeone/jusomoa/icons/ai/archer-midnight.webp",
+      "action_type": "link",
+      "url": "https://www.archermidnight.com",
+      "category": "ai"
+    },
+    {
+      "slug": "arize-ai",
+      "label": "Arize Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/arize-ai.webp",
+      "action_type": "link",
+      "url": "https://www.arizeai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "artbreeder",
+      "label": "아트브리더",
+      "icon_src": "/cubeone/jusomoa/icons/ai/artbreeder.webp",
+      "action_type": "link",
+      "url": "https://www.artbreeder.com",
+      "category": "ai"
+    },
+    {
+      "slug": "askup",
+      "label": "AskUp",
+      "icon_src": "/cubeone/jusomoa/icons/ai/askup.webp",
+      "action_type": "link",
+      "url": "https://askup.ai",
+      "category": "ai"
+    },
+    {
+      "slug": "atomwise",
+      "label": "아톰와이즈",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/atomwise.webp",
+      "action_type": "link",
+      "url": "https://www.atomwise.com",
+      "category": "ai"
+    },
+    {
+      "slug": "audiostrip",
+      "label": "오디오스트립",
+      "icon_src": "/cubeone/jusomoa/icons/ai/audiostrip.webp",
+      "action_type": "link",
+      "url": "https://www.audiostrip.com",
+      "category": "ai"
+    },
+    {
+      "slug": "aurora-horizon",
+      "label": "Aurora Horizon",
+      "icon_src": "/cubeone/jusomoa/icons/ai/aurora-horizon.webp",
+      "action_type": "link",
+      "url": "https://www.aurorahorizon.com",
+      "category": "ai"
+    },
+    {
+      "slug": "autodesk-generative-design",
+      "label": "Autodesk Generative Design",
+      "icon_src": "/cubeone/jusomoa/icons/ai/autodesk-generative-design.webp",
+      "action_type": "link",
+      "url": "https://www.autodeskgenerativedesign.com",
+      "category": "ai"
+    },
+    {
+      "slug": "autogen",
+      "label": "오토젠",
+      "icon_src": "/cubeone/jusomoa/icons/ai/autogen.webp",
+      "action_type": "link",
+      "url": "https://www.autogen.com",
+      "category": "ai"
+    },
+    {
+      "slug": "babyagi",
+      "label": "베이비AGI",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/babyagi.webp",
+      "action_type": "link",
+      "url": "https://www.babyagi.com",
+      "category": "ai"
+    },
+    {
+      "slug": "beatoven-ai",
+      "label": "Beatoven.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/beatoven-ai.webp",
+      "action_type": "link",
+      "url": "https://www.beatovenai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "beautiful-ai",
+      "label": "Beautiful.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/beautiful-ai.webp",
+      "action_type": "link",
+      "url": "https://www.beautifulai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "befunky",
+      "label": "비펑키",
+      "icon_src": "/cubeone/jusomoa/icons/ai/befunky.webp",
+      "action_type": "link",
+      "url": "https://www.befunky.com",
+      "category": "ai"
+    },
+    {
+      "slug": "benchling",
+      "label": "벤치링",
+      "icon_src": "/cubeone/jusomoa/icons/ai/benchling.webp",
+      "action_type": "link",
+      "url": "https://www.benchling.com",
+      "category": "ai"
+    },
+    {
+      "slug": "biocatch",
+      "label": "바이오캐치",
+      "icon_src": "/cubeone/jusomoa/icons/ai/biocatch.webp",
+      "action_type": "link",
+      "url": "https://www.biocatch.com",
+      "category": "ai"
+    },
+    {
+      "slug": "blackbox-ai",
+      "label": "Blackbox Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/blackbox-ai.webp",
+      "action_type": "link",
+      "url": "https://www.blackboxai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "blockade-labs",
+      "label": "블로케이드 랩스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/blockade-labs.webp",
+      "action_type": "link",
+      "url": "https://www.blockadelabs.com",
+      "category": "ai"
+    },
+    {
+      "slug": "bloomberggpt",
+      "label": "Bloomberggpt",
+      "icon_src": "/cubeone/jusomoa/icons/ai/bloomberggpt.webp",
+      "action_type": "link",
+      "url": "https://www.bloomberggpt.com",
+      "category": "ai"
+    },
+    {
+      "slug": "blue-river-technology",
+      "label": "블루 리버 테크놀로지",
+      "icon_src": "/cubeone/jusomoa/icons/ai/blue-river-technology.webp",
+      "action_type": "link",
+      "url": "https://www.bluerivertechnology.com",
+      "category": "ai"
+    },
+    {
+      "slug": "blue-yonder",
+      "label": "블루 욘더",
+      "icon_src": "/cubeone/jusomoa/icons/ai/blue-yonder.webp",
+      "action_type": "link",
+      "url": "https://www.blueyonder.com",
+      "category": "ai"
+    },
+    {
+      "slug": "bluedot",
+      "label": "Bluedot",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/bluedot.webp",
+      "action_type": "link",
+      "url": "https://www.bluedot.com",
+      "category": "ai"
+    },
+    {
+      "slug": "bolt",
+      "label": "볼트",
+      "icon_src": "/cubeone/jusomoa/icons/ai/bolt.webp",
+      "action_type": "link",
+      "url": "https://bolt.new",
+      "category": "ai"
+    },
+    {
+      "slug": "boston-dynamics-atlas",
+      "label": "Boston Dynamics Atlas",
+      "icon_src": "/cubeone/jusomoa/icons/ai/boston-dynamics-atlas.webp",
+      "action_type": "link",
+      "url": "https://www.bostondynamicsatlas.com",
+      "category": "ai"
+    },
+    {
+      "slug": "boston-dynamics-orbit",
+      "label": "Boston Dynamics Orbit",
+      "icon_src": "/cubeone/jusomoa/icons/ai/boston-dynamics-orbit.webp",
+      "action_type": "link",
+      "url": "https://www.bostondynamicsorbit.com",
+      "category": "ai"
+    },
+    {
+      "slug": "botpress",
+      "label": "봇프레스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/botpress.webp",
+      "action_type": "link",
+      "url": "https://www.botpress.com",
+      "category": "ai"
+    },
+    {
+      "slug": "brandmark",
+      "label": "Brandmark",
+      "icon_src": "/cubeone/jusomoa/icons/ai/brandmark.webp",
+      "action_type": "link",
+      "url": "https://www.brandmark.com",
+      "category": "ai"
+    },
+    {
+      "slug": "browse-ai",
+      "label": "Browse Ai",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/browse-ai.webp",
+      "action_type": "link",
+      "url": "https://www.browseai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "buildots",
+      "label": "빌도츠",
+      "icon_src": "/cubeone/jusomoa/icons/ai/buildots.webp",
+      "action_type": "link",
+      "url": "https://www.buildots.com",
+      "category": "ai"
+    },
+    {
+      "slug": "canva-magic-studio",
+      "label": "Canva Magic Studio",
+      "icon_src": "/cubeone/jusomoa/icons/ai/canva-magic-studio.webp",
+      "action_type": "link",
+      "url": "https://www.canvamagicstudio.com",
+      "category": "ai"
+    },
+    {
+      "slug": "canva",
+      "label": "캔바",
+      "icon_src": "/cubeone/jusomoa/icons/ai/canva.webp",
+      "action_type": "link",
+      "url": "https://www.canva.com",
+      "category": "ai"
+    },
+    {
+      "slug": "capcut-ai",
+      "label": "Capcut Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/capcut-ai.webp",
+      "action_type": "link",
+      "url": "https://www.capcutai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "carbon-robotics",
+      "label": "카본 로보틱스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/carbon-robotics.webp",
+      "action_type": "link",
+      "url": "https://www.carbonrobotics.com",
+      "category": "ai"
+    },
+    {
+      "slug": "casetext-cocounsel",
+      "label": "Casetext (Cocounsel)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/casetext-cocounsel.webp",
+      "action_type": "link",
+      "url": "https://www.casetextcocounsel.com",
+      "category": "ai"
+    },
+    {
+      "slug": "chainalysis",
+      "label": "체이널리시스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/chainalysis.webp",
+      "action_type": "link",
+      "url": "https://www.chainalysis.com",
+      "category": "ai"
+    },
+    {
+      "slug": "character-ai-pro",
+      "label": "Character.Ai (Pro)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/character-ai-pro.webp",
+      "action_type": "link",
+      "url": "https://www.characteraipro.com",
+      "category": "ai"
+    },
+    {
+      "slug": "character-ai",
+      "label": "Character.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/character-ai.webp",
+      "action_type": "link",
+      "url": "https://www.characterai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "chat",
+      "label": "ChatGPT",
+      "icon_src": "/cubeone/jusomoa/icons/ai/chat.webp",
+      "action_type": "link",
+      "url": "https://chat.openai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "chatbase",
+      "label": "Chatbase",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/chatbase.webp",
+      "action_type": "link",
+      "url": "https://www.chatbase.com",
+      "category": "ai"
+    },
+    {
+      "slug": "chatpdf",
+      "label": "챗PDF",
+      "icon_src": "/cubeone/jusomoa/icons/ai/chatpdf.webp",
+      "action_type": "link",
+      "url": "https://www.chatpdf.com",
+      "category": "ai"
+    },
+    {
+      "slug": "claude",
+      "label": "클로드",
+      "icon_src": "/cubeone/jusomoa/icons/ai/claude.webp",
+      "action_type": "link",
+      "url": "https://claude.ai",
+      "category": "ai"
+    },
+    {
+      "slug": "clay",
+      "label": "클레이",
+      "icon_src": "/cubeone/jusomoa/icons/ai/clay.webp",
+      "action_type": "link",
+      "url": "https://www.clay.com",
+      "category": "ai"
+    },
+    {
+      "slug": "cleanvoice-ai",
+      "label": "Cleanvoice Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/cleanvoice-ai.webp",
+      "action_type": "link",
+      "url": "https://www.cleanvoiceai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "cleanvoice",
+      "label": "Cleanvoice",
+      "icon_src": "/cubeone/jusomoa/icons/ai/cleanvoice.webp",
+      "action_type": "link",
+      "url": "https://www.cleanvoice.com",
+      "category": "ai"
+    },
+    {
+      "slug": "clearml",
+      "label": "Clearml",
+      "icon_src": "/cubeone/jusomoa/icons/ai/clearml.webp",
+      "action_type": "link",
+      "url": "https://www.clearml.com",
+      "category": "ai"
+    },
+    {
+      "slug": "clickup-brain",
+      "label": "Clickup Brain",
+      "icon_src": "/cubeone/jusomoa/icons/ai/clickup-brain.webp",
+      "action_type": "link",
+      "url": "https://www.clickupbrain.com",
+      "category": "ai"
+    },
+    {
+      "slug": "clipdrop",
+      "label": "클립드롭",
+      "icon_src": "/cubeone/jusomoa/icons/ai/clipdrop.webp",
+      "action_type": "link",
+      "url": "https://www.clipdrop.com",
+      "category": "ai"
+    },
+    {
+      "slug": "clova-x",
+      "label": "CLOVA X",
+      "icon_src": "/cubeone/jusomoa/icons/ai/clova-x.webp",
+      "action_type": "link",
+      "url": "https://clova-x.naver.com",
+      "category": "ai"
+    },
+    {
+      "slug": "codeiucom",
+      "label": "Windsurf",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/codeiucom.webp",
+      "action_type": "link",
+      "url": "https://codeium.com/windsurf",
+      "category": "ai"
+    },
+    {
+      "slug": "cogito",
+      "label": "Cogito",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/cogito.webp",
+      "action_type": "link",
+      "url": "https://www.cogito.com",
+      "category": "ai"
+    },
+    {
+      "slug": "cognata",
+      "label": "Cognata",
+      "icon_src": "/cubeone/jusomoa/icons/ai/cognata.webp",
+      "action_type": "link",
+      "url": "https://www.cognata.com",
+      "category": "ai"
+    },
+    {
+      "slug": "cognex-vidi",
+      "label": "Cognex Vidi",
+      "icon_src": "/cubeone/jusomoa/icons/ai/cognex-vidi.webp",
+      "action_type": "link",
+      "url": "https://www.cognexvidi.com",
+      "category": "ai"
+    },
+    {
+      "slug": "cohere-command-r-2b",
+      "label": "Cohere Command R%2B",
+      "icon_src": "/cubeone/jusomoa/icons/ai/cohere-command-r-2b.webp",
+      "action_type": "link",
+      "url": "https://www.coherecommandr2b.com",
+      "category": "ai"
+    },
+    {
+      "slug": "colormind",
+      "label": "컬러마인드",
+      "icon_src": "/cubeone/jusomoa/icons/ai/colormind.webp",
+      "action_type": "link",
+      "url": "https://www.colormind.com",
+      "category": "ai"
+    },
+    {
+      "slug": "colossyan",
+      "label": "콜로시안",
+      "icon_src": "/cubeone/jusomoa/icons/ai/colossyan.webp",
+      "action_type": "link",
+      "url": "https://www.colossyan.com",
+      "category": "ai"
+    },
+    {
+      "slug": "comet-ml",
+      "label": "Comet Ml",
+      "icon_src": "/cubeone/jusomoa/icons/ai/comet-ml.webp",
+      "action_type": "link",
+      "url": "https://www.cometml.com",
+      "category": "ai"
+    },
+    {
+      "slug": "commonwealth-fusion",
+      "label": "Commonwealth Fusion",
+      "icon_src": "/cubeone/jusomoa/icons/ai/commonwealth-fusion.webp",
+      "action_type": "link",
+      "url": "https://www.commonwealthfusion.com",
+      "category": "ai"
+    },
+    {
+      "slug": "consensus",
+      "label": "컨센서스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/consensus.webp",
+      "action_type": "link",
+      "url": "https://www.consensus.com",
+      "category": "ai"
+    },
+    {
+      "slug": "contentsquare",
+      "label": "콘텐츠스퀘어",
+      "icon_src": "/cubeone/jusomoa/icons/ai/contentsquare.webp",
+      "action_type": "link",
+      "url": "https://www.contentsquare.com",
+      "category": "ai"
+    },
+    {
+      "slug": "copy-ai",
+      "label": "Copy.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/copy-ai.webp",
+      "action_type": "link",
+      "url": "https://www.copyai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "coral-cohere",
+      "label": "Coral (Cohere)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/coral-cohere.webp",
+      "action_type": "link",
+      "url": "https://www.coralcohere.com",
+      "category": "ai"
+    },
+    {
+      "slug": "coupa-ai",
+      "label": "쿠파 AI",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/coupa-ai.webp",
+      "action_type": "link",
+      "url": "https://www.coupaai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "coursera-coach",
+      "label": "Coursera Coach",
+      "icon_src": "/cubeone/jusomoa/icons/ai/coursera-coach.webp",
+      "action_type": "link",
+      "url": "https://www.coursera.org",
+      "category": "ai"
+    },
+    {
+      "slug": "covariant",
+      "label": "코베리언트",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/covariant.webp",
+      "action_type": "link",
+      "url": "https://www.covariant.com",
+      "category": "ai"
+    },
+    {
+      "slug": "crewai",
+      "label": "크루AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/crewai.webp",
+      "action_type": "link",
+      "url": "https://www.crewai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "criteo-commerce-ai",
+      "label": "Criteo Commerce Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/criteo-commerce-ai.webp",
+      "action_type": "link",
+      "url": "https://www.criteocommerceai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "crowdstrike-falcon",
+      "label": "크라우드스트라이크 팔콘",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/crowdstrike-falcon.webp",
+      "action_type": "link",
+      "url": "https://www.crowdstrikefalcon.com",
+      "category": "ai"
+    },
+    {
+      "slug": "curipod",
+      "label": "큐리포드",
+      "icon_src": "/cubeone/jusomoa/icons/ai/curipod.webp",
+      "action_type": "link",
+      "url": "https://www.curipod.com",
+      "category": "ai"
+    },
+    {
+      "slug": "cursor",
+      "label": "커서",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/cursor.webp",
+      "action_type": "link",
+      "url": "https://cursor.sh",
+      "category": "ai"
+    },
+    {
+      "slug": "cutout-pro",
+      "label": "컷아웃 프로",
+      "icon_src": "/cubeone/jusomoa/icons/ai/cutout-pro.webp",
+      "action_type": "link",
+      "url": "https://www.cutout.pro/",
+      "category": "ai"
+    },
+    {
+      "slug": "d-id-agents",
+      "label": "D Id Agents",
+      "icon_src": "/cubeone/jusomoa/icons/ai/d-id-agents.webp",
+      "action_type": "link",
+      "url": "https://www.didagents.com",
+      "category": "ai"
+    },
+    {
+      "slug": "d-id",
+      "label": "D Id",
+      "icon_src": "/cubeone/jusomoa/icons/ai/d-id.webp",
+      "action_type": "link",
+      "url": "https://www.did.com",
+      "category": "ai"
+    },
+    {
+      "slug": "d-wave-leap",
+      "label": "D Wave Leap",
+      "icon_src": "/cubeone/jusomoa/icons/ai/d-wave-leap.webp",
+      "action_type": "link",
+      "url": "https://www.dwaveleap.com",
+      "category": "ai"
+    },
+    {
+      "slug": "dante-ai",
+      "label": "단테 AI",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/dante-ai.webp",
+      "action_type": "link",
+      "url": "https://www.danteai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "darktrace",
+      "label": "다크트레이스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/darktrace.webp",
+      "action_type": "link",
+      "url": "https://www.darktrace.com",
+      "category": "ai"
+    },
+    {
+      "slug": "dashworks",
+      "label": "대시웍스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/dashworks.webp",
+      "action_type": "link",
+      "url": "https://www.dashworks.com",
+      "category": "ai"
+    },
+    {
+      "slug": "data-gov-kr-ai",
+      "label": "Data.Gov.Kr Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/data-gov-kr-ai.webp",
+      "action_type": "link",
+      "url": "https://www.datagovkrai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "databricks-dolly",
+      "label": "Databricks Dolly",
+      "icon_src": "/cubeone/jusomoa/icons/ai/databricks-dolly.webp",
+      "action_type": "link",
+      "url": "https://www.databricksdolly.com",
+      "category": "ai"
+    },
+    {
+      "slug": "decktopus",
+      "label": "덱토퍼스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/decktopus.webp",
+      "action_type": "link",
+      "url": "https://www.decktopus.com",
+      "category": "ai"
+    },
+    {
+      "slug": "deepai",
+      "label": "딥AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/deepai.webp",
+      "action_type": "link",
+      "url": "https://www.deepai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "deepl-write",
+      "label": "딥엘",
+      "icon_src": "/cubeone/jusomoa/icons/ai/deepl-write.webp",
+      "action_type": "link",
+      "url": "https://www.deepl.com",
+      "category": "ai"
+    },
+    {
+      "slug": "deepmind-alphafold",
+      "label": "Deepmind Alphafold",
+      "icon_src": "/cubeone/jusomoa/icons/ai/deepmind-alphafold.webp",
+      "action_type": "link",
+      "url": "https://www.deepmindalphafold.com",
+      "category": "ai"
+    },
+    {
+      "slug": "deepseek",
+      "label": "딥시크",
+      "icon_src": "/cubeone/jusomoa/icons/ai/deepseek.webp",
+      "action_type": "link",
+      "url": "https://www.deepseek.com",
+      "category": "ai"
+    },
+    {
+      "slug": "descartes-labs",
+      "label": "Descartes Labs",
+      "icon_src": "/cubeone/jusomoa/icons/ai/descartes-labs.webp",
+      "action_type": "link",
+      "url": "https://www.descarteslabs.com",
+      "category": "ai"
+    },
+    {
+      "slug": "descript-storyboard",
+      "label": "Descript Storyboard",
+      "icon_src": "/cubeone/jusomoa/icons/ai/descript-storyboard.webp",
+      "action_type": "link",
+      "url": "https://www.descriptstoryboard.com",
+      "category": "ai"
+    },
+    {
+      "slug": "descript-underlord",
+      "label": "Descript Underlord",
+      "icon_src": "/cubeone/jusomoa/icons/ai/descript-underlord.webp",
+      "action_type": "link",
+      "url": "https://www.descriptunderlord.com",
+      "category": "ai"
+    },
+    {
+      "slug": "descript-whale",
+      "label": "Descript Whale",
+      "icon_src": "/cubeone/jusomoa/icons/ai/descript-whale.webp",
+      "action_type": "link",
+      "url": "https://www.descriptwhale.com",
+      "category": "ai"
+    },
+    {
+      "slug": "descript",
+      "label": "Descript",
+      "icon_src": "/cubeone/jusomoa/icons/ai/descript.webp",
+      "action_type": "link",
+      "url": "https://www.descript.com",
+      "category": "ai"
+    },
+    {
+      "slug": "devin-cognition",
+      "label": "Devin (Cognition)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/devin-cognition.webp",
+      "action_type": "link",
+      "url": "https://www.devincognition.com",
+      "category": "ai"
+    },
+    {
+      "slug": "domino-data-lab",
+      "label": "도미노 데이터 랩",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/domino-data-lab.webp",
+      "action_type": "link",
+      "url": "https://www.dominodatalab.com",
+      "category": "ai"
+    },
+    {
+      "slug": "domoai",
+      "label": "Domoai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/domoai.webp",
+      "action_type": "link",
+      "url": "https://www.domoai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "duolingo-max",
+      "label": "Duolingo Max",
+      "icon_src": "/cubeone/jusomoa/icons/ai/duolingo-max.webp",
+      "action_type": "link",
+      "url": "https://www.duolingo.com",
+      "category": "ai"
+    },
+    {
+      "slug": "durable",
+      "label": "듀러블",
+      "icon_src": "/cubeone/jusomoa/icons/ai/durable.webp",
+      "action_type": "link",
+      "url": "https://www.durable.com",
+      "category": "ai"
+    },
+    {
+      "slug": "dynamic-yield",
+      "label": "다이내믹 일드",
+      "icon_src": "/cubeone/jusomoa/icons/ai/dynamic-yield.webp",
+      "action_type": "link",
+      "url": "https://www.dynamicyield.com",
+      "category": "ai"
+    },
+    {
+      "slug": "ecochain",
+      "label": "에코체인",
+      "icon_src": "/cubeone/jusomoa/icons/ai/ecochain.webp",
+      "action_type": "link",
+      "url": "https://www.ecochain.com",
+      "category": "ai"
+    },
+    {
+      "slug": "education-copilot",
+      "label": "에듀케이션 코파일럿",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/education-copilot.webp",
+      "action_type": "link",
+      "url": "https://www.educationcopilot.com",
+      "category": "ai"
+    },
+    {
+      "slug": "eightfold-ai",
+      "label": "Eightfold.Ai",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/eightfold-ai.webp",
+      "action_type": "link",
+      "url": "https://www.eightfoldai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "einride",
+      "label": "Einride",
+      "icon_src": "/cubeone/jusomoa/icons/ai/einride.webp",
+      "action_type": "link",
+      "url": "https://www.einride.com",
+      "category": "ai"
+    },
+    {
+      "slug": "elai-io",
+      "label": "Elai.Io",
+      "icon_src": "/cubeone/jusomoa/icons/ai/elai-io.webp",
+      "action_type": "link",
+      "url": "https://www.elaiio.com",
+      "category": "ai"
+    },
+    {
+      "slug": "elevenlabs-dubbing",
+      "label": "Elevenlabs Dubbing",
+      "icon_src": "/cubeone/jusomoa/icons/ai/elevenlabs-dubbing.webp",
+      "action_type": "link",
+      "url": "https://www.elevenlabsdubbing.com",
+      "category": "ai"
+    },
+    {
+      "slug": "elevenlabs-sound-effects",
+      "label": "Elevenlabs Sound Effects",
+      "icon_src": "/cubeone/jusomoa/icons/ai/elevenlabs-sound-effects.webp",
+      "action_type": "link",
+      "url": "https://www.elevenlabssoundeffects.com",
+      "category": "ai"
+    },
+    {
+      "slug": "elevenlabs",
+      "label": "일레븐랩스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/elevenlabs.webp",
+      "action_type": "link",
+      "url": "https://elevenlabs.io",
+      "category": "ai"
+    },
+    {
+      "slug": "elicit",
+      "label": "엘리싯",
+      "icon_src": "/cubeone/jusomoa/icons/ai/elicit.webp",
+      "action_type": "link",
+      "url": "https://www.elicit.com",
+      "category": "ai"
+    },
+    {
+      "slug": "elliptic",
+      "label": "Elliptic",
+      "icon_src": "/cubeone/jusomoa/icons/ai/elliptic.webp",
+      "action_type": "link",
+      "url": "https://www.elliptic.com",
+      "category": "ai"
+    },
+    {
+      "slug": "elsa-speak",
+      "label": "엘사 스피크",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/elsa-speak.webp",
+      "action_type": "link",
+      "url": "https://www.elsaspeak.com",
+      "category": "ai"
+    },
+    {
+      "slug": "enscape-ai",
+      "label": "Enscape Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/enscape-ai.webp",
+      "action_type": "link",
+      "url": "https://www.enscapeai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "estoni-ai-e-estonia",
+      "label": "Estoni.Ai (E Estonia)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/estoni-ai-e-estonia.webp",
+      "action_type": "link",
+      "url": "https://www.estoniaieestonia.com",
+      "category": "ai"
+    },
+    {
+      "slug": "exa-ai",
+      "label": "Exa Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/exa-ai.webp",
+      "action_type": "link",
+      "url": "https://www.exaai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "falkonry",
+      "label": "팔코너리",
+      "icon_src": "/cubeone/jusomoa/icons/ai/falkonry.webp",
+      "action_type": "link",
+      "url": "https://www.falkonry.com",
+      "category": "ai"
+    },
+    {
+      "slug": "fathom",
+      "label": "패덤",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/fathom.webp",
+      "action_type": "link",
+      "url": "https://www.fathom.com",
+      "category": "ai"
+    },
+    {
+      "slug": "feedhive",
+      "label": "피드하이브",
+      "icon_src": "/cubeone/jusomoa/icons/ai/feedhive.webp",
+      "action_type": "link",
+      "url": "https://www.feedhive.com",
+      "category": "ai"
+    },
+    {
+      "slug": "fellow-app",
+      "label": "Fellow.App",
+      "icon_src": "/cubeone/jusomoa/icons/ai/fellow-app.webp",
+      "action_type": "link",
+      "url": "https://www.fellowapp.com",
+      "category": "ai"
+    },
+    {
+      "slug": "felo-ai-search",
+      "label": "Felo Ai Search",
+      "icon_src": "/cubeone/jusomoa/icons/ai/felo-ai-search.webp",
+      "action_type": "link",
+      "url": "https://www.feloaisearch.com",
+      "category": "ai"
+    },
+    {
+      "slug": "figjam-ai",
+      "label": "Figjam Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/figjam-ai.webp",
+      "action_type": "link",
+      "url": "https://www.figjamai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "figure-ai",
+      "label": "Figure Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/figure-ai.webp",
+      "action_type": "link",
+      "url": "https://www.figureai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "fireflies-ai",
+      "label": "Fireflies.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/fireflies-ai.webp",
+      "action_type": "link",
+      "url": "https://www.firefliesai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "fireflies-fred",
+      "label": "Fireflies (Fred)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/fireflies-fred.webp",
+      "action_type": "link",
+      "url": "https://www.firefliesfred.com",
+      "category": "ai"
+    },
+    {
+      "slug": "flair-ai",
+      "label": "플레어 AI",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/flair-ai.webp",
+      "action_type": "link",
+      "url": "https://www.flairai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "fontjoy",
+      "label": "폰트조이",
+      "icon_src": "/cubeone/jusomoa/icons/ai/fontjoy.webp",
+      "action_type": "link",
+      "url": "https://www.fontjoy.com",
+      "category": "ai"
+    },
+    {
+      "slug": "forecast-ai",
+      "label": "Forecast Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/forecast-ai.webp",
+      "action_type": "link",
+      "url": "https://www.forecastai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "fotor-ai",
+      "label": "Fotor Ai",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/fotor-ai.webp",
+      "action_type": "link",
+      "url": "https://www.fotorai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "framer-ai",
+      "label": "Framer Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/framer-ai.webp",
+      "action_type": "link",
+      "url": "https://www.framerai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "freepik-pikaso",
+      "label": "Freepik Pikaso",
+      "icon_src": "/cubeone/jusomoa/icons/ai/freepik-pikaso.webp",
+      "action_type": "link",
+      "url": "https://www.freepikpikaso.com",
+      "category": "ai"
+    },
+    {
+      "slug": "futurepedia-500",
+      "label": "Futurepedia 500",
+      "icon_src": "/cubeone/jusomoa/icons/ai/futurepedia-500.webp",
+      "action_type": "link",
+      "url": "https://www.futurepedia500.com",
+      "category": "ai"
+    },
+    {
+      "slug": "futurepedia",
+      "label": "Futurepedia",
+      "icon_src": "/cubeone/jusomoa/icons/ai/futurepedia.webp",
+      "action_type": "link",
+      "url": "https://www.futurepedia.com",
+      "category": "ai"
+    },
+    {
+      "slug": "gamma",
+      "label": "감마",
+      "icon_src": "/cubeone/jusomoa/icons/ai/gamma.webp",
+      "action_type": "link",
+      "url": "https://gamma.app",
+      "category": "ai"
+    },
+    {
+      "slug": "gatik",
+      "label": "가틱",
+      "icon_src": "/cubeone/jusomoa/icons/ai/gatik.webp",
+      "action_type": "link",
+      "url": "https://gatik.ai/",
+      "category": "ai"
+    },
+    {
+      "slug": "gemini-3-flash",
+      "label": "Gemini 3 Flash",
+      "icon_src": "/cubeone/jusomoa/icons/ai/gemini-3-flash.webp",
+      "action_type": "link",
+      "url": "https://www.gemini3flash.com",
+      "category": "ai"
+    },
+    {
+      "slug": "gemini",
+      "label": "제미나이",
+      "icon_src": "/cubeone/jusomoa/icons/ai/gemini.webp",
+      "action_type": "link",
+      "url": "https://gemini.google.com",
+      "category": "ai"
+    },
+    {
+      "slug": "ginkgo-bioworks",
+      "label": "Ginkgo Bioworks",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/ginkgo-bioworks.webp",
+      "action_type": "link",
+      "url": "https://www.ginkgobioworks.com",
+      "category": "ai"
+    },
+    {
+      "slug": "github-copilot-extensions",
+      "label": "Github Copilot Extensions",
+      "icon_src": "/cubeone/jusomoa/icons/ai/github-copilot-extensions.webp",
+      "action_type": "link",
+      "url": "https://www.githubcopilotextensions.com",
+      "category": "ai"
+    },
+    {
+      "slug": "github-copilot",
+      "label": "Github Copilot",
+      "icon_src": "/cubeone/jusomoa/icons/ai/github-copilot.webp",
+      "action_type": "link",
+      "url": "https://github.com",
+      "category": "ai"
+    },
+    {
+      "slug": "glass-health",
+      "label": "Glass Health",
+      "icon_src": "/cubeone/jusomoa/icons/ai/glass-health.webp",
+      "action_type": "link",
+      "url": "https://www.glasshealth.com",
+      "category": "ai"
+    },
+    {
+      "slug": "glean",
+      "label": "글린",
+      "icon_src": "/cubeone/jusomoa/icons/ai/glean.webp",
+      "action_type": "link",
+      "url": "https://www.glean.com",
+      "category": "ai"
+    },
+    {
+      "slug": "godmode",
+      "label": "Godmode",
+      "icon_src": "/cubeone/jusomoa/icons/ai/godmode.webp",
+      "action_type": "link",
+      "url": "https://www.godmode.com",
+      "category": "ai"
+    },
+    {
+      "slug": "gong",
+      "label": "Gong",
+      "icon_src": "/cubeone/jusomoa/icons/ai/gong.webp",
+      "action_type": "link",
+      "url": "https://www.gong.com",
+      "category": "ai"
+    },
+    {
+      "slug": "google-veo",
+      "label": "Google Veo",
+      "icon_src": "/cubeone/jusomoa/icons/ai/google-veo.webp",
+      "action_type": "link",
+      "url": "https://www.googleveo.com",
+      "category": "ai"
+    },
+    {
+      "slug": "gov-uk-ai",
+      "label": "Gov.Uk Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/gov-uk-ai.webp",
+      "action_type": "link",
+      "url": "https://www.govukai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "govpredict",
+      "label": "Govpredict",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/govpredict.webp",
+      "action_type": "link",
+      "url": "https://www.govpredict.com",
+      "category": "ai"
+    },
+    {
+      "slug": "gradescope-by-turnitin",
+      "label": "Gradescope (By Turnitin)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/gradescope-by-turnitin.webp",
+      "action_type": "link",
+      "url": "https://www.gradescopebyturnitin.com",
+      "category": "ai"
+    },
+    {
+      "slug": "grain",
+      "label": "그레인",
+      "icon_src": "/cubeone/jusomoa/icons/ai/grain.webp",
+      "action_type": "link",
+      "url": "https://www.grain.com",
+      "category": "ai"
+    },
+    {
+      "slug": "grammarly-author",
+      "label": "그래머리",
+      "icon_src": "/cubeone/jusomoa/icons/ai/grammarly-author.webp",
+      "action_type": "link",
+      "url": "https://www.grammarly.com",
+      "category": "ai"
+    },
+    {
+      "slug": "grok-ai",
+      "label": "그록",
+      "icon_src": "/cubeone/jusomoa/icons/ai/grok-ai.webp",
+      "action_type": "link",
+      "url": "https://grok.x.ai",
+      "category": "ai"
+    },
+    {
+      "slug": "groq-lpu",
+      "label": "Groq (Lpu)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/groq-lpu.webp",
+      "action_type": "link",
+      "url": "https://www.groqlpu.com",
+      "category": "ai"
+    },
+    {
+      "slug": "guru",
+      "label": "구루",
+      "icon_src": "/cubeone/jusomoa/icons/ai/guru.webp",
+      "action_type": "link",
+      "url": "https://www.guru.com",
+      "category": "ai"
+    },
+    {
+      "slug": "h2o-ai",
+      "label": "H2o.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/h2o-ai.webp",
+      "action_type": "link",
+      "url": "https://www.h2oai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "harvey-ai",
+      "label": "하비 AI",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/harvey-ai.webp",
+      "action_type": "link",
+      "url": "https://www.harveyai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "headspace-ai",
+      "label": "Headspace Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/headspace-ai.webp",
+      "action_type": "link",
+      "url": "https://www.headspaceai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "hexomatic",
+      "label": "헥소매틱",
+      "icon_src": "/cubeone/jusomoa/icons/ai/hexomatic.webp",
+      "action_type": "link",
+      "url": "https://www.hexomatic.com",
+      "category": "ai"
+    },
+    {
+      "slug": "heygen-expressive",
+      "label": "Heygen Expressive",
+      "icon_src": "/cubeone/jusomoa/icons/ai/heygen-expressive.webp",
+      "action_type": "link",
+      "url": "https://www.heygenexpressive.com",
+      "category": "ai"
+    },
+    {
+      "slug": "heygen-live-avatar",
+      "label": "Heygen Live Avatar",
+      "icon_src": "/cubeone/jusomoa/icons/ai/heygen-live-avatar.webp",
+      "action_type": "link",
+      "url": "https://www.heygenliveavatar.com",
+      "category": "ai"
+    },
+    {
+      "slug": "heygen-v3",
+      "label": "Heygen V3",
+      "icon_src": "/cubeone/jusomoa/icons/ai/heygen-v3.webp",
+      "action_type": "link",
+      "url": "https://www.heygenv3.com",
+      "category": "ai"
+    },
+    {
+      "slug": "heygen-video-translate",
+      "label": "Heygen Video Translate",
+      "icon_src": "/cubeone/jusomoa/icons/ai/heygen-video-translate.webp",
+      "action_type": "link",
+      "url": "https://www.heygenvideotranslate.com",
+      "category": "ai"
+    },
+    {
+      "slug": "heygen",
+      "label": "헤이젠",
+      "icon_src": "/cubeone/jusomoa/icons/ai/heygen.webp",
+      "action_type": "link",
+      "url": "https://www.heygen.com",
+      "category": "ai"
+    },
+    {
+      "slug": "hirevue",
+      "label": "하이어뷰",
+      "icon_src": "/cubeone/jusomoa/icons/ai/hirevue.webp",
+      "action_type": "link",
+      "url": "https://www.hirevue.com",
+      "category": "ai"
+    },
+    {
+      "slug": "hotpot-ai",
+      "label": "핫팟 AI",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/hotpot-ai.webp",
+      "action_type": "link",
+      "url": "https://www.hotpotai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "hugging-face-hub",
+      "label": "Hugging Face Hub",
+      "icon_src": "/cubeone/jusomoa/icons/ai/hugging-face-hub.webp",
+      "action_type": "link",
+      "url": "https://www.huggingfacehub.com",
+      "category": "ai"
+    },
+    {
+      "slug": "hugging-face",
+      "label": "Hugging Face",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/hugging-face.webp",
+      "action_type": "link",
+      "url": "https://www.huggingface.com",
+      "category": "ai"
+    },
+    {
+      "slug": "humata-ai",
+      "label": "Humata Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/humata-ai.webp",
+      "action_type": "link",
+      "url": "https://www.humataai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "hypotenuse-ai",
+      "label": "하이포테뉴스 AI",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/hypotenuse-ai.webp",
+      "action_type": "link",
+      "url": "https://www.hypotenuseai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "iconscout-ai",
+      "label": "Iconscout Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/iconscout-ai.webp",
+      "action_type": "link",
+      "url": "https://www.iconscoutai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "ideograai",
+      "label": "아이디오그램",
+      "icon_src": "/cubeone/jusomoa/icons/ai/ideograai.webp",
+      "action_type": "link",
+      "url": "https://ideogram.ai",
+      "category": "ai"
+    },
+    {
+      "slug": "ideogram-2-0",
+      "label": "Ideogram 2.0",
+      "icon_src": "/cubeone/jusomoa/icons/ai/ideogram-2-0.webp",
+      "action_type": "link",
+      "url": "https://www.ideogram20.com",
+      "category": "ai"
+    },
+    {
+      "slug": "ideogram",
+      "label": "Ideogram",
+      "icon_src": "/cubeone/jusomoa/icons/ai/ideogram.webp",
+      "action_type": "link",
+      "url": "https://www.ideogram.com",
+      "category": "ai"
+    },
+    {
+      "slug": "inflection-2-5-pi",
+      "label": "Inflection 2.5 (Pi)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/inflection-2-5-pi.webp",
+      "action_type": "link",
+      "url": "https://www.inflection25pi.com",
+      "category": "ai"
+    },
+    {
+      "slug": "insilico-medicine",
+      "label": "인실리코 메디신",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/insilico-medicine.webp",
+      "action_type": "link",
+      "url": "https://www.insilicomedicine.com",
+      "category": "ai"
+    },
+    {
+      "slug": "instrumental",
+      "label": "인스트루멘탈",
+      "icon_src": "/cubeone/jusomoa/icons/ai/instrumental.webp",
+      "action_type": "link",
+      "url": "https://www.instrumental.com",
+      "category": "ai"
+    },
+    {
+      "slug": "intercom-fin",
+      "label": "Intercom Fin",
+      "icon_src": "/cubeone/jusomoa/icons/ai/intercom-fin.webp",
+      "action_type": "link",
+      "url": "https://www.intercomfin.com",
+      "category": "ai"
+    },
+    {
+      "slug": "intrinsic",
+      "label": "Intrinsic",
+      "icon_src": "/cubeone/jusomoa/icons/ai/intrinsic.webp",
+      "action_type": "link",
+      "url": "https://www.intrinsic.com",
+      "category": "ai"
+    },
+    {
+      "slug": "invideo-ai",
+      "label": "Invideo Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/invideo-ai.webp",
+      "action_type": "link",
+      "url": "https://www.invideoai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "invideo-voice-to-video",
+      "label": "Invideo (Voice To Video)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/invideo-voice-to-video.webp",
+      "action_type": "link",
+      "url": "https://www.invideovoicetovideo.com",
+      "category": "ai"
+    },
+    {
+      "slug": "invideo",
+      "label": "인비디오",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/invideo.webp",
+      "action_type": "link",
+      "url": "https://www.invideo.com",
+      "category": "ai"
+    },
+    {
+      "slug": "inworld-ai",
+      "label": "Inworld Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/inworld-ai.webp",
+      "action_type": "link",
+      "url": "https://www.inworldai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "ionq-quantum-cloud",
+      "label": "Ionq Quantum Cloud",
+      "icon_src": "/cubeone/jusomoa/icons/ai/ionq-quantum-cloud.webp",
+      "action_type": "link",
+      "url": "https://www.ionqquantumcloud.com",
+      "category": "ai"
+    },
+    {
+      "slug": "ironclad",
+      "label": "아이언클래드",
+      "icon_src": "/cubeone/jusomoa/icons/ai/ironclad.webp",
+      "action_type": "link",
+      "url": "https://ironcladapp.com",
+      "category": "ai"
+    },
+    {
+      "slug": "jasper-campaigns",
+      "label": "Jasper Campaigns",
+      "icon_src": "/cubeone/jusomoa/icons/ai/jasper-campaigns.webp",
+      "action_type": "link",
+      "url": "https://www.jaspercampaigns.com",
+      "category": "ai"
+    },
+    {
+      "slug": "jasper",
+      "label": "Jasper",
+      "icon_src": "/cubeone/jusomoa/icons/ai/jasper.webp",
+      "action_type": "link",
+      "url": "https://www.jasper.com",
+      "category": "ai"
+    },
+    {
+      "slug": "joby-aviation-ai",
+      "label": "Joby Aviation Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/joby-aviation-ai.webp",
+      "action_type": "link",
+      "url": "https://www.jobyaviationai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "john-deere-operations-center",
+      "label": "John Deere Operations Center",
+      "icon_src": "/cubeone/jusomoa/icons/ai/john-deere-operations-center.webp",
+      "action_type": "link",
+      "url": "https://www.johndeereoperationscenter.com",
+      "category": "ai"
+    },
+    {
+      "slug": "julius-ai",
+      "label": "Julius Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/julius-ai.webp",
+      "action_type": "link",
+      "url": "https://www.juliusai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "kaiber-motion",
+      "label": "Kaiber Motion",
+      "icon_src": "/cubeone/jusomoa/icons/ai/kaiber-motion.webp",
+      "action_type": "link",
+      "url": "https://www.kaibermotion.com",
+      "category": "ai"
+    },
+    {
+      "slug": "kaiber",
+      "label": "Kaiber",
+      "icon_src": "/cubeone/jusomoa/icons/ai/kaiber.webp",
+      "action_type": "link",
+      "url": "https://www.kaiber.com",
+      "category": "ai"
+    },
+    {
+      "slug": "khanmigo",
+      "label": "Khanmigo",
+      "icon_src": "/cubeone/jusomoa/icons/ai/khanmigo.webp",
+      "action_type": "link",
+      "url": "https://www.khanmigo.com",
+      "category": "ai"
+    },
+    {
+      "slug": "khroma",
+      "label": "Khroma",
+      "icon_src": "/cubeone/jusomoa/icons/ai/khroma.webp",
+      "action_type": "link",
+      "url": "https://www.khroma.com",
+      "category": "ai"
+    },
+    {
+      "slug": "kits-ai",
+      "label": "Kits.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/kits-ai.webp",
+      "action_type": "link",
+      "url": "https://www.kitsai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "kling-ai",
+      "label": "클링 AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/kling-ai.webp",
+      "action_type": "link",
+      "url": "https://www.klingai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "kodiak-robotics",
+      "label": "코디악 로보틱스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/kodiak-robotics.webp",
+      "action_type": "link",
+      "url": "https://www.kodiakrobotics.com",
+      "category": "ai"
+    },
+    {
+      "slug": "krea-ai",
+      "label": "Krea Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/krea-ai.webp",
+      "action_type": "link",
+      "url": "https://www.kreaai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "krea-video",
+      "label": "Krea Video",
+      "icon_src": "/cubeone/jusomoa/icons/ai/krea-video.webp",
+      "action_type": "link",
+      "url": "https://www.kreavideo.com",
+      "category": "ai"
+    },
+    {
+      "slug": "krisp-ai",
+      "label": "Krisp.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/krisp-ai.webp",
+      "action_type": "link",
+      "url": "https://www.krispai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "krisp",
+      "label": "Krisp",
+      "icon_src": "/cubeone/jusomoa/icons/ai/krisp.webp",
+      "action_type": "link",
+      "url": "https://www.krisp.com",
+      "category": "ai"
+    },
+    {
+      "slug": "landbot",
+      "label": "랜드봇",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/landbot.webp",
+      "action_type": "link",
+      "url": "https://www.landbot.com",
+      "category": "ai"
+    },
+    {
+      "slug": "langchain",
+      "label": "랭체인",
+      "icon_src": "/cubeone/jusomoa/icons/ai/langchain.webp",
+      "action_type": "link",
+      "url": "https://www.langchain.com",
+      "category": "ai"
+    },
+    {
+      "slug": "lavender",
+      "label": "Lavender",
+      "icon_src": "/cubeone/jusomoa/icons/ai/lavender.webp",
+      "action_type": "link",
+      "url": "https://www.lavender.com",
+      "category": "ai"
+    },
+    {
+      "slug": "leonardo-ai-canvas",
+      "label": "Leonardo.Ai Canvas",
+      "icon_src": "/cubeone/jusomoa/icons/ai/leonardo-ai-canvas.webp",
+      "action_type": "link",
+      "url": "https://www.leonardoaicanvas.com",
+      "category": "ai"
+    },
+    {
+      "slug": "leonardo-ai",
+      "label": "Leonardo Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/leonardo-ai.webp",
+      "action_type": "link",
+      "url": "https://www.leonardoai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "let-apos-s-enhance",
+      "label": "Let&Apos;S Enhance",
+      "icon_src": "/cubeone/jusomoa/icons/ai/let-apos-s-enhance.webp",
+      "action_type": "link",
+      "url": "https://www.letapossenhance.com",
+      "category": "ai"
+    },
+    {
+      "slug": "lex-page",
+      "label": "Lex Page",
+      "icon_src": "/cubeone/jusomoa/icons/ai/lex-page.webp",
+      "action_type": "link",
+      "url": "https://www.lexpage.com",
+      "category": "ai"
+    },
+    {
+      "slug": "looka-brand-kit",
+      "label": "Looka Brand Kit",
+      "icon_src": "/cubeone/jusomoa/icons/ai/looka-brand-kit.webp",
+      "action_type": "link",
+      "url": "https://www.lookabrandkit.com",
+      "category": "ai"
+    },
+    {
+      "slug": "looka",
+      "label": "루카",
+      "icon_src": "/cubeone/jusomoa/icons/ai/looka.webp",
+      "action_type": "link",
+      "url": "https://www.looka.com",
+      "category": "ai"
+    },
+    {
+      "slug": "loom",
+      "label": "Loom",
+      "icon_src": "/cubeone/jusomoa/icons/ai/loom.webp",
+      "action_type": "link",
+      "url": "https://www.loom.com",
+      "category": "ai"
+    },
+    {
+      "slug": "lovable",
+      "label": "Lovable",
+      "icon_src": "/cubeone/jusomoa/icons/ai/lovable.webp",
+      "action_type": "link",
+      "url": "https://lovable.dev",
+      "category": "ai"
+    },
+    {
+      "slug": "lovo-ai",
+      "label": "Lovo Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/lovo-ai.webp",
+      "action_type": "link",
+      "url": "https://www.lovoai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "lovo-genny",
+      "label": "Lovo Genny",
+      "icon_src": "/cubeone/jusomoa/icons/ai/lovo-genny.webp",
+      "action_type": "link",
+      "url": "https://www.lovogenny.com",
+      "category": "ai"
+    },
+    {
+      "slug": "ltx-studio",
+      "label": "LTX 스튜디오",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/ltx-studio.webp",
+      "action_type": "link",
+      "url": "https://www.ltxstudio.com",
+      "category": "ai"
+    },
+    {
+      "slug": "ludo-ai",
+      "label": "Ludo.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/ludo-ai.webp",
+      "action_type": "link",
+      "url": "https://www.ludoai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "luma-ai-gen-1",
+      "label": "Luma Ai (Gen 1)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/luma-ai-gen-1.webp",
+      "action_type": "link",
+      "url": "https://www.lumaaigen1.com",
+      "category": "ai"
+    },
+    {
+      "slug": "luma-dream-machine",
+      "label": "루마 드림머신",
+      "icon_src": "/cubeone/jusomoa/icons/ai/luma-dream-machine.webp",
+      "action_type": "link",
+      "url": "https://www.lumadreammachine.com",
+      "category": "ai"
+    },
+    {
+      "slug": "luma-genie",
+      "label": "Luma Genie",
+      "icon_src": "/cubeone/jusomoa/icons/ai/luma-genie.webp",
+      "action_type": "link",
+      "url": "https://www.lumagenie.com",
+      "category": "ai"
+    },
+    {
+      "slug": "magicschool-ai",
+      "label": "매직스쿨 AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/magicschool-ai.webp",
+      "action_type": "link",
+      "url": "https://www.magicschoolai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "magnific-relight",
+      "label": "Magnific Relight",
+      "icon_src": "/cubeone/jusomoa/icons/ai/magnific-relight.webp",
+      "action_type": "link",
+      "url": "https://www.magnificrelight.com",
+      "category": "ai"
+    },
+    {
+      "slug": "make-com",
+      "label": "메이크닷컴",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/make-com.webp",
+      "action_type": "link",
+      "url": "https://www.makecom.com",
+      "category": "ai"
+    },
+    {
+      "slug": "materials-nexus",
+      "label": "Materials Nexus",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/materials-nexus.webp",
+      "action_type": "link",
+      "url": "https://www.materialsnexus.com",
+      "category": "ai"
+    },
+    {
+      "slug": "materials-project",
+      "label": "머티리얼즈 프로젝트",
+      "icon_src": "/cubeone/jusomoa/icons/ai/materials-project.webp",
+      "action_type": "link",
+      "url": "https://www.materialsproject.com",
+      "category": "ai"
+    },
+    {
+      "slug": "matterport-ai-cortex",
+      "label": "Matterport Ai (Cortex)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/matterport-ai-cortex.webp",
+      "action_type": "link",
+      "url": "https://www.matterportaicortex.com",
+      "category": "ai"
+    },
+    {
+      "slug": "maze-ai-insights",
+      "label": "Maze Ai Insights",
+      "icon_src": "/cubeone/jusomoa/icons/ai/maze-ai-insights.webp",
+      "action_type": "link",
+      "url": "https://www.mazeaiinsights.com",
+      "category": "ai"
+    },
+    {
+      "slug": "mem-ai",
+      "label": "Mem.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/mem-ai.webp",
+      "action_type": "link",
+      "url": "https://www.memai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "mentimeter-ai",
+      "label": "Mentimeter Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/mentimeter-ai.webp",
+      "action_type": "link",
+      "url": "https://www.mentimeterai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "meshy",
+      "label": "Meshy",
+      "icon_src": "/cubeone/jusomoa/icons/ai/meshy.webp",
+      "action_type": "link",
+      "url": "https://www.meshy.com",
+      "category": "ai"
+    },
+    {
+      "slug": "microsoft-designer",
+      "label": "마이크로소프트 디자이너",
+      "icon_src": "/cubeone/jusomoa/icons/ai/microsoft-designer.webp",
+      "action_type": "link",
+      "url": "https://www.microsoftdesigner.com",
+      "category": "ai"
+    },
+    {
+      "slug": "microsoft-sentinel",
+      "label": "Microsoft Sentinel",
+      "icon_src": "/cubeone/jusomoa/icons/ai/microsoft-sentinel.webp",
+      "action_type": "link",
+      "url": "https://www.microsoftsentinel.com",
+      "category": "ai"
+    },
+    {
+      "slug": "midjourney-v6",
+      "label": "Midjourney V6",
+      "icon_src": "/cubeone/jusomoa/icons/ai/midjourney-v6.webp",
+      "action_type": "link",
+      "url": "https://www.midjourneyv6.com",
+      "category": "ai"
+    },
+    {
+      "slug": "midjourney-v7",
+      "label": "Midjourney V7",
+      "icon_src": "/cubeone/jusomoa/icons/ai/midjourney-v7.webp",
+      "action_type": "link",
+      "url": "https://www.midjourneyv7.com",
+      "category": "ai"
+    },
+    {
+      "slug": "midjourney",
+      "label": "미드저니",
+      "icon_src": "/cubeone/jusomoa/icons/ai/midjourney.webp",
+      "action_type": "link",
+      "url": "https://www.midjourney.com",
+      "category": "ai"
+    },
+    {
+      "slug": "mindmeister-ai",
+      "label": "Mindmeister Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/mindmeister-ai.webp",
+      "action_type": "link",
+      "url": "https://www.mindmeisterai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "mindstrong",
+      "label": "Mindstrong",
+      "icon_src": "/cubeone/jusomoa/icons/ai/mindstrong.webp",
+      "action_type": "link",
+      "url": "https://www.mindstrong.com",
+      "category": "ai"
+    },
+    {
+      "slug": "mintlify",
+      "label": "민틀리파이",
+      "icon_src": "/cubeone/jusomoa/icons/ai/mintlify.webp",
+      "action_type": "link",
+      "url": "https://www.mintlify.com",
+      "category": "ai"
+    },
+    {
+      "slug": "miro-assist",
+      "label": "Miro Assist",
+      "icon_src": "/cubeone/jusomoa/icons/ai/miro-assist.webp",
+      "action_type": "link",
+      "url": "https://www.miroassist.com",
+      "category": "ai"
+    },
+    {
+      "slug": "mistral-large-2",
+      "label": "Mistral Large 2",
+      "icon_src": "/cubeone/jusomoa/icons/ai/mistral-large-2.webp",
+      "action_type": "link",
+      "url": "https://www.mistrallarge2.com",
+      "category": "ai"
+    },
+    {
+      "slug": "moloco-cloud",
+      "label": "Moloco Cloud",
+      "icon_src": "/cubeone/jusomoa/icons/ai/moloco-cloud.webp",
+      "action_type": "link",
+      "url": "https://www.molococloud.com",
+      "category": "ai"
+    },
+    {
+      "slug": "motional",
+      "label": "모셔널",
+      "icon_src": "/cubeone/jusomoa/icons/ai/motional.webp",
+      "action_type": "link",
+      "url": "https://www.motional.com",
+      "category": "ai"
+    },
+    {
+      "slug": "moveworks",
+      "label": "무브웍스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/moveworks.webp",
+      "action_type": "link",
+      "url": "https://www.moveworks.com",
+      "category": "ai"
+    },
+    {
+      "slug": "mural-ai",
+      "label": "Mural Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/mural-ai.webp",
+      "action_type": "link",
+      "url": "https://www.muralai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "murf-ai",
+      "label": "Murf Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/murf-ai.webp",
+      "action_type": "link",
+      "url": "https://www.murfai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "myedit",
+      "label": "Myedit",
+      "icon_src": "/cubeone/jusomoa/icons/ai/myedit.webp",
+      "action_type": "link",
+      "url": "https://www.myedit.com",
+      "category": "ai"
+    },
+    {
+      "slug": "napkin",
+      "label": "냅킨 AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/napkin.webp",
+      "action_type": "link",
+      "url": "https://www.napkin.ai",
+      "category": "ai"
+    },
+    {
+      "slug": "naturalreader",
+      "label": "Naturalreader",
+      "icon_src": "/cubeone/jusomoa/icons/ai/naturalreader.webp",
+      "action_type": "link",
+      "url": "https://www.naturalreader.com",
+      "category": "ai"
+    },
+    {
+      "slug": "neptune-ai",
+      "label": "Neptune.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/neptune-ai.webp",
+      "action_type": "link",
+      "url": "https://www.neptuneai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "neuralink-n1",
+      "label": "Neuralink (N1)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/neuralink-n1.webp",
+      "action_type": "link",
+      "url": "https://www.neuralinkn1.com",
+      "category": "ai"
+    },
+    {
+      "slug": "noom-lesson-ai",
+      "label": "Noom Lesson Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/noom-lesson-ai.webp",
+      "action_type": "link",
+      "url": "https://www.noomlessonai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "notebooklm",
+      "label": "Notebooklm",
+      "icon_src": "/cubeone/jusomoa/icons/ai/notebooklm.webp",
+      "action_type": "link",
+      "url": "https://www.notebooklm.com",
+      "category": "ai"
+    },
+    {
+      "slug": "notion-ai-projects",
+      "label": "노션 AI 프로젝트",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/notion-ai-projects.webp",
+      "action_type": "link",
+      "url": "https://www.notionaiprojects.com",
+      "category": "ai"
+    },
+    {
+      "slug": "notion-projects-ai",
+      "label": "Notion Projects Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/notion-projects-ai.webp",
+      "action_type": "link",
+      "url": "https://www.notionprojectsai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "notion",
+      "label": "Notion AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/notion.webp",
+      "action_type": "link",
+      "url": "https://www.notion.so/product/ai",
+      "category": "ai"
+    },
+    {
+      "slug": "ntop-formerly-ntopology",
+      "label": "Ntop (Formerly Ntopology)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/ntop-formerly-ntopology.webp",
+      "action_type": "link",
+      "url": "https://www.ntopformerlyntopology.com",
+      "category": "ai"
+    },
+    {
+      "slug": "nuclia",
+      "label": "누클리아",
+      "icon_src": "/cubeone/jusomoa/icons/ai/nuclia.webp",
+      "action_type": "link",
+      "url": "https://www.nuclia.com",
+      "category": "ai"
+    },
+    {
+      "slug": "nvidia-ai-enterprise",
+      "label": "Nvidia Ai Enterprise",
+      "icon_src": "/cubeone/jusomoa/icons/ai/nvidia-ai-enterprise.webp",
+      "action_type": "link",
+      "url": "https://www.nvidiaaienterprise.com",
+      "category": "ai"
+    },
+    {
+      "slug": "nvidia-gr00t",
+      "label": "Nvidia Gr00t",
+      "icon_src": "/cubeone/jusomoa/icons/ai/nvidia-gr00t.webp",
+      "action_type": "link",
+      "url": "https://www.nvidiagr00t.com",
+      "category": "ai"
+    },
+    {
+      "slug": "o9-solutions",
+      "label": "o9 솔루션즈",
+      "icon_src": "/cubeone/jusomoa/icons/ai/o9-solutions.webp",
+      "action_type": "link",
+      "url": "https://www.o9solutions.com",
+      "category": "ai"
+    },
+    {
+      "slug": "open-compute-project",
+      "label": "Open Compute Project",
+      "icon_src": "/cubeone/jusomoa/icons/ai/open-compute-project.webp",
+      "action_type": "link",
+      "url": "https://www.opencomputeproject.com",
+      "category": "ai"
+    },
+    {
+      "slug": "openai-sora",
+      "label": "Openai Sora",
+      "icon_src": "/cubeone/jusomoa/icons/ai/openai-sora.webp",
+      "action_type": "link",
+      "url": "https://www.openaisora.com",
+      "category": "ai"
+    },
+    {
+      "slug": "openlattice",
+      "label": "Openlattice",
+      "icon_src": "/cubeone/jusomoa/icons/ai/openlattice.webp",
+      "action_type": "link",
+      "url": "https://www.openlattice.com",
+      "category": "ai"
+    },
+    {
+      "slug": "optimizely-ai",
+      "label": "Optimizely Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/optimizely-ai.webp",
+      "action_type": "link",
+      "url": "https://www.optimizelyai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "opusclip",
+      "label": "Opusclip",
+      "icon_src": "/cubeone/jusomoa/icons/ai/opusclip.webp",
+      "action_type": "link",
+      "url": "https://www.opusclip.com",
+      "category": "ai"
+    },
+    {
+      "slug": "orbital-insight",
+      "label": "오비탈 인사이트",
+      "icon_src": "/cubeone/jusomoa/icons/ai/orbital-insight.webp",
+      "action_type": "link",
+      "url": "https://www.orbitalinsight.com",
+      "category": "ai"
+    },
+    {
+      "slug": "otter-ai-chat",
+      "label": "Otter.Ai Chat",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/otter-ai-chat.webp",
+      "action_type": "link",
+      "url": "https://www.otteraichat.com",
+      "category": "ai"
+    },
+    {
+      "slug": "otter-ai-pilot",
+      "label": "Otter.Ai Pilot",
+      "icon_src": "/cubeone/jusomoa/icons/ai/otter-ai-pilot.webp",
+      "action_type": "link",
+      "url": "https://www.otteraipilot.com",
+      "category": "ai"
+    },
+    {
+      "slug": "otter-ai-teams",
+      "label": "Otter.Ai Teams",
+      "icon_src": "/cubeone/jusomoa/icons/ai/otter-ai-teams.webp",
+      "action_type": "link",
+      "url": "https://www.otteraiteams.com",
+      "category": "ai"
+    },
+    {
+      "slug": "otter-ai",
+      "label": "Otter.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/otter-ai.webp",
+      "action_type": "link",
+      "url": "https://www.otterai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "otter-pilot",
+      "label": "오터 파일럿",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/otter-pilot.webp",
+      "action_type": "link",
+      "url": "https://www.otterpilot.com",
+      "category": "ai"
+    },
+    {
+      "slug": "oura-advisor",
+      "label": "Oura Advisor",
+      "icon_src": "/cubeone/jusomoa/icons/ai/oura-advisor.webp",
+      "action_type": "link",
+      "url": "https://www.ouraadvisor.com",
+      "category": "ai"
+    },
+    {
+      "slug": "outreach-ai",
+      "label": "Outreach Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/outreach-ai.webp",
+      "action_type": "link",
+      "url": "https://www.outreachai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "palo-alto-cortex-xsiam",
+      "label": "Palo Alto Cortex Xsiam",
+      "icon_src": "/cubeone/jusomoa/icons/ai/palo-alto-cortex-xsiam.webp",
+      "action_type": "link",
+      "url": "https://www.paloaltocortexxsiam.com",
+      "category": "ai"
+    },
+    {
+      "slug": "palo-alto-cortex",
+      "label": "Palo Alto Cortex",
+      "icon_src": "/cubeone/jusomoa/icons/ai/palo-alto-cortex.webp",
+      "action_type": "link",
+      "url": "https://www.paloaltocortex.com",
+      "category": "ai"
+    },
+    {
+      "slug": "paradox-olivia",
+      "label": "Paradox (Olivia)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/paradox-olivia.webp",
+      "action_type": "link",
+      "url": "https://www.paradoxolivia.com",
+      "category": "ai"
+    },
+    {
+      "slug": "pathai",
+      "label": "패스AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/pathai.webp",
+      "action_type": "link",
+      "url": "https://www.pathai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "pencil-ai",
+      "label": "Pencil Ai",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/pencil-ai.webp",
+      "action_type": "link",
+      "url": "https://www.pencilai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "perplexity",
+      "label": "퍼플렉시티 AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/perplexity.webp",
+      "action_type": "link",
+      "url": "https://www.perplexity.ai",
+      "category": "ai"
+    },
+    {
+      "slug": "personal-ai",
+      "label": "퍼스널 AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/personal-ai.webp",
+      "action_type": "link",
+      "url": "https://www.personalai.so/",
+      "category": "ai"
+    },
+    {
+      "slug": "pexels-ai",
+      "label": "Pexels Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/pexels-ai.webp",
+      "action_type": "link",
+      "url": "https://www.pexelsai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "photoroom",
+      "label": "포토룸",
+      "icon_src": "/cubeone/jusomoa/icons/ai/photoroom.webp",
+      "action_type": "link",
+      "url": "https://www.photoroom.com",
+      "category": "ai"
+    },
+    {
+      "slug": "phrasee",
+      "label": "Phrasee",
+      "icon_src": "/cubeone/jusomoa/icons/ai/phrasee.webp",
+      "action_type": "link",
+      "url": "https://www.phrasee.com",
+      "category": "ai"
+    },
+    {
+      "slug": "pika-1-5-effects",
+      "label": "Pika 1.5 (Effects)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/pika-1-5-effects.webp",
+      "action_type": "link",
+      "url": "https://www.pika15effects.com",
+      "category": "ai"
+    },
+    {
+      "slug": "pika-1-5",
+      "label": "Pika 1.5",
+      "icon_src": "/cubeone/jusomoa/icons/ai/pika-1-5.webp",
+      "action_type": "link",
+      "url": "https://www.pika15.com",
+      "category": "ai"
+    },
+    {
+      "slug": "pika-2-5",
+      "label": "Pika 2.5",
+      "icon_src": "/cubeone/jusomoa/icons/ai/pika-2-5.webp",
+      "action_type": "link",
+      "url": "https://www.pika25.com",
+      "category": "ai"
+    },
+    {
+      "slug": "pika-labs",
+      "label": "피카 랩스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/pika-labs.webp",
+      "action_type": "link",
+      "url": "https://www.pikalabs.com",
+      "category": "ai"
+    },
+    {
+      "slug": "pinecone",
+      "label": "파인콘",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/pinecone.webp",
+      "action_type": "link",
+      "url": "https://www.pinecone.com",
+      "category": "ai"
+    },
+    {
+      "slug": "pixis",
+      "label": "Pixis",
+      "icon_src": "/cubeone/jusomoa/icons/ai/pixis.webp",
+      "action_type": "link",
+      "url": "https://www.pixis.com",
+      "category": "ai"
+    },
+    {
+      "slug": "pixlr-ai",
+      "label": "Pixlr Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/pixlr-ai.webp",
+      "action_type": "link",
+      "url": "https://www.pixlrai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "planet-insights",
+      "label": "Planet Insights",
+      "icon_src": "/cubeone/jusomoa/icons/ai/planet-insights.webp",
+      "action_type": "link",
+      "url": "https://www.planetinsights.com",
+      "category": "ai"
+    },
+    {
+      "slug": "play-ht",
+      "label": "Play.Ht",
+      "icon_src": "/cubeone/jusomoa/icons/ai/play-ht.webp",
+      "action_type": "link",
+      "url": "https://www.playht.com",
+      "category": "ai"
+    },
+    {
+      "slug": "playht-2-0",
+      "label": "Playht 2.0",
+      "icon_src": "/cubeone/jusomoa/icons/ai/playht-2-0.webp",
+      "action_type": "link",
+      "url": "https://www.playht20.com",
+      "category": "ai"
+    },
+    {
+      "slug": "plenty-ai",
+      "label": "Plenty Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/plenty-ai.webp",
+      "action_type": "link",
+      "url": "https://www.plentyai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "podcastle",
+      "label": "Podcastle",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/podcastle.webp",
+      "action_type": "link",
+      "url": "https://www.podcastle.com",
+      "category": "ai"
+    },
+    {
+      "slug": "poe",
+      "label": "포",
+      "icon_src": "/cubeone/jusomoa/icons/ai/poe.webp",
+      "action_type": "link",
+      "url": "https://www.poe.com",
+      "category": "ai"
+    },
+    {
+      "slug": "polycam-ai",
+      "label": "Polycam Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/polycam-ai.webp",
+      "action_type": "link",
+      "url": "https://www.polycamai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "polymer",
+      "label": "Polymer",
+      "icon_src": "/cubeone/jusomoa/icons/ai/polymer.webp",
+      "action_type": "link",
+      "url": "https://www.polymer.com",
+      "category": "ai"
+    },
+    {
+      "slug": "power-bi-copilot",
+      "label": "Power Bi Copilot",
+      "icon_src": "/cubeone/jusomoa/icons/ai/power-bi-copilot.webp",
+      "action_type": "link",
+      "url": "https://www.powerbicopilot.com",
+      "category": "ai"
+    },
+    {
+      "slug": "prezi-ai",
+      "label": "Prezi Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/prezi-ai.webp",
+      "action_type": "link",
+      "url": "https://www.preziai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "procore-ai",
+      "label": "Procore Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/procore-ai.webp",
+      "action_type": "link",
+      "url": "https://www.procoreai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "promethean-ai",
+      "label": "프로메테안 AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/promethean-ai.webp",
+      "action_type": "link",
+      "url": "https://www.prometheanai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "qualcomm-ai-hub",
+      "label": "퀄컴 AI 허브",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/qualcomm-ai-hub.webp",
+      "action_type": "link",
+      "url": "https://www.qualcommaihub.com",
+      "category": "ai"
+    },
+    {
+      "slug": "quillbot",
+      "label": "퀼봇",
+      "icon_src": "/cubeone/jusomoa/icons/ai/quillbot.webp",
+      "action_type": "link",
+      "url": "https://www.quillbot.com",
+      "category": "ai"
+    },
+    {
+      "slug": "quizlet-q-chat",
+      "label": "Quizlet Q Chat",
+      "icon_src": "/cubeone/jusomoa/icons/ai/quizlet-q-chat.webp",
+      "action_type": "link",
+      "url": "https://www.quizletqchat.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rapidminer",
+      "label": "래피드마이너",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/rapidminer.webp",
+      "action_type": "link",
+      "url": "https://www.rapidminer.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rask-ai",
+      "label": "라스크 AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/rask-ai.webp",
+      "action_type": "link",
+      "url": "https://www.raskai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "read-ai",
+      "label": "Read Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/read-ai.webp",
+      "action_type": "link",
+      "url": "https://www.readai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "recraft-ai",
+      "label": "Recraft.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/recraft-ai.webp",
+      "action_type": "link",
+      "url": "https://www.recraftai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "recursion-pharma",
+      "label": "리커전 파마",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/recursion-pharma.webp",
+      "action_type": "link",
+      "url": "https://www.recursionpharma.com",
+      "category": "ai"
+    },
+    {
+      "slug": "relay-app",
+      "label": "Relay.App",
+      "icon_src": "/cubeone/jusomoa/icons/ai/relay-app.webp",
+      "action_type": "link",
+      "url": "https://www.relayapp.com",
+      "category": "ai"
+    },
+    {
+      "slug": "relume-ai",
+      "label": "Relume Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/relume-ai.webp",
+      "action_type": "link",
+      "url": "https://www.relumeai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "remove-bg",
+      "label": "리무브BG",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/remove-bg.webp",
+      "action_type": "link",
+      "url": "https://www.removebg.com",
+      "category": "ai"
+    },
+    {
+      "slug": "replit",
+      "label": "레플릿",
+      "icon_src": "/cubeone/jusomoa/icons/ai/replit.webp",
+      "action_type": "link",
+      "url": "https://replit.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rescale",
+      "label": "리스케일",
+      "icon_src": "/cubeone/jusomoa/icons/ai/rescale.webp",
+      "action_type": "link",
+      "url": "https://www.rescale.com",
+      "category": "ai"
+    },
+    {
+      "slug": "researchgate-ai",
+      "label": "Researchgate Ai",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/researchgate-ai.webp",
+      "action_type": "link",
+      "url": "https://www.researchgateai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "resemble-ai",
+      "label": "리젬블 AI",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/resemble-ai.webp",
+      "action_type": "link",
+      "url": "https://www.resembleai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "respeecher",
+      "label": "리스피처",
+      "icon_src": "/cubeone/jusomoa/icons/ai/respeecher.webp",
+      "action_type": "link",
+      "url": "https://www.respeecher.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rev-ai",
+      "label": "Rev.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/rev-ai.webp",
+      "action_type": "link",
+      "url": "https://www.revai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rewind-limitless",
+      "label": "Rewind (Limitless)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/rewind-limitless.webp",
+      "action_type": "link",
+      "url": "https://www.rewindlimitless.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rigetti-novera",
+      "label": "Rigetti Novera",
+      "icon_src": "/cubeone/jusomoa/icons/ai/rigetti-novera.webp",
+      "action_type": "link",
+      "url": "https://www.rigettinovera.com",
+      "category": "ai"
+    },
+    {
+      "slug": "riverside-fm",
+      "label": "Riverside.Fm",
+      "icon_src": "/cubeone/jusomoa/icons/ai/riverside-fm.webp",
+      "action_type": "link",
+      "url": "https://www.riversidefm.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rockwell-automation-ai",
+      "label": "Rockwell Automation Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/rockwell-automation-ai.webp",
+      "action_type": "link",
+      "url": "https://www.rockwellautomationai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rodin-deemos",
+      "label": "Rodin (Deemos)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/rodin-deemos.webp",
+      "action_type": "link",
+      "url": "https://www.rodindeemos.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rows",
+      "label": "로우즈",
+      "icon_src": "/cubeone/jusomoa/icons/ai/rows.webp",
+      "action_type": "link",
+      "url": "https://www.rows.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rready",
+      "label": "알레디",
+      "icon_src": "/cubeone/jusomoa/icons/ai/rready.webp",
+      "action_type": "link",
+      "url": "https://www.rready.com",
+      "category": "ai"
+    },
+    {
+      "slug": "runway-gen-3-alpha",
+      "label": "Runway Gen 3 Alpha",
+      "icon_src": "/cubeone/jusomoa/icons/ai/runway-gen-3-alpha.webp",
+      "action_type": "link",
+      "url": "https://www.runwaygen3alpha.com",
+      "category": "ai"
+    },
+    {
+      "slug": "runway-gen-4",
+      "label": "Runway Gen 4",
+      "icon_src": "/cubeone/jusomoa/icons/ai/runway-gen-4.webp",
+      "action_type": "link",
+      "url": "https://www.runwaygen4.com",
+      "category": "ai"
+    },
+    {
+      "slug": "runwayml",
+      "label": "런웨이",
+      "icon_src": "/cubeone/jusomoa/icons/ai/runwayml.webp",
+      "action_type": "link",
+      "url": "https://runwayml.com",
+      "category": "ai"
+    },
+    {
+      "slug": "rytr",
+      "label": "라이터",
+      "icon_src": "/cubeone/jusomoa/icons/ai/rytr.webp",
+      "action_type": "link",
+      "url": "https://rytr.me/",
+      "category": "ai"
+    },
+    {
+      "slug": "safegraph",
+      "label": "세이프그래프",
+      "icon_src": "/cubeone/jusomoa/icons/ai/safegraph.webp",
+      "action_type": "link",
+      "url": "https://www.safegraph.com",
+      "category": "ai"
+    },
+    {
+      "slug": "sanas-ai-enterprise",
+      "label": "Sanas.Ai (Enterprise)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/sanas-ai-enterprise.webp",
+      "action_type": "link",
+      "url": "https://www.sanasaienterprise.com",
+      "category": "ai"
+    },
+    {
+      "slug": "sanas",
+      "label": "Sanas",
+      "icon_src": "/cubeone/jusomoa/icons/ai/sanas.webp",
+      "action_type": "link",
+      "url": "https://www.sanas.com",
+      "category": "ai"
+    },
+    {
+      "slug": "sanctuary-ai",
+      "label": "Sanctuary Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/sanctuary-ai.webp",
+      "action_type": "link",
+      "url": "https://www.sanctuaryai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "scalenut",
+      "label": "스케일넛",
+      "icon_src": "/cubeone/jusomoa/icons/ai/scalenut.webp",
+      "action_type": "link",
+      "url": "https://www.scalenut.com",
+      "category": "ai"
+    },
+    {
+      "slug": "scholarcy",
+      "label": "스칼라시",
+      "icon_src": "/cubeone/jusomoa/icons/ai/scholarcy.webp",
+      "action_type": "link",
+      "url": "https://www.scholarcy.com",
+      "category": "ai"
+    },
+    {
+      "slug": "scispace-typeset",
+      "label": "Scispace (Typeset)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/scispace-typeset.webp",
+      "action_type": "link",
+      "url": "https://www.scispacetypeset.com",
+      "category": "ai"
+    },
+    {
+      "slug": "scispace",
+      "label": "Scispace",
+      "icon_src": "/cubeone/jusomoa/icons/ai/scispace.webp",
+      "action_type": "link",
+      "url": "https://www.scispace.com",
+      "category": "ai"
+    },
+    {
+      "slug": "scite-ai",
+      "label": "사이트 AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/scite-ai.webp",
+      "action_type": "link",
+      "url": "https://www.sciteai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "screenapp-io",
+      "label": "Screenapp.Io",
+      "icon_src": "/cubeone/jusomoa/icons/ai/screenapp-io.webp",
+      "action_type": "link",
+      "url": "https://www.screenappio.com",
+      "category": "ai"
+    },
+    {
+      "slug": "scribe",
+      "label": "스크라이브",
+      "icon_src": "/cubeone/jusomoa/icons/ai/scribe.webp",
+      "action_type": "link",
+      "url": "https://www.scribe.com",
+      "category": "ai"
+    },
+    {
+      "slug": "sentinelone",
+      "label": "센티넬원",
+      "icon_src": "/cubeone/jusomoa/icons/ai/sentinelone.webp",
+      "action_type": "link",
+      "url": "https://www.sentinelone.com",
+      "category": "ai"
+    },
+    {
+      "slug": "siemens-industrial-ai",
+      "label": "Siemens Industrial Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/siemens-industrial-ai.webp",
+      "action_type": "link",
+      "url": "https://www.siemensindustrialai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "sift",
+      "label": "시프트",
+      "icon_src": "/cubeone/jusomoa/icons/ai/sift.webp",
+      "action_type": "link",
+      "url": "https://www.sift.com",
+      "category": "ai"
+    },
+    {
+      "slug": "slidesgo-ai",
+      "label": "Slidesgo Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/slidesgo-ai.webp",
+      "action_type": "link",
+      "url": "https://www.slidesgoai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "slingshot-aerospace",
+      "label": "Slingshot Aerospace",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/slingshot-aerospace.webp",
+      "action_type": "link",
+      "url": "https://www.slingshotaerospace.com",
+      "category": "ai"
+    },
+    {
+      "slug": "slite-ask",
+      "label": "Slite Ask",
+      "icon_src": "/cubeone/jusomoa/icons/ai/slite-ask.webp",
+      "action_type": "link",
+      "url": "https://www.sliteask.com",
+      "category": "ai"
+    },
+    {
+      "slug": "smart-nation-aida",
+      "label": "Smart Nation (Aida)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/smart-nation-aida.webp",
+      "action_type": "link",
+      "url": "https://www.smartnationaida.com",
+      "category": "ai"
+    },
+    {
+      "slug": "smart-nation-singapore",
+      "label": "Smart Nation Singapore",
+      "icon_src": "/cubeone/jusomoa/icons/ai/smart-nation-singapore.webp",
+      "action_type": "link",
+      "url": "https://www.smartnationsingapore.com",
+      "category": "ai"
+    },
+    {
+      "slug": "snyk-ai",
+      "label": "Snyk Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/snyk-ai.webp",
+      "action_type": "link",
+      "url": "https://www.snykai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "socure",
+      "label": "소큐어",
+      "icon_src": "/cubeone/jusomoa/icons/ai/socure.webp",
+      "action_type": "link",
+      "url": "https://www.socure.com",
+      "category": "ai"
+    },
+    {
+      "slug": "sora-openai",
+      "label": "Sora (Openai)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/sora-openai.webp",
+      "action_type": "link",
+      "url": "https://www.soraopenai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "soundhound-ai",
+      "label": "Soundhound Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/soundhound-ai.webp",
+      "action_type": "link",
+      "url": "https://www.soundhoundai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "soundraw",
+      "label": "Soundraw",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/soundraw.webp",
+      "action_type": "link",
+      "url": "https://www.soundraw.com",
+      "category": "ai"
+    },
+    {
+      "slug": "sourcegraph-cody",
+      "label": "Sourcegraph Cody",
+      "icon_src": "/cubeone/jusomoa/icons/ai/sourcegraph-cody.webp",
+      "action_type": "link",
+      "url": "https://www.sourcegraphcody.com",
+      "category": "ai"
+    },
+    {
+      "slug": "spacemaker-autodesk",
+      "label": "Spacemaker (Autodesk)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/spacemaker-autodesk.webp",
+      "action_type": "link",
+      "url": "https://www.spacemakerautodesk.com",
+      "category": "ai"
+    },
+    {
+      "slug": "spacevision",
+      "label": "Spacevision",
+      "icon_src": "/cubeone/jusomoa/icons/ai/spacevision.webp",
+      "action_type": "link",
+      "url": "https://www.spacevision.com",
+      "category": "ai"
+    },
+    {
+      "slug": "spacex-starshield-ai",
+      "label": "Spacex Starshield Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/spacex-starshield-ai.webp",
+      "action_type": "link",
+      "url": "https://www.spacexstarshieldai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "speechify",
+      "label": "스피치파이",
+      "icon_src": "/cubeone/jusomoa/icons/ai/speechify.webp",
+      "action_type": "link",
+      "url": "https://www.speechify.com",
+      "category": "ai"
+    },
+    {
+      "slug": "spline-ai",
+      "label": "스플라인 AI",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/spline-ai.webp",
+      "action_type": "link",
+      "url": "https://www.splineai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "sprout-social",
+      "label": "스프라우트 소셜",
+      "icon_src": "/cubeone/jusomoa/icons/ai/sprout-social.webp",
+      "action_type": "link",
+      "url": "https://www.sproutsocial.com",
+      "category": "ai"
+    },
+    {
+      "slug": "stability",
+      "label": "스테이블 디퓨전",
+      "icon_src": "/cubeone/jusomoa/icons/ai/stability.webp",
+      "action_type": "link",
+      "url": "https://stability.ai",
+      "category": "ai"
+    },
+    {
+      "slug": "stable-video-diffusion",
+      "label": "Stable Video Diffusion",
+      "icon_src": "/cubeone/jusomoa/icons/ai/stable-video-diffusion.webp",
+      "action_type": "link",
+      "url": "https://www.stablevideodiffusion.com",
+      "category": "ai"
+    },
+    {
+      "slug": "starship-technologies",
+      "label": "Starship Technologies",
+      "icon_src": "/cubeone/jusomoa/icons/ai/starship-technologies.webp",
+      "action_type": "link",
+      "url": "https://www.starshiptechnologies.com",
+      "category": "ai"
+    },
+    {
+      "slug": "stellar-cyber",
+      "label": "Stellar Cyber",
+      "icon_src": "/cubeone/jusomoa/icons/ai/stellar-cyber.webp",
+      "action_type": "link",
+      "url": "https://www.stellarcyber.com",
+      "category": "ai"
+    },
+    {
+      "slug": "stem-ai",
+      "label": "Stem Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/stem-ai.webp",
+      "action_type": "link",
+      "url": "https://www.stemai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "submagic",
+      "label": "서브매직",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/submagic.webp",
+      "action_type": "link",
+      "url": "https://www.submagic.com",
+      "category": "ai"
+    },
+    {
+      "slug": "sudowrite",
+      "label": "수도라이트",
+      "icon_src": "/cubeone/jusomoa/icons/ai/sudowrite.webp",
+      "action_type": "link",
+      "url": "https://www.sudowrite.com",
+      "category": "ai"
+    },
+    {
+      "slug": "suno-ai",
+      "label": "Suno Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/suno-ai.webp",
+      "action_type": "link",
+      "url": "https://www.sunoai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "suno-v3-5",
+      "label": "Suno V3.5",
+      "icon_src": "/cubeone/jusomoa/icons/ai/suno-v3-5.webp",
+      "action_type": "link",
+      "url": "https://www.sunov35.com",
+      "category": "ai"
+    },
+    {
+      "slug": "suno",
+      "label": "수노",
+      "icon_src": "/cubeone/jusomoa/icons/ai/suno.webp",
+      "action_type": "link",
+      "url": "https://suno.com",
+      "category": "ai"
+    },
+    {
+      "slug": "supernormal",
+      "label": "슈퍼노멀",
+      "icon_src": "/cubeone/jusomoa/icons/ai/supernormal.webp",
+      "action_type": "link",
+      "url": "https://www.supernormal.com",
+      "category": "ai"
+    },
+    {
+      "slug": "surfer-seo",
+      "label": "Surfer Seo",
+      "icon_src": "/cubeone/jusomoa/icons/ai/surfer-seo.webp",
+      "action_type": "link",
+      "url": "https://www.surferseo.com",
+      "category": "ai"
+    },
+    {
+      "slug": "synchron-switch",
+      "label": "Synchron Switch",
+      "icon_src": "/cubeone/jusomoa/icons/ai/synchron-switch.webp",
+      "action_type": "link",
+      "url": "https://www.synchronswitch.com",
+      "category": "ai"
+    },
+    {
+      "slug": "synthesia-2-0",
+      "label": "Synthesia 2.0",
+      "icon_src": "/cubeone/jusomoa/icons/ai/synthesia-2-0.webp",
+      "action_type": "link",
+      "url": "https://www.synthesia20.com",
+      "category": "ai"
+    },
+    {
+      "slug": "synthesia",
+      "label": "신세시아",
+      "icon_src": "/cubeone/jusomoa/icons/ai/synthesia.webp",
+      "action_type": "link",
+      "url": "https://www.synthesia.com",
+      "category": "ai"
+    },
+    {
+      "slug": "syte",
+      "label": "Syte",
+      "icon_src": "/cubeone/jusomoa/icons/ai/syte.webp",
+      "action_type": "link",
+      "url": "https://www.syte.com",
+      "category": "ai"
+    },
+    {
+      "slug": "tableau-pulse",
+      "label": "태블로 펄스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/tableau-pulse.webp",
+      "action_type": "link",
+      "url": "https://www.tableaupulse.com",
+      "category": "ai"
+    },
+    {
+      "slug": "tabnine",
+      "label": "탭나인",
+      "icon_src": "/cubeone/jusomoa/icons/ai/tabnine.webp",
+      "action_type": "link",
+      "url": "https://www.tabnine.com",
+      "category": "ai"
+    },
+    {
+      "slug": "tailor-brands",
+      "label": "테일러 브랜즈",
+      "icon_src": "/cubeone/jusomoa/icons/ai/tailor-brands.webp",
+      "action_type": "link",
+      "url": "https://www.tailorbrands.com",
+      "category": "ai"
+    },
+    {
+      "slug": "taplio",
+      "label": "타플리오",
+      "icon_src": "/cubeone/jusomoa/icons/ai/taplio.webp",
+      "action_type": "link",
+      "url": "https://www.taplio.com",
+      "category": "ai"
+    },
+    {
+      "slug": "taskade-ai",
+      "label": "Taskade Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/taskade-ai.webp",
+      "action_type": "link",
+      "url": "https://www.taskadeai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "tavus",
+      "label": "Tavus",
+      "icon_src": "/cubeone/jusomoa/icons/ai/tavus.webp",
+      "action_type": "link",
+      "url": "https://www.tavus.com",
+      "category": "ai"
+    },
+    {
+      "slug": "teachbetter-ai",
+      "label": "Teachbetter.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/teachbetter-ai.webp",
+      "action_type": "link",
+      "url": "https://www.teachbetterai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "terrapower-ai",
+      "label": "Terrapower Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/terrapower-ai.webp",
+      "action_type": "link",
+      "url": "https://www.terrapowerai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "tesla-optimus",
+      "label": "Tesla Optimus",
+      "icon_src": "/cubeone/jusomoa/icons/ai/tesla-optimus.webp",
+      "action_type": "link",
+      "url": "https://www.teslaoptimus.com",
+      "category": "ai"
+    },
+    {
+      "slug": "tessian",
+      "label": "테시안",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/tessian.webp",
+      "action_type": "link",
+      "url": "https://www.tessian.com",
+      "category": "ai"
+    },
+    {
+      "slug": "testfit",
+      "label": "테스트핏",
+      "icon_src": "/cubeone/jusomoa/icons/ai/testfit.webp",
+      "action_type": "link",
+      "url": "https://www.testfit.io/",
+      "category": "ai"
+    },
+    {
+      "slug": "the-trade-desk-ai",
+      "label": "The Trade Desk Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/the-trade-desk-ai.webp",
+      "action_type": "link",
+      "url": "https://www.thetradedeskai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "tidio-lyro",
+      "label": "Tidio Lyro",
+      "icon_src": "/cubeone/jusomoa/icons/ai/tidio-lyro.webp",
+      "action_type": "link",
+      "url": "https://www.tidiolyro.com",
+      "category": "ai"
+    },
+    {
+      "slug": "toggle",
+      "label": "Toggle",
+      "icon_src": "/cubeone/jusomoa/icons/ai/toggle.webp",
+      "action_type": "link",
+      "url": "https://www.toggle.com",
+      "category": "ai"
+    },
+    {
+      "slug": "tome",
+      "label": "Tome",
+      "icon_src": "/cubeone/jusomoa/icons/ai/tome.webp",
+      "action_type": "link",
+      "url": "https://www.tome.com",
+      "category": "ai"
+    },
+    {
+      "slug": "topaz-photo-ai",
+      "label": "Topaz Photo Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/topaz-photo-ai.webp",
+      "action_type": "link",
+      "url": "https://www.topazphotoai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "trax-retail",
+      "label": "트랙스 리테일",
+      "icon_src": "/cubeone/jusomoa/icons/ai/trax-retail.webp",
+      "action_type": "link",
+      "url": "https://www.traxretail.com",
+      "category": "ai"
+    },
+    {
+      "slug": "twinmotion-ai",
+      "label": "Twinmotion Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/twinmotion-ai.webp",
+      "action_type": "link",
+      "url": "https://www.twinmotionai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "udio",
+      "label": "유디오",
+      "icon_src": "/cubeone/jusomoa/icons/ai/udio.webp",
+      "action_type": "link",
+      "url": "https://www.udio.com",
+      "category": "ai"
+    },
+    {
+      "slug": "uizard-autodesigner",
+      "label": "Uizard Autodesigner",
+      "icon_src": "/cubeone/jusomoa/icons/ai/uizard-autodesigner.webp",
+      "action_type": "link",
+      "url": "https://www.uizardautodesigner.com",
+      "category": "ai"
+    },
+    {
+      "slug": "uizard",
+      "label": "유아이자드",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/uizard.webp",
+      "action_type": "link",
+      "url": "https://www.uizard.com",
+      "category": "ai"
+    },
+    {
+      "slug": "unitree-g1",
+      "label": "Unitree G1",
+      "icon_src": "/cubeone/jusomoa/icons/ai/unitree-g1.webp",
+      "action_type": "link",
+      "url": "https://www.unitreeg1.com",
+      "category": "ai"
+    },
+    {
+      "slug": "unity-ml-agents",
+      "label": "Unity Ml Agents",
+      "icon_src": "/cubeone/jusomoa/icons/ai/unity-ml-agents.webp",
+      "action_type": "link",
+      "url": "https://www.unitymlagents.com",
+      "category": "ai"
+    },
+    {
+      "slug": "unsplash-ai",
+      "label": "Unsplash Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/unsplash-ai.webp",
+      "action_type": "link",
+      "url": "https://www.unsplashai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "uplight",
+      "label": "업라이트",
+      "icon_src": "/cubeone/jusomoa/icons/ai/uplight.webp",
+      "action_type": "link",
+      "url": "https://www.uplight.com",
+      "category": "ai"
+    },
+    {
+      "slug": "v0-dev",
+      "label": "v0.dev",
+      "icon_src": "/cubeone/jusomoa/icons/ai/v0-dev.webp",
+      "action_type": "link",
+      "url": "https://v0.dev",
+      "category": "ai"
+    },
+    {
+      "slug": "vanceai",
+      "label": "반스AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/vanceai.webp",
+      "action_type": "link",
+      "url": "https://www.vanceai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "vectary-ai",
+      "label": "Vectary Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/vectary-ai.webp",
+      "action_type": "link",
+      "url": "https://www.vectaryai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "vercel-ai-sdk",
+      "label": "버셀 AI SDK",
+      "icon_src": "/cubeone/jusomoa/icons/ai/vercel-ai-sdk.webp",
+      "action_type": "link",
+      "url": "https://www.vercelaisdk.com",
+      "category": "ai"
+    },
+    {
+      "slug": "vidyo-ai",
+      "label": "비디오 AI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/vidyo-ai.webp",
+      "action_type": "link",
+      "url": "https://www.vidyoai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "visenze",
+      "label": "비센즈",
+      "icon_src": "/cubeone/jusomoa/icons/ai/visenze.webp",
+      "action_type": "link",
+      "url": "https://www.visenze.com",
+      "category": "ai"
+    },
+    {
+      "slug": "viz-ai",
+      "label": "Viz.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/viz-ai.webp",
+      "action_type": "link",
+      "url": "https://www.vizai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "voice-ai",
+      "label": "Voice.Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/voice-ai.webp",
+      "action_type": "link",
+      "url": "https://www.voiceai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "voicemod",
+      "label": "보이스모드",
+      "icon_src": "/cubeone/jusomoa/icons/ai/voicemod.webp",
+      "action_type": "link",
+      "url": "https://www.voicemod.com",
+      "category": "ai"
+    },
+    {
+      "slug": "watershed",
+      "label": "워터쉐드",
+      "icon_src": "/cubeone/jusomoa/icons/ai/watershed.webp",
+      "action_type": "link",
+      "url": "https://www.watershed.com",
+      "category": "ai"
+    },
+    {
+      "slug": "wayve-embark",
+      "label": "Wayve (Embark)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/wayve-embark.webp",
+      "action_type": "link",
+      "url": "https://www.wayveembark.com",
+      "category": "ai"
+    },
+    {
+      "slug": "wayve",
+      "label": "Wayve",
+      "icon_src": "/cubeone/jusomoa/icons/ai/wayve.webp",
+      "action_type": "link",
+      "url": "https://www.wayve.com",
+      "category": "ai"
+    },
+    {
+      "slug": "weights-26-biases-launch",
+      "label": "Weights %26 Biases (Launch)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/weights-26-biases-launch.webp",
+      "action_type": "link",
+      "url": "https://www.weights26biaseslaunch.com",
+      "category": "ai"
+    },
+    {
+      "slug": "weights-26-biases",
+      "label": "Weights %26 Biases",
+      "icon_src": "/cubeone/jusomoa/icons/ai/weights-26-biases.webp",
+      "action_type": "link",
+      "url": "https://www.weights26biases.com",
+      "category": "ai"
+    },
+    {
+      "slug": "whimsical-ai",
+      "label": "Whimsical Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/whimsical-ai.webp",
+      "action_type": "link",
+      "url": "https://www.whimsicalai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "whoop-ai",
+      "label": "Whoop Ai",
+      "icon_src": "/cubeone/jusomoa/icons/ai/whoop-ai.webp",
+      "action_type": "link",
+      "url": "https://www.whoopai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "wing-alphabet",
+      "label": "Wing (Alphabet)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/wing-alphabet.webp",
+      "action_type": "link",
+      "url": "https://www.wingalphabet.com",
+      "category": "ai"
+    },
+    {
+      "slug": "wix-adi",
+      "label": "윅스 ADI",
+      "icon_src": "/cubeone/jusomoa/icons/ai/wix-adi.webp",
+      "action_type": "link",
+      "url": "https://www.wixadi.com",
+      "category": "ai"
+    },
+    {
+      "slug": "woebot-clinical-ai",
+      "label": "Woebot (Clinical Ai)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/woebot-clinical-ai.webp",
+      "action_type": "link",
+      "url": "https://www.woebotclinicalai.com",
+      "category": "ai"
+    },
+    {
+      "slug": "woebot-health",
+      "label": "위봇 헬스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/woebot-health.webp",
+      "action_type": "link",
+      "url": "https://www.woebothealth.com",
+      "category": "ai"
+    },
+    {
+      "slug": "wonder-dynamics",
+      "label": "원더 다이내믹스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/wonder-dynamics.webp",
+      "action_type": "link",
+      "url": "https://www.wonderdynamics.com",
+      "category": "ai"
+    },
+    {
+      "slug": "writesonic-5-0",
+      "label": "Writesonic 5.0",
+      "icon_src": "/cubeone/jusomoa/icons/ai/writesonic-5-0.webp",
+      "action_type": "link",
+      "url": "https://www.writesonic50.com",
+      "category": "ai"
+    },
+    {
+      "slug": "writesonic",
+      "label": "라이트소닉",
+      "icon_src": "/cubeone/jusomoa/icons/ai/writesonic.webp",
+      "action_type": "link",
+      "url": "https://www.writesonic.com",
+      "category": "ai"
+    },
+    {
+      "slug": "wrtn",
+      "label": "뤼튼",
+      "icon_src": "/cubeone/jusomoa/icons/ai/wrtn.webp",
+      "action_type": "link",
+      "url": "https://wrtn.ai",
+      "category": "ai"
+    },
+    {
+      "slug": "you-com-personal",
+      "label": "You.Com (Personal)",
+      "icon_src": "/cubeone/jusomoa/icons/ai/you-com-personal.webp",
+      "action_type": "link",
+      "url": "https://www.youcompersonal.com",
+      "category": "ai"
+    },
+    {
+      "slug": "zapier-central",
+      "label": "Zapier Central",
+      "icon_src": "/cubeone/jusomoa/icons/ai/zapier-central.webp",
+      "action_type": "link",
+      "url": "https://www.zapiercentral.com",
+      "category": "ai"
+    },
+    {
+      "slug": "zebra-savannah",
+      "label": "Zebra Savannah",
+      "icon_src": "/cubeone/jusomoa/icons/ai/zebra-savannah.webp",
+      "action_type": "link",
+      "url": "https://www.zebrasavannah.com",
+      "category": "ai"
+    },
+    {
+      "slug": "zencity",
+      "label": "Zencity",
+      "icon_src": "/cubeone/jusomoa/icons/ai/zencity.webp",
+      "action_type": "link",
+      "url": "https://www.zencity.com",
+      "category": "ai"
+    },
+    {
+      "slug": "zipline-autonomous",
+      "label": "Zipline Autonomous",
+      "icon_src": "/cubeone/jusomoa/icons/ai/zipline-autonomous.webp",
+      "action_type": "link",
+      "url": "https://www.ziplineautonomous.com",
+      "category": "ai"
+    },
+    {
+      "slug": "zoox",
+      "label": "주옥스",
+      "icon_src": "/cubeone/jusomoa/icons/ai/zoox.webp",
+      "action_type": "link",
+      "url": "https://www.zoox.com",
+      "category": "ai"
+    }
+  ]
+}

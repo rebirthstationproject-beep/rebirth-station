@@ -1,0 +1,470 @@
+{
+  "category": "streaming",
+  "count": 58,
+  "items": [
+    {
+      "slug": "academia",
+      "label": "Academia",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/academia.webp",
+      "action_type": "link",
+      "url": "https://www.academia.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "apple-tv",
+      "label": "애플 TV+",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/apple-tv.webp",
+      "action_type": "link",
+      "url": "https://tv.apple.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "bilibili",
+      "label": "빌리빌리",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/bilibili.webp",
+      "action_type": "link",
+      "url": "https://www.bilibili.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "binge",
+      "label": "빙지",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/binge.webp",
+      "action_type": "link",
+      "url": "https://www.binge.co.kr",
+      "category": "streaming"
+    },
+    {
+      "slug": "brightcove",
+      "label": "브라이트코브",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/brightcove.webp",
+      "action_type": "link",
+      "url": "https://www.brightcove.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "chzzk",
+      "label": "치지직",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/chzzk.webp",
+      "action_type": "link",
+      "url": "https://chzzk.naver.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "coupangplay",
+      "label": "쿠팡플레이",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/coupangplay.webp",
+      "action_type": "link",
+      "url": "https://www.coupangplay.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "crunchyroll",
+      "label": "크런치롤",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/crunchyroll.webp",
+      "action_type": "link",
+      "url": "https://www.crunchyroll.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "curiositystream",
+      "label": "큐리오시티",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/curiositystream.webp",
+      "action_type": "link",
+      "url": "https://www.curiositystream.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "dailymotion",
+      "label": "데일리모션",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/dailymotion.webp",
+      "action_type": "link",
+      "url": "https://www.dailymotion.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "disney",
+      "label": "디즈니플러스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/disney.webp",
+      "action_type": "link",
+      "url": "https://www.disneyplus.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "facebookwatch",
+      "label": "Facebookwatch",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/facebookwatch.webp",
+      "action_type": "link",
+      "url": "https://www.facebookwatch.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "guideposts",
+      "label": "가이드포스트",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/guideposts.webp",
+      "action_type": "link",
+      "url": "https://www.guideposts.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "hbomax",
+      "label": "HBO 맥스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/hbomax.webp",
+      "action_type": "link",
+      "url": "https://www.max.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "hulu",
+      "label": "훌루",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/hulu.webp",
+      "action_type": "link",
+      "url": "https://www.hulu.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "instagramreels",
+      "label": "인스타그램 릴스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/instagramreels.webp",
+      "action_type": "link",
+      "url": "https://www.instagramreels.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "iqiyi",
+      "label": "아이치이",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/iqiyi.webp",
+      "action_type": "link",
+      "url": "https://www.iqiyi.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "kakao-tv",
+      "label": "카카오TV",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/kakao-tv.webp",
+      "action_type": "link",
+      "url": "https://tv.kakao.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "kakaopage",
+      "label": "Kakaopage",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/kakaopage.webp",
+      "action_type": "link",
+      "url": "https://www.kakaopage.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "kakaotv",
+      "label": "Kakaotv",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/kakaotv.webp",
+      "action_type": "link",
+      "url": "https://www.kakaotv.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "kanopy",
+      "label": "카노피",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/kanopy.webp",
+      "action_type": "link",
+      "url": "https://www.kanopy.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "kinolights",
+      "label": "키노라이츠",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/kinolights.webp",
+      "action_type": "link",
+      "url": "https://www.kinolights.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "laftel",
+      "label": "라프텔",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/laftel.webp",
+      "action_type": "link",
+      "url": "https://laftel.net",
+      "category": "streaming"
+    },
+    {
+      "slug": "mnetplus",
+      "label": "Mnetplus",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/mnetplus.webp",
+      "action_type": "link",
+      "url": "https://www.mnetplus.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "mubi",
+      "label": "무비",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/mubi.webp",
+      "action_type": "link",
+      "url": "https://www.mubi.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "myk",
+      "label": "KBS my K",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/myk.webp",
+      "action_type": "link",
+      "url": "https://myK.kbs.co.kr",
+      "category": "streaming"
+    },
+    {
+      "slug": "navertv",
+      "label": "네이버TV",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/navertv.webp",
+      "action_type": "link",
+      "url": "https://www.navertv.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "netflix",
+      "label": "넷플릭스",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/netflix.webp",
+      "action_type": "link",
+      "url": "https://www.netflix.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "now",
+      "label": "네이버 NOW",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/now.webp",
+      "action_type": "link",
+      "url": "https://now.naver.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "onair",
+      "label": "MBC ON",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/onair.webp",
+      "action_type": "link",
+      "url": "https://onair.imbc.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "pandatv",
+      "label": "판다TV",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/pandatv.webp",
+      "action_type": "link",
+      "url": "https://www.pandatv.co.kr",
+      "category": "streaming"
+    },
+    {
+      "slug": "pandoratv",
+      "label": "판도라",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/pandoratv.webp",
+      "action_type": "link",
+      "url": "https://www.pandoratv.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "paramountplus",
+      "label": "파라마운트+",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/paramountplus.webp",
+      "action_type": "link",
+      "url": "https://www.paramountplus.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "peacock",
+      "label": "피콕",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/peacock.webp",
+      "action_type": "link",
+      "url": "https://www.peacock.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "plutotv",
+      "label": "플루토TV",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/plutotv.webp",
+      "action_type": "link",
+      "url": "https://www.plutotv.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "primevideo",
+      "label": "아마존 프라임 비디오",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/primevideo.webp",
+      "action_type": "link",
+      "url": "https://www.primevideo.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "rakutentv",
+      "label": "라쿠텐TV",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/rakutentv.webp",
+      "action_type": "link",
+      "url": "https://www.rakutentv.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "roku",
+      "label": "루쿠",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/roku.webp",
+      "action_type": "link",
+      "url": "https://www.roku.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "seezn",
+      "label": "시즌",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/seezn.webp",
+      "action_type": "link",
+      "url": "https://www.seezn.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "siriusxm",
+      "label": "시리우스XM",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/siriusxm.webp",
+      "action_type": "link",
+      "url": "https://www.siriusxm.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "sooplive",
+      "label": "숲 (SOOP)",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/sooplive.webp",
+      "action_type": "link",
+      "url": "https://www.sooplive.co.kr",
+      "category": "streaming"
+    },
+    {
+      "slug": "tastemade",
+      "label": "테이스트메이드",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/tastemade.webp",
+      "action_type": "link",
+      "url": "https://www.tastemade.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "telecharge",
+      "label": "텔레차지",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/telecharge.webp",
+      "action_type": "link",
+      "url": "https://www.telecharge.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "tiktoklive",
+      "label": "Tiktoklive",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/tiktoklive.webp",
+      "action_type": "link",
+      "url": "https://www.tiktoklive.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "tubi",
+      "label": "투비",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/tubi.webp",
+      "action_type": "link",
+      "url": "https://www.tubi.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "tving",
+      "label": "티빙",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/tving.webp",
+      "action_type": "link",
+      "url": "https://www.tving.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "tvpot",
+      "label": "다음TV팟",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/tvpot.webp",
+      "action_type": "link",
+      "url": "https://tvpot.daum.net",
+      "category": "streaming"
+    },
+    {
+      "slug": "twitch",
+      "label": "트위치",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/twitch.webp",
+      "action_type": "link",
+      "url": "https://www.twitch.tv",
+      "category": "streaming"
+    },
+    {
+      "slug": "uplusmobiletv",
+      "label": "Uplusmobiletv",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/uplusmobiletv.webp",
+      "action_type": "link",
+      "url": "https://www.uplusmobiletv.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "viki",
+      "label": "비키",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/viki.webp",
+      "action_type": "link",
+      "url": "https://www.viki.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "vimeo",
+      "label": "비메오",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/vimeo.webp",
+      "action_type": "link",
+      "url": "https://vimeo.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "vlive",
+      "label": "브이라이브",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/vlive.webp",
+      "action_type": "link",
+      "url": "https://www.vlive.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "watcha",
+      "label": "왓챠",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/watcha.webp",
+      "action_type": "link",
+      "url": "https://watcha.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "wavve",
+      "label": "웨이브",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/wavve.webp",
+      "action_type": "link",
+      "url": "https://www.wavve.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "wetv",
+      "label": "웨모",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/wetv.webp",
+      "action_type": "link",
+      "url": "https://www.wetv.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "weverse",
+      "label": "위버스",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/weverse.webp",
+      "action_type": "link",
+      "url": "https://weverse.io",
+      "category": "streaming"
+    },
+    {
+      "slug": "youtube",
+      "label": "유튜브",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/youtube.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com",
+      "category": "streaming"
+    },
+    {
+      "slug": "youtubelive",
+      "label": "Youtubelive",
+      "icon_src": "/cubeone/jusomoa/icons/streaming/youtubelive.webp",
+      "action_type": "link",
+      "url": "https://www.youtubelive.com",
+      "category": "streaming"
+    }
+  ]
+}

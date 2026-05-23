@@ -1,0 +1,90 @@
+{
+  "root": "cubeone/jusomoa",
+  "total": 1431,
+  "categories": [
+    {
+      "slug": "ai",
+      "count": 449
+    },
+    {
+      "slug": "youtube",
+      "count": 323
+    },
+    {
+      "slug": "sports",
+      "count": 59
+    },
+    {
+      "slug": "cloud",
+      "count": 58
+    },
+    {
+      "slug": "streaming",
+      "count": 58
+    },
+    {
+      "slug": "shopping",
+      "count": 57
+    },
+    {
+      "slug": "sns",
+      "count": 56
+    },
+    {
+      "slug": "coin",
+      "count": 47
+    },
+    {
+      "slug": "tour",
+      "count": 40
+    },
+    {
+      "slug": "portalsite",
+      "count": 38
+    },
+    {
+      "slug": "news",
+      "count": 31
+    },
+    {
+      "slug": "job",
+      "count": 28
+    },
+    {
+      "slug": "music",
+      "count": 28
+    },
+    {
+      "slug": "financial",
+      "count": 26
+    },
+    {
+      "slug": "beauty",
+      "count": 24
+    },
+    {
+      "slug": "estate",
+      "count": 23
+    },
+    {
+      "slug": "webtoon",
+      "count": 23
+    },
+    {
+      "slug": "education",
+      "count": 21
+    },
+    {
+      "slug": "food",
+      "count": 20
+    },
+    {
+      "slug": "game",
+      "count": 20
+    },
+    {
+      "slug": "alliance",
+      "count": 2
+    }
+  ]
+}

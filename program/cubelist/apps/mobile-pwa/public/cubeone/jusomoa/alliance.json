@@ -1,0 +1,22 @@
+{
+  "category": "alliance",
+  "count": 2,
+  "items": [
+    {
+      "slug": "dongsamuso",
+      "label": "동사무소",
+      "icon_src": "/cubeone/jusomoa/icons/alliance/dongsamuso.webp",
+      "action_type": "link",
+      "url": "https://www.xn--2q1bn3l8xewza.com",
+      "category": "alliance"
+    },
+    {
+      "slug": "toss-alliance",
+      "label": "토스",
+      "icon_src": "/cubeone/jusomoa/icons/alliance/toss-alliance.webp",
+      "action_type": "link",
+      "url": "https://toss.im",
+      "category": "alliance"
+    }
+  ]
+}

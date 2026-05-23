@@ -1,0 +1,103 @@
+# ============================================================================
+# 큐브 리스트 PC 헬퍼 (Cube List PC Helper)
+# 회사: 리버스 스테이션 (Rebirth Station)
+# ============================================================================
+#
+# 정착본: docs/tech-review.md §4 (Backend / Rust / Tauri)
+# 플랫폼: Windows 1차 (Mac은 Phase 2)
+# ============================================================================
+
+[package]
+name = "cubelist-pc-helper"
+version = "0.1.0"
+edition = "2021"
+description = "큐브 리스트 PC 헬퍼 — 리버스 스테이션"
+authors = ["Rebirth Station <support@rebirthstation.com>"]
+license = "Proprietary"
+
+# ============================================================================
+# Dependencies
+# ============================================================================
+
+[dependencies]
+# --- WebSocket 서버 (LAN 통신) -------------------------------------------
+axum                = { version = "0.7", features = ["ws", "macros"] }
+tokio               = { version = "1", features = ["full"] }
+tokio-tungstenite   = { version = "0.21" }
+tower               = "0.4"
+tower-http          = { version = "0.5", features = ["cors", "trace"] }
+
+# --- 직렬화 ----------------------------------------------------------------
+serde               = { version = "1", features = ["derive"] }
+serde_json          = "1"
+
+# --- 인증 (HMAC) -----------------------------------------------------------
+hmac                = "0.12"
+sha2                = "0.10"
+
+# --- 시크릿 저장소 (Windows Credential Manager 위임) ---------------------
+keyring             = "2"
+rand                = "0.8"
+
+# --- 키보드·마우스 시뮬레이션 (SendInput 기반, AV 오탐 최소) -----------
+# NOTE: 사용 시 권한 prompt 필요. Tier 2/3 액션만 활성.
+enigo               = { version = "0.2", optional = true }
+
+# --- 에러 ------------------------------------------------------------------
+thiserror           = "1"
+anyhow              = "1"
+
+# --- 로깅 ------------------------------------------------------------------
+tracing             = "0.1"
+tracing-subscriber  = { version = "0.3", features = ["env-filter"] }
+
+# --- Tauri (런처/트레이/창) ------------------------------------------------
+tauri                          = { version = "2", features = ["tray-icon"], optional = true }
+tauri-plugin-autostart         = { version = "2", optional = true }
+tauri-plugin-shell             = { version = "2", optional = true }
+tauri-plugin-global-shortcut   = { version = "2", optional = true }
+
+# --- 사용자 홈 디렉토리 ($HOME/.cubelist/hotkeys.json 등) ----------------
+dirs                           = "5"
+
+[build-dependencies]
+tauri-build               = { version = "2", optional = true , features = [] }
+
+# ============================================================================
+# Features
+# ============================================================================
+
+[features]
+# 사용자 결정 2026-05-23 (영구·비협상): 데스크톱 앱 기본 = GUI 모드 (Tauri 활성).
+#   - 사용자 시나리오 99% = 트레이/윈도우 진입. CLI 모드는 헤드리스 서버 fallback 전용.
+#   - 사전 시도 default=[] 시 cargo tauri dev가 빌드는 통과하나 윈도우 미표시 + 트레이 미등록 (gui feature 비활성)
+#   - 변경 시: docs/desktop-app-setup.md "feature 분기" + apps/pc-helper/README.md "Feature 분기" 동시 갱신 필수
+# CLI 전용 빌드: `cargo build --no-default-features`
+default = ["gui"]
+
+# enigo 활성화 (단축키·매크로 실행 가능). W1-4 데모 단계까지는 비활성.
+keys = ["dep:enigo"]
+
+# Tauri GUI 통합 — tray + autostart + 외부 링크 오픈 + 전역 핫키
+gui = [
+    "dep:tauri",
+    "dep:tauri-plugin-autostart",
+    "dep:tauri-plugin-shell",
+    "dep:tauri-plugin-global-shortcut",
+    "dep:tauri-build",
+]
+
+# ============================================================================
+# Build Profile (release 빌드 크기 < 10MB 목표)
+# ============================================================================
+
+[profile.release]
+opt-level     = "z"
+lto           = true
+codegen-units = 1
+strip         = true
+panic         = "abort"
+
+[profile.dev]
+opt-level = 0
+debug     = true

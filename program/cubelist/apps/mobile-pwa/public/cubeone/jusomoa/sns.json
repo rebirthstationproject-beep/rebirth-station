@@ -1,0 +1,454 @@
+{
+  "category": "sns",
+  "count": 56,
+  "items": [
+    {
+      "slug": "82cook",
+      "label": "82쿡",
+      "icon_src": "/cubeone/jusomoa/icons/sns/82cook.webp",
+      "action_type": "link",
+      "url": "https://www.82cook.com",
+      "category": "sns"
+    },
+    {
+      "slug": "arcalive",
+      "label": "아카라이브",
+      "icon_src": "/cubeone/jusomoa/icons/sns/arcalive.webp",
+      "action_type": "link",
+      "url": "https://arca.live",
+      "category": "sns"
+    },
+    {
+      "slug": "band",
+      "label": "밴드",
+      "icon_src": "/cubeone/jusomoa/icons/sns/band.webp",
+      "action_type": "link",
+      "url": "https://band.us",
+      "category": "sns"
+    },
+    {
+      "slug": "bbs",
+      "label": "루리웹",
+      "icon_src": "/cubeone/jusomoa/icons/sns/bbs.webp",
+      "action_type": "link",
+      "url": "https://bbs.ruliweb.com",
+      "category": "sns"
+    },
+    {
+      "slug": "behance",
+      "label": "비핸스",
+      "icon_src": "/cubeone/jusomoa/icons/sns/behance.webp",
+      "action_type": "link",
+      "url": "https://www.behance.net",
+      "category": "sns"
+    },
+    {
+      "slug": "blog",
+      "label": "네이버 블로그",
+      "icon_src": "/cubeone/jusomoa/icons/sns/blog.webp",
+      "action_type": "link",
+      "url": "https://blog.naver.com",
+      "category": "sns"
+    },
+    {
+      "slug": "brunchstory",
+      "label": "브런치스토리",
+      "icon_src": "/cubeone/jusomoa/icons/sns/brunchstory.webp",
+      "action_type": "link",
+      "url": "https://brunch.co.kr",
+      "category": "sns"
+    },
+    {
+      "slug": "bsky",
+      "label": "블루스카이",
+      "icon_src": "/cubeone/jusomoa/icons/sns/bsky.webp",
+      "action_type": "link",
+      "url": "https://bsky.app",
+      "category": "sns"
+    },
+    {
+      "slug": "cafe",
+      "label": "네이버 카페",
+      "icon_src": "/cubeone/jusomoa/icons/sns/cafe.webp",
+      "action_type": "link",
+      "url": "https://cafe.naver.com",
+      "category": "sns"
+    },
+    {
+      "slug": "clien",
+      "label": "클리앙",
+      "icon_src": "/cubeone/jusomoa/icons/sns/clien.webp",
+      "action_type": "link",
+      "url": "https://www.clien.net",
+      "category": "sns"
+    },
+    {
+      "slug": "damoang",
+      "label": "다모앙",
+      "icon_src": "/cubeone/jusomoa/icons/sns/damoang.webp",
+      "action_type": "link",
+      "url": "https://damoang.net",
+      "category": "sns"
+    },
+    {
+      "slug": "dcinside",
+      "label": "디시인사이드",
+      "icon_src": "/cubeone/jusomoa/icons/sns/dcinside.webp",
+      "action_type": "link",
+      "url": "https://www.dcinside.com",
+      "category": "sns"
+    },
+    {
+      "slug": "deviant",
+      "label": "데비안트",
+      "icon_src": "/cubeone/jusomoa/icons/sns/deviant.webp",
+      "action_type": "link",
+      "url": "https://www.deviant.com",
+      "category": "sns"
+    },
+    {
+      "slug": "discord",
+      "label": "디스코드",
+      "icon_src": "/cubeone/jusomoa/icons/sns/discord.webp",
+      "action_type": "link",
+      "url": "https://discord.com",
+      "category": "sns"
+    },
+    {
+      "slug": "dogdrip",
+      "label": "개드립",
+      "icon_src": "/cubeone/jusomoa/icons/sns/dogdrip.webp",
+      "action_type": "link",
+      "url": "https://www.dogdrip.net",
+      "category": "sns"
+    },
+    {
+      "slug": "everytime",
+      "label": "에브리타임",
+      "icon_src": "/cubeone/jusomoa/icons/sns/everytime.webp",
+      "action_type": "link",
+      "url": "https://everytime.kr",
+      "category": "sns"
+    },
+    {
+      "slug": "facebook",
+      "label": "페이스북",
+      "icon_src": "/cubeone/jusomoa/icons/sns/facebook.webp",
+      "action_type": "link",
+      "url": "https://www.facebook.com",
+      "category": "sns"
+    },
+    {
+      "slug": "flickr",
+      "label": "플리커",
+      "icon_src": "/cubeone/jusomoa/icons/sns/flickr.webp",
+      "action_type": "link",
+      "url": "https://www.flickr.com",
+      "category": "sns"
+    },
+    {
+      "slug": "foursquare",
+      "label": "포스퀘어",
+      "icon_src": "/cubeone/jusomoa/icons/sns/foursquare.webp",
+      "action_type": "link",
+      "url": "https://www.foursquare.com",
+      "category": "sns"
+    },
+    {
+      "slug": "gasengi",
+      "label": "가생이닷컴",
+      "icon_src": "/cubeone/jusomoa/icons/sns/gasengi.webp",
+      "action_type": "link",
+      "url": "https://www.gasengi.com",
+      "category": "sns"
+    },
+    {
+      "slug": "goodreads",
+      "label": "굿리즈",
+      "icon_src": "/cubeone/jusomoa/icons/sns/goodreads.webp",
+      "action_type": "link",
+      "url": "https://www.goodreads.com",
+      "category": "sns"
+    },
+    {
+      "slug": "hackernews",
+      "label": "해커뉴스",
+      "icon_src": "/cubeone/jusomoa/icons/sns/hackernews.webp",
+      "action_type": "link",
+      "url": "https://news.ycombinator.com",
+      "category": "sns"
+    },
+    {
+      "slug": "hygall",
+      "label": "하이갤",
+      "icon_src": "/cubeone/jusomoa/icons/sns/hygall.webp",
+      "action_type": "link",
+      "url": "https://www.hygall.com",
+      "category": "sns"
+    },
+    {
+      "slug": "instagram",
+      "label": "인스타그램",
+      "icon_src": "/cubeone/jusomoa/icons/sns/instagram.webp",
+      "action_type": "link",
+      "url": "https://www.instagram.com",
+      "category": "sns"
+    },
+    {
+      "slug": "jjalbang",
+      "label": "오늘의 짤방",
+      "icon_src": "/cubeone/jusomoa/icons/sns/jjalbang.webp",
+      "action_type": "link",
+      "url": "https://www.jjalbang.today",
+      "category": "sns"
+    },
+    {
+      "slug": "kakao-story",
+      "label": "카카오스토리",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/kakao-story.webp",
+      "action_type": "link",
+      "url": "https://story.kakao.com",
+      "category": "sns"
+    },
+    {
+      "slug": "kakaotalk",
+      "label": "카카오톡",
+      "icon_src": "/cubeone/jusomoa/icons/sns/kakaotalk.webp",
+      "action_type": "link",
+      "url": "https://www.kakaocorp.com/page/service/service/KakaoTalk",
+      "category": "sns"
+    },
+    {
+      "slug": "line",
+      "label": "라인",
+      "icon_src": "/cubeone/jusomoa/icons/sns/line.webp",
+      "action_type": "link",
+      "url": "https://line.me",
+      "category": "sns"
+    },
+    {
+      "slug": "linkedin",
+      "label": "링크드인",
+      "icon_src": "/cubeone/jusomoa/icons/sns/linkedin.webp",
+      "action_type": "link",
+      "url": "https://www.linkedin.com",
+      "category": "sns"
+    },
+    {
+      "slug": "livejournal",
+      "label": "라이브저널",
+      "icon_src": "/cubeone/jusomoa/icons/sns/livejournal.webp",
+      "action_type": "link",
+      "url": "https://www.livejournal.com",
+      "category": "sns"
+    },
+    {
+      "slug": "mastodon",
+      "label": "마스토돈",
+      "icon_src": "/cubeone/jusomoa/icons/sns/mastodon.webp",
+      "action_type": "link",
+      "url": "https://mastodon.social",
+      "category": "sns"
+    },
+    {
+      "slug": "medium",
+      "label": "미디엄",
+      "icon_src": "/cubeone/jusomoa/icons/sns/medium.webp",
+      "action_type": "link",
+      "url": "https://medium.com",
+      "category": "sns"
+    },
+    {
+      "slug": "meetup",
+      "label": "밋업",
+      "icon_src": "/cubeone/jusomoa/icons/sns/meetup.webp",
+      "action_type": "link",
+      "url": "https://www.meetup.com",
+      "category": "sns"
+    },
+    {
+      "slug": "nextdoor",
+      "label": "넥스트도어",
+      "icon_src": "/cubeone/jusomoa/icons/sns/nextdoor.webp",
+      "action_type": "link",
+      "url": "https://www.nextdoor.com",
+      "category": "sns"
+    },
+    {
+      "slug": "pastebin",
+      "label": "페이스트빈",
+      "icon_src": "/cubeone/jusomoa/icons/sns/pastebin.webp",
+      "action_type": "link",
+      "url": "https://www.pastebin.com",
+      "category": "sns"
+    },
+    {
+      "slug": "pinterest",
+      "label": "핀터레스트",
+      "icon_src": "/cubeone/jusomoa/icons/sns/pinterest.webp",
+      "action_type": "link",
+      "url": "https://www.pinterest.com",
+      "category": "sns"
+    },
+    {
+      "slug": "ppomppu",
+      "label": "뽐뿌",
+      "icon_src": "/cubeone/jusomoa/icons/sns/ppomppu.webp",
+      "action_type": "link",
+      "url": "https://www.ppomppu.co.kr",
+      "category": "sns"
+    },
+    {
+      "slug": "quora",
+      "label": "쿼라",
+      "icon_src": "/cubeone/jusomoa/icons/sns/quora.webp",
+      "action_type": "link",
+      "url": "https://www.quora.com",
+      "category": "sns"
+    },
+    {
+      "slug": "reddit",
+      "label": "레딧",
+      "icon_src": "/cubeone/jusomoa/icons/sns/reddit.webp",
+      "action_type": "link",
+      "url": "https://www.reddit.com",
+      "category": "sns"
+    },
+    {
+      "slug": "snackvideo",
+      "label": "스낵비디오",
+      "icon_src": "/cubeone/jusomoa/icons/sns/snackvideo.webp",
+      "action_type": "link",
+      "url": "https://www.snackvideo.com",
+      "category": "sns"
+    },
+    {
+      "slug": "snapchat",
+      "label": "스냅챗",
+      "icon_src": "/cubeone/jusomoa/icons/sns/snapchat.webp",
+      "action_type": "link",
+      "url": "https://www.snapchat.com",
+      "category": "sns"
+    },
+    {
+      "slug": "stackexchange",
+      "label": "스택익스체인지",
+      "icon_src": "/cubeone/jusomoa/icons/sns/stackexchange.webp",
+      "action_type": "link",
+      "url": "https://www.stackexchange.com",
+      "category": "sns"
+    },
+    {
+      "slug": "stackoverflow",
+      "label": "스택오버플로",
+      "icon_src": "/cubeone/jusomoa/icons/sns/stackoverflow.webp",
+      "action_type": "link",
+      "url": "https://stackoverflow.com",
+      "category": "sns"
+    },
+    {
+      "slug": "teamblind",
+      "label": "블라인드",
+      "icon_src": "/cubeone/jusomoa/icons/sns/teamblind.webp",
+      "action_type": "link",
+      "url": "https://www.teamblind.com",
+      "category": "sns"
+    },
+    {
+      "slug": "telegram",
+      "label": "텔레그램",
+      "icon_src": "/cubeone/jusomoa/icons/sns/telegram.webp",
+      "action_type": "link",
+      "url": "https://telegram.org",
+      "category": "sns"
+    },
+    {
+      "slug": "theqoo",
+      "label": "더쿠",
+      "icon_src": "/cubeone/jusomoa/icons/sns/theqoo.webp",
+      "action_type": "link",
+      "url": "https://theqoo.net",
+      "category": "sns"
+    },
+    {
+      "slug": "threads",
+      "label": "Threads",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/threads.webp",
+      "action_type": "link",
+      "url": "https://www.threads.net",
+      "category": "sns"
+    },
+    {
+      "slug": "tiktok",
+      "label": "틱톡",
+      "icon_src": "/cubeone/jusomoa/icons/sns/tiktok.webp",
+      "action_type": "link",
+      "url": "https://www.tiktok.com",
+      "category": "sns"
+    },
+    {
+      "slug": "tistory",
+      "label": "티스토리",
+      "icon_src": "/cubeone/jusomoa/icons/sns/tistory.webp",
+      "action_type": "link",
+      "url": "https://www.tistory.com",
+      "category": "sns"
+    },
+    {
+      "slug": "todayhumor",
+      "label": "오늘의유머",
+      "icon_src": "/cubeone/jusomoa/icons/sns/todayhumor.webp",
+      "action_type": "link",
+      "url": "https://www.todayhumor.co.kr",
+      "category": "sns"
+    },
+    {
+      "slug": "truthsocial",
+      "label": "트루스소셜",
+      "icon_src": "/cubeone/jusomoa/icons/sns/truthsocial.webp",
+      "action_type": "link",
+      "url": "https://www.truthsocial.com",
+      "category": "sns"
+    },
+    {
+      "slug": "usenet",
+      "label": "유즈넷",
+      "icon_src": "/cubeone/jusomoa/icons/sns/usenet.webp",
+      "action_type": "link",
+      "url": "https://www.usenet.com",
+      "category": "sns"
+    },
+    {
+      "slug": "wechat",
+      "label": "위챗",
+      "icon_src": "/cubeone/jusomoa/icons/sns/wechat.webp",
+      "action_type": "link",
+      "url": "https://www.wechat.com",
+      "category": "sns"
+    },
+    {
+      "slug": "whatsapp",
+      "label": "와츠앱",
+      "icon_src": "/cubeone/jusomoa/icons/sns/whatsapp.webp",
+      "action_type": "link",
+      "url": "https://www.whatsapp.com",
+      "category": "sns"
+    },
+    {
+      "slug": "x-twitter",
+      "label": "X (트위터)",
+      "icon_src": "/cubeone/jusomoa/icons/sns/x-twitter.webp",
+      "action_type": "link",
+      "url": "https://x.com",
+      "category": "sns"
+    },
+    {
+      "slug": "ygosu",
+      "label": "와이고수",
+      "icon_src": "/cubeone/jusomoa/icons/sns/ygosu.webp",
+      "action_type": "link",
+      "url": "https://www.ygosu.com",
+      "category": "sns"
+    }
+  ]
+}

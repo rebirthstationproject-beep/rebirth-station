@@ -1,0 +1,62 @@
+{
+  "name": "큐브 리스트 — 리버스 스테이션",
+  "short_name": "큐브 리스트",
+  "description": "안 쓰는 폰을 거치형 컨트롤 패널로. 한국어 우선.",
+  "id": "/",
+  "start_url": "/list",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["window-controls-overlay", "standalone", "minimal-ui"],
+  "orientation": "any",
+  "theme_color": "#64748B",
+  "background_color": "#E2E8F0",
+  "lang": "ko-KR",
+  "categories": ["productivity", "utilities"],
+  "icons": [
+    {
+      "src": "/icons/pwa-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pwa-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pwa-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "큐브 리스트 열기",
+      "short_name": "리스트",
+      "url": "/list",
+      "description": "큐브 리스트를 바로 엽니다"
+    },
+    {
+      "name": "기기 페어링",
+      "short_name": "페어링",
+      "url": "/pair",
+      "description": "PC 헬퍼와 QR 페어링"
+    },
+    {
+      "name": "내 계정",
+      "short_name": "계정",
+      "url": "/account",
+      "description": "계정·구독 관리"
+    },
+    {
+      "name": "플러그인",
+      "short_name": "플러그인",
+      "url": "/plugins",
+      "description": "큐브 리스트에 동작 추가"
+    }
+  ],
+  "prefer_related_applications": false
+}

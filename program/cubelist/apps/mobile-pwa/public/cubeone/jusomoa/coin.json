@@ -1,0 +1,382 @@
+{
+  "category": "coin",
+  "count": 47,
+  "items": [
+    {
+      "slug": "aave",
+      "label": "에이브",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/aave.webp",
+      "action_type": "link",
+      "url": "https://aave.com",
+      "category": "coin"
+    },
+    {
+      "slug": "beincrypto-kr",
+      "label": "비인크립토코리아",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/beincrypto-kr.webp",
+      "action_type": "link",
+      "url": "https://kr.beincrypto.com",
+      "category": "coin"
+    },
+    {
+      "slug": "biconomy",
+      "label": "바이코노미",
+      "icon_src": "/cubeone/jusomoa/icons/coin/biconomy.webp",
+      "action_type": "link",
+      "url": "https://www.biconomy.com",
+      "category": "coin"
+    },
+    {
+      "slug": "bitcoin-gallery-dc",
+      "label": "비트코인갤러리",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/bitcoin-gallery-dc.webp",
+      "action_type": "link",
+      "url": "https://gall.dcinside.com/mini/board/lists/?id=bitcoins",
+      "category": "coin"
+    },
+    {
+      "slug": "bitcoinwisdom",
+      "label": "비트코인위즈덤",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/bitcoinwisdom.webp",
+      "action_type": "link",
+      "url": "https://bitcoinwisdom.io",
+      "category": "coin"
+    },
+    {
+      "slug": "bithumb",
+      "label": "빗썸",
+      "icon_src": "/cubeone/jusomoa/icons/coin/bithumb.webp",
+      "action_type": "link",
+      "url": "https://www.bithumb.com",
+      "category": "coin"
+    },
+    {
+      "slug": "blockmedia",
+      "label": "블록미디어",
+      "icon_src": "/cubeone/jusomoa/icons/coin/blockmedia.webp",
+      "action_type": "link",
+      "url": "https://www.blockmedia.co.kr",
+      "category": "coin"
+    },
+    {
+      "slug": "btcc",
+      "label": "BTCC",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/btcc.webp",
+      "action_type": "link",
+      "url": "https://www.btcc.com",
+      "category": "coin"
+    },
+    {
+      "slug": "bubblemaps",
+      "label": "버블맵",
+      "icon_src": "/cubeone/jusomoa/icons/coin/bubblemaps.webp",
+      "action_type": "link",
+      "url": "https://www.bubblemaps.com",
+      "category": "coin"
+    },
+    {
+      "slug": "bybit",
+      "label": "바이비트",
+      "icon_src": "/cubeone/jusomoa/icons/coin/bybit.webp",
+      "action_type": "link",
+      "url": "https://www.bybit.com",
+      "category": "coin"
+    },
+    {
+      "slug": "chainlink",
+      "label": "체인링크",
+      "icon_src": "/cubeone/jusomoa/icons/coin/chainlink.webp",
+      "action_type": "link",
+      "url": "https://www.chainlink.com",
+      "category": "coin"
+    },
+    {
+      "slug": "coindesk-korea",
+      "label": "코인데스크코리아",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/coindesk-korea.webp",
+      "action_type": "link",
+      "url": "https://www.coindeskkorea.com",
+      "category": "coin"
+    },
+    {
+      "slug": "coingecko",
+      "label": "코인게코",
+      "icon_src": "/cubeone/jusomoa/icons/coin/coingecko.webp",
+      "action_type": "link",
+      "url": "https://www.coingecko.com",
+      "category": "coin"
+    },
+    {
+      "slug": "coinmarketcal",
+      "label": "코인마켓칼",
+      "icon_src": "/cubeone/jusomoa/icons/coin/coinmarketcal.webp",
+      "action_type": "link",
+      "url": "https://www.coinmarketcal.com",
+      "category": "coin"
+    },
+    {
+      "slug": "coinmarketcap",
+      "label": "코인마켓캡",
+      "icon_src": "/cubeone/jusomoa/icons/coin/coinmarketcap.webp",
+      "action_type": "link",
+      "url": "https://coinmarketcap.com",
+      "category": "coin"
+    },
+    {
+      "slug": "coinness",
+      "label": "코인니스",
+      "icon_src": "/cubeone/jusomoa/icons/coin/coinness.webp",
+      "action_type": "link",
+      "url": "https://coinness.com",
+      "category": "coin"
+    },
+    {
+      "slug": "coinone",
+      "label": "코인원",
+      "icon_src": "/cubeone/jusomoa/icons/coin/coinone.webp",
+      "action_type": "link",
+      "url": "https://coinone.co.kr",
+      "category": "coin"
+    },
+    {
+      "slug": "coinpan",
+      "label": "코인판",
+      "icon_src": "/cubeone/jusomoa/icons/coin/coinpan.webp",
+      "action_type": "link",
+      "url": "https://www.coinpan.com",
+      "category": "coin"
+    },
+    {
+      "slug": "cointelegraph",
+      "label": "코인텔레그래프",
+      "icon_src": "/cubeone/jusomoa/icons/coin/cointelegraph.webp",
+      "action_type": "link",
+      "url": "https://www.cointelegraph.com",
+      "category": "coin"
+    },
+    {
+      "slug": "cryptoquant",
+      "label": "크립토퀀트",
+      "icon_src": "/cubeone/jusomoa/icons/coin/cryptoquant.webp",
+      "action_type": "link",
+      "url": "https://www.cryptoquant.com",
+      "category": "coin"
+    },
+    {
+      "slug": "defillama",
+      "label": "디파이라마",
+      "icon_src": "/cubeone/jusomoa/icons/coin/defillama.webp",
+      "action_type": "link",
+      "url": "https://defillama.com",
+      "category": "coin"
+    },
+    {
+      "slug": "dexscreener",
+      "label": "덱스스크리너",
+      "icon_src": "/cubeone/jusomoa/icons/coin/dexscreener.webp",
+      "action_type": "link",
+      "url": "https://www.dexscreener.com",
+      "category": "coin"
+    },
+    {
+      "slug": "duneanalytics",
+      "label": "듄",
+      "icon_src": "/cubeone/jusomoa/icons/coin/duneanalytics.webp",
+      "action_type": "link",
+      "url": "https://www.duneanalytics.com",
+      "category": "coin"
+    },
+    {
+      "slug": "earnifi",
+      "label": "언파이",
+      "icon_src": "/cubeone/jusomoa/icons/coin/earnifi.webp",
+      "action_type": "link",
+      "url": "https://www.earnifi.com",
+      "category": "coin"
+    },
+    {
+      "slug": "etherscan",
+      "label": "이더스캔",
+      "icon_src": "/cubeone/jusomoa/icons/coin/etherscan.webp",
+      "action_type": "link",
+      "url": "https://etherscan.io",
+      "category": "coin"
+    },
+    {
+      "slug": "gate",
+      "label": "Gate.io",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/gate.webp",
+      "action_type": "link",
+      "url": "https://www.gate.io",
+      "category": "coin"
+    },
+    {
+      "slug": "glassnode",
+      "label": "글래스노드",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/glassnode.webp",
+      "action_type": "link",
+      "url": "https://glassnode.com",
+      "category": "coin"
+    },
+    {
+      "slug": "gopax",
+      "label": "고팍스",
+      "icon_src": "/cubeone/jusomoa/icons/coin/gopax.webp",
+      "action_type": "link",
+      "url": "https://www.gopax.co.kr",
+      "category": "coin"
+    },
+    {
+      "slug": "hashed",
+      "label": "해시드",
+      "icon_src": "/cubeone/jusomoa/icons/coin/hashed.webp",
+      "action_type": "link",
+      "url": "https://www.hashed.com",
+      "category": "coin"
+    },
+    {
+      "slug": "hashnet",
+      "label": "해시넷",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/hashnet.webp",
+      "action_type": "link",
+      "url": "https://www.hashnet.co.kr",
+      "category": "coin"
+    },
+    {
+      "slug": "htx",
+      "label": "HTX",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/htx.webp",
+      "action_type": "link",
+      "url": "https://www.htx.com",
+      "category": "coin"
+    },
+    {
+      "slug": "kaikas",
+      "label": "카이카스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/kaikas.webp",
+      "action_type": "link",
+      "url": "https://www.kaikas.io",
+      "category": "coin"
+    },
+    {
+      "slug": "kimpga",
+      "label": "김프가",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/kimpga.webp",
+      "action_type": "link",
+      "url": "https://kimpga.com",
+      "category": "coin"
+    },
+    {
+      "slug": "korbit",
+      "label": "코빗",
+      "icon_src": "/cubeone/jusomoa/icons/coin/korbit.webp",
+      "action_type": "link",
+      "url": "https://www.korbit.co.kr",
+      "category": "coin"
+    },
+    {
+      "slug": "kraken",
+      "label": "크라켄",
+      "icon_src": "/cubeone/jusomoa/icons/coin/kraken.webp",
+      "action_type": "link",
+      "url": "https://www.kraken.com",
+      "category": "coin"
+    },
+    {
+      "slug": "lookonchain",
+      "label": "룩온체인",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/lookonchain.webp",
+      "action_type": "link",
+      "url": "https://lookonchain.com",
+      "category": "coin"
+    },
+    {
+      "slug": "messari",
+      "label": "메사리",
+      "icon_src": "/cubeone/jusomoa/icons/coin/messari.webp",
+      "action_type": "link",
+      "url": "https://www.messari.com",
+      "category": "coin"
+    },
+    {
+      "slug": "metamask",
+      "label": "메타마스크",
+      "icon_src": "/cubeone/jusomoa/icons/coin/metamask.webp",
+      "action_type": "link",
+      "url": "https://metamask.io",
+      "category": "coin"
+    },
+    {
+      "slug": "mycryptowallet-kr",
+      "label": "마이크립토히어로즈",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/mycryptowallet-kr.webp",
+      "action_type": "link",
+      "url": "https://www.mycryptowallet.co.kr",
+      "category": "coin"
+    },
+    {
+      "slug": "okx",
+      "label": "OKX",
+      "icon_src": "/cubeone/jusomoa/icons/coin/okx.webp",
+      "action_type": "link",
+      "url": "https://www.okx.com",
+      "category": "coin"
+    },
+    {
+      "slug": "opensea",
+      "label": "오픈씨",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/opensea.webp",
+      "action_type": "link",
+      "url": "https://opensea.io",
+      "category": "coin"
+    },
+    {
+      "slug": "pancakeswap",
+      "label": "팬케이크스왑",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/pancakeswap.webp",
+      "action_type": "link",
+      "url": "https://pancakeswap.finance",
+      "category": "coin"
+    },
+    {
+      "slug": "phantoapp",
+      "label": "Phantom",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/phantoapp.webp",
+      "action_type": "link",
+      "url": "https://phantom.app",
+      "category": "coin"
+    },
+    {
+      "slug": "tradingview",
+      "label": "트레이딩뷰",
+      "icon_src": "/cubeone/jusomoa/icons/coin/tradingview.webp",
+      "action_type": "link",
+      "url": "https://www.tradingview.com",
+      "category": "coin"
+    },
+    {
+      "slug": "uniswap",
+      "label": "유니스왑",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/uniswap.webp",
+      "action_type": "link",
+      "url": "https://app.uniswap.org",
+      "category": "coin"
+    },
+    {
+      "slug": "upbit",
+      "label": "업비트",
+      "icon_src": "/cubeone/jusomoa/icons/coin/upbit.webp",
+      "action_type": "link",
+      "url": "https://upbit.com",
+      "category": "coin"
+    },
+    {
+      "slug": "xangle",
+      "label": "쟁글",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/xangle.webp",
+      "action_type": "link",
+      "url": "https://xangle.io",
+      "category": "coin"
+    }
+  ]
+}

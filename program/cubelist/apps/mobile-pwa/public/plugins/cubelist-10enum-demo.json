@@ -1,0 +1,148 @@
+{
+  "manifest_version": 1,
+  "id": "com.cubelist.plugin.10enum-demo",
+  "name": "10 Enum Demo",
+  "name_en": "10 Enum Demo",
+  "name_ja": "10 Enum デモ",
+  "description": "큐브 리스트 10 enum 각 1개씩 — Stage 1.5 SD-AQ~AV 데모 (사용자 테스트용)",
+  "description_en": "One cube per 10 enum — Stage 1.5 SD-AQ~AV demo (user testing)",
+  "description_ja": "10 enum 各 1 つ — Stage 1.5 SD-AQ~AV デモ (ユーザーテスト用)",
+  "author": "Rebirth Station",
+  "version": "1.0.0",
+  "license": "free",
+  "actions": [
+    {
+      "uuid": "com.cubelist.link",
+      "name": "링크 데모",
+      "name_en": "Link demo",
+      "name_ja": "リンクデモ",
+      "tooltip": "Rebirth Station 공식 사이트 열기",
+      "tooltip_en": "Open Rebirth Station official site",
+      "tooltip_ja": "Rebirth Station 公式サイトを開く",
+      "icon": "🔗",
+      "action_type": "link",
+      "default_payload": { "url": "https://rebirthstation.com" }
+    },
+    {
+      "uuid": "com.cubelist.shortcut",
+      "name": "Ctrl+C 데모",
+      "name_en": "Ctrl+C demo",
+      "name_ja": "Ctrl+C デモ",
+      "tooltip": "복사 단축키 발화",
+      "tooltip_en": "Send copy shortcut",
+      "tooltip_ja": "コピーショートカット送信",
+      "icon": "⌨",
+      "action_type": "shortcut",
+      "default_payload": { "keys": ["Ctrl", "C"] },
+      "tier": 2
+    },
+    {
+      "uuid": "com.cubelist.macro",
+      "name": "매크로 데모",
+      "name_en": "Macro demo",
+      "name_ja": "マクロデモ",
+      "tooltip": "3단계 매크로 (텍스트 + 딜레이 + Enter)",
+      "tooltip_en": "3-step macro (text + delay + Enter)",
+      "tooltip_ja": "3 ステップマクロ (テキスト + ディレイ + Enter)",
+      "icon": "⛓",
+      "action_type": "macro",
+      "default_payload": {
+        "steps": [
+          { "kind": "key", "keys": ["h", "e", "l", "l", "o"] },
+          { "kind": "delay", "ms": 100 },
+          { "kind": "key", "keys": ["Enter"] }
+        ]
+      },
+      "tier": 2
+    },
+    {
+      "uuid": "com.cubelist.folder",
+      "name": "폴더 데모",
+      "name_en": "Folder demo",
+      "name_ja": "フォルダデモ",
+      "tooltip": "안에 큐브 모음 (빈 폴더로 시작)",
+      "tooltip_en": "Nested cubes (starts empty)",
+      "tooltip_ja": "ネストキューブ (空からスタート)",
+      "icon": "📁",
+      "action_type": "folder",
+      "default_payload": { "cube_ids": [] }
+    },
+    {
+      "uuid": "com.cubelist.text_insert",
+      "name": "텍스트 입력 데모",
+      "name_en": "Text insert demo",
+      "name_ja": "テキスト入力デモ",
+      "tooltip": "현 포커스에 'Hello from Cube List' 입력",
+      "tooltip_en": "Type 'Hello from Cube List' at current focus",
+      "tooltip_ja": "現フォーカスに 'Hello from Cube List' を入力",
+      "icon": "📝",
+      "action_type": "text_insert",
+      "default_payload": { "text": "Hello from Cube List" },
+      "tier": 1
+    },
+    {
+      "uuid": "com.cubelist.clipboard_copy",
+      "name": "클립보드 복사 데모",
+      "name_en": "Clipboard copy demo",
+      "name_ja": "クリップボードコピーデモ",
+      "tooltip": "클립보드에 'Rebirth Station' 복사",
+      "tooltip_en": "Copy 'Rebirth Station' to clipboard",
+      "tooltip_ja": "'Rebirth Station' をクリップボードにコピー",
+      "icon": "⧉",
+      "action_type": "clipboard_copy",
+      "default_payload": { "text": "Rebirth Station" },
+      "tier": 1
+    },
+    {
+      "uuid": "com.cubelist.app_launch",
+      "name": "메모장 실행 데모",
+      "name_en": "Notepad demo",
+      "name_ja": "メモ帳起動デモ",
+      "tooltip": "Windows 메모장 실행",
+      "tooltip_en": "Launch Windows Notepad",
+      "tooltip_ja": "Windows メモ帳を起動",
+      "icon": "🚀",
+      "action_type": "app_launch",
+      "default_payload": { "path": "C:\\Windows\\notepad.exe" },
+      "tier": 2
+    },
+    {
+      "uuid": "com.cubelist.focus_window",
+      "name": "Notepad 포커스 데모",
+      "name_en": "Notepad focus demo",
+      "name_ja": "Notepad フォーカスデモ",
+      "tooltip": "타이틀에 Notepad 포함 윈도우 포커스",
+      "tooltip_en": "Focus window containing 'Notepad' in title",
+      "tooltip_ja": "タイトルに 'Notepad' 含むウィンドウへフォーカス",
+      "icon": "🪟",
+      "action_type": "focus_window",
+      "default_payload": { "title_pattern": "Notepad" },
+      "tier": 2
+    },
+    {
+      "uuid": "com.cubelist.mouse_click",
+      "name": "마우스 클릭 데모",
+      "name_en": "Mouse click demo",
+      "name_ja": "マウスクリックデモ",
+      "tooltip": "(100, 200)에 좌클릭",
+      "tooltip_en": "Left-click at (100, 200)",
+      "tooltip_ja": "(100, 200) で左クリック",
+      "icon": "🖱",
+      "action_type": "mouse_click",
+      "default_payload": { "x": 100, "y": 200, "button": "left" },
+      "tier": 2
+    },
+    {
+      "uuid": "com.cubelist.plugin_action",
+      "name": "Plugin 데모",
+      "name_en": "Plugin demo",
+      "name_ja": "プラグインデモ",
+      "tooltip": "사용자 정의 플러그인 액션 — 빈 payload",
+      "tooltip_en": "User-defined plugin action — empty payload",
+      "tooltip_ja": "ユーザー定義プラグインアクション — 空 payload",
+      "icon": "🧩",
+      "action_type": "plugin_action",
+      "default_payload": { "plugin_uuid": "com.example.demo", "payload": {} }
+    }
+  ]
+}

@@ -1,0 +1,198 @@
+{
+  "category": "beauty",
+  "count": 24,
+  "items": [
+    {
+      "slug": "a-bly-beauty",
+      "label": "에이블리 뷰티 매거진",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/a-bly-beauty.webp",
+      "action_type": "link",
+      "url": "https://m.a-bly.com/beauty",
+      "category": "beauty"
+    },
+    {
+      "slug": "allurekorea",
+      "label": "얼루어 코리아",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/allurekorea.webp",
+      "action_type": "link",
+      "url": "https://www.allurekorea.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "babitalk",
+      "label": "바비톡",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/babitalk.webp",
+      "action_type": "link",
+      "url": "https://www.babitalk.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "cosme",
+      "label": "앳코스메",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/cosme.webp",
+      "action_type": "link",
+      "url": "https://www.cosme.net",
+      "category": "beauty"
+    },
+    {
+      "slug": "cosmopolitan",
+      "label": "코스모폴리탄 뷰티",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/cosmopolitan.webp",
+      "action_type": "link",
+      "url": "https://www.cosmopolitan.co.kr/beauty",
+      "category": "beauty"
+    },
+    {
+      "slug": "dentalwindow",
+      "label": "덴탈윈도우",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/dentalwindow.webp",
+      "action_type": "link",
+      "url": "https://www.dentalwindow.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "dermatology",
+      "label": "대한피부과학회",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/dermatology.webp",
+      "action_type": "link",
+      "url": "https://www.dermatology.or.kr",
+      "category": "beauty"
+    },
+    {
+      "slug": "doctornow",
+      "label": "닥터나우",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/doctornow.webp",
+      "action_type": "link",
+      "url": "https://www.doctornow.co.kr",
+      "category": "beauty"
+    },
+    {
+      "slug": "etude",
+      "label": "에뛰드",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/etude.webp",
+      "action_type": "link",
+      "url": "https://www.etude.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "futuredental",
+      "label": "퓨처덴탈",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/futuredental.webp",
+      "action_type": "link",
+      "url": "https://www.futuredental.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "gangnamunni",
+      "label": "강남언니",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/gangnamunni.webp",
+      "action_type": "link",
+      "url": "https://www.gangnamunni.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "glowpick",
+      "label": "글로우픽",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/glowpick.webp",
+      "action_type": "link",
+      "url": "https://www.glowpick.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "goodoc",
+      "label": "굿닥",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/goodoc.webp",
+      "action_type": "link",
+      "url": "https://www.goodoc.co.kr",
+      "category": "beauty"
+    },
+    {
+      "slug": "hwahae",
+      "label": "화해",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/hwahae.webp",
+      "action_type": "link",
+      "url": "https://www.hwahae.co.kr",
+      "category": "beauty"
+    },
+    {
+      "slug": "innisfree-beauty",
+      "label": "이니스프리 공식몰",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/innisfree-beauty.webp",
+      "action_type": "link",
+      "url": "https://www.innisfree.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "moadental",
+      "label": "모아치과",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/moadental.webp",
+      "action_type": "link",
+      "url": "https://www.moadental.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "modoodoc",
+      "label": "모두닥",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/modoodoc.webp",
+      "action_type": "link",
+      "url": "https://www.modoodoc.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "oliveyoung-beauty",
+      "label": "올리브영 랭킹",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/oliveyoung-beauty.webp",
+      "action_type": "link",
+      "url": "https://www.oliveyoung.co.kr/store/main/getBestList.do",
+      "category": "beauty"
+    },
+    {
+      "slug": "powderrooco",
+      "label": "파우더룸",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/powderrooco.webp",
+      "action_type": "link",
+      "url": "https://www.powderroom.co.kr",
+      "category": "beauty"
+    },
+    {
+      "slug": "sephora",
+      "label": "세포라 코리아",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/sephora.webp",
+      "action_type": "link",
+      "url": "https://www.sephora.kr",
+      "category": "beauty"
+    },
+    {
+      "slug": "smartlifting",
+      "label": "스마트리프팅",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/smartlifting.webp",
+      "action_type": "link",
+      "url": "https://www.smartlifting.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "sungyesa",
+      "label": "성예사",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/sungyesa.webp",
+      "action_type": "link",
+      "url": "https://www.sungyesa.com",
+      "category": "beauty"
+    },
+    {
+      "slug": "unpa",
+      "label": "언니의파우치",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/unpa.webp",
+      "action_type": "link",
+      "url": "https://www.unpa.me",
+      "category": "beauty"
+    },
+    {
+      "slug": "yeoshin",
+      "label": "여신티켓",
+      "icon_src": "/cubeone/jusomoa/icons/beauty/yeoshin.webp",
+      "action_type": "link",
+      "url": "https://www.yeoshin.co.kr",
+      "category": "beauty"
+    }
+  ]
+}

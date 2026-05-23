@@ -1,0 +1,326 @@
+{
+  "category": "tour",
+  "count": 40,
+  "items": [
+    {
+      "slug": "agoda",
+      "label": "아고다",
+      "icon_src": "/cubeone/jusomoa/icons/tour/agoda.webp",
+      "action_type": "link",
+      "url": "https://www.agoda.com",
+      "category": "tour"
+    },
+    {
+      "slug": "airbnb",
+      "label": "에어비앤비",
+      "icon_src": "/cubeone/jusomoa/icons/tour/airbnb.webp",
+      "action_type": "link",
+      "url": "https://www.airbnb.co.kr",
+      "category": "tour"
+    },
+    {
+      "slug": "airbusan",
+      "label": "에어부산",
+      "icon_src": "/cubeone/jusomoa/icons/tour/airbusan.webp",
+      "action_type": "link",
+      "url": "https://www.airbusan.com",
+      "category": "tour"
+    },
+    {
+      "slug": "airpremia",
+      "label": "에어프레미아",
+      "icon_src": "/cubeone/jusomoa/icons/tour/airpremia.webp",
+      "action_type": "link",
+      "url": "https://www.airpremia.com",
+      "category": "tour"
+    },
+    {
+      "slug": "booking",
+      "label": "부킹닷컴",
+      "icon_src": "/cubeone/jusomoa/icons/tour/booking.webp",
+      "action_type": "link",
+      "url": "https://www.booking.com",
+      "category": "tour"
+    },
+    {
+      "slug": "expedia",
+      "label": "익스피디아",
+      "icon_src": "/cubeone/jusomoa/icons/tour/expedia.webp",
+      "action_type": "link",
+      "url": "https://www.expedia.com",
+      "category": "tour"
+    },
+    {
+      "slug": "flightaware",
+      "label": "플라잇어웨어",
+      "icon_src": "/cubeone/jusomoa/icons/tour/flightaware.webp",
+      "action_type": "link",
+      "url": "https://www.flightaware.com",
+      "category": "tour"
+    },
+    {
+      "slug": "flyasiana",
+      "label": "아시아나항공",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/flyasiana.webp",
+      "action_type": "link",
+      "url": "https://flyasiana.com",
+      "category": "tour"
+    },
+    {
+      "slug": "getyourguide",
+      "label": "투어리스트",
+      "icon_src": "/cubeone/jusomoa/icons/tour/getyourguide.webp",
+      "action_type": "link",
+      "url": "https://www.getyourguide.com",
+      "category": "tour"
+    },
+    {
+      "slug": "goodchoice",
+      "label": "여기어때",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/goodchoice.webp",
+      "action_type": "link",
+      "url": "https://www.goodchoice.kr",
+      "category": "tour"
+    },
+    {
+      "slug": "hanatour",
+      "label": "하나투어",
+      "icon_src": "/cubeone/jusomoa/icons/tour/hanatour.webp",
+      "action_type": "link",
+      "url": "https://www.hanatour.com",
+      "category": "tour"
+    },
+    {
+      "slug": "hostelworld",
+      "label": "호스텔월드",
+      "icon_src": "/cubeone/jusomoa/icons/tour/hostelworld.webp",
+      "action_type": "link",
+      "url": "https://www.hostelworld.com",
+      "category": "tour"
+    },
+    {
+      "slug": "hotels-com",
+      "label": "Hotels.com",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/hotels-com.webp",
+      "action_type": "link",
+      "url": "https://kr.hotels.com",
+      "category": "tour"
+    },
+    {
+      "slug": "hotelscombined",
+      "label": "호텔스콤바인",
+      "icon_src": "/cubeone/jusomoa/icons/tour/hotelscombined.webp",
+      "action_type": "link",
+      "url": "https://www.hotelscombined.com",
+      "category": "tour"
+    },
+    {
+      "slug": "jejuair",
+      "label": "제주항공",
+      "icon_src": "/cubeone/jusomoa/icons/tour/jejuair.webp",
+      "action_type": "link",
+      "url": "https://www.jejuair.net",
+      "category": "tour"
+    },
+    {
+      "slug": "jinair",
+      "label": "진에어",
+      "icon_src": "/cubeone/jusomoa/icons/tour/jinair.webp",
+      "action_type": "link",
+      "url": "https://www.jinair.com",
+      "category": "tour"
+    },
+    {
+      "slug": "kakao-navi",
+      "label": "카카오내비",
+      "icon_src": "/cubeone/jusomoa/icons/tour/kakao-navi.webp",
+      "action_type": "link",
+      "url": "https://map.kakao.com",
+      "category": "tour"
+    },
+    {
+      "slug": "kayak",
+      "label": "카약",
+      "icon_src": "/cubeone/jusomoa/icons/tour/kayak.webp",
+      "action_type": "link",
+      "url": "https://www.kayak.co.kr",
+      "category": "tour"
+    },
+    {
+      "slug": "klook-tour",
+      "label": "클룩 코리아",
+      "icon_src": "/cubeone/jusomoa/icons/tour/klook-tour.webp",
+      "action_type": "link",
+      "url": "https://www.klook.com/ko",
+      "category": "tour"
+    },
+    {
+      "slug": "korean",
+      "label": "대한민국 구석구석",
+      "icon_src": "/cubeone/jusomoa/icons/tour/korean.webp",
+      "action_type": "link",
+      "url": "https://korean.visitkorea.or.kr",
+      "category": "tour"
+    },
+    {
+      "slug": "koreanair",
+      "label": "대한항공",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/koreanair.webp",
+      "action_type": "link",
+      "url": "https://www.koreanair.com",
+      "category": "tour"
+    },
+    {
+      "slug": "letskorail",
+      "label": "코레일톡",
+      "icon_src": "/cubeone/jusomoa/icons/tour/letskorail.webp",
+      "action_type": "link",
+      "url": "https://www.letskorail.com",
+      "category": "tour"
+    },
+    {
+      "slug": "minda",
+      "label": "민다",
+      "icon_src": "/cubeone/jusomoa/icons/tour/minda.webp",
+      "action_type": "link",
+      "url": "https://www.theminda.com/",
+      "category": "tour"
+    },
+    {
+      "slug": "modutour",
+      "label": "모두투어",
+      "icon_src": "/cubeone/jusomoa/icons/tour/modutour.webp",
+      "action_type": "link",
+      "url": "https://www.modutour.com",
+      "category": "tour"
+    },
+    {
+      "slug": "myrealtrip",
+      "label": "마이리얼트립",
+      "icon_src": "/cubeone/jusomoa/icons/tour/myrealtrip.webp",
+      "action_type": "link",
+      "url": "https://www.myrealtrip.com",
+      "category": "tour"
+    },
+    {
+      "slug": "raileurope",
+      "label": "유레일",
+      "icon_src": "/cubeone/jusomoa/icons/tour/raileurope.webp",
+      "action_type": "link",
+      "url": "https://www.raileurope.com",
+      "category": "tour"
+    },
+    {
+      "slug": "rentalcars",
+      "label": "렌터카닷컴",
+      "icon_src": "/cubeone/jusomoa/icons/tour/rentalcars.webp",
+      "action_type": "link",
+      "url": "https://www.rentalcars.com",
+      "category": "tour"
+    },
+    {
+      "slug": "skyscanner",
+      "label": "스카이스캐너",
+      "icon_src": "/cubeone/jusomoa/icons/tour/skyscanner.webp",
+      "action_type": "link",
+      "url": "https://www.skyscanner.co.kr",
+      "category": "tour"
+    },
+    {
+      "slug": "skyteam",
+      "label": "스카이팀",
+      "icon_src": "/cubeone/jusomoa/icons/tour/skyteam.webp",
+      "action_type": "link",
+      "url": "https://www.skyteam.com",
+      "category": "tour"
+    },
+    {
+      "slug": "staralliance",
+      "label": "스타얼라이언스",
+      "icon_src": "/cubeone/jusomoa/icons/tour/staralliance.webp",
+      "action_type": "link",
+      "url": "https://www.staralliance.com",
+      "category": "tour"
+    },
+    {
+      "slug": "tour",
+      "label": "인터파크투어",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/tour.webp",
+      "action_type": "link",
+      "url": "https://tour.interpark.com",
+      "category": "tour"
+    },
+    {
+      "slug": "travel",
+      "label": "네이버 여행",
+      "icon_src": "/cubeone/jusomoa/icons/tour/travel.webp",
+      "action_type": "link",
+      "url": "https://travel.naver.com",
+      "category": "tour"
+    },
+    {
+      "slug": "tridge",
+      "label": "트릿지",
+      "icon_src": "/cubeone/jusomoa/icons/tour/tridge.webp",
+      "action_type": "link",
+      "url": "https://www.tridge.com",
+      "category": "tour"
+    },
+    {
+      "slug": "tripadvisor",
+      "label": "트립어드바이저",
+      "icon_src": "/cubeone/jusomoa/icons/tour/tripadvisor.webp",
+      "action_type": "link",
+      "url": "https://www.tripadvisor.co.kr",
+      "category": "tour"
+    },
+    {
+      "slug": "tripcom-kr",
+      "label": "트립닷컴",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/tripcom-kr.webp",
+      "action_type": "link",
+      "url": "https://kr.trip.com",
+      "category": "tour"
+    },
+    {
+      "slug": "triple",
+      "label": "트리플",
+      "icon_src": "/cubeone/jusomoa/icons/tour/triple.webp",
+      "action_type": "link",
+      "url": "https://triple.guide",
+      "category": "tour"
+    },
+    {
+      "slug": "twayair",
+      "label": "티웨이항공",
+      "icon_src": "/cubeone/jusomoa/icons/tour/twayair.webp",
+      "action_type": "link",
+      "url": "https://www.twayair.com",
+      "category": "tour"
+    },
+    {
+      "slug": "viator",
+      "label": "비아토르",
+      "icon_src": "/cubeone/jusomoa/icons/tour/viator.webp",
+      "action_type": "link",
+      "url": "https://www.viator.com",
+      "category": "tour"
+    },
+    {
+      "slug": "waug",
+      "label": "와그",
+      "icon_src": "/cubeone/jusomoa/icons/tour/waug.webp",
+      "action_type": "link",
+      "url": "https://www.waug.com",
+      "category": "tour"
+    },
+    {
+      "slug": "yanolja",
+      "label": "야놀자",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/yanolja.webp",
+      "action_type": "link",
+      "url": "https://www.yanolja.com",
+      "category": "tour"
+    }
+  ]
+}

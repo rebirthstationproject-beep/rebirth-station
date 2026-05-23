@@ -1,0 +1,310 @@
+{
+  "category": "portalsite",
+  "count": 38,
+  "items": [
+    {
+      "slug": "academiaedu",
+      "label": "아카데미아",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/academiaedu.webp",
+      "action_type": "link",
+      "url": "https://www.academia.edu",
+      "category": "portalsite"
+    },
+    {
+      "slug": "ahmia",
+      "label": "아미아",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/ahmia.webp",
+      "action_type": "link",
+      "url": "https://ahmia.fi",
+      "category": "portalsite"
+    },
+    {
+      "slug": "aolsearch",
+      "label": "에이오엘",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/aolsearch.webp",
+      "action_type": "link",
+      "url": "https://search.aol.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "askdotcom",
+      "label": "애스크닷컴",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/askdotcom.webp",
+      "action_type": "link",
+      "url": "https://www.ask.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "baidu",
+      "label": "바이두",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/baidu.webp",
+      "action_type": "link",
+      "url": "https://www.baidu.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "base",
+      "label": "베이스 서치",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/base.webp",
+      "action_type": "link",
+      "url": "https://www.base-search.net",
+      "category": "portalsite"
+    },
+    {
+      "slug": "bing",
+      "label": "빙",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/bing.webp",
+      "action_type": "link",
+      "url": "https://www.bing.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "bravesearch",
+      "label": "브레이브",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/bravesearch.webp",
+      "action_type": "link",
+      "url": "https://search.brave.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "coccoc",
+      "label": "코코",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/coccoc.webp",
+      "action_type": "link",
+      "url": "https://coccoc.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "core",
+      "label": "코어",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/core.webp",
+      "action_type": "link",
+      "url": "https://core.ac.uk",
+      "category": "portalsite"
+    },
+    {
+      "slug": "daum",
+      "label": "다음",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/daum.webp",
+      "action_type": "link",
+      "url": "https://www.daum.net",
+      "category": "portalsite"
+    },
+    {
+      "slug": "dogpile",
+      "label": "독파일",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/dogpile.webp",
+      "action_type": "link",
+      "url": "https://www.dogpile.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "duckduckgo",
+      "label": "덕덕고",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/duckduckgo.webp",
+      "action_type": "link",
+      "url": "https://duckduckgo.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "ecosia",
+      "label": "에코시아",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/ecosia.webp",
+      "action_type": "link",
+      "url": "https://www.ecosia.org",
+      "category": "portalsite"
+    },
+    {
+      "slug": "excite",
+      "label": "익사이트",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/excite.webp",
+      "action_type": "link",
+      "url": "https://www.excite.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "felo",
+      "label": "페일로",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/felo.webp",
+      "action_type": "link",
+      "url": "https://felo.ai",
+      "category": "portalsite"
+    },
+    {
+      "slug": "google",
+      "label": "구글",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/google.webp",
+      "action_type": "link",
+      "url": "https://www.google.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "googlescholar",
+      "label": "구글 스칼라",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/googlescholar.webp",
+      "action_type": "link",
+      "url": "https://scholar.google.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "hotbot",
+      "label": "핫봇",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/hotbot.webp",
+      "action_type": "link",
+      "url": "https://www.hotbot.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "infospace",
+      "label": "인포스페이스",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/infospace.webp",
+      "action_type": "link",
+      "url": "https://www.infospace.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "lycos",
+      "label": "라이코스",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/lycos.webp",
+      "action_type": "link",
+      "url": "https://www.lycos.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "metager",
+      "label": "메타거",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/metager.webp",
+      "action_type": "link",
+      "url": "https://metager.org",
+      "category": "portalsite"
+    },
+    {
+      "slug": "mojeek",
+      "label": "모직",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/mojeek.webp",
+      "action_type": "link",
+      "url": "https://www.mojeek.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "mywebsearch",
+      "label": "마이웹서치",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/mywebsearch.webp",
+      "action_type": "link",
+      "url": "https://www.mywebsearch.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "nate",
+      "label": "네이트",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/nate.webp",
+      "action_type": "link",
+      "url": "https://www.nate.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "naver",
+      "label": "네이버",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/naver.webp",
+      "action_type": "link",
+      "url": "https://www.naver.com/",
+      "category": "portalsite"
+    },
+    {
+      "slug": "qwant",
+      "label": "콰트",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/qwant.webp",
+      "action_type": "link",
+      "url": "https://www.qwant.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "searchencrypt",
+      "label": "서치엔크립트",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/searchencrypt.webp",
+      "action_type": "link",
+      "url": "https://searchencrypt.com/",
+      "category": "portalsite"
+    },
+    {
+      "slug": "seznam",
+      "label": "세즈남",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/seznam.webp",
+      "action_type": "link",
+      "url": "https://www.seznam.cz",
+      "category": "portalsite"
+    },
+    {
+      "slug": "sogou",
+      "label": "소고",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/sogou.webp",
+      "action_type": "link",
+      "url": "https://www.sogou.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "startpage",
+      "label": "스타트페이지",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/startpage.webp",
+      "action_type": "link",
+      "url": "https://www.startpage.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "swisscows",
+      "label": "스위스카우즈",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/swisscows.webp",
+      "action_type": "link",
+      "url": "https://swisscows.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "webcrawler",
+      "label": "웹크롤러",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/webcrawler.webp",
+      "action_type": "link",
+      "url": "https://www.webcrawler.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "wolframalpha",
+      "label": "울프람 알파",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/wolframalpha.webp",
+      "action_type": "link",
+      "url": "https://www.wolframalpha.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "yahoo",
+      "label": "야후",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/yahoo.webp",
+      "action_type": "link",
+      "url": "https://www.yahoo.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "yahoojapan",
+      "label": "야후 재팬",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/yahoojapan.webp",
+      "action_type": "link",
+      "url": "https://www.yahoo.co.jp",
+      "category": "portalsite"
+    },
+    {
+      "slug": "yandex",
+      "label": "얀덱스",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/yandex.webp",
+      "action_type": "link",
+      "url": "https://yandex.com",
+      "category": "portalsite"
+    },
+    {
+      "slug": "youdotcom",
+      "label": "유닷컴",
+      "icon_src": "/cubeone/jusomoa/icons/portalsite/youdotcom.webp",
+      "action_type": "link",
+      "url": "https://you.com",
+      "category": "portalsite"
+    }
+  ]
+}

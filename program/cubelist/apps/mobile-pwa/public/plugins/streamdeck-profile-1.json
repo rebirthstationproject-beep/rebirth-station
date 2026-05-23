@@ -1,0 +1,70 @@
+{
+  "manifest_version": 1,
+  "id": "com.cubelist.plugin.streamdeck-profile-1",
+  "name": "Stream Deck Profile + Multi-actions",
+  "name_en": "Stream Deck Profile + Multi-actions",
+  "name_ja": "Stream Deck プロファイル + マルチアクション",
+  "description": "Stream Deck 7.4.2 폴더 시스템 + 다중 액션 호환 — Open File, Open Folder, Back, Multi-actions",
+  "description_en": "Stream Deck 7.4.2 folder system + multi-action compatibility — Open File, Open Folder, Back, Multi-actions",
+  "description_ja": "Stream Deck 7.4.2 フォルダ + マルチアクション互換 — ファイルを開く・フォルダを開く・戻る・マルチアクション",
+  "author": "Rebirth Station",
+  "version": "1.0.0",
+  "license": "free",
+  "actions": [
+    {
+      "uuid": "com.elgato.streamdeck.system.open",
+      "name": "파일/폴더 열기",
+      "name_en": "Open File/Folder",
+      "name_ja": "ファイル/フォルダを開く",
+      "tooltip": "지정된 파일 또는 폴더를 기본 앱으로 열기 (PC 헬퍼 Tier 2)",
+      "tooltip_en": "Opens the specified file or folder with the default app (PC helper Tier 2)",
+      "tooltip_ja": "指定されたファイルまたはフォルダを既定のアプリで開く (PC ヘルパー Tier 2)",
+      "icon": "📂",
+      "action_type": "macro",
+      "default_payload": { "steps": [{ "kind": "launch_app", "path": "" }] },
+      "supported_in_multi": true,
+      "tier": 2
+    },
+    {
+      "uuid": "com.elgato.streamdeck.profile.openchild",
+      "name": "폴더 진입",
+      "name_en": "Open Folder",
+      "name_ja": "フォルダに入る",
+      "tooltip": "큐브를 폴더로 사용 — 안의 큐브 모음을 표시",
+      "tooltip_en": "Use this cube as a folder — shows nested cubes",
+      "tooltip_ja": "キューブをフォルダとして使用 — ネストしたキューブを表示",
+      "icon": "📁",
+      "action_type": "folder",
+      "default_payload": { "cube_ids": [] },
+      "supported_in_multi": false
+    },
+    {
+      "uuid": "com.elgato.streamdeck.profile.backtoparent",
+      "name": "상위로",
+      "name_en": "Back to Parent",
+      "name_ja": "親フォルダへ戻る",
+      "tooltip": "폴더 안에서 상위 그리드로 돌아가기 (자동 생성)",
+      "tooltip_en": "Return to parent grid from within a folder (auto-generated)",
+      "tooltip_ja": "フォルダ内から親グリッドへ戻る (自動生成)",
+      "icon": "⬅",
+      "action_type": "folder",
+      "default_payload": { "cube_ids": [], "__back__": true },
+      "supported_in_multi": false,
+      "auto_generated": true
+    },
+    {
+      "uuid": "com.elgato.streamdeck.multiactions",
+      "name": "다중 액션",
+      "name_en": "Multi-actions",
+      "name_ja": "マルチアクション",
+      "tooltip": "여러 액션을 순서대로 실행 (매크로)",
+      "tooltip_en": "Run multiple actions in sequence (macro)",
+      "tooltip_ja": "複数のアクションを順番に実行 (マクロ)",
+      "icon": "⛓",
+      "action_type": "macro",
+      "default_payload": { "steps": [] },
+      "supported_in_multi": false,
+      "tier": 2
+    }
+  ]
+}

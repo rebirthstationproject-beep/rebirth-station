@@ -1,0 +1,254 @@
+{
+  "category": "news",
+  "count": 31,
+  "items": [
+    {
+      "slug": "bbc",
+      "label": "BBC 뉴스",
+      "icon_src": "/cubeone/jusomoa/icons/news/bbc.webp",
+      "action_type": "link",
+      "url": "https://www.bbc.com/news",
+      "category": "news"
+    },
+    {
+      "slug": "bloomberg",
+      "label": "블룸버그",
+      "icon_src": "/cubeone/jusomoa/icons/news/bloomberg.webp",
+      "action_type": "link",
+      "url": "https://www.bloomberg.com",
+      "category": "news"
+    },
+    {
+      "slug": "chosun",
+      "label": "조선일보",
+      "icon_src": "/cubeone/jusomoa/icons/news/chosun.webp",
+      "action_type": "link",
+      "url": "https://www.chosun.com",
+      "category": "news"
+    },
+    {
+      "slug": "cnnnews",
+      "label": "CNN",
+      "icon_src": "/cubeone/jusomoa/icons/news/cnnnews.webp",
+      "action_type": "link",
+      "url": "https://edition.cnn.com",
+      "category": "news"
+    },
+    {
+      "slug": "dailian",
+      "label": "데일리안",
+      "icon_src": "/cubeone/jusomoa/icons/news/dailian.webp",
+      "action_type": "link",
+      "url": "https://www.dailian.com",
+      "category": "news"
+    },
+    {
+      "slug": "donga",
+      "label": "동아일보",
+      "icon_src": "/cubeone/jusomoa/icons/news/donga.webp",
+      "action_type": "link",
+      "url": "https://www.donga.com",
+      "category": "news"
+    },
+    {
+      "slug": "edaily",
+      "label": "이데일리",
+      "icon_src": "/cubeone/jusomoa/icons/news/edaily.webp",
+      "action_type": "link",
+      "url": "https://www.edaily.co.kr",
+      "category": "news"
+    },
+    {
+      "slug": "etnews",
+      "label": "전자신문",
+      "icon_src": "/cubeone/jusomoa/icons/news/etnews.webp",
+      "action_type": "link",
+      "url": "https://www.etnews.com",
+      "category": "news"
+    },
+    {
+      "slug": "financialnews",
+      "label": "파이낸셜뉴스",
+      "icon_src": "/cubeone/jusomoa/icons/news/financialnews.webp",
+      "action_type": "link",
+      "url": "https://www.fnnews.com",
+      "category": "news"
+    },
+    {
+      "slug": "hani",
+      "label": "한겨레",
+      "icon_src": "/cubeone/jusomoa/icons/news/hani.webp",
+      "action_type": "link",
+      "url": "https://www.hani.co.kr",
+      "category": "news"
+    },
+    {
+      "slug": "hankyung",
+      "label": "한국경제",
+      "icon_src": "/cubeone/jusomoa/icons/news/hankyung.webp",
+      "action_type": "link",
+      "url": "https://www.hankyung.com",
+      "category": "news"
+    },
+    {
+      "slug": "inews24",
+      "label": "아이뉴스24",
+      "icon_src": "/cubeone/jusomoa/icons/news/inews24.webp",
+      "action_type": "link",
+      "url": "https://www.inews24.com",
+      "category": "news"
+    },
+    {
+      "slug": "joongang",
+      "label": "중앙일보",
+      "icon_src": "/cubeone/jusomoa/icons/news/joongang.webp",
+      "action_type": "link",
+      "url": "https://www.joongang.co.kr",
+      "category": "news"
+    },
+    {
+      "slug": "jtbcnews",
+      "label": "JTBC 뉴스",
+      "icon_src": "/cubeone/jusomoa/icons/news/jtbcnews.webp",
+      "action_type": "link",
+      "url": "https://news.jtbc.co.kr",
+      "category": "news"
+    },
+    {
+      "slug": "khan",
+      "label": "경향신문",
+      "icon_src": "/cubeone/jusomoa/icons/news/khan.webp",
+      "action_type": "link",
+      "url": "https://www.khan.co.kr",
+      "category": "news"
+    },
+    {
+      "slug": "koreaherald",
+      "label": "코리아헤럴드",
+      "icon_src": "/cubeone/jusomoa/icons/news/koreaherald.webp",
+      "action_type": "link",
+      "url": "https://www.koreaherald.com",
+      "category": "news"
+    },
+    {
+      "slug": "mbn",
+      "label": "MBN",
+      "icon_src": "/cubeone/jusomoa/icons/news/mbn.webp",
+      "action_type": "link",
+      "url": "https://www.mbn.co.kr",
+      "category": "news"
+    },
+    {
+      "slug": "mk-maeil",
+      "label": "매일경제",
+      "icon_src": "/cubeone/jusomoa/icons/news/mk-maeil.webp",
+      "action_type": "link",
+      "url": "https://www.mk.co.kr",
+      "category": "news"
+    },
+    {
+      "slug": "moneytoday",
+      "label": "머니투데이",
+      "icon_src": "/cubeone/jusomoa/icons/news/moneytoday.webp",
+      "action_type": "link",
+      "url": "https://www.mt.co.kr",
+      "category": "news"
+    },
+    {
+      "slug": "munhwailbo",
+      "label": "문화일보",
+      "icon_src": "/cubeone/jusomoa/icons/news/munhwailbo.webp",
+      "action_type": "link",
+      "url": "https://www.munhwailbo.com",
+      "category": "news"
+    },
+    {
+      "slug": "news",
+      "label": "네이버 뉴스",
+      "icon_src": "/cubeone/jusomoa/icons/news/news.webp",
+      "action_type": "link",
+      "url": "https://news.naver.com",
+      "category": "news"
+    },
+    {
+      "slug": "news1",
+      "label": "뉴스1",
+      "icon_src": "/cubeone/jusomoa/icons/news/news1.webp",
+      "action_type": "link",
+      "url": "https://www.news1.kr",
+      "category": "news"
+    },
+    {
+      "slug": "newsis",
+      "label": "뉴시스",
+      "icon_src": "/cubeone/jusomoa/icons/news/newsis.webp",
+      "action_type": "link",
+      "url": "https://www.newsis.com",
+      "category": "news"
+    },
+    {
+      "slug": "newspim",
+      "label": "뉴스핌",
+      "icon_src": "/cubeone/jusomoa/icons/news/newspim.webp",
+      "action_type": "link",
+      "url": "https://www.newspim.com",
+      "category": "news"
+    },
+    {
+      "slug": "nytimes",
+      "label": "뉴욕",
+      "icon_src": "/cubeone/jusomoa/icons/news/nytimes.webp",
+      "action_type": "link",
+      "url": "https://www.nytimes.com",
+      "category": "news"
+    },
+    {
+      "slug": "ohmynews",
+      "label": "오마이뉴스",
+      "icon_src": "/cubeone/jusomoa/icons/news/ohmynews.webp",
+      "action_type": "link",
+      "url": "https://www.ohmynews.com",
+      "category": "news"
+    },
+    {
+      "slug": "pressian",
+      "label": "프레시안",
+      "icon_src": "/cubeone/jusomoa/icons/news/pressian.webp",
+      "action_type": "link",
+      "url": "https://www.pressian.com",
+      "category": "news"
+    },
+    {
+      "slug": "reuters",
+      "label": "Reuters",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/reuters.webp",
+      "action_type": "link",
+      "url": "https://www.reuters.com",
+      "category": "news"
+    },
+    {
+      "slug": "theverge",
+      "label": "더",
+      "icon_src": "/cubeone/jusomoa/icons/news/theverge.webp",
+      "action_type": "link",
+      "url": "https://www.theverge.com",
+      "category": "news"
+    },
+    {
+      "slug": "yna",
+      "label": "연합뉴스",
+      "icon_src": "/cubeone/jusomoa/icons/news/yna.webp",
+      "action_type": "link",
+      "url": "https://www.yna.co.kr",
+      "category": "news"
+    },
+    {
+      "slug": "ytn",
+      "label": "YTN",
+      "icon_src": "/cubeone/jusomoa/icons/news/ytn.webp",
+      "action_type": "link",
+      "url": "https://www.ytn.co.kr",
+      "category": "news"
+    }
+  ]
+}

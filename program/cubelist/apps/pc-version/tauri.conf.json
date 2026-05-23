@@ -1,0 +1,84 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "큐브 리스트",
+  "version": "0.1.0",
+  "identifier": "com.rebirthstation.cubelist",
+  "build": {
+    "beforeDevCommand": "",
+    "beforeBuildCommand": "",
+    "devUrl": "http://127.0.0.1:3002",
+    "frontendDist": "frontend/dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "label": "editor",
+        "title": "큐브 리스트 — 편집기",
+        "width": 1280,
+        "height": 800,
+        "minWidth": 960,
+        "minHeight": 600,
+        "resizable": true,
+        "fullscreen": false,
+        "visible": true,
+        "decorations": true,
+        "transparent": false,
+        "alwaysOnTop": false,
+        "skipTaskbar": false
+      }
+    ],
+    "trayIcon": {
+      "id": "main",
+      "iconPath": "icons/tray.png",
+      "iconAsTemplate": false,
+      "menuOnLeftClick": false,
+      "tooltip": "큐브 리스트 (리버스 스테이션)"
+    },
+    "security": {
+      "csp": {
+        "default-src": "'self'",
+        "connect-src": [
+          "'self'",
+          "ws://127.0.0.1:23456",
+          "http://127.0.0.1:3002",
+          "ws://127.0.0.1:3002",
+          "https://*.supabase.co",
+          "wss://*.supabase.co"
+        ],
+        "img-src": "'self' data: https:",
+        "style-src": "'self' 'unsafe-inline'"
+      },
+      "assetProtocol": {
+        "enable": false
+      }
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": ["msi", "nsis"],
+    "publisher": "Rebirth Station",
+    "category": "Productivity",
+    "shortDescription": "안 쓰는 폰을 거치형 컨트롤 패널로",
+    "longDescription": "큐브 리스트 — 리버스 스테이션. 안 쓰는 폰을 거치하여 PC의 단축키·앱·링크를 한 손으로. 한국어 우선.",
+    "copyright": "© 2026 Rebirth Station",
+    "icon": [
+      "icons/32x32.png",
+      "icons/128x128.png",
+      "icons/128x128@2x.png",
+      "icons/icon.icns",
+      "icons/icon.ico"
+    ],
+    "windows": {
+      "certificateThumbprint": null,
+      "digestAlgorithm": "sha256",
+      "timestampUrl": "http://timestamp.digicert.com",
+      "webviewInstallMode": {
+        "type": "downloadBootstrapper"
+      }
+    },
+    "resources": [],
+    "externalBin": [],
+    "createUpdaterArtifacts": false
+  },
+  "plugins": {}
+}

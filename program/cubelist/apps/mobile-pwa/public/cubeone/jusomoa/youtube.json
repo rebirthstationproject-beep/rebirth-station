@@ -1,0 +1,2590 @@
+{
+  "category": "youtube",
+  "count": 323,
+  "items": [
+    {
+      "slug": "15min",
+      "label": "세바시",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/15min.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@sebasi15",
+      "category": "youtube"
+    },
+    {
+      "slug": "1million-dance",
+      "label": "원밀리언",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/1million-dance.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@1MILLIONDance_official",
+      "category": "youtube"
+    },
+    {
+      "slug": "1minute",
+      "label": "1분만",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/1minute.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@JUST1MIN",
+      "category": "youtube"
+    },
+    {
+      "slug": "1thek",
+      "label": "원더케이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/1thek.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@1theK",
+      "category": "youtube"
+    },
+    {
+      "slug": "3protv",
+      "label": "삼프로TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/3protv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@3protv",
+      "category": "youtube"
+    },
+    {
+      "slug": "agenth",
+      "label": "에이전트 H",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/agenth.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@missionpossible",
+      "category": "youtube"
+    },
+    {
+      "slug": "aidengolf",
+      "label": "에이든의 골프레슨",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/aidengolf.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@jangpro",
+      "category": "youtube"
+    },
+    {
+      "slug": "alcoholhistory",
+      "label": "주류학개론",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/alcoholhistory.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@alcohol_history",
+      "category": "youtube"
+    },
+    {
+      "slug": "allabouttravel",
+      "label": "세모여행",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/allabouttravel.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@AllAboutTravel",
+      "category": "youtube"
+    },
+    {
+      "slug": "allblanc",
+      "label": "올블랑",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/allblanc.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@AllBlanc",
+      "category": "youtube"
+    },
+    {
+      "slug": "allblanctv",
+      "label": "올블랑 TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/allblanctv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@AllBlancTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "andreas",
+      "label": "안드레아스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/andreas.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@andreas_official",
+      "category": "youtube"
+    },
+    {
+      "slug": "andrecity",
+      "label": "안드레 시티",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/andrecity.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@andrecity",
+      "category": "youtube"
+    },
+    {
+      "slug": "arirangnews",
+      "label": "아리랑뉴스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/arirangnews.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ArirangCoKrArirangNEWS",
+      "category": "youtube"
+    },
+    {
+      "slug": "artsforyou",
+      "label": "널 위한 문화예술",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/artsforyou.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@art_for_you",
+      "category": "youtube"
+    },
+    {
+      "slug": "artstudent",
+      "label": "안구건조증",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/artstudent.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Health_02",
+      "category": "youtube"
+    },
+    {
+      "slug": "atbox",
+      "label": "아토박스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/atbox.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@atbox",
+      "category": "youtube"
+    },
+    {
+      "slug": "autogear",
+      "label": "오토기어",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/autogear.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Autogear_Official",
+      "category": "youtube"
+    },
+    {
+      "slug": "awesomekorea",
+      "label": "어썸코리아",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/awesomekorea.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@awesomekorea",
+      "category": "youtube"
+    },
+    {
+      "slug": "ayatsuno",
+      "label": "아야츠노",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ayatsuno.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ayatsunoyuni",
+      "category": "youtube"
+    },
+    {
+      "slug": "babybus",
+      "label": "베이비버스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/babybus.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@BabyBusKo",
+      "category": "youtube"
+    },
+    {
+      "slug": "banggusuck",
+      "label": "취미생활 방구석",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/banggusuck.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@banggusuck_hobby",
+      "category": "youtube"
+    },
+    {
+      "slug": "bbanghyung",
+      "label": "빵형의 개발도상국",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/bbanghyung.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@bbanghyong",
+      "category": "youtube"
+    },
+    {
+      "slug": "bbangsongguk",
+      "label": "빵송국",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/bbangsongguk.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@BbangSongGuk",
+      "category": "youtube"
+    },
+    {
+      "slug": "bbangtube",
+      "label": "빵튜브",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/bbangtube.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@bbangtube",
+      "category": "youtube"
+    },
+    {
+      "slug": "bbolly",
+      "label": "뽈리",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/bbolly.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%BD%88%EB%A6%ACTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "bbulljitlab",
+      "label": "뻘짓연구소",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/bbulljitlab.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@BullsLab",
+      "category": "youtube"
+    },
+    {
+      "slug": "beautifulnerd",
+      "label": "뷰티풀너드",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/beautifulnerd.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%B7%B0%ED%8B%B0%ED%92%80%EB%84%88%EB%93%9C",
+      "category": "youtube"
+    },
+    {
+      "slug": "besteleven",
+      "label": "베스트일레븐",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/besteleven.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%B2%A0%EC%8A%A4%ED%8A%B8%EC%9D%BC%EB%A0%88%EB%B8%90-y5y",
+      "category": "youtube"
+    },
+    {
+      "slug": "bimiliya",
+      "label": "비밀이야",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/bimiliya.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@bimiliya",
+      "category": "youtube"
+    },
+    {
+      "slug": "blackpink",
+      "label": "블랙핑크",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/blackpink.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@BLACKPINK",
+      "category": "youtube"
+    },
+    {
+      "slug": "boda",
+      "label": "보다 BODA",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/boda.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%B3%B4%EB%8B%A4BODA",
+      "category": "youtube"
+    },
+    {
+      "slug": "bodeumtv",
+      "label": "강형욱의 보듬TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/bodeumtv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Bodeumofficial",
+      "category": "youtube"
+    },
+    {
+      "slug": "boglefamily",
+      "label": "비글부부",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/boglefamily.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%AF%B8%EC%95%88%EC%9D%B4-m9u",
+      "category": "youtube"
+    },
+    {
+      "slug": "bokyem",
+      "label": "보겸",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/bokyem.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@bokyem",
+      "category": "youtube"
+    },
+    {
+      "slug": "bokyemtv",
+      "label": "보겸TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/bokyemtv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@bokyemtv",
+      "category": "youtube"
+    },
+    {
+      "slug": "breadbarbershop",
+      "label": "브레드이발소",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/breadbarbershop.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@BreadBarbershop",
+      "category": "youtube"
+    },
+    {
+      "slug": "buildingdr",
+      "label": "꼬마빌딩박사",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/buildingdr.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%B9%8C%EB%94%A9%EB%B0%95%EC%82%AC%EC%A0%95%EC%9D%B8",
+      "category": "youtube"
+    },
+    {
+      "slug": "calarygirl",
+      "label": "회사원A",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/calarygirl.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@CalaryGirl",
+      "category": "youtube"
+    },
+    {
+      "slug": "calmdownman",
+      "label": "침착맨",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/calmdownman.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ChimChakMan_Official",
+      "category": "youtube"
+    },
+    {
+      "slug": "campingman",
+      "label": "켐핑맨",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/campingman.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@CampingMan",
+      "category": "youtube"
+    },
+    {
+      "slug": "captainramen",
+      "label": "캡틴라면",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/captainramen.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@14FMBC",
+      "category": "youtube"
+    },
+    {
+      "slug": "captainttagger",
+      "label": "캡틴따거",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/captainttagger.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@captainbrother",
+      "category": "youtube"
+    },
+    {
+      "slug": "caracula",
+      "label": "카라큘라",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/caracula.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@caracula",
+      "category": "youtube"
+    },
+    {
+      "slug": "careerhigh",
+      "label": "커리어하이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/careerhigh.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@careerhigh",
+      "category": "youtube"
+    },
+    {
+      "slug": "carrieandfriends",
+      "label": "캐리와 장난감 친구들",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/carrieandfriends.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@CarrieAndToys",
+      "category": "youtube"
+    },
+    {
+      "slug": "caseinquiry",
+      "label": "사건의뢰",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/caseinquiry.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@112case",
+      "category": "youtube"
+    },
+    {
+      "slug": "chaekoje",
+      "label": "채코제",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/chaekoje.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@koreanjay",
+      "category": "youtube"
+    },
+    {
+      "slug": "cheesefilm",
+      "label": "치즈필름",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/cheesefilm.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@CheeseFilm",
+      "category": "youtube"
+    },
+    {
+      "slug": "chefk",
+      "label": "쉐프K",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/chefk.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@KBSDocumentary",
+      "category": "youtube"
+    },
+    {
+      "slug": "choiwinter",
+      "label": "최겨울",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/choiwinter.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@wt830",
+      "category": "youtube"
+    },
+    {
+      "slug": "choseho",
+      "label": "조세호의 채널조세호",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/choseho.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@chosaeho",
+      "category": "youtube"
+    },
+    {
+      "slug": "chosunland",
+      "label": "땅집고",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/chosunland.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ddangzipgo",
+      "category": "youtube"
+    },
+    {
+      "slug": "chul9full",
+      "label": "철구 풀영상",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/chul9full.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@chul9full",
+      "category": "youtube"
+    },
+    {
+      "slug": "classytv",
+      "label": "클래씨",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/classytv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ClassyTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "coffeeseeker",
+      "label": "커피찾는남자",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/coffeeseeker.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@coffeeexplorer",
+      "category": "youtube"
+    },
+    {
+      "slug": "comedians",
+      "label": "희극인",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/comedians.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@hgi_korea",
+      "category": "youtube"
+    },
+    {
+      "slug": "comics",
+      "label": "코믹스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/comics.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Comics",
+      "category": "youtube"
+    },
+    {
+      "slug": "commonsiblings",
+      "label": "흔한남매",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/commonsiblings.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@hhnm",
+      "category": "youtube"
+    },
+    {
+      "slug": "cookingman",
+      "label": "취요남",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/cookingman.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EC%B7%A8%EC%9A%94%EB%82%A8",
+      "category": "youtube"
+    },
+    {
+      "slug": "cookingtree",
+      "label": "쿠킹트리",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/cookingtree.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@CookingTreee",
+      "category": "youtube"
+    },
+    {
+      "slug": "cure",
+      "label": "구래",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/cure.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@cure0721",
+      "category": "youtube"
+    },
+    {
+      "slug": "daheuk",
+      "label": "다흑",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/daheuk.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@daheuk",
+      "category": "youtube"
+    },
+    {
+      "slug": "dailyit",
+      "label": "일상IT",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/dailyit.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@itnote",
+      "category": "youtube"
+    },
+    {
+      "slug": "dali",
+      "label": "달리",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/dali.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@sbs_dali",
+      "category": "youtube"
+    },
+    {
+      "slug": "dalsunelive",
+      "label": "달수네라이브",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/dalsunelive.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@DALSOOLIVE",
+      "category": "youtube"
+    },
+    {
+      "slug": "danheetv",
+      "label": "단희TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/danheetv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%8B%A8%ED%9D%ACTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "ddeunddeun",
+      "label": "뜬뜬",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ddeunddeun.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ddeunddeun",
+      "category": "youtube"
+    },
+    {
+      "slug": "ddukddak",
+      "label": "1분요리 뚝딱이형",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ddukddak.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@1mincook",
+      "category": "youtube"
+    },
+    {
+      "slug": "deepsketch",
+      "label": "띱",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/deepsketch.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@deep_sketch",
+      "category": "youtube"
+    },
+    {
+      "slug": "deliveryhunter",
+      "label": "딸배헌터",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/deliveryhunter.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%94%B8%EB%B0%B0%ED%97%8C%ED%84%B0",
+      "category": "youtube"
+    },
+    {
+      "slug": "diggle",
+      "label": "디글",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/diggle.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Diggle",
+      "category": "youtube"
+    },
+    {
+      "slug": "dimdi",
+      "label": "딤디",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/dimdi.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@deemd",
+      "category": "youtube"
+    },
+    {
+      "slug": "dinggok",
+      "label": "띵곡특급",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/dinggok.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@dding_playlist",
+      "category": "youtube"
+    },
+    {
+      "slug": "dingofreestyle",
+      "label": "딩고 프리스타일",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/dingofreestyle.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@df_dingo",
+      "category": "youtube"
+    },
+    {
+      "slug": "dingomusic",
+      "label": "딩고 뮤직",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/dingomusic.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@dingomusic",
+      "category": "youtube"
+    },
+    {
+      "slug": "directorpi",
+      "label": "디렉터 파이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/directorpi.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@director_pihyunjung",
+      "category": "youtube"
+    },
+    {
+      "slug": "discoverykorea",
+      "label": "디스커버리 코리아",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/discoverykorea.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@DiscoveryKR",
+      "category": "youtube"
+    },
+    {
+      "slug": "dongnaeguys",
+      "label": "동네놈들",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/dongnaeguys.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@dongnaeguys",
+      "category": "youtube"
+    },
+    {
+      "slug": "dotoritv",
+      "label": "도토리TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/dotoritv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@dotoritv",
+      "category": "youtube"
+    },
+    {
+      "slug": "drawandrew",
+      "label": "드로우앤드류",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/drawandrew.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@drawandrew",
+      "category": "youtube"
+    },
+    {
+      "slug": "dregg",
+      "label": "에그박사",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/dregg.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@eggbugs",
+      "category": "youtube"
+    },
+    {
+      "slug": "drfriends",
+      "label": "닥터프렌즈",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/drfriends.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@DrFriends",
+      "category": "youtube"
+    },
+    {
+      "slug": "drjoe",
+      "label": "닥터조",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/drjoe.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@DrJoshuaCho",
+      "category": "youtube"
+    },
+    {
+      "slug": "dukyangso",
+      "label": "덕양소",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/dukyangso.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%8D%95%EC%96%91%EC%86%8C",
+      "category": "youtube"
+    },
+    {
+      "slug": "eatwithboki",
+      "label": "문복희",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/eatwithboki.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@EatWithBoki",
+      "category": "youtube"
+    },
+    {
+      "slug": "ebsculture",
+      "label": "EBS교양",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ebsculture.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@EBSCulture",
+      "category": "youtube"
+    },
+    {
+      "slug": "ebsdocu",
+      "label": "EBS 다큐멘터리",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ebsdocu.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@EBSDocumentary",
+      "category": "youtube"
+    },
+    {
+      "slug": "egoingcoding",
+      "label": "생활코딩",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/egoingcoding.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@coohde",
+      "category": "youtube"
+    },
+    {
+      "slug": "fairyjaehyung-youtube",
+      "label": "요정재형",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/fairyjaehyung-youtube.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@jaehyung_jung",
+      "category": "youtube"
+    },
+    {
+      "slug": "fishingowl",
+      "label": "낚시하는부엉이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/fishingowl.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@fishing_owl",
+      "category": "youtube"
+    },
+    {
+      "slug": "fitthesize",
+      "label": "핏더사이즈",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/fitthesize.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@fitthesize",
+      "category": "youtube"
+    },
+    {
+      "slug": "fitvely",
+      "label": "핏블리",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/fitvely.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@fitvely",
+      "category": "youtube"
+    },
+    {
+      "slug": "fiveminphilosophy",
+      "label": "5분 뚝딱 철학",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/fiveminphilosophy.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@5philosophy",
+      "category": "youtube"
+    },
+    {
+      "slug": "foodieboy",
+      "label": "푸디보이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/foodieboy.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@FoodieBoyKR",
+      "category": "youtube"
+    },
+    {
+      "slug": "forbeskorea",
+      "label": "포브스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/forbeskorea.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@forbeskorea",
+      "category": "youtube"
+    },
+    {
+      "slug": "fortunekorea",
+      "label": "포춘코리아",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/fortunekorea.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@fortunekorea",
+      "category": "youtube"
+    },
+    {
+      "slug": "gajeonjubu",
+      "label": "가전주부",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/gajeonjubu.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EA%B0%80%EC%A0%84%EC%A3%BC%EB%B6%80GJJB",
+      "category": "youtube"
+    },
+    {
+      "slug": "gamst",
+      "label": "감스트",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/gamst.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@gamst6217",
+      "category": "youtube"
+    },
+    {
+      "slug": "geekble",
+      "label": "긱블",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/geekble.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@geekble_kr",
+      "category": "youtube"
+    },
+    {
+      "slug": "geniemusic-youtube",
+      "label": "지니뮤직",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/geniemusic-youtube.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@geniemusic",
+      "category": "youtube"
+    },
+    {
+      "slug": "ghs",
+      "label": "계향쓰",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ghs.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@GH.S",
+      "category": "youtube"
+    },
+    {
+      "slug": "goingseventeen",
+      "label": "고잉 세븐틴",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/goingseventeen.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@pledis17",
+      "category": "youtube"
+    },
+    {
+      "slug": "gomong",
+      "label": "고몽",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/gomong.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EA%B3%A0%EB%AA%BD",
+      "category": "youtube"
+    },
+    {
+      "slug": "gsikbaekgwa",
+      "label": "김성회의 G식백과",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/gsikbaekgwa.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@gsbg",
+      "category": "youtube"
+    },
+    {
+      "slug": "guigom",
+      "label": "귀곰",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/guigom.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@gwigom",
+      "category": "youtube"
+    },
+    {
+      "slug": "gungi",
+      "label": "사물궁이 잡학지식",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/gungi.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EC%82%AC%EB%AC%BC%EA%B6%81%EC%9D%B4",
+      "category": "youtube"
+    },
+    {
+      "slug": "gym-jong-kook",
+      "label": "김종국",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/gym-jong-kook.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@gymjongkook",
+      "category": "youtube"
+    },
+    {
+      "slug": "gyogwangtv",
+      "label": "교광TV",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/gyogwangtv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@gyogwangtv",
+      "category": "youtube"
+    },
+    {
+      "slug": "hamzy",
+      "label": "햄지",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/hamzy.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@hamzymukbang",
+      "category": "youtube"
+    },
+    {
+      "slug": "han-moon-chul",
+      "label": "한문철 TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/han-moon-chul.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@HanMoonChulTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "haseungjin",
+      "label": "하승진",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/haseungjin.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@bigha",
+      "category": "youtube"
+    },
+    {
+      "slug": "heechulism",
+      "label": "희철리즘",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/heechulism.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@HeechulismTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "heopop",
+      "label": "허팝",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/heopop.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@heopopfamily",
+      "category": "youtube"
+    },
+    {
+      "slug": "hipeuddeum",
+      "label": "힙으뜸",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/hipeuddeum.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@euddeume",
+      "category": "youtube"
+    },
+    {
+      "slug": "hiphopplaya",
+      "label": "힙합플레이야",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/hiphopplaya.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@HIPHOP-PLAYA",
+      "category": "youtube"
+    },
+    {
+      "slug": "honeyjarpd",
+      "label": "꿀단지PD",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/honeyjarpd.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@HoneyJarPD",
+      "category": "youtube"
+    },
+    {
+      "slug": "honeykki",
+      "label": "꿀키",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/honeykki.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@honeykkihouse",
+      "category": "youtube"
+    },
+    {
+      "slug": "hongingyugolf",
+      "label": "홍인규 골프TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/hongingyugolf.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%ED%99%8D%EC%9D%B8%EA%B7%9C%EA%B3%A8%ED%94%84",
+      "category": "youtube"
+    },
+    {
+      "slug": "hongyu-asmr",
+      "label": "홍유 ASMR",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/hongyu-asmr.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@HongyuASMR",
+      "category": "youtube"
+    },
+    {
+      "slug": "horseking",
+      "label": "말왕",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/horseking.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@MrRagoona88",
+      "category": "youtube"
+    },
+    {
+      "slug": "humblenews",
+      "label": "김어준의 겸손은힘들다",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/humblenews.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@humblefactory",
+      "category": "youtube"
+    },
+    {
+      "slug": "hybe-labels",
+      "label": "하이브 레이블즈",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/hybe-labels.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@HYBELABELS",
+      "category": "youtube"
+    },
+    {
+      "slug": "isegye-idol",
+      "label": "이세계아이돌",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/isegye-idol.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@isegyeidol_ofcl",
+      "category": "youtube"
+    },
+    {
+      "slug": "itsub",
+      "label": "잇섭",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/itsub.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@itsub",
+      "category": "youtube"
+    },
+    {
+      "slug": "jane-asmr",
+      "label": "제인 ASMR",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jane-asmr.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Jane_ASMR",
+      "category": "youtube"
+    },
+    {
+      "slug": "jangbbijju",
+      "label": "장삐쭈",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jangbbijju.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@jangbbijju",
+      "category": "youtube"
+    },
+    {
+      "slug": "jangdongsun",
+      "label": "뇌과학자 장동선",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jangdongsun.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@CuriousBrainLab",
+      "category": "youtube"
+    },
+    {
+      "slug": "jflamusic",
+      "label": "제이플라",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jflamusic.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@JFlaMusic",
+      "category": "youtube"
+    },
+    {
+      "slug": "jin-yongjin",
+      "label": "진용진",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jin-yongjin.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@jinyongjin_official",
+      "category": "youtube"
+    },
+    {
+      "slug": "jiyoonknowledge",
+      "label": "김지윤의 지식Play",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jiyoonknowledge.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Kjy_Play",
+      "category": "youtube"
+    },
+    {
+      "slug": "jjanggoodaddy",
+      "label": "짱구대디",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jjanggoodaddy.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@zzang9daddy",
+      "category": "youtube"
+    },
+    {
+      "slug": "jjondeuk",
+      "label": "쫀득",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jjondeuk.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EC%AB%80%EB%93%9D",
+      "category": "youtube"
+    },
+    {
+      "slug": "jocoding",
+      "label": "조코딩",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jocoding.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@jocoding",
+      "category": "youtube"
+    },
+    {
+      "slug": "joetube",
+      "label": "조튜브",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/joetube.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EC%A1%B0%ED%8A%9C%EB%B8%8C",
+      "category": "youtube"
+    },
+    {
+      "slug": "jothurnight",
+      "label": "조현아의 목요일 밤",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jothurnight.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@commonthursday_official",
+      "category": "youtube"
+    },
+    {
+      "slug": "joyride",
+      "label": "조이라이드",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/joyride.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@JOYRIDE_official",
+      "category": "youtube"
+    },
+    {
+      "slug": "jsy-study",
+      "label": "조승연의 탐구생활",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jsy-study.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Tamgu",
+      "category": "youtube"
+    },
+    {
+      "slug": "jtbcnews-youtube",
+      "label": "JTBC 뉴스 (유튜브)",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jtbcnews-youtube.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@jtbc_news",
+      "category": "youtube"
+    },
+    {
+      "slug": "jungbrre",
+      "label": "정브르",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jungbrre.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@jung_brre",
+      "category": "youtube"
+    },
+    {
+      "slug": "jungmun",
+      "label": "법륜스님의 즉문즉설",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jungmun.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Jungmun",
+      "category": "youtube"
+    },
+    {
+      "slug": "jungsungeun",
+      "label": "정선근 TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jungsungeun.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@dr.chung.spinejoint",
+      "category": "youtube"
+    },
+    {
+      "slug": "jypentertainment",
+      "label": "JYP엔터",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/jypentertainment.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@JYPEntertainment",
+      "category": "youtube"
+    },
+    {
+      "slug": "kangnam",
+      "label": "동네친구 강나미",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kangnam.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Kangnami",
+      "category": "youtube"
+    },
+    {
+      "slug": "kellychoi",
+      "label": "켈리최",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kellychoi.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@KELLYCHOITV",
+      "category": "youtube"
+    },
+    {
+      "slug": "kimchangoktv",
+      "label": "김창옥TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kimchangoktv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EA%B9%80%EC%B0%BD%EC%98%A5TV",
+      "category": "youtube"
+    },
+    {
+      "slug": "kimdal",
+      "label": "김달",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kimdal.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@iamkimdal",
+      "category": "youtube"
+    },
+    {
+      "slug": "kimjinjja",
+      "label": "김진짜",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kimjinjja.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@KimJinjja",
+      "category": "youtube"
+    },
+    {
+      "slug": "kimjjanbu",
+      "label": "김짠부",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kimjjanbu.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@zzanboo",
+      "category": "youtube"
+    },
+    {
+      "slug": "kimjunpyo",
+      "label": "김준표",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kimjunpyo.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EA%B9%80%EC%A4%80%ED%91%9C",
+      "category": "youtube"
+    },
+    {
+      "slug": "kimmilan",
+      "label": "김밀란",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kimmilan.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@KimMilan",
+      "category": "youtube"
+    },
+    {
+      "slug": "kimpro",
+      "label": "김프로",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kimpro.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@kimpro828",
+      "category": "youtube"
+    },
+    {
+      "slug": "kimsiseon",
+      "label": "김시선",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kimsiseon.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EA%B9%80%EC%8B%9C%EC%84%A0",
+      "category": "youtube"
+    },
+    {
+      "slug": "kimwritertv",
+      "label": "김작가 TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kimwritertv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@lucky_tv",
+      "category": "youtube"
+    },
+    {
+      "slug": "kimyoonna",
+      "label": "김윤나",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kimyoonna.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@TV-tx6eb",
+      "category": "youtube"
+    },
+    {
+      "slug": "knowledge-inside",
+      "label": "지식인사이드",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/knowledge-inside.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EC%A7%80%EC%8B%9D%EC%9D%B8%EC%82%AC%EC%9D%B4%EB%93%9C",
+      "category": "youtube"
+    },
+    {
+      "slug": "knowledgebrunch",
+      "label": "지식브런치",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/knowledgebrunch.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@knowledgebrunch",
+      "category": "youtube"
+    },
+    {
+      "slug": "knowledgepirates",
+      "label": "지식해적단",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/knowledgepirates.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@studio_pirates",
+      "category": "youtube"
+    },
+    {
+      "slug": "koreanow",
+      "label": "코리아나우",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/koreanow.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@KOREANOWyna",
+      "category": "youtube"
+    },
+    {
+      "slug": "ktigers",
+      "label": "케이타이거즈",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ktigers.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ktigers",
+      "category": "youtube"
+    },
+    {
+      "slug": "kwaktube",
+      "label": "곽튜브",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/kwaktube.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@JBKWAK",
+      "category": "youtube"
+    },
+    {
+      "slug": "laptopview",
+      "label": "랩탑뷰",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/laptopview.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@laptopview",
+      "category": "youtube"
+    },
+    {
+      "slug": "lawguide",
+      "label": "법알못 가이드",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/lawguide.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Lguide",
+      "category": "youtube"
+    },
+    {
+      "slug": "lawyerfriends",
+      "label": "로이어프렌즈",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/lawyerfriends.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@lawyerfriends",
+      "category": "youtube"
+    },
+    {
+      "slug": "leejaeik",
+      "label": "작가 이재익",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/leejaeik.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@LeeJaeIk",
+      "category": "youtube"
+    },
+    {
+      "slug": "leestartv",
+      "label": "이스타TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/leestartv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@leestartv",
+      "category": "youtube"
+    },
+    {
+      "slug": "leoj",
+      "label": "레오제이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/leoj.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@LeoJMakeup",
+      "category": "youtube"
+    },
+    {
+      "slug": "lifehackingschool",
+      "label": "라이프해킹스쿨",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/lifehackingschool.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@gohaenam",
+      "category": "youtube"
+    },
+    {
+      "slug": "limetube",
+      "label": "라임튜브",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/limetube.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@LimeTube",
+      "category": "youtube"
+    },
+    {
+      "slug": "longblack",
+      "label": "롱블랙",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/longblack.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%A1%B1%EB%B8%94%EB%9E%99-kor",
+      "category": "youtube"
+    },
+    {
+      "slug": "loveguide",
+      "label": "연애가이드",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/loveguide.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@loveguide",
+      "category": "youtube"
+    },
+    {
+      "slug": "m2",
+      "label": "M2",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/m2.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@MnetM2",
+      "category": "youtube"
+    },
+    {
+      "slug": "maebulshow",
+      "label": "매불쇼",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/maebulshow.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@MaebulShow",
+      "category": "youtube"
+    },
+    {
+      "slug": "masunho",
+      "label": "마선호",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/masunho.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@masunho",
+      "category": "youtube"
+    },
+    {
+      "slug": "mbcnews",
+      "label": "MBC 뉴스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/mbcnews.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@mbcnews",
+      "category": "youtube"
+    },
+    {
+      "slug": "mbneconomy",
+      "label": "매일경제TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/mbneconomy.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@MKeconomy_TV",
+      "category": "youtube"
+    },
+    {
+      "slug": "meatgrill",
+      "label": "고기굽는놈",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/meatgrill.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Hi-kay-",
+      "category": "youtube"
+    },
+    {
+      "slug": "meatking",
+      "label": "정육왕",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/meatking.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@meatking",
+      "category": "youtube"
+    },
+    {
+      "slug": "meatmen",
+      "label": "고기남자",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/meatmen.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EA%B3%A0%EA%B8%B0%EB%82%A8%EC%9E%90",
+      "category": "youtube"
+    },
+    {
+      "slug": "meowpunch",
+      "label": "미야옹철의 냥냥펀치",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/meowpunch.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@meowpunch",
+      "category": "youtube"
+    },
+    {
+      "slug": "metacomedyclub",
+      "label": "메타코미디클럽",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/metacomedyclub.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@metacomedyclub",
+      "category": "youtube"
+    },
+    {
+      "slug": "mimiminu",
+      "label": "미미미누",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/mimiminu.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@mimiminu",
+      "category": "youtube"
+    },
+    {
+      "slug": "mingdong",
+      "label": "밍동",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/mingdong.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Mingdong",
+      "category": "youtube"
+    },
+    {
+      "slug": "mingoi",
+      "label": "민고이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/mingoi.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@YAMAN_MINGOY",
+      "category": "youtube"
+    },
+    {
+      "slug": "minimalist",
+      "label": "미니멀리스트",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/minimalist.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%B9%A0%EC%82%AD%ED%95%9C%EC%82%B4%EB%A6%BC",
+      "category": "youtube"
+    },
+    {
+      "slug": "minimalnomad",
+      "label": "미니멀유목민",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/minimalnomad.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%AF%B8%EB%8B%88%EB%A9%80%EC%9C%A0%EB%AA%A9%EB%AF%BC",
+      "category": "youtube"
+    },
+    {
+      "slug": "minumsatv",
+      "label": "민음사TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/minumsatv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@minumsaTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "mktv",
+      "label": "김미경TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/mktv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@mkkim",
+      "category": "youtube"
+    },
+    {
+      "slug": "mocar",
+      "label": "모카 MOCAR",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/mocar.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@mocar",
+      "category": "youtube"
+    },
+    {
+      "slug": "moneygraphy",
+      "label": "머니그래피",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/moneygraphy.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@moneygraphy",
+      "category": "youtube"
+    },
+    {
+      "slug": "motline",
+      "label": "모트라인",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/motline.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@motline",
+      "category": "youtube"
+    },
+    {
+      "slug": "moviethink",
+      "label": "무비띵크",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/moviethink.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@moviethink",
+      "category": "youtube"
+    },
+    {
+      "slug": "movingwater",
+      "label": "무빙워터",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/movingwater.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@movingwater",
+      "category": "youtube"
+    },
+    {
+      "slug": "musinsatv",
+      "label": "무신사TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/musinsatv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@musinsatv",
+      "category": "youtube"
+    },
+    {
+      "slug": "myeonsangdeul",
+      "label": "면상들",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/myeonsangdeul.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@theMSD",
+      "category": "youtube"
+    },
+    {
+      "slug": "mysteryfish",
+      "label": "수상한생선",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/mysteryfish.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@mysteryfish",
+      "category": "youtube"
+    },
+    {
+      "slug": "nado",
+      "label": "나도 Nado",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/nado.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@nado_official",
+      "category": "youtube"
+    },
+    {
+      "slug": "natgeokorea",
+      "label": "내셔널지오그래픽",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/natgeokorea.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@natgeokorea",
+      "category": "youtube"
+    },
+    {
+      "slug": "negoking",
+      "label": "네고왕",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/negoking.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@dalla",
+      "category": "youtube"
+    },
+    {
+      "slug": "neighborhoodobgyn",
+      "label": "우리동네 산부인과",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/neighborhoodobgyn.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@wooridongsan",
+      "category": "youtube"
+    },
+    {
+      "slug": "nerdult",
+      "label": "너덜트",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/nerdult.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@NERDULT",
+      "category": "youtube"
+    },
+    {
+      "slug": "nestsister",
+      "label": "둥지언니",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/nestsister.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@doongsis",
+      "category": "youtube"
+    },
+    {
+      "slug": "nextdoorbro",
+      "label": "옆집형",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/nextdoorbro.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@NextDoorBro",
+      "category": "youtube"
+    },
+    {
+      "slug": "noblessetv",
+      "label": "노블레스 TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/noblessetv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@NoblesseTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "nofiltertv",
+      "label": "김나영의 nofilterTV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/nofiltertv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@nayoungkeem",
+      "category": "youtube"
+    },
+    {
+      "slug": "nomadcoders",
+      "label": "노마드 코더",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/nomadcoders.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@nomadcoders",
+      "category": "youtube"
+    },
+    {
+      "slug": "nomadcorner",
+      "label": "노마드코너",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/nomadcorner.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@NomadCorner",
+      "category": "youtube"
+    },
+    {
+      "slug": "nomadsean",
+      "label": "노마드션",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/nomadsean.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@NomadShaun",
+      "category": "youtube"
+    },
+    {
+      "slug": "nomo",
+      "label": "노모",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/nomo.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@6MANCOMPANY",
+      "category": "youtube"
+    },
+    {
+      "slug": "oheunyoungtv",
+      "label": "오은영 TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/oheunyoungtv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@OhEunYoungTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "ohgunyoung",
+      "label": "오건영",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ohgunyoung.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EC%86%90%EA%B2%BD%EC%A0%9C",
+      "category": "youtube"
+    },
+    {
+      "slug": "oliversang",
+      "label": "올리버쌤",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/oliversang.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Oliver-ssam",
+      "category": "youtube"
+    },
+    {
+      "slug": "onevshundred",
+      "label": "일당백",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/onevshundred.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@100vs1",
+      "category": "youtube"
+    },
+    {
+      "slug": "onstage",
+      "label": "온스테이지",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/onstage.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@official.onstage",
+      "category": "youtube"
+    },
+    {
+      "slug": "onuk",
+      "label": "오눅",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/onuk.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@onuk",
+      "category": "youtube"
+    },
+    {
+      "slug": "ootbstudio",
+      "label": "ootb 스튜디오",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ootbstudio.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ootbstudio",
+      "category": "youtube"
+    },
+    {
+      "slug": "ordinary",
+      "label": "오디너리",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ordinary.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ordinary-m8l",
+      "category": "youtube"
+    },
+    {
+      "slug": "ourkitchen",
+      "label": "아워키친",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ourkitchen.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ourkitchen_",
+      "category": "youtube"
+    },
+    {
+      "slug": "owlreview",
+      "label": "리뷰엉이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/owlreview.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%A6%AC%EB%B7%B0%EC%97%89%EC%9D%B4",
+      "category": "youtube"
+    },
+    {
+      "slug": "ozigutv",
+      "label": "오지구TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ozigutv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@OG9Tube",
+      "category": "youtube"
+    },
+    {
+      "slug": "paik-jong-won",
+      "label": "백종원",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/paik-jong-won.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@paik_jongwon",
+      "category": "youtube"
+    },
+    {
+      "slug": "pani-bottle",
+      "label": "빠니보틀",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/pani-bottle.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@PaniBottle",
+      "category": "youtube"
+    },
+    {
+      "slug": "parentingstandard",
+      "label": "육아의 정석",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/parentingstandard.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@joonnam527",
+      "category": "youtube"
+    },
+    {
+      "slug": "personadic",
+      "label": "인물사전",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/personadic.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Inmul100",
+      "category": "youtube"
+    },
+    {
+      "slug": "physical-gallery",
+      "label": "피지컬갤러리",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/physical-gallery.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%ED%94%BC%EC%A7%80%EC%BB%AC%EA%B0%A4%EB%9F%AC%EB%A6%AC",
+      "category": "youtube"
+    },
+    {
+      "slug": "pickgo",
+      "label": "픽고",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/pickgo.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@pickgo",
+      "category": "youtube"
+    },
+    {
+      "slug": "pickplus",
+      "label": "픽플러스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/pickplus.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%ED%94%BD%ED%94%8C%EB%9F%AC%EC%8A%A4",
+      "category": "youtube"
+    },
+    {
+      "slug": "pinkfong",
+      "label": "핑크퐁",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/pinkfong.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Pinkfong",
+      "category": "youtube"
+    },
+    {
+      "slug": "poclanos",
+      "label": "포크라노스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/poclanos.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Poclanos",
+      "category": "youtube"
+    },
+    {
+      "slug": "pokepoke",
+      "label": "포크포크",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/pokepoke.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@pokepoke",
+      "category": "youtube"
+    },
+    {
+      "slug": "pompom",
+      "label": "폼폼",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/pompom.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@PomPom",
+      "category": "youtube"
+    },
+    {
+      "slug": "pony-makeup",
+      "label": "포니",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/pony-makeup.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@TV-gz8nz",
+      "category": "youtube"
+    },
+    {
+      "slug": "ponysyndrome",
+      "label": "포니 신드롬",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ponysyndrome.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@PONYsyndrome",
+      "category": "youtube"
+    },
+    {
+      "slug": "pororo",
+      "label": "뽀로로",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/pororo.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%BD%80%EB%A1%9C%EB%A1%9C%EA%B3%B5%EC%8B%9D%EC%B1%84%EB%84%90",
+      "category": "youtube"
+    },
+    {
+      "slug": "ppkka",
+      "label": "뻑가",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ppkka.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@PPKKa",
+      "category": "youtube"
+    },
+    {
+      "slug": "ppogumi",
+      "label": "뽀구미",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ppogumi.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%BD%80%EA%B5%AC%EB%AF%B8",
+      "category": "youtube"
+    },
+    {
+      "slug": "psick-univ",
+      "label": "피식대학",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/psick-univ.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%ED%94%BC%EC%8B%9D%EB%8C%80%ED%95%99",
+      "category": "youtube"
+    },
+    {
+      "slug": "publicguide",
+      "label": "공공기관 가이드",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/publicguide.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@KPAMI%EA%B3%B5%EC%8B%9D%EC%9C%A0%ED%8A%9C%EB%B8%8C%EC%B1%84%EB%84%90",
+      "category": "youtube"
+    },
+    {
+      "slug": "pyoyoungho",
+      "label": "표영호TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/pyoyoungho.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@tv0505",
+      "category": "youtube"
+    },
+    {
+      "slug": "readinglion",
+      "label": "책읽는사자",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/readinglion.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@readinglion",
+      "category": "youtube"
+    },
+    {
+      "slug": "readingman",
+      "label": "부동산읽어주는남자",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/readingman.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@reading_man",
+      "category": "youtube"
+    },
+    {
+      "slug": "realestatecloud",
+      "label": "부동산클라우드",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/realestatecloud.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@recloud",
+      "category": "youtube"
+    },
+    {
+      "slug": "risabae",
+      "label": "이사배",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/risabae.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@RISABAE",
+      "category": "youtube"
+    },
+    {
+      "slug": "rooftopcat",
+      "label": "옥냥이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/rooftopcat.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@rooftopcat",
+      "category": "youtube"
+    },
+    {
+      "slug": "roommates",
+      "label": "자취남",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/roommates.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@jachinam",
+      "category": "youtube"
+    },
+    {
+      "slug": "runsoyoung",
+      "label": "런소영",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/runsoyoung.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@runsoyoung8033",
+      "category": "youtube"
+    },
+    {
+      "slug": "runup",
+      "label": "런업",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/runup.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@runupkr",
+      "category": "youtube"
+    },
+    {
+      "slug": "sanaebeauty",
+      "label": "사내뷰공업",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sanaebeauty.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@sanaebeauty",
+      "category": "youtube"
+    },
+    {
+      "slug": "sanago",
+      "label": "사나고",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sanago.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Sanago",
+      "category": "youtube"
+    },
+    {
+      "slug": "sapiensstudio",
+      "label": "사피엔스 스튜디오",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sapiensstudio.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@sapiens_studio",
+      "category": "youtube"
+    },
+    {
+      "slug": "sbsnews",
+      "label": "SBS",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sbsnews.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@sbsnews8",
+      "category": "youtube"
+    },
+    {
+      "slug": "schoolking",
+      "label": "급식왕",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/schoolking.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@schoolfoodking",
+      "category": "youtube"
+    },
+    {
+      "slug": "sciencedream",
+      "label": "과학드림",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sciencedream.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ScienceDream",
+      "category": "youtube"
+    },
+    {
+      "slug": "selfmade",
+      "label": "셀프메이드",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/selfmade.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@selfmadetv",
+      "category": "youtube"
+    },
+    {
+      "slug": "seolssaemtv",
+      "label": "설쌤TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/seolssaemtv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@seolssaemTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "seomerry",
+      "label": "서메리",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/seomerry.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@seomerry",
+      "category": "youtube"
+    },
+    {
+      "slug": "seoulpapa",
+      "label": "서울파파",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/seoulpapa.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Shubepapa",
+      "category": "youtube"
+    },
+    {
+      "slug": "seungwoodad",
+      "label": "승우아빠",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/seungwoodad.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@swab85",
+      "category": "youtube"
+    },
+    {
+      "slug": "sherlockhyunjoon",
+      "label": "셜록현준",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sherlockhyunjoon.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Sherlock_HJ",
+      "category": "youtube"
+    },
+    {
+      "slug": "shootforlove-youtube",
+      "label": "슛포러브",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/shootforlove-youtube.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ShootForLove",
+      "category": "youtube"
+    },
+    {
+      "slug": "short-box",
+      "label": "숏박스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/short-box.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@shortbox",
+      "category": "youtube"
+    },
+    {
+      "slug": "short-paper",
+      "label": "짧은대본",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/short-paper.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@short_paper",
+      "category": "youtube"
+    },
+    {
+      "slug": "sinsa",
+      "label": "신사임당",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sinsa.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Sinsa",
+      "category": "youtube"
+    },
+    {
+      "slug": "sisyphus",
+      "label": "시지프스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sisyphus.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@minhotaurs",
+      "category": "youtube"
+    },
+    {
+      "slug": "smtown",
+      "label": "SM타운",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/smtown.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@SMTOWN",
+      "category": "youtube"
+    },
+    {
+      "slug": "snacktown",
+      "label": "스낵타운",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/snacktown.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@snacktown",
+      "category": "youtube"
+    },
+    {
+      "slug": "sooltview",
+      "label": "술터뷰",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sooltview.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@geean84",
+      "category": "youtube"
+    },
+    {
+      "slug": "soranmusic",
+      "label": "소란스런 음악",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/soranmusic.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@BADAOFFICIAL",
+      "category": "youtube"
+    },
+    {
+      "slug": "soy-travel",
+      "label": "쏘이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/soy-travel.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@soy_the_world",
+      "category": "youtube"
+    },
+    {
+      "slug": "speechsecret",
+      "label": "스피치 시크릿",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/speechsecret.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%A7%A4%EC%9D%BC%EB%8F%85%EC%84%9C%EB%A7%A4%EC%9D%BC%EC%9D%B8%EC%82%AC%EC%9D%B4%ED%8A%B8",
+      "category": "youtube"
+    },
+    {
+      "slug": "squarewheel",
+      "label": "네모난바퀴",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/squarewheel.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%84%A4%EB%AA%A8%EB%82%9C_%EB%B0%94%ED%80%B4",
+      "category": "youtube"
+    },
+    {
+      "slug": "ssin",
+      "label": "씬님",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ssin.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ssinnim",
+      "category": "youtube"
+    },
+    {
+      "slug": "ssulply",
+      "label": "썰플리",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ssulply.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ssulply",
+      "category": "youtube"
+    },
+    {
+      "slug": "starshiptv",
+      "label": "스타쉽",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/starshiptv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@STARSHIP_official",
+      "category": "youtube"
+    },
+    {
+      "slug": "studiowaffle",
+      "label": "스튜디오 와플",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/studiowaffle.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@studiowaffle",
+      "category": "youtube"
+    },
+    {
+      "slug": "studyking",
+      "label": "공부왕찐천재",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/studyking.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@zzin_genius",
+      "category": "youtube"
+    },
+    {
+      "slug": "studymoney",
+      "label": "공부가머니",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/studymoney.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@MBCdrama",
+      "category": "youtube"
+    },
+    {
+      "slug": "subingsoo",
+      "label": "수빙수TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/subingsoo.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@subingsoo",
+      "category": "youtube"
+    },
+    {
+      "slug": "sujestudio",
+      "label": "스튜디오 수제",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sujestudio.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@STUDIO_SUZE",
+      "category": "youtube"
+    },
+    {
+      "slug": "sung-si-kyung",
+      "label": "성시경",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sung-si-kyung.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@sungsikyung",
+      "category": "youtube"
+    },
+    {
+      "slug": "sunnychannel",
+      "label": "써니채널",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/sunnychannel.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@sunnyschannel",
+      "category": "youtube"
+    },
+    {
+      "slug": "supermarketsora",
+      "label": "YTN Star K",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/supermarketsora.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ytnstar",
+      "category": "youtube"
+    },
+    {
+      "slug": "surprisingknow",
+      "label": "놀라운지식",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/surprisingknow.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@AmazingKnowledge",
+      "category": "youtube"
+    },
+    {
+      "slug": "syukaworld",
+      "label": "슈카월드",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/syukaworld.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@syukaworld",
+      "category": "youtube"
+    },
+    {
+      "slug": "tallguy",
+      "label": "키다리형",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/tallguy.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Tallguy189",
+      "category": "youtube"
+    },
+    {
+      "slug": "techmong",
+      "label": "테크몽",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/techmong.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@techmong",
+      "category": "youtube"
+    },
+    {
+      "slug": "technosaurus",
+      "label": "테크노사우루스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/technosaurus.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@TechnoSaurus",
+      "category": "youtube"
+    },
+    {
+      "slug": "teo",
+      "label": "테오",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/teo.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@teo_universe",
+      "category": "youtube"
+    },
+    {
+      "slug": "the-edit",
+      "label": "디에디트",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/the-edit.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@the-edit",
+      "category": "youtube"
+    },
+    {
+      "slug": "therese",
+      "label": "떼레즈",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/therese.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@therese_film",
+      "category": "youtube"
+    },
+    {
+      "slug": "timelab",
+      "label": "김시덕의 시계연구소",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/timelab.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@kim_si_duck",
+      "category": "youtube"
+    },
+    {
+      "slug": "traveljay",
+      "label": "여행제이",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/traveljay.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@TravelJay",
+      "category": "youtube"
+    },
+    {
+      "slug": "tv-kim",
+      "label": "입질의추억",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/tv-kim.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@kimjimintv",
+      "category": "youtube"
+    },
+    {
+      "slug": "tzuyang",
+      "label": "쯔양",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/tzuyang.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@tzuyang6145",
+      "category": "youtube"
+    },
+    {
+      "slug": "uma",
+      "label": "우마",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/uma.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@u_ma",
+      "category": "youtube"
+    },
+    {
+      "slug": "unanswered",
+      "label": "그것이 알고싶다",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/unanswered.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@sbstruth",
+      "category": "youtube"
+    },
+    {
+      "slug": "under-1-min",
+      "label": "1분미만",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/under-1-min.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@1%EB%B6%84%EB%AF%B8%EB%A7%8C",
+      "category": "youtube"
+    },
+    {
+      "slug": "underkg",
+      "label": "언더케이지",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/underkg.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@underkg",
+      "category": "youtube"
+    },
+    {
+      "slug": "understanding",
+      "label": "언더스탠딩",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/understanding.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@understanding.",
+      "category": "youtube"
+    },
+    {
+      "slug": "unreal-science",
+      "label": "안될과학",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/unreal-science.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@unrealscience",
+      "category": "youtube"
+    },
+    {
+      "slug": "vivotv",
+      "label": "비보티비",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/vivotv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@VIVOTVchannel",
+      "category": "youtube"
+    },
+    {
+      "slug": "whaeng",
+      "label": "취재대행소 왱",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/whaeng.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EC%B7%A8%EC%9E%AC%EB%8C%80%ED%96%89%EC%86%8C%EC%99%B1",
+      "category": "youtube"
+    },
+    {
+      "slug": "wildhorse",
+      "label": "야생마TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/wildhorse.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@WildHorseTV",
+      "category": "youtube"
+    },
+    {
+      "slug": "wineking",
+      "label": "와인킹",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/wineking.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@WineKing",
+      "category": "youtube"
+    },
+    {
+      "slug": "winetasting",
+      "label": "와인테이스팅",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/winetasting.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@jinswinepairing",
+      "category": "youtube"
+    },
+    {
+      "slug": "winterbookstore",
+      "label": "겨울서점",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/winterbookstore.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@winterbooks",
+      "category": "youtube"
+    },
+    {
+      "slug": "wonjaewoo",
+      "label": "호밀밭의 우원재",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/wonjaewoo.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@wonjaewoo",
+      "category": "youtube"
+    },
+    {
+      "slug": "wonjiday",
+      "label": "원지의 하루",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/wonjiday.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@im1G",
+      "category": "youtube"
+    },
+    {
+      "slug": "woopatv",
+      "label": "우파푸른하늘",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/woopatv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@Woopa87",
+      "category": "youtube"
+    },
+    {
+      "slug": "woowakgood",
+      "label": "우왁굳",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/woowakgood.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@woowakgood",
+      "category": "youtube"
+    },
+    {
+      "slug": "workman",
+      "label": "워크맨",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/workman.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@workman",
+      "category": "youtube"
+    },
+    {
+      "slug": "worldwealthtv",
+      "label": "월급쟁이부자들TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/worldwealthtv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@weolbu",
+      "category": "youtube"
+    },
+    {
+      "slug": "wowtv",
+      "label": "한국경제TV",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/wowtv.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@hkwowtv",
+      "category": "youtube"
+    },
+    {
+      "slug": "wowvideo",
+      "label": "우와한 비디오",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/wowvideo.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@wowvideo_official",
+      "category": "youtube"
+    },
+    {
+      "slug": "yangpang",
+      "label": "양팡",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/yangpang.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@YANGPANGofficial",
+      "category": "youtube"
+    },
+    {
+      "slug": "yanko",
+      "label": "얀코",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/yanko.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EC%8A%A4%EB%B0%A9%EC%84%B8",
+      "category": "youtube"
+    },
+    {
+      "slug": "yankotravel",
+      "label": "얀코의 여행연구소",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/yankotravel.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@%EB%B9%88%ED%8B%88%EC%97%AC%ED%96%89Bintmytravel",
+      "category": "youtube"
+    },
+    {
+      "slug": "yongdal",
+      "label": "공돌이 용달",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/yongdal.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@yongdal",
+      "category": "youtube"
+    },
+    {
+      "slug": "yooxicman",
+      "label": "육식맨",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/yooxicman.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@YOOXICMAN",
+      "category": "youtube"
+    },
+    {
+      "slug": "yori-yongd",
+      "label": "요리용디",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/yori-yongd.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@YoriYongd",
+      "category": "youtube"
+    },
+    {
+      "slug": "ytnnews",
+      "label": "YTN 뉴스",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/ytnnews.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@ytnnews24",
+      "category": "youtube"
+    },
+    {
+      "slug": "yumyum",
+      "label": "엠넷 티비",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/yumyum.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@PlayMnet",
+      "category": "youtube"
+    },
+    {
+      "slug": "zzan-bro",
+      "label": "짠한형 신동엽",
+      "icon_src": "/cubeone/jusomoa/icons/youtube/zzan-bro.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/@zzanbro",
+      "category": "youtube"
+    }
+  ]
+}

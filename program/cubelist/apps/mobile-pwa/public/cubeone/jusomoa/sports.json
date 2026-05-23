@@ -1,0 +1,478 @@
+{
+  "category": "sports",
+  "count": 59,
+  "items": [
+    {
+      "slug": "alltrails",
+      "label": "올트레일",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/alltrails.webp",
+      "action_type": "link",
+      "url": "https://www.alltrails.com",
+      "category": "sports"
+    },
+    {
+      "slug": "apple-fitness-plus",
+      "label": "애플 피트니스+",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/apple-fitness-plus.webp",
+      "action_type": "link",
+      "url": "https://www.apple.com/fitness",
+      "category": "sports"
+    },
+    {
+      "slug": "badmintonkorea",
+      "label": "배드민턴코리아",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/badmintonkorea.webp",
+      "action_type": "link",
+      "url": "https://www.badmintonkorea.org",
+      "category": "sports"
+    },
+    {
+      "slug": "ballmate",
+      "label": "볼메이트",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/ballmate.webp",
+      "action_type": "link",
+      "url": "https://www.ballmate.co.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "beinsports",
+      "label": "beIN 스포츠",
+      "icon_src": "/cubeone/jusomoa/icons/sports/beinsports.webp",
+      "action_type": "link",
+      "url": "https://www.beinsports.com",
+      "category": "sports"
+    },
+    {
+      "slug": "bikeseoul",
+      "label": "따릉이",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/bikeseoul.webp",
+      "action_type": "link",
+      "url": "https://www.bikeseoul.com",
+      "category": "sports"
+    },
+    {
+      "slug": "caddiebi",
+      "label": "캐디비",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/caddiebi.webp",
+      "action_type": "link",
+      "url": "https://www.caddiebi.com",
+      "category": "sports"
+    },
+    {
+      "slug": "chesscom",
+      "label": "체스닷컴",
+      "icon_src": "/cubeone/jusomoa/icons/sports/chesscom.webp",
+      "action_type": "link",
+      "url": "https://www.chesscom.com",
+      "category": "sports"
+    },
+    {
+      "slug": "classpass",
+      "label": "클래스패스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/classpass.webp",
+      "action_type": "link",
+      "url": "https://classpass.com",
+      "category": "sports"
+    },
+    {
+      "slug": "coupangplay-sports",
+      "label": "쿠팡플레이 스포츠",
+      "icon_src": "/cubeone/jusomoa/icons/sports/coupangplay-sports.webp",
+      "action_type": "link",
+      "url": "https://www.coupangplay.com/sports",
+      "category": "sports"
+    },
+    {
+      "slug": "dazn",
+      "label": "다존",
+      "icon_src": "/cubeone/jusomoa/icons/sports/dazn.webp",
+      "action_type": "link",
+      "url": "https://www.dazn.com",
+      "category": "sports"
+    },
+    {
+      "slug": "durunubi",
+      "label": "하이킹코리아",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/durunubi.webp",
+      "action_type": "link",
+      "url": "https://www.durunubi.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "epl-app",
+      "label": "EPL 공식앱",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/epl-app.webp",
+      "action_type": "link",
+      "url": "https://www.premierleague.com/app",
+      "category": "sports"
+    },
+    {
+      "slug": "espnplus",
+      "label": "ESPN+",
+      "icon_src": "/cubeone/jusomoa/icons/sports/espnplus.webp",
+      "action_type": "link",
+      "url": "https://www.espnplus.com",
+      "category": "sports"
+    },
+    {
+      "slug": "fibatv",
+      "label": "FIBA TV",
+      "icon_src": "/cubeone/jusomoa/icons/sports/fibatv.webp",
+      "action_type": "link",
+      "url": "https://www.fibatv.com",
+      "category": "sports"
+    },
+    {
+      "slug": "flashscore",
+      "label": "플래시스코어",
+      "icon_src": "/cubeone/jusomoa/icons/sports/flashscore.webp",
+      "action_type": "link",
+      "url": "https://www.flashscore.com",
+      "category": "sports"
+    },
+    {
+      "slug": "footballist",
+      "label": "풋볼리스트",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/footballist.webp",
+      "action_type": "link",
+      "url": "https://www.footballist.co.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "fotmob",
+      "label": "풋몹",
+      "icon_src": "/cubeone/jusomoa/icons/sports/fotmob.webp",
+      "action_type": "link",
+      "url": "https://www.fotmob.com",
+      "category": "sports"
+    },
+    {
+      "slug": "foxsports",
+      "label": "폭스",
+      "icon_src": "/cubeone/jusomoa/icons/sports/foxsports.webp",
+      "action_type": "link",
+      "url": "https://www.foxsports.com",
+      "category": "sports"
+    },
+    {
+      "slug": "freekick",
+      "label": "프리킥",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/freekick.webp",
+      "action_type": "link",
+      "url": "https://www.freekick.co.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "garmin-connect",
+      "label": "가민 커넥트",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/garmin-connect.webp",
+      "action_type": "link",
+      "url": "https://connect.garmin.com",
+      "category": "sports"
+    },
+    {
+      "slug": "goal",
+      "label": "GOAL Korea",
+      "icon_src": "/cubeone/jusomoa/icons/sports/goal.webp",
+      "action_type": "link",
+      "url": "https://www.goal.com/kr",
+      "category": "sports"
+    },
+    {
+      "slug": "golfzon",
+      "label": "골프존",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/golfzon.webp",
+      "action_type": "link",
+      "url": "https://www.golfzon.com",
+      "category": "sports"
+    },
+    {
+      "slug": "hometraining-bubu",
+      "label": "홈트레이닝",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/hometraining-bubu.webp",
+      "action_type": "link",
+      "url": "https://www.youtube.com/c/thankyoububu",
+      "category": "sports"
+    },
+    {
+      "slug": "isplus",
+      "label": "일간스포츠",
+      "icon_src": "/cubeone/jusomoa/icons/sports/isplus.webp",
+      "action_type": "link",
+      "url": "https://www.isplus.com",
+      "category": "sports"
+    },
+    {
+      "slug": "kakao-t-bike",
+      "label": "카카오 T 바이크",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/kakao-t-bike.webp",
+      "action_type": "link",
+      "url": "https://www.kakaomobility.com",
+      "category": "sports"
+    },
+    {
+      "slug": "kakao-vx-golf",
+      "label": "카카오VX(카카오골프)",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/kakao-vx-golf.webp",
+      "action_type": "link",
+      "url": "https://www.kakao.golf",
+      "category": "sports"
+    },
+    {
+      "slug": "keep-gotokeep",
+      "label": "킵(Keep)",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/keep-gotokeep.webp",
+      "action_type": "link",
+      "url": "https://www.gotokeep.com",
+      "category": "sports"
+    },
+    {
+      "slug": "kleague",
+      "label": "K리그",
+      "icon_src": "/cubeone/jusomoa/icons/sports/kleague.webp",
+      "action_type": "link",
+      "url": "https://www.kleague.com",
+      "category": "sports"
+    },
+    {
+      "slug": "koreabaseball",
+      "label": "KBO",
+      "icon_src": "/cubeone/jusomoa/icons/sports/koreabaseball.webp",
+      "action_type": "link",
+      "url": "https://www.koreabaseball.com",
+      "category": "sports"
+    },
+    {
+      "slug": "korearace",
+      "label": "코리아레이스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/korearace.webp",
+      "action_type": "link",
+      "url": "https://www.korearace.com",
+      "category": "sports"
+    },
+    {
+      "slug": "mirrorfit",
+      "label": "미러핏",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/mirrorfit.webp",
+      "action_type": "link",
+      "url": "https://www.mirrorfit.co.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "mlb-korea",
+      "label": "MLB 코리아",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/mlb-korea.webp",
+      "action_type": "link",
+      "url": "https://www.mlbpark.com",
+      "category": "sports"
+    },
+    {
+      "slug": "motogp",
+      "label": "모토GP",
+      "icon_src": "/cubeone/jusomoa/icons/sports/motogp.webp",
+      "action_type": "link",
+      "url": "https://www.motogp.com",
+      "category": "sports"
+    },
+    {
+      "slug": "myswing",
+      "label": "마이스윙",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/myswing.webp",
+      "action_type": "link",
+      "url": "https://myswing.co.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "mytraining",
+      "label": "마이트레이닝",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/mytraining.webp",
+      "action_type": "link",
+      "url": "https://www.mytraining.co.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "nba",
+      "label": "NBA TV",
+      "icon_src": "/cubeone/jusomoa/icons/sports/nba.webp",
+      "action_type": "link",
+      "url": "https://www.nba.com",
+      "category": "sports"
+    },
+    {
+      "slug": "nike-run-club",
+      "label": "나이키런클럽(NRC)",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/nike-run-club.webp",
+      "action_type": "link",
+      "url": "https://www.nike.com/kr/nrc-app",
+      "category": "sports"
+    },
+    {
+      "slug": "olympicchannel",
+      "label": "올림픽채널",
+      "icon_src": "/cubeone/jusomoa/icons/sports/olympicchannel.webp",
+      "action_type": "link",
+      "url": "https://www.olympicchannel.com",
+      "category": "sports"
+    },
+    {
+      "slug": "outdoorchannel",
+      "label": "아웃도어",
+      "icon_src": "/cubeone/jusomoa/icons/sports/outdoorchannel.webp",
+      "action_type": "link",
+      "url": "https://www.outdoorchannel.com",
+      "category": "sports"
+    },
+    {
+      "slug": "pilatesfactory",
+      "label": "필라테스팩토리",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/pilatesfactory.webp",
+      "action_type": "link",
+      "url": "https://www.pilatesfactory.co.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "plabfootball",
+      "label": "풋살매치",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/plabfootball.webp",
+      "action_type": "link",
+      "url": "https://www.plabfootball.com",
+      "category": "sports"
+    },
+    {
+      "slug": "ramblr",
+      "label": "램블러",
+      "icon_src": "/cubeone/jusomoa/icons/sports/ramblr.webp",
+      "action_type": "link",
+      "url": "https://www.ramblr.com",
+      "category": "sports"
+    },
+    {
+      "slug": "runday",
+      "label": "런데이",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/runday.webp",
+      "action_type": "link",
+      "url": "https://runday.co.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "samsung-galaxywatch-health",
+      "label": "삼성 갤럭시워치 헬스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/samsung-galaxywatch-health.webp",
+      "action_type": "link",
+      "url": "https://www.samsung.com/health",
+      "category": "sports"
+    },
+    {
+      "slug": "skysports",
+      "label": "스카이",
+      "icon_src": "/cubeone/jusomoa/icons/sports/skysports.webp",
+      "action_type": "link",
+      "url": "https://www.skysports.com",
+      "category": "sports"
+    },
+    {
+      "slug": "sporki",
+      "label": "SPORKI",
+      "icon_src": "/cubeone/jusomoa/icons/sports/sporki.webp",
+      "action_type": "link",
+      "url": "https://www.sporki.com",
+      "category": "sports"
+    },
+    {
+      "slug": "sportalkorea",
+      "label": "스포탈코리아",
+      "icon_src": "/cubeone/jusomoa/icons/sports/sportalkorea.webp",
+      "action_type": "link",
+      "url": "https://www.sportalkorea.com",
+      "category": "sports"
+    },
+    {
+      "slug": "sports",
+      "label": "네이버 스포츠",
+      "icon_src": "/cubeone/jusomoa/icons/sports/sports.webp",
+      "action_type": "link",
+      "url": "https://sports.news.naver.com",
+      "category": "sports"
+    },
+    {
+      "slug": "sportsseoul",
+      "label": "스포츠서울",
+      "icon_src": "/cubeone/jusomoa/icons/sports/sportsseoul.webp",
+      "action_type": "link",
+      "url": "https://www.sportsseoul.com",
+      "category": "sports"
+    },
+    {
+      "slug": "spotv-tv-channel",
+      "label": "SPOTV(TV채널)",
+      "icon_src": "/cubeone/jusomoa/icons/sports/spotv-tv-channel.webp",
+      "action_type": "link",
+      "url": "https://www.spotvnow.co.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "statiz",
+      "label": "스탯티즈",
+      "icon_src": "/cubeone/jusomoa/icons/sports/statiz.webp",
+      "action_type": "link",
+      "url": "https://www.statiz.co.kr",
+      "category": "sports"
+    },
+    {
+      "slug": "tennistv",
+      "label": "테니스",
+      "icon_src": "/cubeone/jusomoa/icons/sports/tennistv.webp",
+      "action_type": "link",
+      "url": "https://www.tennistv.com",
+      "category": "sports"
+    },
+    {
+      "slug": "tvn",
+      "label": "tvN SPORTS",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/tvn.webp",
+      "action_type": "link",
+      "url": "https://tvn.tving.com",
+      "category": "sports"
+    },
+    {
+      "slug": "wahoo",
+      "label": "와후",
+      "icon_src": "/cubeone/jusomoa/icons/sports/wahoo.webp",
+      "action_type": "link",
+      "url": "https://www.wahoo.com",
+      "category": "sports"
+    },
+    {
+      "slug": "whoscored",
+      "label": "후스코어드",
+      "icon_src": "/cubeone/jusomoa/icons/sports/whoscored.webp",
+      "action_type": "link",
+      "url": "https://www.whoscored.com",
+      "category": "sports"
+    },
+    {
+      "slug": "youtubesports",
+      "label": "유튜브 스포츠",
+      "icon_src": "/cubeone/jusomoa/icons/sports/youtubesports.webp",
+      "action_type": "link",
+      "url": "https://www.youtubesports.com",
+      "category": "sports"
+    },
+    {
+      "slug": "zentoto",
+      "label": "젠토토",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/zentoto.webp",
+      "action_type": "link",
+      "url": "https://www.zentoto.com",
+      "category": "sports"
+    },
+    {
+      "slug": "zwift",
+      "label": "즈위프트",
+      "icon_src": "/cubeone/jusomoa/icons/sports/zwift.webp",
+      "action_type": "link",
+      "url": "https://www.zwift.com",
+      "category": "sports"
+    }
+  ]
+}

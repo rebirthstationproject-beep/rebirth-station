@@ -1,0 +1,470 @@
+{
+  "category": "cloud",
+  "count": 58,
+  "items": [
+    {
+      "slug": "airtable",
+      "label": "에어테이블",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/airtable.webp",
+      "action_type": "link",
+      "url": "https://airtable.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "asana",
+      "label": "아사나",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/asana.webp",
+      "action_type": "link",
+      "url": "https://asana.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "bitbucket",
+      "label": "비트버킷",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/bitbucket.webp",
+      "action_type": "link",
+      "url": "https://bitbucket.org",
+      "category": "cloud"
+    },
+    {
+      "slug": "box",
+      "label": "박스",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/box.webp",
+      "action_type": "link",
+      "url": "https://www.box.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "canva-cloud",
+      "label": "Canva",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/canva-cloud.webp",
+      "action_type": "link",
+      "url": "https://www.canva.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "clickup",
+      "label": "클릭업",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/clickup.webp",
+      "action_type": "link",
+      "url": "https://www.clickup.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "coda",
+      "label": "코다",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/coda.webp",
+      "action_type": "link",
+      "url": "https://coda.io",
+      "category": "cloud"
+    },
+    {
+      "slug": "confluence",
+      "label": "컨플루언스",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/confluence.webp",
+      "action_type": "link",
+      "url": "https://www.atlassian.com/software/confluence",
+      "category": "cloud"
+    },
+    {
+      "slug": "cursor-cloud",
+      "label": "커서 AI",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/cursor-cloud.webp",
+      "action_type": "link",
+      "url": "https://cursor.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "deepl",
+      "label": "DeepL",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/deepl.webp",
+      "action_type": "link",
+      "url": "https://www.deepl.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "docusign",
+      "label": "도큐사인",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/docusign.webp",
+      "action_type": "link",
+      "url": "https://www.docusign.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "drive",
+      "label": "Google Drive",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/drive.webp",
+      "action_type": "link",
+      "url": "https://drive.google.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "dropbox",
+      "label": "드롭박스",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/dropbox.webp",
+      "action_type": "link",
+      "url": "https://www.dropbox.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "evernote",
+      "label": "에버노트",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/evernote.webp",
+      "action_type": "link",
+      "url": "https://evernote.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "figma",
+      "label": "피그마",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/figma.webp",
+      "action_type": "link",
+      "url": "https://www.figma.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "gathertown",
+      "label": "노이즈캔슬링(gathertown)",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/gathertown.webp",
+      "action_type": "link",
+      "url": "https://www.gather.town",
+      "category": "cloud"
+    },
+    {
+      "slug": "github",
+      "label": "깃허브",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/github.webp",
+      "action_type": "link",
+      "url": "https://github.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "gitlab",
+      "label": "깃랩",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/gitlab.webp",
+      "action_type": "link",
+      "url": "https://gitlab.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "hancom-office",
+      "label": "한컴오피스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/hancom-office.webp",
+      "action_type": "link",
+      "url": "https://www.hancom.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "hancomdocs",
+      "label": "한컴독스",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/hancomdocs.webp",
+      "action_type": "link",
+      "url": "https://www.hancomdocs.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "icloud",
+      "label": "아이클라우드",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/icloud.webp",
+      "action_type": "link",
+      "url": "https://www.icloud.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "jandi",
+      "label": "잔디",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/jandi.webp",
+      "action_type": "link",
+      "url": "https://www.jandi.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "jira",
+      "label": "지라",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/jira.webp",
+      "action_type": "link",
+      "url": "https://www.atlassian.com/software/jira",
+      "category": "cloud"
+    },
+    {
+      "slug": "kakaowork",
+      "label": "카카오워크",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/kakaowork.webp",
+      "action_type": "link",
+      "url": "https://www.kakaowork.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "larksuite",
+      "label": "라크",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/larksuite.webp",
+      "action_type": "link",
+      "url": "https://www.larksuite.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "linear",
+      "label": "리니어",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/linear.webp",
+      "action_type": "link",
+      "url": "https://linear.app",
+      "category": "cloud"
+    },
+    {
+      "slug": "loom-cloud",
+      "label": "룸",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/loom-cloud.webp",
+      "action_type": "link",
+      "url": "https://www.loom.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "lucidchart",
+      "label": "루시드차트",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/lucidchart.webp",
+      "action_type": "link",
+      "url": "https://www.lucidchart.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "microsoft-teams",
+      "label": "마이크로소프트 팀즈",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/microsoft-teams.webp",
+      "action_type": "link",
+      "url": "https://www.microsoft.com/teams",
+      "category": "cloud"
+    },
+    {
+      "slug": "microsoft365",
+      "label": "Microsoft 365",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/microsoft365.webp",
+      "action_type": "link",
+      "url": "https://www.microsoft365.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "miricanvas",
+      "label": "미리캔버스",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/miricanvas.webp",
+      "action_type": "link",
+      "url": "https://www.miricanvas.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "miro",
+      "label": "마이로",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/miro.webp",
+      "action_type": "link",
+      "url": "https://miro.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "monday",
+      "label": "먼데이",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/monday.webp",
+      "action_type": "link",
+      "url": "https://www.monday.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "ms-365",
+      "label": "MS 365",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/ms-365.webp",
+      "action_type": "link",
+      "url": "https://www.microsoft.com/microsoft-365",
+      "category": "cloud"
+    },
+    {
+      "slug": "notion-cloud",
+      "label": "Notion",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/notion-cloud.webp",
+      "action_type": "link",
+      "url": "https://www.notion.so",
+      "category": "cloud"
+    },
+    {
+      "slug": "obsidian",
+      "label": "옵시디언",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/obsidian.webp",
+      "action_type": "link",
+      "url": "https://obsidian.md",
+      "category": "cloud"
+    },
+    {
+      "slug": "onedrive",
+      "label": "원드라이브",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/onedrive.webp",
+      "action_type": "link",
+      "url": "https://onedrive.live.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "polarisoffice",
+      "label": "폴라리스",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/polarisoffice.webp",
+      "action_type": "link",
+      "url": "https://www.polarisoffice.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "quip",
+      "label": "큅",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/quip.webp",
+      "action_type": "link",
+      "url": "https://www.quip.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "sendbird",
+      "label": "센드버드",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/sendbird.webp",
+      "action_type": "link",
+      "url": "https://sendbird.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "slack",
+      "label": "슬랙",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/slack.webp",
+      "action_type": "link",
+      "url": "https://slack.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "slides-com",
+      "label": "슬라이드",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/slides-com.webp",
+      "action_type": "link",
+      "url": "https://slides.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "surveymonkey",
+      "label": "서베이몽키",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/surveymonkey.webp",
+      "action_type": "link",
+      "url": "https://www.surveymonkey.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "swit",
+      "label": "스위트",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/swit.webp",
+      "action_type": "link",
+      "url": "https://swit.io",
+      "category": "cloud"
+    },
+    {
+      "slug": "terabox",
+      "label": "테라박스",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/terabox.webp",
+      "action_type": "link",
+      "url": "https://www.terabox.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "ticktick",
+      "label": "틱틱",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/ticktick.webp",
+      "action_type": "link",
+      "url": "https://www.ticktick.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "todoist",
+      "label": "투두이스트",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/todoist.webp",
+      "action_type": "link",
+      "url": "https://todoist.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "toggl",
+      "label": "토글",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/toggl.webp",
+      "action_type": "link",
+      "url": "https://www.toggl.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "trello",
+      "label": "트렐로",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/trello.webp",
+      "action_type": "link",
+      "url": "https://trello.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "typeform",
+      "label": "타입폼",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/typeform.webp",
+      "action_type": "link",
+      "url": "https://www.typeform.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "vercel",
+      "label": "버셀",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/vercel.webp",
+      "action_type": "link",
+      "url": "https://vercel.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "vs-code",
+      "label": "VS Code",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/vs-code.webp",
+      "action_type": "link",
+      "url": "https://code.visualstudio.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "wetransfer",
+      "label": "위트랜스퍼",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/wetransfer.webp",
+      "action_type": "link",
+      "url": "https://www.wetransfer.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "wordpress",
+      "label": "워드프레스",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/wordpress.webp",
+      "action_type": "link",
+      "url": "https://www.wordpress.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "workflowy",
+      "label": "워크플로위",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/workflowy.webp",
+      "action_type": "link",
+      "url": "https://www.workflowy.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "workspace",
+      "label": "구글 워크스페이스",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/workspace.webp",
+      "action_type": "link",
+      "url": "https://workspace.google.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "zapier",
+      "label": "재피어",
+      "icon_src": "/cubeone/jusomoa/icons/cloud/zapier.webp",
+      "action_type": "link",
+      "url": "https://www.zapier.com",
+      "category": "cloud"
+    },
+    {
+      "slug": "zoous",
+      "label": "Zoom",
+      "icon_src": "https://www.xn--v52b19jw9czye.com/images/icons/zoous.webp",
+      "action_type": "link",
+      "url": "https://zoom.us",
+      "category": "cloud"
+    }
+  ]
+}
