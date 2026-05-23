@@ -190,6 +190,34 @@ function TopBar() {
 }
 
 function Sidebar() {
+  const pluginActions = usePluginRegistry((s) => s.allActions());
+  const installedPlugins = usePluginRegistry((s) => s.installed);
+  const upsertCube = useEditor((s) => s.upsertCube);
+  const selectCube = useEditor((s) => s.selectCube);
+  const listId = useEditor((s) => s.list_id);
+  const list = useEditor((s) => s.activeList());
+
+  function handleAddPluginAction(entry: ReturnType<typeof usePluginRegistry.getState>['allActions'] extends never ? never : ReturnType<ReturnType<typeof usePluginRegistry.getState>['allActions']>[number]): void {
+    if (!listId || !list) return;
+    const maxSort = list.cubes.length === 0
+      ? 0
+      : Math.max(...list.cubes.map((c) => c.sort_order));
+    const newCube: Cube = {
+      id: crypto.randomUUID(),
+      sort_order: maxSort + 1,
+      label: entry.label,
+      icon_url: null,
+      action_type: 'plugin_action',
+      action_payload: {
+        plugin_uuid: entry.package_id,
+        action_id: entry.action_id,
+        payload: { ...entry.default_payload },
+      },
+    };
+    upsertCube(listId, newCube);
+    selectCube(newCube.id);
+  }
+
   return (
     <aside className="sidebar" aria-label="카테고리">
       <div className="sidebar-section">
@@ -201,7 +229,38 @@ function Sidebar() {
             </li>
           ))}
         </ul>
-        <div className="sidebar-hint">(M6 단계에서 시드 카탈로그 연결)</div>
+        <div className="sidebar-hint">(M6 후속: 시드 카탈로그 필터링)</div>
+      </div>
+
+      <div className="sidebar-section">
+        <h3 className="sidebar-title">
+          설치된 플러그인 ({installedPlugins.length})
+        </h3>
+        {installedPlugins.length === 0 ? (
+          <div className="sidebar-hint">
+            상단 "+ 플러그인" 버튼으로 .cubeplugin 설치
+          </div>
+        ) : (
+          <ul className="plugin-list">
+            {pluginActions.map((entry) => (
+              <li key={entry.qualified_id} className="plugin-item">
+                <button
+                  className="plugin-btn"
+                  type="button"
+                  onClick={() => handleAddPluginAction(entry)}
+                  title={`클릭 → 현재 리스트에 큐브 추가\n${entry.package_id}/${entry.action_id}`}
+                  disabled={!listId}
+                >
+                  <span className="plugin-label">{entry.label}</span>
+                  <span className="plugin-meta">
+                    {entry.package_id.split('.').slice(-1)[0]}
+                    {entry.tier ? ` · T${entry.tier}` : ''}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </aside>
   );

@@ -363,3 +363,49 @@ input[type="text"]:focus, select:focus {
   text-transform: uppercase;
   letter-spacing: 0.05em;
 }
+
+/* Sidebar 다중 섹션 + 플러그인 리스트 (M6 cron #16) */
+.sidebar-section + .sidebar-section {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+.plugin-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.plugin-btn {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: var(--text);
+  border: 1px solid transparent;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.plugin-btn:hover:not([disabled]) {
+  background: var(--bg-hover);
+  border-color: var(--border);
+}
+.plugin-btn[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.plugin-label {
+  font-size: 12px;
+  font-weight: 500;
+}
+.plugin-meta {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: 'Consolas', monospace;
+  letter-spacing: 0.02em;
+}
