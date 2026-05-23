@@ -5,6 +5,7 @@ export const focusWindowAction: ActionSpec = {
   label: '창 포커스',
   description: '제목 패턴이 일치하는 창을 전경으로 가져옵니다.',
   tier: 2,
+  category: '시스템',
   defaultPayload: { title_pattern: '' },
   schema: [
     {

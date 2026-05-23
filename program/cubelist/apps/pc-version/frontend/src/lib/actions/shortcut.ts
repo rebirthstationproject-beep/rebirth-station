@@ -5,6 +5,7 @@ export const shortcutAction: ActionSpec = {
   label: '단축키',
   description: '키 조합을 PC 에 입력합니다 (Ctrl+C 등).',
   tier: 2,
+  category: '시스템',
   defaultPayload: { keys: [] },
   schema: [
     {

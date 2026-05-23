@@ -9,6 +9,7 @@ export const pluginAction: ActionSpec = {
   label: '플러그인 액션',
   description: '외부 플러그인이 등록한 액션을 호출합니다 (M4 SDK).',
   tier: 3,
+  // category 생략 — 플러그인 자체 카테고리는 manifest 측에서 정의
   defaultPayload: { plugin_uuid: '', payload: {} },
   schema: [
     {

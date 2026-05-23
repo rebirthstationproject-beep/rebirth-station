@@ -9,7 +9,7 @@
  * 상단: 다중 리스트 탭 · 하단: 플러그인 라이브러리 (M4)
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import {
   DndContext,
   PointerSensor,
@@ -34,7 +34,13 @@ import {
   exportCubepack,
   importCubepack,
 } from './lib/cubepack-io';
-import { ACTIONS, defaultPayloadFor } from './lib/actions';
+import {
+  ACTIONS,
+  ACTION_CATEGORIES,
+  defaultPayloadFor,
+  type ActionCategory,
+  type ActionSpec,
+} from './lib/actions';
 import { ActionPayloadForm } from './components/ActionPayloadForm';
 import { describeExecuteError, executeCube, isTauri } from './lib/tauri-bridge';
 import {
@@ -196,8 +202,9 @@ function Sidebar() {
   const selectCube = useEditor((s) => s.selectCube);
   const listId = useEditor((s) => s.list_id);
   const list = useEditor((s) => s.activeList());
+  const [filter, setFilter] = useState<ActionCategory | null>(null);
 
-  function handleAddPluginAction(entry: ReturnType<typeof usePluginRegistry.getState>['allActions'] extends never ? never : ReturnType<ReturnType<typeof usePluginRegistry.getState>['allActions']>[number]): void {
+  function addCube(partial: Pick<Cube, 'label' | 'action_type' | 'action_payload'>): void {
     if (!listId || !list) return;
     const maxSort = list.cubes.length === 0
       ? 0
@@ -205,36 +212,82 @@ function Sidebar() {
     const newCube: Cube = {
       id: crypto.randomUUID(),
       sort_order: maxSort + 1,
-      label: entry.label,
       icon_url: null,
-      action_type: 'plugin_action',
-      action_payload: {
-        plugin_uuid: entry.package_id,
-        action_id: entry.action_id,
-        payload: { ...entry.default_payload },
-      },
+      ...partial,
     };
     upsertCube(listId, newCube);
     selectCube(newCube.id);
   }
 
+  const builtinFiltered = ACTIONS.filter(
+    (a) => filter === null || a.category === filter,
+  );
+  const pluginFiltered = pluginActions; // 플러그인 카테고리 매핑은 manifest 측 후속
+
   return (
-    <aside className="sidebar" aria-label="카테고리">
+    <aside className="sidebar" aria-label="액션 카탈로그">
       <div className="sidebar-section">
         <h3 className="sidebar-title">카테고리</h3>
         <ul className="category-list">
-          {['생산성', '미디어', '개발', '디자인', '게이밍', '시스템'].map((c) => (
+          <li className="category-item">
+            <button
+              type="button"
+              className={`category-btn ${filter === null ? 'is-active' : ''}`}
+              onClick={() => setFilter(null)}
+            >
+              전체
+            </button>
+          </li>
+          {ACTION_CATEGORIES.map((c) => (
             <li key={c} className="category-item">
-              <button className="category-btn" type="button">{c}</button>
+              <button
+                type="button"
+                className={`category-btn ${filter === c ? 'is-active' : ''}`}
+                onClick={() => setFilter(c)}
+              >
+                {c}
+              </button>
             </li>
           ))}
         </ul>
-        <div className="sidebar-hint">(M6 후속: 시드 카탈로그 필터링)</div>
+      </div>
+
+      <div className="sidebar-section">
+        <h3 className="sidebar-title">빌트인 액션 ({builtinFiltered.length})</h3>
+        {builtinFiltered.length === 0 ? (
+          <div className="sidebar-hint">해당 카테고리에 빌트인 액션 없음</div>
+        ) : (
+          <ul className="plugin-list">
+            {builtinFiltered.map((spec: ActionSpec) => (
+              <li key={spec.id} className="plugin-item">
+                <button
+                  className="plugin-btn"
+                  type="button"
+                  onClick={() =>
+                    addCube({
+                      label: spec.label,
+                      action_type: spec.id,
+                      action_payload: defaultPayloadFor(spec.id),
+                    })
+                  }
+                  disabled={!listId}
+                  title={`${spec.description}\n클릭 → 현재 리스트에 큐브 추가`}
+                >
+                  <span className="plugin-label">{spec.label}</span>
+                  <span className="plugin-meta">
+                    {spec.id} · T{spec.tier}
+                    {spec.category ? ` · ${spec.category}` : ''}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className="sidebar-section">
         <h3 className="sidebar-title">
-          설치된 플러그인 ({installedPlugins.length})
+          플러그인 ({installedPlugins.length})
         </h3>
         {installedPlugins.length === 0 ? (
           <div className="sidebar-hint">
@@ -242,13 +295,23 @@ function Sidebar() {
           </div>
         ) : (
           <ul className="plugin-list">
-            {pluginActions.map((entry) => (
+            {pluginFiltered.map((entry) => (
               <li key={entry.qualified_id} className="plugin-item">
                 <button
                   className="plugin-btn"
                   type="button"
-                  onClick={() => handleAddPluginAction(entry)}
-                  title={`클릭 → 현재 리스트에 큐브 추가\n${entry.package_id}/${entry.action_id}`}
+                  onClick={() =>
+                    addCube({
+                      label: entry.label,
+                      action_type: 'plugin_action',
+                      action_payload: {
+                        plugin_uuid: entry.package_id,
+                        action_id: entry.action_id,
+                        payload: { ...entry.default_payload },
+                      },
+                    })
+                  }
+                  title={`${entry.description ?? entry.action_type}\n${entry.package_id}/${entry.action_id}`}
                   disabled={!listId}
                 >
                   <span className="plugin-label">{entry.label}</span>

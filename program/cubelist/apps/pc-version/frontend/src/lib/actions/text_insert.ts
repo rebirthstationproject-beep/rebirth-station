@@ -5,6 +5,7 @@ export const textInsertAction: ActionSpec = {
   label: '텍스트 삽입',
   description: '현재 포커스된 입력 필드에 텍스트를 타이핑 입력합니다.',
   tier: 1,
+  category: '생산성',
   defaultPayload: { text: '' },
   schema: [
     {

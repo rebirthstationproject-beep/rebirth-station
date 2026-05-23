@@ -5,6 +5,7 @@ export const clipboardCopyAction: ActionSpec = {
   label: '클립보드 복사',
   description: '지정 텍스트를 클립보드에 복사합니다 (입력 X).',
   tier: 1,
+  category: '생산성',
   defaultPayload: { text: '' },
   schema: [
     {

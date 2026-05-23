@@ -18,7 +18,8 @@ import { focusWindowAction } from './focus_window';
 import { mouseClickAction } from './mouse_click';
 import { pluginAction } from './plugin_action';
 
-export type { ActionSpec, FieldSchema } from './types';
+export type { ActionSpec, ActionCategory, FieldSchema } from './types';
+export { ACTION_CATEGORIES } from './types';
 
 export const ACTIONS: ReadonlyArray<ActionSpec> = [
   linkAction,

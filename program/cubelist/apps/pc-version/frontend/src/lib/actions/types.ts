@@ -8,6 +8,29 @@
 import type { CubeActionType } from '../../types/cube';
 
 /**
+ * 액션 카테고리 — 사이드바 필터링용 (M6 cron #17).
+ * 빌트인 / 플러그인 양쪽 동일 enum 공유.
+ */
+export type ActionCategory =
+  | '생산성'
+  | '미디어'
+  | '개발'
+  | '디자인'
+  | '게이밍'
+  | '시스템'
+  | '웹';
+
+export const ACTION_CATEGORIES: ReadonlyArray<ActionCategory> = [
+  '생산성',
+  '미디어',
+  '개발',
+  '디자인',
+  '게이밍',
+  '시스템',
+  '웹',
+];
+
+/**
  * 인스펙터가 렌더링할 단일 필드 메타.
  */
 export type FieldSchema =
@@ -57,6 +80,8 @@ export interface ActionSpec {
   description: string;
   /** 권한 등급 — Tier 1(안전) / 2(동의) / 3(영구토글) */
   tier: 1 | 2 | 3;
+  /** 카테고리 — 사이드바 필터링 (M6 cron #17). plugin_action 등 추상 액션은 생략 가능 */
+  category?: ActionCategory;
   /** 새 큐브 생성 시 기본 payload */
   defaultPayload: Record<string, unknown>;
   /** 인스펙터 폼 필드 메타 */

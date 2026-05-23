@@ -5,6 +5,7 @@ export const linkAction: ActionSpec = {
   label: '링크 열기',
   description: '기본 브라우저에서 URL 을 엽니다.',
   tier: 1,
+  category: '웹',
   defaultPayload: { url: '' },
   schema: [
     {

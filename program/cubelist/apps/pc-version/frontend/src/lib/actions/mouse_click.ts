@@ -5,6 +5,7 @@ export const mouseClickAction: ActionSpec = {
   label: '마우스 클릭',
   description: '지정 좌표에서 마우스 버튼을 클릭합니다.',
   tier: 2,
+  category: '시스템',
   defaultPayload: { x: 0, y: 0, button: 'left', relative: false },
   schema: [
     {

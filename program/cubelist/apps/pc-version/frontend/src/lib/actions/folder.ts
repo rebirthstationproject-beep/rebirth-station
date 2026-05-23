@@ -9,6 +9,7 @@ export const folderAction: ActionSpec = {
   label: '폴더 (서브덱)',
   description: '클릭 시 하위 큐브들을 표시 (Stream Deck 폴더 등가).',
   tier: 1,
+  category: '시스템',
   defaultPayload: { cube_ids: [] },
   schema: [
     {

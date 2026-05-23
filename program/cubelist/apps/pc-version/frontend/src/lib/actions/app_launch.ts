@@ -5,6 +5,7 @@ export const appLaunchAction: ActionSpec = {
   label: '앱 실행',
   description: '지정 경로의 앱·실행파일을 실행합니다 (경로 화이트리스트 검증).',
   tier: 2,
+  category: '시스템',
   defaultPayload: { path: '' },
   schema: [
     {

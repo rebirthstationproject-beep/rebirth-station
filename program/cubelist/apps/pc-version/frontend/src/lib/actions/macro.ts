@@ -9,6 +9,7 @@ export const macroAction: ActionSpec = {
   label: '매크로',
   description: '여러 단계 (키/지연/마우스/앱 실행 등) 의 시퀀스를 실행합니다.',
   tier: 2,
+  category: '시스템',
   defaultPayload: { steps: [] },
   schema: [
     {

@@ -127,6 +127,7 @@ html, body, #root {
   font-size: 13px;
 }
 .category-btn:hover { background: var(--bg-hover); }
+.category-btn.is-active { background: var(--bg-selected); color: var(--text); border: 1px solid var(--accent); }
 
 .sidebar-hint, .grid-hint, .inspector-hint, .library-hint {
   font-size: 11px;
