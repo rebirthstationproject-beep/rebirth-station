@@ -71,11 +71,26 @@
     },
     {
       "@type": "SoftwareApplication",
+      "@id": "https://www.rebirthstation.com/#app",
       "name": "Rebirth Station — 큐브 리스트",
-      "operatingSystem": "Windows 10, Windows 11, Android 9+, iOS 13+",
+      "url": "https://www.rebirthstation.com/",
+      "operatingSystem": ["Windows", "macOS", "iOS", "Android", "Web"],
+      "softwareRequirements": "Windows 10+, Android 9+, iOS 13+, 최신 브라우저(PWA)",
       "applicationCategory": "ProductivityApplication",
-      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW" },
-      "description": "안 쓰는 폰을 PC 컨트롤러로. 큐브 그리드로 단축키·매크로·링크 즉시 실행"
+      "applicationSubCategory": "Macro Controller / Stream Deck Alternative",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "KRW", "availability": "https://schema.org/InStock" },
+      "description": "안 쓰는 폰을 PC 컨트롤러로. 큐브 그리드로 단축키·매크로·링크 즉시 실행",
+      "inLanguage": ["ko", "en"],
+      "author": { "@id": "https://www.rebirthstation.com/#org" },
+      "publisher": { "@id": "https://www.rebirthstation.com/#org" },
+      "featureList": [
+        "60+ 직군별 큐브팩 (개발자·트레이더·스트리머·디자이너·재택근무·일반 가정)",
+        "Stream Deck import 호환 (.streamDeckPlugin)",
+        "LAN WebSocket 페어링 (Supabase Realtime 폴백)",
+        "콜라보 버전 ver.주소모아 / ver.케이링크",
+        "PWA 거치 모드 (Wake Lock + NoSleep.js)",
+        "큐브 액션 10종 (link · text_insert · clipboard_copy · shortcut · app_launch · macro · focus_window · delay · mouse_click · plugin_action)"
+      ]
     }
   ]
 }
