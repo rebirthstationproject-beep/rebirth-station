@@ -15,7 +15,8 @@
     "isolatedModules": true,
     "useDefineForClassFields": true,
     "allowImportingTsExtensions": false,
-    "verbatimModuleSyntax": false
+    "verbatimModuleSyntax": false,
+    "noEmit": true
   },
   "include": ["src"]
 }

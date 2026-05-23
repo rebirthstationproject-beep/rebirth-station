@@ -1,16 +1,31 @@
 /**
- * 큐브 리스트 PC 편집기 — 셸 (M2: store 연결 + 데모 시드)
+ * 큐브 리스트 PC 편집기 — 셸 (M2: store + DnD reorder)
  *
- * StreamDeck 동등 3-패널 레이아웃:
- * - 좌: 카테고리 + 큐브 시드 카탈로그 (M6 채움)
- * - 중: 큐브 그리드 (활성 리스트, M2 후반 = @dnd-kit reorder)
- * - 우: 큐브 인스펙터 (M3 = 액션 스키마 동적 폼)
+ * StreamDeck 동등 3-패널:
+ * - 좌: 카테고리 + 시드 카탈로그 (M6)
+ * - 중: 큐브 그리드 (@dnd-kit/sortable reorder)
+ * - 우: 큐브 인스펙터 (M3 액션 스키마 동적 폼)
  *
- * 상단: 큐브팩 탭 (다중 리스트) + 디바이스/설정
- * 하단: 플러그인 라이브러리 (M4 채움)
+ * 상단: 다중 리스트 탭 · 하단: 플러그인 라이브러리 (M4)
  */
 
 import { useEffect } from 'react';
+import {
+  DndContext,
+  PointerSensor,
+  KeyboardSensor,
+  useSensor,
+  useSensors,
+  closestCenter,
+  type DragEndEvent,
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  rectSortingStrategy,
+  sortableKeyboardCoordinates,
+  useSortable,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 import { useEditor } from './store/editor';
 import { buildDemoPack } from './lib/demo-pack';
 import type { Cube, CubeList } from './types/cube';
@@ -19,7 +34,6 @@ export function App() {
   const pack = useEditor((s) => s.pack);
   const loadPack = useEditor((s) => s.loadPack);
 
-  // M2 셸 검증용 데모 시드 — M2 후반 실 파일 I/O 도입 시 제거 또는 "샘플 큐브팩" 버튼으로 격하
   useEffect(() => {
     if (!pack) loadPack(buildDemoPack());
   }, [pack, loadPack]);
@@ -115,66 +129,88 @@ function GridArea() {
         </div>
       </div>
       <CubeGrid list={list} />
-      <div className="grid-hint">M2 후반: @dnd-kit 드래그&드롭 reorder · .cubepack 로드/저장 · 페이지(서브덱) 분기</div>
+      <div className="grid-hint">M2: @dnd-kit reorder 활성 · M2 후반: .cubepack ZIP 로드/저장 · M7: 페이지(서브덱)</div>
     </main>
   );
 }
 
 function CubeGrid({ list }: { list: CubeList }) {
-  const cube_id = useEditor((s) => s.cube_id);
-  const selectCube = useEditor((s) => s.selectCube);
+  const reorderCubes = useEditor((s) => s.reorderCubes);
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
   const cols = list.cols ?? 5;
   const sorted = [...list.cubes].sort((a, b) => a.sort_order - b.sort_order);
-
-  // 빈 슬롯도 표시 — cols × 3 줄을 기본으로
   const minSlots = cols * 3;
   const emptySlots = Math.max(0, minSlots - sorted.length);
 
+  function handleDragEnd(e: DragEndEvent): void {
+    const { active, over } = e;
+    if (!over || active.id === over.id) return;
+    reorderCubes(list.id, String(active.id), String(over.id));
+  }
+
   return (
-    <div
-      className="cube-grid"
-      role="grid"
-      aria-label="큐브 그리드"
-      style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
-    >
-      {sorted.map((cube) => (
-        <CubeCell
-          key={cube.id}
-          cube={cube}
-          selected={cube_id === cube.id}
-          onSelect={() => selectCube(cube_id === cube.id ? null : cube.id)}
-        />
-      ))}
-      {Array.from({ length: emptySlots }, (_, i) => (
-        <button
-          key={`empty-${i}`}
-          type="button"
-          role="gridcell"
-          className="cube-cell is-empty"
-          aria-label="빈 슬롯"
+    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+      <SortableContext items={sorted.map((c) => c.id)} strategy={rectSortingStrategy}>
+        <div
+          className="cube-grid"
+          role="grid"
+          aria-label="큐브 그리드"
+          style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
         >
-          <span className="cube-empty">＋</span>
-        </button>
-      ))}
-    </div>
+          {sorted.map((cube) => (
+            <SortableCubeCell key={cube.id} cube={cube} />
+          ))}
+          {Array.from({ length: emptySlots }, (_, i) => (
+            <div
+              key={`empty-${i}`}
+              role="gridcell"
+              className="cube-cell is-empty"
+              aria-label="빈 슬롯"
+            >
+              <span className="cube-empty">＋</span>
+            </div>
+          ))}
+        </div>
+      </SortableContext>
+    </DndContext>
   );
 }
 
-interface CubeCellProps {
-  cube: Cube;
-  selected: boolean;
-  onSelect: () => void;
-}
+function SortableCubeCell({ cube }: { cube: Cube }) {
+  const cube_id = useEditor((s) => s.cube_id);
+  const selectCube = useEditor((s) => s.selectCube);
+  const selected = cube_id === cube.id;
 
-function CubeCell({ cube, selected, onSelect }: CubeCellProps) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: cube.id,
+  });
+
+  // @dnd-kit attributes 중 role/aria-pressed 는 grid cell + 선택 상태 표기에 맞춰 자체 지정
+  const { role: _dndRole, 'aria-pressed': _dndPressed, ...restAttrs } = attributes;
+  void _dndRole;
+  void _dndPressed;
+
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+
   return (
     <button
+      ref={setNodeRef}
+      style={style}
       type="button"
       role="gridcell"
-      className={`cube-cell ${selected ? 'is-selected' : ''}`}
-      onClick={onSelect}
+      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''}`}
+      onClick={() => selectCube(selected ? null : cube.id)}
       aria-pressed={selected}
       title={`${cube.label} (${cube.action_type})`}
+      {...restAttrs}
+      {...listeners}
     >
       <span className="cube-label">{cube.label}</span>
       <span className="cube-action-badge">{cube.action_type}</span>

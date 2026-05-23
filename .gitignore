@@ -10,6 +10,18 @@ out/
 dist/
 build/
 
+# Rust / Tauri 빌드 산출물
+target/
+*.pdb
+*.rlib
+src-tauri/target/
+src-tauri/gen/schemas/
+
+# TypeScript 부산물 (frontend src/ 안 .js 생성 방지 — tsc noEmit:true 와 이중 안전망)
+**/frontend/src/**/*.js
+**/frontend/src/**/*.js.map
+*.tsbuildinfo
+
 # OS·에디터
 .DS_Store
 Thumbs.db
