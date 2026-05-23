@@ -43,6 +43,9 @@ rand                = "0.8"
 # NOTE: 사용 시 권한 prompt 필요. Tier 2/3 액션만 활성.
 enigo               = { version = "0.2", optional = true }
 
+# --- 클립보드 (Tier 1, 크로스 플랫폼) --------------------------------------
+arboard             = { version = "3", optional = true }
+
 # --- 에러 ------------------------------------------------------------------
 thiserror           = "1"
 anyhow              = "1"
@@ -76,7 +79,8 @@ tauri-build               = { version = "2", optional = true , features = [] }
 default = ["gui"]
 
 # enigo 활성화 (단축키·매크로 실행 가능). W1-4 데모 단계까지는 비활성.
-keys = ["dep:enigo"]
+# arboard 도 함께 활성 — text_insert (클립보드 + Ctrl+V) 가 enigo 의존하므로 동일 feature.
+keys = ["dep:enigo", "dep:arboard"]
 
 # Tauri GUI 통합 — tray + autostart + 외부 링크 오픈 + 전역 핫키
 gui = [

@@ -12,11 +12,17 @@ pub mod guard;
 pub mod link;
 pub mod permissions;
 
+// M3 cron #9: app_launch 는 std::process 만 사용 — `keys` feature 없이도 동작
+pub mod app_launch;
+
 #[cfg(feature = "keys")]
 pub mod shortcut;
 
 #[cfg(feature = "keys")]
 pub mod macro_exec;
+
+#[cfg(feature = "keys")]
+pub mod clipboard;
 
 use thiserror::Error;
 
@@ -62,26 +68,29 @@ pub async fn execute(payload: &ActionPayload) -> Result<ExecutionResult, ActionE
         ActionPayload::Macro { steps } => {
             execute_macro(steps).await?;
         }
-        // M3 cron #7 신규 — 실 OS 호출은 cron #8 채움
+        // M3 cron #7~9 신규
         ActionPayload::Folder { .. } => {
             // 폴더 진입은 UI 측 처리 — 헬퍼는 no-op
         }
-        ActionPayload::TextInsert { .. } => {
-            return Err(ActionError::FeatureDisabled("text_insert (impl pending)"));
+        ActionPayload::TextInsert { text } => {
+            execute_text_insert(text)?;
         }
-        ActionPayload::ClipboardCopy { .. } => {
-            return Err(ActionError::FeatureDisabled("clipboard_copy (impl pending)"));
+        ActionPayload::ClipboardCopy { text } => {
+            execute_clipboard_copy(text)?;
         }
-        ActionPayload::AppLaunch { .. } => {
-            return Err(ActionError::PermissionRequired(2));
+        ActionPayload::AppLaunch { path, args } => {
+            // Tier 2 (사용자 동의는 별도 prompt 시스템에서 처리 — M5 페어링 단계).
+            // guard 가 위험 경로 사전 차단.
+            app_launch::launch(path, args)?;
         }
         ActionPayload::FocusWindow { .. } => {
-            return Err(ActionError::FeatureDisabled("focus_window (impl pending)"));
+            return Err(ActionError::FeatureDisabled("focus_window (cron #10 impl)"));
         }
         ActionPayload::MouseClick { .. } => {
-            return Err(ActionError::PermissionRequired(2));
+            return Err(ActionError::FeatureDisabled("mouse_click (cron #10 impl)"));
         }
         ActionPayload::PluginAction { .. } => {
+            // M4 SDK 진입 전까지 Tier 3 차단 유지
             return Err(ActionError::PermissionRequired(3));
         }
     }
@@ -113,4 +122,24 @@ async fn execute_macro(steps: &[crate::protocol::MacroStepDto]) -> Result<(), Ac
 #[cfg(not(feature = "keys"))]
 async fn execute_macro(_steps: &[crate::protocol::MacroStepDto]) -> Result<(), ActionError> {
     Err(ActionError::FeatureDisabled("macro"))
+}
+
+#[cfg(feature = "keys")]
+fn execute_clipboard_copy(text: &str) -> Result<(), ActionError> {
+    clipboard::set_clipboard(text)
+}
+
+#[cfg(not(feature = "keys"))]
+fn execute_clipboard_copy(_text: &str) -> Result<(), ActionError> {
+    Err(ActionError::FeatureDisabled("clipboard_copy"))
+}
+
+#[cfg(feature = "keys")]
+fn execute_text_insert(text: &str) -> Result<(), ActionError> {
+    clipboard::insert_text(text)
+}
+
+#[cfg(not(feature = "keys"))]
+fn execute_text_insert(_text: &str) -> Result<(), ActionError> {
+    Err(ActionError::FeatureDisabled("text_insert"))
 }
