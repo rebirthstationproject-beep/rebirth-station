@@ -146,7 +146,13 @@ export type ActionPayload =
   // SD-AU: 마우스 클릭 (좌표 또는 상대, Tier 2, env3)
   | { action_type: 'mouse_click'; x: number; y: number; button: MouseButton; relative?: boolean }
   // SD-AV: 플러그인 액션 (manifest 서명, Tier 1~3 플러그인 정의)
-  | { action_type: 'plugin_action'; plugin_uuid: string; payload: Record<string, unknown> };
+  | {
+      action_type: 'plugin_action';
+      plugin_uuid: string;
+      /** 단일 플러그인 내 액션 ID — 미명시 시 PC 헬퍼가 첫 액션 fallback + warn 로그 (M5 cron #15) */
+      action_id?: string;
+      payload: Record<string, unknown>;
+    };
 
 // ===========================================================================
 // 디스패처 (2단계 파싱)

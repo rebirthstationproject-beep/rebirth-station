@@ -198,18 +198,25 @@ async fn execute_plugin_action(
         .find(|p| p.package_id == plugin_uuid)
         .ok_or_else(|| ActionError::OsCommand(format!("플러그인 미설치: {plugin_uuid}")))?;
 
-    let action_id = payload
-        .get("action_id")
-        .and_then(|v| v.as_str())
-        .ok_or_else(|| ActionError::OsCommand("plugin_action.payload.action_id 필수".into()))?;
-
-    let action = plugin
-        .actions
-        .iter()
-        .find(|a| a.id == action_id)
-        .ok_or_else(|| {
-            ActionError::OsCommand(format!("액션 미발견: {plugin_uuid}/{action_id}"))
-        })?;
+    // action_id 미명시 시 첫 액션 fallback (M5 cron #15 호환) + 경고 로그
+    let action_id_opt = payload.get("action_id").and_then(|v| v.as_str());
+    let action = match action_id_opt {
+        Some(id) => plugin
+            .actions
+            .iter()
+            .find(|a| a.id == id)
+            .ok_or_else(|| ActionError::OsCommand(format!("액션 미발견: {plugin_uuid}/{id}")))?,
+        None => {
+            tracing::warn!(
+                %plugin_uuid,
+                "plugin_action.action_id 미명시 — 첫 액션 fallback (모바일 PWA 구버전 호환)"
+            );
+            plugin.actions.first().ok_or_else(|| {
+                ActionError::OsCommand(format!("플러그인 {plugin_uuid} 에 액션이 없음"))
+            })?
+        }
+    };
+    let action_id = action.id.as_str();
 
     // 무한 재귀 방지 — plugin_action 안 plugin_action 금지
     if action.action_type == "plugin_action" {
