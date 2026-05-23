@@ -15,6 +15,9 @@ pub mod permissions;
 // M3 cron #9: app_launch 는 std::process 만 사용 — `keys` feature 없이도 동작
 pub mod app_launch;
 
+// M3 cron #10: focus_window — Windows-only impl, 그 외 OS 는 FeatureDisabled
+pub mod focus_window;
+
 #[cfg(feature = "keys")]
 pub mod shortcut;
 
@@ -23,6 +26,9 @@ pub mod macro_exec;
 
 #[cfg(feature = "keys")]
 pub mod clipboard;
+
+#[cfg(feature = "keys")]
+pub mod mouse;
 
 use thiserror::Error;
 
@@ -83,11 +89,16 @@ pub async fn execute(payload: &ActionPayload) -> Result<ExecutionResult, ActionE
             // guard 가 위험 경로 사전 차단.
             app_launch::launch(path, args)?;
         }
-        ActionPayload::FocusWindow { .. } => {
-            return Err(ActionError::FeatureDisabled("focus_window (cron #10 impl)"));
+        ActionPayload::FocusWindow { title_pattern } => {
+            focus_window::focus(title_pattern)?;
         }
-        ActionPayload::MouseClick { .. } => {
-            return Err(ActionError::FeatureDisabled("mouse_click (cron #10 impl)"));
+        ActionPayload::MouseClick {
+            x,
+            y,
+            button,
+            relative,
+        } => {
+            execute_mouse_click(*x, *y, *button, *relative)?;
         }
         ActionPayload::PluginAction { .. } => {
             // M4 SDK 진입 전까지 Tier 3 차단 유지
@@ -142,4 +153,24 @@ fn execute_text_insert(text: &str) -> Result<(), ActionError> {
 #[cfg(not(feature = "keys"))]
 fn execute_text_insert(_text: &str) -> Result<(), ActionError> {
     Err(ActionError::FeatureDisabled("text_insert"))
+}
+
+#[cfg(feature = "keys")]
+fn execute_mouse_click(
+    x: i32,
+    y: i32,
+    button: crate::protocol::messages::MouseButton,
+    relative: bool,
+) -> Result<(), ActionError> {
+    mouse::click(x, y, button, relative)
+}
+
+#[cfg(not(feature = "keys"))]
+fn execute_mouse_click(
+    _x: i32,
+    _y: i32,
+    _button: crate::protocol::messages::MouseButton,
+    _relative: bool,
+) -> Result<(), ActionError> {
+    Err(ActionError::FeatureDisabled("mouse_click"))
 }
