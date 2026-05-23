@@ -34,6 +34,8 @@ import {
   exportCubepack,
   importCubepack,
 } from './lib/cubepack-io';
+import { ACTIONS, defaultPayloadFor } from './lib/actions';
+import { ActionPayloadForm } from './components/ActionPayloadForm';
 import type { Cube, CubeList } from './types/cube';
 
 export function App() {
@@ -347,56 +349,22 @@ function Inspector() {
               })
             }
           >
-            <option value="link">link · 링크 열기</option>
-            <option value="shortcut">shortcut · 단축키</option>
-            <option value="macro">macro · 매크로</option>
-            <option value="folder">folder · 폴더(서브덱)</option>
-            <option value="text_insert">text_insert · 텍스트 삽입</option>
-            <option value="clipboard_copy">clipboard_copy · 클립보드 복사</option>
-            <option value="app_launch">app_launch · 앱 실행</option>
-            <option value="focus_window">focus_window · 창 포커스</option>
-            <option value="mouse_click">mouse_click · 마우스 클릭</option>
-            <option value="plugin_action">plugin_action · 플러그인</option>
+            {ACTIONS.map((a) => (
+              <option key={a.id} value={a.id}>{a.id} · {a.label}</option>
+            ))}
           </select>
         </dd>
-        <dt>payload</dt>
-        <dd className="muted">
-          <code>{JSON.stringify(cube.action_payload)}</code>
-        </dd>
       </dl>
+      <ActionPayloadForm
+        actionType={cube.action_type}
+        value={cube.action_payload}
+        onChange={(next) => patch({ action_payload: next })}
+      />
       <div className="inspector-actions">
         <button type="button" className="btn-ghost btn-danger" onClick={handleDelete}>
           큐브 삭제
         </button>
       </div>
-      <div className="inspector-hint">M3 단계: 액션 트레이트 + JSON Schema 동적 폼 (payload 편집)</div>
     </aside>
   );
-}
-
-/**
- * 액션 타입 변경 시 payload 기본값 — M3 에서 actions/ 폴더로 이전 예정.
- */
-function defaultPayloadFor(type: Cube['action_type']): Record<string, unknown> {
-  switch (type) {
-    case 'link':
-      return { url: '' };
-    case 'shortcut':
-      return { keys: [] };
-    case 'macro':
-      return { steps: [] };
-    case 'folder':
-      return { cube_ids: [] };
-    case 'text_insert':
-    case 'clipboard_copy':
-      return { text: '' };
-    case 'app_launch':
-      return { path: '' };
-    case 'focus_window':
-      return { title_pattern: '' };
-    case 'mouse_click':
-      return { x: 0, y: 0, button: 'left', relative: false };
-    case 'plugin_action':
-      return { plugin_uuid: '', payload: {} };
-  }
 }
