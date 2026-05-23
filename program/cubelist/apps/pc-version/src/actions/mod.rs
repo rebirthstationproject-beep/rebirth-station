@@ -100,9 +100,11 @@ pub async fn execute(payload: &ActionPayload) -> Result<ExecutionResult, ActionE
         } => {
             execute_mouse_click(*x, *y, *button, *relative)?;
         }
-        ActionPayload::PluginAction { .. } => {
-            // M4 SDK 진입 전까지 Tier 3 차단 유지
-            return Err(ActionError::PermissionRequired(3));
+        ActionPayload::PluginAction {
+            plugin_uuid,
+            payload,
+        } => {
+            execute_plugin_action(plugin_uuid, payload).await?;
         }
     }
 
@@ -173,4 +175,71 @@ fn execute_mouse_click(
     _relative: bool,
 ) -> Result<(), ActionError> {
     Err(ActionError::FeatureDisabled("mouse_click"))
+}
+
+/// 플러그인 액션 실행 — M4 cron #14.
+///
+/// 흐름:
+/// 1. 설치된 플러그인 목록 조회 (`plugins::list_installed`)
+/// 2. `plugin_uuid` (package_id) 매칭
+/// 3. `payload.action_id` 로 manifest 액션 lookup
+/// 4. manifest 액션의 `action_type` + 사용자 payload (`payload.payload`) 로 빌트인 ActionPayload 재구성
+/// 5. 무한 재귀 방지: 내부 action_type == "plugin_action" 거부
+/// 6. `Box::pin(execute(...))` 로 async 재귀 호출
+async fn execute_plugin_action(
+    plugin_uuid: &str,
+    payload: &serde_json::Value,
+) -> Result<(), ActionError> {
+    let installed = crate::plugins::list_installed()
+        .map_err(|e| ActionError::OsCommand(format!("플러그인 목록 조회: {e}")))?;
+
+    let plugin = installed
+        .iter()
+        .find(|p| p.package_id == plugin_uuid)
+        .ok_or_else(|| ActionError::OsCommand(format!("플러그인 미설치: {plugin_uuid}")))?;
+
+    let action_id = payload
+        .get("action_id")
+        .and_then(|v| v.as_str())
+        .ok_or_else(|| ActionError::OsCommand("plugin_action.payload.action_id 필수".into()))?;
+
+    let action = plugin
+        .actions
+        .iter()
+        .find(|a| a.id == action_id)
+        .ok_or_else(|| {
+            ActionError::OsCommand(format!("액션 미발견: {plugin_uuid}/{action_id}"))
+        })?;
+
+    // 무한 재귀 방지 — plugin_action 안 plugin_action 금지
+    if action.action_type == "plugin_action" {
+        return Err(ActionError::OsCommand(
+            "plugin_action 중첩 호출 금지".into(),
+        ));
+    }
+
+    // 사용자 payload (없으면 manifest default_payload 사용) + action_type 합쳐 재구성
+    let inner = payload
+        .get("payload")
+        .cloned()
+        .unwrap_or_else(|| action.default_payload.clone());
+
+    let mut merged_map = match inner {
+        serde_json::Value::Object(m) => m,
+        _ => serde_json::Map::new(),
+    };
+    merged_map.insert(
+        "action_type".into(),
+        serde_json::Value::String(action.action_type.clone()),
+    );
+    let merged = serde_json::Value::Object(merged_map);
+
+    let inner_payload: ActionPayload = serde_json::from_value(merged).map_err(|e| {
+        ActionError::OsCommand(format!(
+            "{plugin_uuid}/{action_id} payload 변환 실패: {e}"
+        ))
+    })?;
+
+    // async 재귀 — Box::pin 으로 future size 명시
+    Box::pin(execute(&inner_payload)).await.map(|_| ())
 }
