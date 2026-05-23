@@ -9,7 +9,8 @@
 
 import { useMemo } from 'react';
 import { getAction, validatePayload, type FieldSchema } from '../lib/actions';
-import type { CubeActionType } from '../types/cube';
+import type { CubeActionType, MacroStep } from '../types/cube';
+import { MacroStepEditor } from './MacroStepEditor';
 
 interface ActionPayloadFormProps {
   actionType: CubeActionType;
@@ -25,15 +26,25 @@ export function ActionPayloadForm({ actionType, value, onChange }: ActionPayload
     onChange({ ...value, [key]: next });
   }
 
+  // M7 cron #21: macro 는 전용 step 에디터 사용 (schema 의 json fallback 대신)
+  const isMacro = actionType === 'macro';
+
   return (
     <div className="payload-form">
       <div className="payload-meta">
         <span className={`tier-badge tier-${spec.tier}`}>Tier {spec.tier}</span>
         <span className="payload-desc">{spec.description}</span>
       </div>
-      {spec.schema.map((field) => (
-        <FieldRow key={field.key} field={field} value={value[field.key]} onPatch={patch} />
-      ))}
+      {isMacro ? (
+        <MacroStepEditor
+          steps={Array.isArray(value.steps) ? (value.steps as MacroStep[]) : []}
+          onChange={(nextSteps) => onChange({ ...value, steps: nextSteps })}
+        />
+      ) : (
+        spec.schema.map((field) => (
+          <FieldRow key={field.key} field={field} value={value[field.key]} onPatch={patch} />
+        ))
+      )}
       {errors.length > 0 && (
         <ul className="payload-errors" aria-live="polite">
           {errors.map((e, i) => (

@@ -28,6 +28,42 @@ export type CubeActionType =
   | 'plugin_action';
 
 /**
+ * 매크로 step (M7 cron #21) — Rust `MacroStepDto` 와 1:1 (tag = "kind").
+ * spec: `apps/pc-version/src/protocol/messages.rs`.
+ */
+export type MouseButton = 'left' | 'right' | 'middle';
+
+export type MacroStep =
+  | { kind: 'key'; keys: string[] }
+  | { kind: 'click'; x: number; y: number; button: MouseButton }
+  | { kind: 'delay'; ms: number }
+  | { kind: 'launch_app'; path: string; args: string[] }
+  | { kind: 'focus_window'; title_pattern: string };
+
+export const MACRO_STEP_KINDS: ReadonlyArray<MacroStep['kind']> = [
+  'key',
+  'delay',
+  'launch_app',
+  'focus_window',
+  'click',
+];
+
+export function defaultMacroStep(kind: MacroStep['kind']): MacroStep {
+  switch (kind) {
+    case 'key':
+      return { kind: 'key', keys: [] };
+    case 'click':
+      return { kind: 'click', x: 0, y: 0, button: 'left' };
+    case 'delay':
+      return { kind: 'delay', ms: 100 };
+    case 'launch_app':
+      return { kind: 'launch_app', path: '', args: [] };
+    case 'focus_window':
+      return { kind: 'focus_window', title_pattern: '' };
+  }
+}
+
+/**
  * 큐브 1개 = 1개의 기능 버튼.
  * 모바일 PWA `CubeItem` 의 PC 편집기 표현 부분 집합.
  */
