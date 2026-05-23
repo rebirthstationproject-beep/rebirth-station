@@ -7,10 +7,12 @@
 //! 3. **매크로 제한**: steps 최대 50, 루프 최대 1,000 (steps에 루프 없음), 30초 타임아웃 (actions::macro_exec)
 //! 4. **외부 URL 차단**: http:// 자원 + 외부 URL 인자 정적 분석. 사이드로딩은 Tier 3 토글만
 
+pub mod loader;
 pub mod manifest;
 pub mod signature;
 pub mod static_scan;
 
-pub use manifest::{PluginManifest, ManifestError};
-pub use signature::{verify_signature, SignatureError, PublishedPublicKey};
+pub use loader::{install_zip, installed_dir, list_installed, LoaderError};
+pub use manifest::{ManifestError, PluginManifest};
+pub use signature::{verify_signature, PublishedPublicKey, SignatureError};
 pub use static_scan::{scan_manifest, StaticScanFinding};

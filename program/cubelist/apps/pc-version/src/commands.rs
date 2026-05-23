@@ -87,6 +87,24 @@ pub fn reset_pairing_secret() -> Result<(), String> {
     Ok(())
 }
 
+/// 설치된 플러그인 manifest 목록 (M4 cron #12).
+///
+/// `~/.cubelist/plugins/<package_id>/manifest.json` 스캔.
+/// 디렉토리 없으면 빈 배열. 손상된 manifest 는 로그 후 스킵.
+#[cfg_attr(feature = "gui", tauri::command)]
+pub fn list_plugins() -> Result<Vec<crate::plugins::PluginManifest>, String> {
+    crate::plugins::list_installed().map_err(|e| e.to_string())
+}
+
+/// `.cubeplugin` 파일 설치 (M4 cron #12+).
+///
+/// 입력: ZIP 바이트 (frontend 가 File API 로 읽어 base64 또는 number array 로 전달).
+/// 결과: 설치된 plugin manifest. 경로 traversal/서명 실패 시 거부.
+#[cfg_attr(feature = "gui", tauri::command)]
+pub fn install_plugin(bytes: Vec<u8>) -> Result<crate::plugins::PluginManifest, String> {
+    crate::plugins::install_zip(&bytes).map_err(|e| e.to_string())
+}
+
 /// 큐브 액션 실행 — 편집기에서 "테스트 실행" 시 호출 (M3 cron #8).
 ///
 /// 입력: frontend `Cube` 의 `{ action_type, ...action_payload }` 평면 JSON.

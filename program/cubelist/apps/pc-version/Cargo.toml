@@ -63,6 +63,9 @@ tauri-plugin-global-shortcut   = { version = "2", optional = true }
 # --- 사용자 홈 디렉토리 ($HOME/.cubelist/hotkeys.json 등) ----------------
 dirs                           = "5"
 
+# --- ZIP 컨테이너 (.cubeplugin / .cubepack 로드) ---------------------------
+zip                            = { version = "2", default-features = false, features = ["deflate"] }
+
 # --- Windows 전용 (focus_window 액션) -------------------------------------
 [target.'cfg(target_os = "windows")'.dependencies]
 windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging"] }
