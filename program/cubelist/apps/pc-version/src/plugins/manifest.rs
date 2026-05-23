@@ -52,15 +52,32 @@ pub struct PluginManifest {
 pub struct ManifestAction {
     pub id: String,
     pub label: String,
-    pub action_type: String, // link | shortcut | macro
+    /// 10 enum 화이트리스트 — frontend `src/lib/actions/index.ts` 와 1:1
+    pub action_type: String,
     pub default_payload: serde_json::Value,
+    /// 인스펙터 동적 폼 (M3 FieldSchema) — frontend 가 직접 렌더 (M4 cron #12+)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub schema: Option<serde_json::Value>,
+    /// 짧은 설명 (인스펙터 hint)
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    /// Tier 1/2/3 — 미지정 시 manifest.requested_permissions 의 최댓값 적용
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub tier: Option<u8>,
+    /// 아이콘 ZIP 내부 경로 (예: "icons/open.png")
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub icon_ref: Option<String>,
 }
 
+/// 요청 권한 — serde 직렬화는 `tier_1` / `tier_2` / `tier_3` 형식 고정.
+/// (snake_case 자동 변환이 Tier1 → "tier1" 로 변환하여 manifest 컨벤션과 불일치 → 명시 rename)
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]
-#[serde(rename_all = "snake_case")]
 pub enum RequestedPermission {
+    #[serde(rename = "tier_1")]
     Tier1,
+    #[serde(rename = "tier_2")]
     Tier2,
+    #[serde(rename = "tier_3")]
     Tier3,
 }
 
@@ -84,10 +101,11 @@ pub fn parse_manifest(json: &str) -> Result<PluginManifest, ManifestError> {
         return Err(ManifestError::TooManyActions(manifest.actions.len()));
     }
 
-    // action_type 화이트리스트
+    // action_type 화이트리스트 (M4 cron #11): M3 frontend ACTIONS 와 동기 10종
     for action in &manifest.actions {
         match action.action_type.as_str() {
-            "link" | "shortcut" | "macro" => {}
+            "link" | "shortcut" | "macro" | "folder" | "text_insert" | "clipboard_copy"
+            | "app_launch" | "focus_window" | "mouse_click" | "plugin_action" => {}
             other => return Err(ManifestError::UnsupportedActionType(other.into())),
         }
     }

@@ -276,6 +276,9 @@ mod tests {
             board_id: "b".into(),
             item_id: "i".into(),
             press_kind: PressKind::Long,
+            action: ActionPayload::Link {
+                url: "https://test.example".into(),
+            },
         };
         let json = serde_json::to_string(&event).unwrap();
         assert!(json.contains(r#""press_kind":"long""#));

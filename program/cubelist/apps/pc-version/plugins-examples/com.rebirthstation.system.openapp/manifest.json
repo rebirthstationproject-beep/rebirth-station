@@ -1,0 +1,36 @@
+{
+  "package_id": "com.rebirthstation.system.openapp",
+  "name": "System · Open App",
+  "version": "1.0.0",
+  "author": "Rebirth Station",
+  "description": "지정 경로의 앱을 실행합니다 (Tier 2).",
+  "license": "free",
+  "actions": [
+    {
+      "id": "launch",
+      "label": "앱 실행",
+      "description": "절대 경로의 실행 파일을 spawn 합니다",
+      "action_type": "app_launch",
+      "default_payload": { "path": "", "args": [] },
+      "tier": 2,
+      "icon_ref": "icons/launch.png",
+      "schema": [
+        {
+          "key": "path",
+          "type": "text",
+          "label": "실행 경로",
+          "placeholder": "C:\\Program Files\\App\\app.exe",
+          "required": true,
+          "hint": "Tier 2: 1회 동의 prompt 필요"
+        },
+        {
+          "key": "args",
+          "type": "string-list",
+          "label": "인자 (선택)",
+          "placeholder": "--minimized, /silent"
+        }
+      ]
+    }
+  ],
+  "requested_permissions": ["tier_2"]
+}
