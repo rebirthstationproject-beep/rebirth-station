@@ -276,6 +276,28 @@ html, body, #root {
   grid-template-columns: 1fr 1fr 1fr;
   gap: 4px;
 }
+
+/* LocaleSwitcher (M8 cron #23) */
+.locale-switcher {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+.locale-btn {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  padding: 4px 8px;
+  font-size: 10px;
+  font-family: 'Consolas', monospace;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s;
+}
+.locale-btn:hover { color: var(--text); }
+.locale-btn.is-active { background: var(--bg-selected); color: var(--text); }
+.locale-btn + .locale-btn { border-left: 1px solid var(--border); }
 .cube-cell.is-empty {
   background: transparent;
   border-style: dashed;

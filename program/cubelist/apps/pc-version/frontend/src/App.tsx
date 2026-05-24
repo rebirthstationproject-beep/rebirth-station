@@ -42,6 +42,8 @@ import {
   type ActionSpec,
 } from './lib/actions';
 import { ActionPayloadForm } from './components/ActionPayloadForm';
+import { LocaleSwitcher } from './components/LocaleSwitcher';
+import { useTranslation } from './lib/i18n/useTranslation';
 import { describeExecuteError, executeCube, isTauri } from './lib/tauri-bridge';
 import {
   buildPluginActionPayload,
@@ -81,6 +83,7 @@ export function App() {
 }
 
 function TopBar() {
+  const { t } = useTranslation();
   const pack = useEditor((s) => s.pack);
   const activeListId = useEditor((s) => s.list_id);
   const selectList = useEditor((s) => s.selectList);
@@ -144,8 +147,8 @@ function TopBar() {
   return (
     <header className="topbar">
       <div className="topbar-left">
-        <span className="brand">큐브 리스트 — 편집기</span>
-        <nav className="pack-tabs" aria-label="리스트">
+        <span className="brand">{t('app.title')}</span>
+        <nav className="pack-tabs" aria-label={t('topbar.add_list')}>
           {pack?.lists.map((l) => (
             <button
               key={l.id}
@@ -157,45 +160,47 @@ function TopBar() {
               {l.name}
             </button>
           ))}
-          <button className="pack-tab is-add" type="button" title="리스트 추가 (M2 후반)">
+          <button className="pack-tab is-add" type="button" title={t('topbar.add_list')}>
             +
           </button>
         </nav>
       </div>
       <div className="topbar-right">
-        <span className="pack-meta">{pack?.name ?? '(큐브팩 없음)'}</span>
+        <span className="pack-meta">{pack?.name ?? t('app.no_pack')}</span>
         <button
           type="button"
           className="btn-ghost"
           onClick={handleImportClick}
-          title="큐브팩 가져오기 (.cubepack)"
+          title=".cubepack"
         >
-          가져오기
+          {t('topbar.import')}
         </button>
         <button
           type="button"
           className="btn-ghost"
           onClick={handleExport}
           disabled={!pack}
-          title="현재 큐브팩 내보내기 (.cubepack)"
+          title=".cubepack"
         >
-          내보내기
+          {t('topbar.export')}
         </button>
         <button
           type="button"
           className="btn-ghost"
           onClick={handleInstallPlugin}
-          title={`.cubeplugin 설치 (현재 ${installedPlugins.length}개 설치됨)`}
+          title={`.cubeplugin (${installedPlugins.length})`}
         >
-          + 플러그인
+          {t('topbar.add_plugin')}
         </button>
-        <button className="icon-btn" title="설정" aria-label="설정">⚙</button>
+        <LocaleSwitcher />
+        <button className="icon-btn" title={t('app.settings')} aria-label={t('app.settings')}>⚙</button>
       </div>
     </header>
   );
 }
 
 function Sidebar() {
+  const { t } = useTranslation();
   const pluginActions = usePluginRegistry((s) => s.allActions());
   const installedPlugins = usePluginRegistry((s) => s.installed);
   const upsertCube = useEditor((s) => s.upsertCube);
@@ -227,9 +232,9 @@ function Sidebar() {
   );
 
   return (
-    <aside className="sidebar" aria-label="액션 카탈로그">
+    <aside className="sidebar" aria-label={t('sidebar.categories')}>
       <div className="sidebar-section">
-        <h3 className="sidebar-title">카테고리</h3>
+        <h3 className="sidebar-title">{t('sidebar.categories')}</h3>
         <ul className="category-list">
           <li className="category-item">
             <button
@@ -237,7 +242,7 @@ function Sidebar() {
               className={`category-btn ${filter === null ? 'is-active' : ''}`}
               onClick={() => setFilter(null)}
             >
-              전체
+              {t('sidebar.all')}
             </button>
           </li>
           {ACTION_CATEGORIES.map((c) => (
@@ -255,9 +260,9 @@ function Sidebar() {
       </div>
 
       <div className="sidebar-section">
-        <h3 className="sidebar-title">빌트인 액션 ({builtinFiltered.length})</h3>
+        <h3 className="sidebar-title">{t('sidebar.builtin')} ({builtinFiltered.length})</h3>
         {builtinFiltered.length === 0 ? (
-          <div className="sidebar-hint">해당 카테고리에 빌트인 액션 없음</div>
+          <div className="sidebar-hint">{t('sidebar.no_category_match')}</div>
         ) : (
           <ul className="plugin-list">
             {builtinFiltered.map((spec: ActionSpec) => (
@@ -289,11 +294,11 @@ function Sidebar() {
 
       <div className="sidebar-section">
         <h3 className="sidebar-title">
-          플러그인 ({installedPlugins.length})
+          {t('sidebar.plugins')} ({installedPlugins.length})
         </h3>
         {installedPlugins.length === 0 ? (
           <div className="sidebar-hint">
-            상단 "+ 플러그인" 버튼으로 .cubeplugin 설치
+            {t('sidebar.no_plugins')}
           </div>
         ) : (
           <ul className="plugin-list">
@@ -332,6 +337,7 @@ function Sidebar() {
 }
 
 function GridArea() {
+  const { t } = useTranslation();
   const pack = useEditor((s) => s.pack);
   const listId = useEditor((s) => s.list_id);
   const list = pack?.lists.find((l) => l.id === listId) ?? null;
@@ -347,7 +353,7 @@ function GridArea() {
   if (!list) {
     return (
       <main className="grid-area">
-        <div className="grid-empty">리스트를 선택하세요</div>
+        <div className="grid-empty">{t('grid.select_list')}</div>
       </main>
     );
   }
@@ -359,8 +365,8 @@ function GridArea() {
     <main className="grid-area">
       {currentFolder && (
         <div className="breadcrumb">
-          <button type="button" className="btn-ghost" onClick={exitFolder} title="상위로">
-            ↩ 상위
+          <button type="button" className="btn-ghost" onClick={exitFolder} title={t('grid.exit_folder')}>
+            {t('grid.exit_folder')}
           </button>
           <span className="breadcrumb-path">
             {list.name} <span className="breadcrumb-sep">›</span> <strong>{currentFolder.label}</strong>
@@ -382,7 +388,7 @@ function GridArea() {
             disabled={!hasPrev}
             title="Page Up"
           >
-            ◀ 이전
+            {t('grid.prev_page')}
           </button>
           <button
             className="btn-ghost"
@@ -391,7 +397,7 @@ function GridArea() {
             disabled={!hasNext}
             title="Page Down"
           >
-            다음 ▶
+            {t('grid.next_page')}
           </button>
         </div>
       </div>
@@ -517,6 +523,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
 }
 
 function Inspector() {
+  const { t } = useTranslation();
   const cube_id = useEditor((s) => s.cube_id);
   const pack = useEditor((s) => s.pack);
   const list_id = useEditor((s) => s.list_id);
@@ -529,8 +536,11 @@ function Inspector() {
 
   if (!cube || !list_id) {
     return (
-      <aside className="inspector" aria-label="큐브 인스펙터">
-        <div className="inspector-empty">큐브를 선택하세요<br /><span className="muted">또는 빈 슬롯 ＋ 클릭으로 추가</span></div>
+      <aside className="inspector">
+        <div className="inspector-empty">
+          {t('inspector.empty')}
+          <br /><span className="muted">{t('inspector.empty_hint')}</span>
+        </div>
       </aside>
     );
   }
@@ -542,26 +552,26 @@ function Inspector() {
 
   function handleDelete(): void {
     if (!cube || !list_id) return;
-    if (!window.confirm(`"${cube.label}" 큐브를 삭제할까요?`)) return;
+    if (!window.confirm(`"${cube.label}" — ${t('inspector.delete_confirm')}`)) return;
     removeCube(list_id, cube.id);
   }
 
   return (
     <aside className="inspector" aria-label="큐브 인스펙터">
-      <h3 className="inspector-title">큐브 속성</h3>
+      <h3 className="inspector-title">{t('inspector.label')}</h3>
       <dl className="inspector-fields">
         <dt>ID</dt>
         <dd className="muted">{cube.id}</dd>
-        <dt>라벨</dt>
+        <dt>{t('inspector.label')}</dt>
         <dd>
           <input
             type="text"
             value={cube.label}
-            placeholder="(라벨)"
+            placeholder={t('inspector.label')}
             onChange={(e) => patch({ label: e.target.value })}
           />
         </dd>
-        <dt>액션 타입</dt>
+        <dt>{t('inspector.action_type')}</dt>
         <dd>
           <select
             value={inferSelectValue(cube)}
@@ -604,10 +614,10 @@ function Inspector() {
           }}
           title={isTauri() ? 'PC 헬퍼로 실행' : '브라우저 dev — link 만 즉시, 나머지는 mock'}
         >
-          ▶ 테스트 실행
+          {t('inspector.test_run')}
         </button>
         <button type="button" className="btn-ghost btn-danger" onClick={handleDelete}>
-          큐브 삭제
+          {t('inspector.delete')}
         </button>
       </div>
     </aside>
