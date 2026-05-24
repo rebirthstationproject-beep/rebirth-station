@@ -78,7 +78,7 @@
     },
     "resources": [],
     "externalBin": [],
-    "createUpdaterArtifacts": false
+    "createUpdaterArtifacts": true
   },
   "plugins": {}
 }
