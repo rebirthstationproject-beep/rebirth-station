@@ -10,6 +10,7 @@
  */
 
 import { useEffect, useState } from 'react';
+import { useShallow } from 'zustand/react/shallow';
 import {
   DndContext,
   PointerSensor,
@@ -201,12 +202,12 @@ function TopBar() {
 
 function Sidebar() {
   const { t } = useTranslation();
-  const pluginActions = usePluginRegistry((s) => s.allActions());
+  const pluginActions = usePluginRegistry(useShallow((s) => s.allActions()));
   const installedPlugins = usePluginRegistry((s) => s.installed);
   const upsertCube = useEditor((s) => s.upsertCube);
   const selectCube = useEditor((s) => s.selectCube);
   const listId = useEditor((s) => s.list_id);
-  const list = useEditor((s) => s.activeList());
+  const list = useEditor(useShallow((s) => s.activeList()));
   const [filter, setFilter] = useState<ActionCategory | null>(null);
 
   function addCube(partial: Pick<Cube, 'label' | 'action_type' | 'action_payload'>): void {
@@ -341,9 +342,9 @@ function GridArea() {
   const pack = useEditor((s) => s.pack);
   const listId = useEditor((s) => s.list_id);
   const list = pack?.lists.find((l) => l.id === listId) ?? null;
-  const currentFolder = useEditor((s) => s.currentFolder());
-  const visibleCubes = useEditor((s) => s.visibleCubes());
-  const scopedTotal = useEditor((s) => s.scopedCubes().length);
+  const currentFolder = useEditor(useShallow((s) => s.currentFolder()));
+  const visibleCubes = useEditor(useShallow((s) => s.visibleCubes()));
+  const scopedTotal = useEditor((s) => s.scopedCubes().length) // .length = 숫자, 안정;
   const totalPages = useEditor((s) => s.totalPages());
   const currentPage = useEditor((s) => s.current_page);
   const nextPage = useEditor((s) => s.nextPage);
@@ -413,7 +414,7 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
   const reorderCubes = useEditor((s) => s.reorderCubes);
   const upsertCube = useEditor((s) => s.upsertCube);
   const selectCube = useEditor((s) => s.selectCube);
-  const pageSize = useEditor((s) => s.pageSize());
+  const pageSize = useEditor((s) => s.pageSize()) // 숫자, 안정;
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -529,7 +530,7 @@ function Inspector() {
   const list_id = useEditor((s) => s.list_id);
   const upsertCube = useEditor((s) => s.upsertCube);
   const removeCube = useEditor((s) => s.removeCube);
-  const pluginActions = usePluginRegistry((s) => s.allActions());
+  const pluginActions = usePluginRegistry(useShallow((s) => s.allActions()));
 
   const cube =
     pack?.lists.find((l) => l.id === list_id)?.cubes.find((c) => c.id === cube_id) ?? null;
