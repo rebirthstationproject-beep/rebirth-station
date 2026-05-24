@@ -456,6 +456,16 @@ cargo tauri dev  # 1280×800 윈도우에 frontend 로드 확인
 위 옵션 중 사용자 명시 결정 도착 시점에 cron 재가동. 그때까지 본 cron 은 매시 7/22/37/52분
 **STATE.md 점검만** 수행하고 추가 변경 없이 보고. 새 정보 / 결정 없으면 noop.
 
+### cron 1251e70a — 사이클 #29 (2026-05-24) 자체 해제
+
+- cron #27~#28 모두 noop 확인 (원격/로컬/결정 변화 없음)
+- [memory: feedback_cron_policy] "의미 없는 반복 cron 금지" 적용
+- `CronDelete 1251e70a` 호출 → 즉시 해제 완료
+- 사용자 결정 도착 시 새 cron 등록 권장:
+  · D-06/07 답변 → `CronCreate */15 * * * *` + 새 prompt (GitHub Release 작성 사이클)
+  · 다른 사이트 전환 → 해당 사이트 prompt
+  · 모바일 PWA 베타 → 별도 prompt
+
 ### 자동 진행 cron (id: `1251e70a`)
 - 스케줄: 매시 7/22/37/52분 (15분 간격, off-minute)
 - 7일 자동 만료 (사용자 요청 시 즉시 해제 가능)
