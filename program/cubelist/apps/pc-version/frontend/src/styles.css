@@ -298,6 +298,128 @@ html, body, #root {
 .locale-btn:hover { color: var(--text); }
 .locale-btn.is-active { background: var(--bg-selected); color: var(--text); }
 .locale-btn + .locale-btn { border-left: 1px solid var(--border); }
+
+/* === 수정 #1: GridLayoutModal === */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.modal {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  min-width: 360px;
+  max-width: 460px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.modal-title {
+  margin: 0;
+  font-size: 16px;
+  color: var(--text);
+}
+.modal-section { display: flex; flex-direction: column; gap: 8px; }
+.modal-label { font-size: 12px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+.modal-radio-row { display: flex; gap: 8px; }
+.modal-radio-row label {
+  flex: 1;
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+}
+.modal-radio-row label:hover { border-color: var(--accent); }
+.modal-radio-row label.is-active { border-color: var(--accent); background: var(--bg-selected); }
+.modal-radio-row label input { margin-right: 6px; }
+.modal-radio-row .modal-hint { font-size: 10px; color: var(--text-muted); }
+.modal-hint { font-size: 11px; color: var(--text-muted); }
+.modal-preview {
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px;
+  text-align: center;
+}
+.modal-preview-label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; }
+.modal-preview-value { font-size: 14px; color: var(--text); }
+.modal-preview-value strong { color: #d9c270; font-size: 18px; }
+.modal-actions { display: flex; justify-content: flex-end; gap: 8px; }
+.btn-primary { color: var(--text); border-color: var(--accent); background: var(--bg-selected); }
+
+/* === 수정 #3: CubeIconUpload === */
+.cube-icon-upload {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.cube-icon-preview {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.cube-icon-placeholder {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.cube-icon-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0;
+}
+.cube-icon-hint {
+  font-size: 10px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin-top: 4px;
+}
+
+/* === 큐브 셀 아이콘 배경 === */
+.cube-cell { position: relative; overflow: hidden; }
+.cube-icon-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.85;
+  z-index: 0;
+}
+.cube-cell.has-icon .cube-label,
+.cube-cell.has-icon .cube-action-badge {
+  position: relative;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.55);
+  padding: 1px 4px;
+  border-radius: 3px;
+}
 .cube-cell.is-empty {
   background: transparent;
   border-style: dashed;

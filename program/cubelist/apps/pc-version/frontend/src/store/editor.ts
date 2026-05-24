@@ -56,6 +56,9 @@ interface EditorState extends EditorSelection {
   setPage(page: number): void;
   nextPage(): void;
   prevPage(): void;
+
+  // === 그리드 배치 설정 (수정 #1) ===
+  setListLayout(listId: string, layout: { cols: number; cubes_per_page: number }): void;
 }
 
 export const useEditor = create<EditorState>((set, get) => ({
@@ -279,5 +282,18 @@ export const useEditor = create<EditorState>((set, get) => ({
   prevPage(): void {
     const { current_page } = get();
     if (current_page > 0) set({ current_page: current_page - 1 });
+  },
+
+  // === 그리드 배치 설정 ===
+
+  setListLayout(listId: string, layout: { cols: number; cubes_per_page: number }): void {
+    const { pack } = get();
+    if (!pack) return;
+    const nextLists = pack.lists.map((l) =>
+      l.id === listId
+        ? { ...l, cols: layout.cols, cubes_per_page: layout.cubes_per_page }
+        : l,
+    );
+    set({ pack: { ...pack, lists: nextLists }, current_page: 0 });
   },
 }));

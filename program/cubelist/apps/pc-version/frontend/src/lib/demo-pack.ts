@@ -19,7 +19,8 @@ export function buildDemoPack(): CubePack {
         id: 'list-1',
         name: '기본',
         sort_order: 1,
-        cols: 5,
+        cols: 4,
+        cubes_per_page: 28,
         cubes: [
           {
             id: 'cube-1',
@@ -51,7 +52,8 @@ export function buildDemoPack(): CubePack {
         id: 'list-2',
         name: '미디어',
         sort_order: 2,
-        cols: 5,
+        cols: 4,
+        cubes_per_page: 28,
         cubes: [
           {
             id: 'cube-4',

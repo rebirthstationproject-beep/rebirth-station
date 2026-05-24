@@ -43,6 +43,8 @@ import {
   type ActionSpec,
 } from './lib/actions';
 import { ActionPayloadForm } from './components/ActionPayloadForm';
+import { CubeIconUpload } from './components/CubeIconUpload';
+import { GridLayoutModal } from './components/GridLayoutModal';
 import { LocaleSwitcher } from './components/LocaleSwitcher';
 import { useTranslation } from './lib/i18n/useTranslation';
 import { describeExecuteError, executeCube, isTauri } from './lib/tauri-bridge';
@@ -350,6 +352,8 @@ function GridArea() {
   const nextPage = useEditor((s) => s.nextPage);
   const prevPage = useEditor((s) => s.prevPage);
   const exitFolder = useEditor((s) => s.exitFolder);
+  const setListLayout = useEditor((s) => s.setListLayout);
+  const [layoutModalOpen, setLayoutModalOpen] = useState(false);
 
   if (!list) {
     return (
@@ -385,6 +389,14 @@ function GridArea() {
           <button
             className="btn-ghost"
             type="button"
+            onClick={() => setLayoutModalOpen(true)}
+            title="가로/세로 + cols 지정"
+          >
+            ⊞ 배치 설정
+          </button>
+          <button
+            className="btn-ghost"
+            type="button"
             onClick={prevPage}
             disabled={!hasPrev}
             title="Page Up"
@@ -402,6 +414,17 @@ function GridArea() {
           </button>
         </div>
       </div>
+      {layoutModalOpen && (
+        <GridLayoutModal
+          initialCols={list.cols ?? 4}
+          initialPageSize={list.cubes_per_page ?? (list.cols ?? 4) * 7}
+          onApply={(layout) => {
+            setListLayout(list.id, layout);
+            setLayoutModalOpen(false);
+          }}
+          onCancel={() => setLayoutModalOpen(false)}
+        />
+      )}
       <CubeGrid list={list} visibleCubes={visibleCubes} />
       <div className="grid-hint">
         M7: 폴더 진입 · 페이지네이션 (cubes_per_page 초과 자동 페이지) · 멀티액션 대기
@@ -505,7 +528,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       style={style}
       type="button"
       role="gridcell"
-      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''}`}
+      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''} ${cube.icon_url ? 'has-icon' : ''}`}
       onClick={() => selectCube(selected ? null : cube.id)}
       onDoubleClick={() => {
         if (isFolder) enterFolder(cube.id);
@@ -515,6 +538,13 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       {...restAttrs}
       {...listeners}
     >
+      {cube.icon_url && (
+        <div
+          className="cube-icon-bg"
+          style={{ backgroundImage: `url("${cube.icon_url}")` }}
+          aria-hidden
+        />
+      )}
       <span className="cube-label">
         {isFolder ? '📁 ' : ''}{cube.label}
       </span>
@@ -559,6 +589,11 @@ function Inspector() {
 
   return (
     <aside className="inspector" aria-label="큐브 인스펙터">
+      <CubeIconUpload
+        iconUrl={cube.icon_url}
+        label={cube.label}
+        onChange={(next) => patch({ icon_url: next })}
+      />
       <h3 className="inspector-title">{t('inspector.label')}</h3>
       <dl className="inspector-fields">
         <dt>ID</dt>
