@@ -73,6 +73,27 @@ interface EditorState extends EditorSelection {
   renameList(listId: string, name: string): void;
   /** 리스트 삭제 */
   removeList(listId: string): void;
+
+  // === 큐브 라이브러리 (Phase 2b) ===
+  library_selected_id: string | null;
+  /** 라이브러리 큐브 선택 (Inspector 에 표시) */
+  selectLibraryCube(cubeId: string | null): void;
+  /** 라이브러리 큐브 추가 */
+  addLibraryCube(partial?: Partial<Cube>): void;
+  /** 라이브러리 큐브 수정 */
+  updateLibraryCube(cubeId: string, partial: Partial<Cube>): void;
+  /** 라이브러리 큐브 삭제 */
+  removeLibraryCube(cubeId: string): void;
+  /** 라이브러리 큐브를 리스트로 복사 (cube_ids 순서대로 빈 슬롯에 채움) */
+  addListFromLibrary(name: string, cubeIds: string[]): void;
+
+  // === 리스트 만들기 모드 (Phase 3) ===
+  list_maker_active: boolean;
+  list_maker_selection: string[]; // 선택 순서대로 라이브러리 cube id
+  startListMaker(): void;
+  toggleListMakerSelection(cubeId: string): void;
+  finishListMaker(name: string): void;
+  cancelListMaker(): void;
 }
 
 export const useEditor = create<EditorState>((set, get) => ({
@@ -83,6 +104,9 @@ export const useEditor = create<EditorState>((set, get) => ({
   current_folder_id: null,
   folder_stack: [],
   current_page: 0,
+  library_selected_id: null,
+  list_maker_active: false,
+  list_maker_selection: [],
 
   activeList(): CubeList | null {
     const { pack, list_id } = get();
@@ -421,6 +445,113 @@ export const useEditor = create<EditorState>((set, get) => ({
       folder_stack: [],
       current_page: 0,
     });
+  },
+
+  // === 큐브 라이브러리 (Phase 2b) ===
+
+  selectLibraryCube(cubeId: string | null): void {
+    set({ library_selected_id: cubeId });
+  },
+
+  addLibraryCube(partial?: Partial<Cube>): void {
+    const { pack } = get();
+    if (!pack) return;
+    const newCube: Cube = {
+      id: crypto.randomUUID(),
+      sort_order: 0,
+      label: partial?.label ?? '새 큐브',
+      icon_url: partial?.icon_url ?? null,
+      action_type: partial?.action_type ?? 'link',
+      action_payload: partial?.action_payload ?? { url: '' },
+      ...(partial?.metadata ? { metadata: partial.metadata } : {}),
+    };
+    const cubes = [...(pack.cubes ?? []), newCube];
+    set({ pack: { ...pack, cubes }, library_selected_id: newCube.id });
+  },
+
+  updateLibraryCube(cubeId: string, partial: Partial<Cube>): void {
+    const { pack } = get();
+    if (!pack) return;
+    const cubes = (pack.cubes ?? []).map((c) =>
+      c.id === cubeId ? { ...c, ...partial, id: c.id, sort_order: 0 } : c,
+    );
+    set({ pack: { ...pack, cubes } });
+  },
+
+  removeLibraryCube(cubeId: string): void {
+    const { pack, library_selected_id } = get();
+    if (!pack) return;
+    const cubes = (pack.cubes ?? []).filter((c) => c.id !== cubeId);
+    set({
+      pack: { ...pack, cubes },
+      library_selected_id: library_selected_id === cubeId ? null : library_selected_id,
+    });
+  },
+
+  addListFromLibrary(name: string, cubeIds: string[]): void {
+    const { pack } = get();
+    if (!pack) return;
+    const lib = pack.cubes ?? [];
+    const maxSort = pack.lists.length === 0
+      ? 0
+      : Math.max(...pack.lists.map((l) => l.sort_order));
+    // 라이브러리 큐브 복사 + sort_order = 1..N (순서대로)
+    const cubesForList: Cube[] = [];
+    cubeIds.forEach((id, idx) => {
+      const lib_cube = lib.find((c) => c.id === id);
+      if (!lib_cube) return;
+      cubesForList.push({
+        ...lib_cube,
+        id: crypto.randomUUID() as string, // 새 ID (리스트 인스턴스)
+        sort_order: idx + 1,
+      });
+    });
+
+    const newList: CubeList = {
+      id: crypto.randomUUID(),
+      name: name.trim() || `page ${pack.lists.length + 1}`,
+      sort_order: maxSort + 1,
+      cols: 4,
+      cubes_per_page: 28,
+      cubes: cubesForList,
+    };
+    set({
+      pack: { ...pack, lists: [...pack.lists, newList] },
+      list_id: newList.id,
+      current_page: 0,
+      list_maker_active: false,
+      list_maker_selection: [],
+    });
+  },
+
+  // === 리스트 만들기 모드 (Phase 3) ===
+
+  startListMaker(): void {
+    set({ list_maker_active: true, list_maker_selection: [] });
+  },
+
+  toggleListMakerSelection(cubeId: string): void {
+    const { list_maker_selection } = get();
+    const idx = list_maker_selection.indexOf(cubeId);
+    if (idx === -1) {
+      set({ list_maker_selection: [...list_maker_selection, cubeId] });
+    } else {
+      // 이미 선택 시 제거 (재클릭 = 해제)
+      set({ list_maker_selection: list_maker_selection.filter((id) => id !== cubeId) });
+    }
+  },
+
+  finishListMaker(name: string): void {
+    const { list_maker_selection } = get();
+    if (list_maker_selection.length === 0) {
+      set({ list_maker_active: false });
+      return;
+    }
+    get().addListFromLibrary(name, list_maker_selection);
+  },
+
+  cancelListMaker(): void {
+    set({ list_maker_active: false, list_maker_selection: [] });
   },
 
   // === 그리드 배치 설정 ===

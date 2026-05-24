@@ -103,6 +103,8 @@ export interface CubePack {
   name: string;
   /** 큐브팩 카테고리 (생산성/미디어/개발/... — 시드 카탈로그와 매핑) */
   category?: string;
+  /** 큐브 라이브러리 — 만들거나 폴더에서 불러온 큐브 풀 (sort_order 의미 없음, Phase 2b) */
+  cubes?: Cube[];
   lists: CubeList[];
   metadata?: Record<string, unknown>;
 }

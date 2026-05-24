@@ -14,6 +14,14 @@ export function buildDemoPack(): CubePack {
     id: 'demo-pack-1',
     name: '데모 큐브팩',
     category: '생산성',
+    cubes: [
+      { id: 'lib-1', sort_order: 0, label: 'Anthropic', icon_url: null, action_type: 'link', action_payload: { url: 'https://www.anthropic.com' } },
+      { id: 'lib-2', sort_order: 0, label: 'GitHub', icon_url: null, action_type: 'link', action_payload: { url: 'https://github.com' } },
+      { id: 'lib-3', sort_order: 0, label: 'YouTube', icon_url: null, action_type: 'link', action_payload: { url: 'https://youtube.com' } },
+      { id: 'lib-4', sort_order: 0, label: '복사', icon_url: null, action_type: 'shortcut', action_payload: { keys: ['Ctrl', 'C'] } },
+      { id: 'lib-5', sort_order: 0, label: '붙여넣기', icon_url: null, action_type: 'shortcut', action_payload: { keys: ['Ctrl', 'V'] } },
+      { id: 'lib-6', sort_order: 0, label: '재생/정지', icon_url: null, action_type: 'shortcut', action_payload: { keys: ['MediaPlayPause'] } },
+    ],
     lists: [
       {
         id: 'list-1',

@@ -126,60 +126,204 @@ function ListMakerCenter() {
 }
 
 /**
- * 큐브 만들기 가운데 영역 (수정 #2 — Phase 2 placeholder + 폴더 불러오기 자리).
- * 좌(Sidebar) · 가운데(본 컴포넌트) · 우(Inspector — 큐브 클릭 시 편집) 3분할 유지.
+ * 큐브 만들기 가운데 영역 (Phase 2b).
+ * - 라이브러리 큐브 그리드 (어플 아이콘 모양)
+ * - "+ 새 큐브" 버튼 (Inspector 에서 편집)
+ * - "📁 폴더 불러오기" — 폴더 + 하위 폴더 재귀 → 각 파일을 라이브러리 큐브로 자동 생성
+ * - "📋 리스트 만들기" — 큐브 순차 선택 모드 (Phase 3) → 완료 시 모달 → 새 페이지(리스트)
  */
 function CubeMakerCenter() {
-  const [folderFiles, setFolderFiles] = useState<FileList | null>(null);
+  const pack = useEditor((s) => s.pack);
+  const libraryCubes = pack?.cubes ?? [];
+  const librarySelectedId = useEditor((s) => s.library_selected_id);
+  const selectLibraryCube = useEditor((s) => s.selectLibraryCube);
+  const addLibraryCube = useEditor((s) => s.addLibraryCube);
+
+  const listMakerActive = useEditor((s) => s.list_maker_active);
+  const listMakerSelection = useEditor(useShallow((s) => s.list_maker_selection));
+  const startListMaker = useEditor((s) => s.startListMaker);
+  const toggleListMakerSelection = useEditor((s) => s.toggleListMakerSelection);
+  const finishListMaker = useEditor((s) => s.finishListMaker);
+  const cancelListMaker = useEditor((s) => s.cancelListMaker);
+
+  const [saveModalOpen, setSaveModalOpen] = useState(false);
 
   function handleFolderImport(): void {
     const input = document.createElement('input');
     input.type = 'file';
-    // HTML5 webkitdirectory: WebView2/Chromium 지원. 폴더 + 하위 폴더 재귀 자동.
-    // 각 File 에 webkitRelativePath ("folder/sub/file.ext") 포함 → 폴더 구조 재현 가능.
     (input as HTMLInputElement & { webkitdirectory?: boolean }).webkitdirectory = true;
     input.multiple = true;
     input.onchange = () => {
-      if (input.files && input.files.length > 0) {
-        setFolderFiles(input.files);
-      }
+      const files = input.files;
+      if (!files || files.length === 0) return;
+      const folderSet = new Set<string>();
+      Array.from(files).forEach((f) => {
+        const path = (f as File & { webkitRelativePath?: string }).webkitRelativePath ?? f.name;
+        // 파일 → 큐브 (라벨 = 파일명 prefix 제거)
+        const label = path.split('/').pop()?.replace(/\.[^.]+$/, '') ?? f.name;
+        addLibraryCube({
+          label,
+          action_type: 'app_launch',
+          action_payload: { path, args: [] },
+          metadata: { source: 'folder-import', original_path: path },
+        });
+        // 폴더 경로 수집 (마지막 / 앞부분)
+        const folderPath = path.split('/').slice(0, -1).join('/');
+        if (folderPath) folderSet.add(folderPath);
+      });
+      window.alert(`${files.length}개 파일을 라이브러리에 추가했습니다. 폴더 ${folderSet.size}개 인식.`);
     };
     input.click();
   }
 
+  function handleClickCube(cubeId: string): void {
+    if (listMakerActive) {
+      toggleListMakerSelection(cubeId);
+    } else {
+      selectLibraryCube(librarySelectedId === cubeId ? null : cubeId);
+    }
+  }
+
+  function handleFinishListMaker(): void {
+    if (listMakerSelection.length === 0) {
+      window.alert('큐브를 1개 이상 선택하세요.');
+      return;
+    }
+    setSaveModalOpen(true);
+  }
+
   return (
     <div className="cube-maker-center">
-      <div className="cube-maker-hint">
-        <h2>큐브 만들기 (Coming Soon)</h2>
-        <p>다음 사이클에 큐브 라이브러리 도입 — 만든 큐브들이 어플 아이콘처럼 나열되고 리스트로 끌어다 놓을 수 있어요.</p>
-        <p className="muted">현재는 "큐브 리스트 만들기" 탭에서 빈 슬롯 클릭으로 큐브 추가하세요.</p>
-        <div className="folder-import">
-          <button type="button" className="btn-ghost" onClick={handleFolderImport}>
-            📁 폴더 불러오기
+      <div className="cube-maker-toolbar">
+        <button type="button" className="btn-ghost" onClick={() => addLibraryCube()}>
+          ＋ 새 큐브
+        </button>
+        <button type="button" className="btn-ghost" onClick={handleFolderImport}>
+          📁 폴더 불러오기
+        </button>
+        <div className="cube-maker-spacer" />
+        {listMakerActive ? (
+          <>
+            <span className="list-maker-status">
+              선택 {listMakerSelection.length}개
+            </span>
+            <button type="button" className="btn-ghost" onClick={cancelListMaker}>
+              취소
+            </button>
+            <button
+              type="button"
+              className="btn-ghost btn-primary"
+              onClick={handleFinishListMaker}
+            >
+              ✓ 완료
+            </button>
+          </>
+        ) : (
+          <button
+            type="button"
+            className="btn-ghost btn-primary"
+            onClick={startListMaker}
+            disabled={libraryCubes.length === 0}
+            title={libraryCubes.length === 0 ? '먼저 큐브를 추가하세요' : '큐브를 순서대로 클릭하여 리스트 생성'}
+          >
+            📋 리스트 만들기
           </button>
-          <div className="muted small">
-            지정 폴더 + 하위 폴더 재귀 (하위 폴더 = folder 큐브로 자동 생성 예정)
-          </div>
-          {folderFiles && (
-            <div className="folder-import-preview">
-              <div className="muted small">선택된 파일 {folderFiles.length}개:</div>
-              <ul>
-                {Array.from(folderFiles)
-                  .slice(0, 5)
-                  .map((f, i) => (
-                    <li key={i} className="muted small">
-                      {(f as File & { webkitRelativePath?: string }).webkitRelativePath ?? f.name}
-                    </li>
-                  ))}
-                {folderFiles.length > 5 && (
-                  <li className="muted small">… 외 {folderFiles.length - 5}개</li>
+        )}
+      </div>
+
+      {libraryCubes.length === 0 ? (
+        <div className="cube-maker-empty">
+          <p>라이브러리에 큐브가 없습니다.</p>
+          <p className="muted small">＋ 새 큐브 또는 📁 폴더 불러오기로 큐브 추가</p>
+        </div>
+      ) : (
+        <div className="cube-maker-grid">
+          {libraryCubes.map((cube) => {
+            const selectionIdx = listMakerSelection.indexOf(cube.id);
+            const isSelected = librarySelectedId === cube.id;
+            const inSelection = selectionIdx !== -1;
+            return (
+              <button
+                key={cube.id}
+                type="button"
+                className={`library-cube ${isSelected ? 'is-selected' : ''} ${inSelection ? 'is-in-selection' : ''}`}
+                onClick={() => handleClickCube(cube.id)}
+                title={`${cube.label} (${cube.action_type})`}
+              >
+                {cube.icon_url ? (
+                  <div className="library-cube-icon" style={{ backgroundImage: `url("${cube.icon_url}")` }} />
+                ) : (
+                  <div className="library-cube-icon library-cube-icon-empty">
+                    <span>{cube.label.slice(0, 2)}</span>
+                  </div>
                 )}
-              </ul>
-              <div className="muted small">
-                * 실제 큐브 변환은 Phase 2b (pack.cubes 라이브러리 모델 도입 후)
-              </div>
-            </div>
-          )}
+                <span className="library-cube-label">{cube.label}</span>
+                {inSelection && <span className="library-cube-order">{selectionIdx + 1}</span>}
+              </button>
+            );
+          })}
+        </div>
+      )}
+
+      {saveModalOpen && (
+        <ListMakerSaveModal
+          count={listMakerSelection.length}
+          onSave={(name) => {
+            finishListMaker(name);
+            setSaveModalOpen(false);
+          }}
+          onCancel={() => setSaveModalOpen(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+/**
+ * 리스트 만들기 완료 모달 (Phase 3) — 리스트명 + 개수 + 저장.
+ */
+function ListMakerSaveModal({
+  count,
+  onSave,
+  onCancel,
+}: {
+  count: number;
+  onSave: (name: string) => void;
+  onCancel: () => void;
+}) {
+  const [name, setName] = useState('새 리스트');
+
+  return (
+    <div className="modal-backdrop" onClick={onCancel}>
+      <div className="modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-label="리스트 저장">
+        <h2 className="modal-title">리스트 저장</h2>
+        <div className="modal-section">
+          <label className="modal-label" htmlFor="list-name">리스트명</label>
+          <input
+            id="list-name"
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            autoFocus
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' && name.trim()) onSave(name.trim());
+            }}
+          />
+        </div>
+        <div className="modal-section">
+          <div className="modal-label">선택된 큐브 수</div>
+          <div className="modal-preview-value"><strong>{count}</strong>개</div>
+        </div>
+        <div className="modal-actions">
+          <button type="button" className="btn-ghost" onClick={onCancel}>취소</button>
+          <button
+            type="button"
+            className="btn-ghost btn-primary"
+            onClick={() => onSave(name.trim())}
+            disabled={name.trim().length === 0}
+          >
+            저장
+          </button>
         </div>
       </div>
     </div>
@@ -719,12 +863,22 @@ function Inspector() {
   const list_id = useEditor((s) => s.list_id);
   const upsertCube = useEditor((s) => s.upsertCube);
   const removeCube = useEditor((s) => s.removeCube);
+  const librarySelectedId = useEditor((s) => s.library_selected_id);
+  const updateLibraryCube = useEditor((s) => s.updateLibraryCube);
+  const removeLibraryCube = useEditor((s) => s.removeLibraryCube);
   const pluginActions = usePluginRegistry(useShallow((s) => s.allActions()));
 
-  const cube =
+  // 리스트 큐브 (현재 페이지 선택) 우선, 없으면 라이브러리 큐브
+  const listCube =
     pack?.lists.find((l) => l.id === list_id)?.cubes.find((c) => c.id === cube_id) ?? null;
+  const libraryCube = librarySelectedId
+    ? (pack?.cubes ?? []).find((c) => c.id === librarySelectedId) ?? null
+    : null;
 
-  if (!cube || !list_id) {
+  const cube = listCube ?? libraryCube;
+  const isLibrary = !listCube && !!libraryCube;
+
+  if (!cube) {
     return (
       <aside className="inspector">
         <div className="inspector-empty">
@@ -736,14 +890,22 @@ function Inspector() {
   }
 
   function patch(next: Partial<Cube>): void {
-    if (!cube || !list_id) return;
-    upsertCube(list_id, { ...cube, ...next });
+    if (!cube) return;
+    if (isLibrary) {
+      updateLibraryCube(cube.id, next);
+    } else if (list_id) {
+      upsertCube(list_id, { ...cube, ...next });
+    }
   }
 
   function handleDelete(): void {
-    if (!cube || !list_id) return;
+    if (!cube) return;
     if (!window.confirm(`"${cube.label}" — ${t('inspector.delete_confirm')}`)) return;
-    removeCube(list_id, cube.id);
+    if (isLibrary) {
+      removeLibraryCube(cube.id);
+    } else if (list_id) {
+      removeCube(list_id, cube.id);
+    }
   }
 
   return (
