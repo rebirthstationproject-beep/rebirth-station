@@ -60,16 +60,25 @@ html, body, #root {
 
 .app {
   display: grid;
-  grid-template-rows: 48px 40px 1fr 36px;
+  grid-template-rows: 48px 1fr 36px;
   height: 100vh;
 }
 
-/* 메인 큰 탭 2개 (수정 #2) */
+/* 가운데 영역 (메인 탭 + 페이지 탭 + 그리드) — 수정 #2 재배치 */
+.center-area {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-width: 0;
+}
+
+/* 메인 큰 탭 2개 (수정 #2) — center-area 안 상단 */
 .main-tab-bar {
   display: flex;
   background: var(--bg-app);
   border-bottom: 1px solid var(--border);
   padding: 0 12px;
+  flex-shrink: 0;
 }
 .main-tab {
   background: transparent;
@@ -88,13 +97,14 @@ html, body, #root {
   border-bottom-color: var(--accent);
 }
 
-/* 큐브 만들기 페이지 placeholder */
-.cube-maker-page {
+/* 큐브 만들기 가운데 (수정 #2 재배치) — center-area 안 */
+.cube-maker-center {
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 40px;
   overflow-y: auto;
+  flex: 1;
 }
 .cube-maker-hint {
   max-width: 540px;
@@ -114,6 +124,65 @@ html, body, #root {
   font-size: 13px;
   line-height: 1.6;
 }
+
+/* 폴더 불러오기 (큐브 만들기 페이지) */
+.folder-import {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+}
+.folder-import button { font-size: 14px; padding: 8px 16px; }
+.folder-import .small { font-size: 11px; }
+.folder-import-preview {
+  margin-top: 8px;
+  padding: 12px;
+  background: var(--bg-app);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  text-align: left;
+  width: 100%;
+}
+.folder-import-preview ul {
+  margin: 8px 0;
+  padding-left: 16px;
+  list-style: none;
+}
+.folder-import-preview li {
+  font-family: 'Consolas', monospace;
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+/* 페이지 탭 (수정 #2 재배치) — center-area 안 */
+.page-tabs {
+  display: flex;
+  gap: 2px;
+  background: var(--bg-surface);
+  border-bottom: 1px solid var(--border);
+  padding: 6px 12px;
+  flex-shrink: 0;
+  overflow-x: auto;
+  flex-wrap: nowrap;
+}
+.page-tab {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  padding: 4px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.page-tab:hover { background: var(--bg-hover); color: var(--text); }
+.page-tab.is-active { background: var(--bg-surface-2); color: var(--text); border-color: var(--border); }
+.page-tab.is-add { padding: 4px 10px; color: var(--text); }
+.page-tab.is-add:hover { border-color: var(--accent); }
 
 .topbar {
   display: flex;

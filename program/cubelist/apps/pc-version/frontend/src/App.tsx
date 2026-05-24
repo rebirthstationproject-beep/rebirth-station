@@ -75,16 +75,14 @@ export function App() {
   return (
     <div className="app">
       <TopBar />
-      <MainTabBar activeTab={mainTab} onChange={setMainTab} />
-      {mainTab === 'list-maker' ? (
-        <div className="workspace">
-          <Sidebar />
-          <GridArea />
-          <Inspector />
-        </div>
-      ) : (
-        <CubeMakerPage />
-      )}
+      <div className="workspace">
+        <Sidebar />
+        <main className="center-area">
+          <MainTabBar activeTab={mainTab} onChange={setMainTab} />
+          {mainTab === 'list-maker' ? <ListMakerCenter /> : <CubeMakerCenter />}
+        </main>
+        <Inspector />
+      </div>
       <footer className="library">
         <span className="library-title">플러그인 라이브러리</span>
       </footer>
@@ -116,36 +114,126 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t:
 }
 
 /**
- * 큐브 만들기 페이지 (수정 #2 — Phase 2 placeholder).
- * 다음 사이클에서 pack.cubes 라이브러리 모델 도입 + 큐브 어플 아이콘 그리드.
+ * 큐브 리스트 만들기 가운데 영역 — 페이지 탭 + GridArea (기존).
  */
-function CubeMakerPage() {
+function ListMakerCenter() {
   return (
-    <main className="cube-maker-page">
+    <>
+      <PageTabs />
+      <GridArea />
+    </>
+  );
+}
+
+/**
+ * 큐브 만들기 가운데 영역 (수정 #2 — Phase 2 placeholder + 폴더 불러오기 자리).
+ * 좌(Sidebar) · 가운데(본 컴포넌트) · 우(Inspector — 큐브 클릭 시 편집) 3분할 유지.
+ */
+function CubeMakerCenter() {
+  const [folderFiles, setFolderFiles] = useState<FileList | null>(null);
+
+  function handleFolderImport(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    // HTML5 webkitdirectory: WebView2/Chromium 지원. 폴더 + 하위 폴더 재귀 자동.
+    // 각 File 에 webkitRelativePath ("folder/sub/file.ext") 포함 → 폴더 구조 재현 가능.
+    (input as HTMLInputElement & { webkitdirectory?: boolean }).webkitdirectory = true;
+    input.multiple = true;
+    input.onchange = () => {
+      if (input.files && input.files.length > 0) {
+        setFolderFiles(input.files);
+      }
+    };
+    input.click();
+  }
+
+  return (
+    <div className="cube-maker-center">
       <div className="cube-maker-hint">
         <h2>큐브 만들기 (Coming Soon)</h2>
         <p>다음 사이클에 큐브 라이브러리 도입 — 만든 큐브들이 어플 아이콘처럼 나열되고 리스트로 끌어다 놓을 수 있어요.</p>
         <p className="muted">현재는 "큐브 리스트 만들기" 탭에서 빈 슬롯 클릭으로 큐브 추가하세요.</p>
+        <div className="folder-import">
+          <button type="button" className="btn-ghost" onClick={handleFolderImport}>
+            📁 폴더 불러오기
+          </button>
+          <div className="muted small">
+            지정 폴더 + 하위 폴더 재귀 (하위 폴더 = folder 큐브로 자동 생성 예정)
+          </div>
+          {folderFiles && (
+            <div className="folder-import-preview">
+              <div className="muted small">선택된 파일 {folderFiles.length}개:</div>
+              <ul>
+                {Array.from(folderFiles)
+                  .slice(0, 5)
+                  .map((f, i) => (
+                    <li key={i} className="muted small">
+                      {(f as File & { webkitRelativePath?: string }).webkitRelativePath ?? f.name}
+                    </li>
+                  ))}
+                {folderFiles.length > 5 && (
+                  <li className="muted small">… 외 {folderFiles.length - 5}개</li>
+                )}
+              </ul>
+              <div className="muted small">
+                * 실제 큐브 변환은 Phase 2b (pack.cubes 라이브러리 모델 도입 후)
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-    </main>
+    </div>
+  );
+}
+
+/**
+ * 페이지 탭 (큐브 리스트 페이지 = pack.lists). 가운데 영역 상단 (수정).
+ */
+function PageTabs() {
+  const pack = useEditor((s) => s.pack);
+  const activeListId = useEditor((s) => s.list_id);
+  const selectList = useEditor((s) => s.selectList);
+  const addList = useEditor((s) => s.addList);
+  const renameList = useEditor((s) => s.renameList);
+
+  function handleRename(listId: string, current: string): void {
+    const next = window.prompt('페이지(리스트) 이름:', current);
+    if (next && next.trim().length > 0) renameList(listId, next.trim());
+  }
+
+  return (
+    <nav className="page-tabs" aria-label="페이지 (리스트)">
+      {pack?.lists.map((l) => (
+        <button
+          key={l.id}
+          type="button"
+          className={`page-tab ${activeListId === l.id ? 'is-active' : ''}`}
+          onClick={() => selectList(l.id)}
+          onDoubleClick={() => handleRename(l.id, l.name)}
+          aria-pressed={activeListId === l.id}
+          title={`${l.name} (더블클릭하여 이름 수정)`}
+        >
+          {l.name}
+        </button>
+      ))}
+      <button
+        className="page-tab is-add"
+        type="button"
+        title="페이지(리스트) 추가"
+        onClick={() => addList()}
+      >
+        +
+      </button>
+    </nav>
   );
 }
 
 function TopBar() {
   const { t } = useTranslation();
   const pack = useEditor((s) => s.pack);
-  const activeListId = useEditor((s) => s.list_id);
-  const selectList = useEditor((s) => s.selectList);
   const loadPack = useEditor((s) => s.loadPack);
-  const addList = useEditor((s) => s.addList);
-  const renameList = useEditor((s) => s.renameList);
   const installedPlugins = usePluginRegistry((s) => s.installed);
   const installPlugin = usePluginRegistry((s) => s.install);
-
-  function handleRename(listId: string, currentName: string): void {
-    const next = window.prompt('페이지(리스트) 이름:', currentName);
-    if (next && next.trim().length > 0) renameList(listId, next.trim());
-  }
 
   async function handleExport(): Promise<void> {
     if (!pack) return;
@@ -204,29 +292,6 @@ function TopBar() {
     <header className="topbar">
       <div className="topbar-left">
         <span className="brand">{t('app.title')}</span>
-        <nav className="pack-tabs" aria-label="페이지 (리스트)">
-          {pack?.lists.map((l) => (
-            <button
-              key={l.id}
-              type="button"
-              className={`pack-tab ${activeListId === l.id ? 'is-active' : ''}`}
-              onClick={() => selectList(l.id)}
-              onDoubleClick={() => handleRename(l.id, l.name)}
-              aria-pressed={activeListId === l.id}
-              title={`${l.name} (더블클릭하여 이름 수정)`}
-            >
-              {l.name}
-            </button>
-          ))}
-          <button
-            className="pack-tab is-add"
-            type="button"
-            title="페이지(리스트) 추가"
-            onClick={() => addList()}
-          >
-            +
-          </button>
-        </nav>
       </div>
       <div className="topbar-right">
         <span className="pack-meta">{pack?.name ?? t('app.no_pack')}</span>
