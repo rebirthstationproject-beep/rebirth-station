@@ -18,9 +18,11 @@ interface CubeIconUploadProps {
 
 const ACCEPTED_FORMATS = '.png,.jpg,.jpeg,.webp,.svg,.gif';
 const ACCEPTED_HINT = 'PNG · JPEG · WEBP · SVG · GIF';
-const RECOMMENDED_HINT = '권장 144 × 144 이상 (정사각형). 최대 1 MB';
+const RECOMMENDED_HINT = '권장 144 × 144 (정사각형). 최대 128 KB (base64 인라인 저장)';
 
-const MAX_BYTES = 1024 * 1024; // 1 MB
+// 코드리뷰 M5: base64 data URL 은 1.37× 팽창 → 1 MB 그대로면 .cubepack 직렬화 폭증.
+// v1 베타 = 128 KB 제한 (작은 아이콘만). v2 = .cubeone ZIP 안 icon.webp 자동 이전 계획.
+const MAX_BYTES = 128 * 1024; // 128 KB
 
 export function CubeIconUpload({ iconUrl, label, onChange }: CubeIconUploadProps) {
   function handlePick(): void {
@@ -31,7 +33,10 @@ export function CubeIconUpload({ iconUrl, label, onChange }: CubeIconUploadProps
       const file = input.files?.[0];
       if (!file) return;
       if (file.size > MAX_BYTES) {
-        window.alert(`이미지가 너무 큽니다 (${(file.size / 1024).toFixed(0)} KB). 최대 1 MB 권장.`);
+        window.alert(
+          `이미지가 너무 큽니다 (${(file.size / 1024).toFixed(0)} KB). 최대 128 KB 권장.\n` +
+            `(.cubepack 내부 base64 인라인 저장이라 큰 이미지는 파일 비대.)`,
+        );
         return;
       }
       const reader = new FileReader();
@@ -41,6 +46,7 @@ export function CubeIconUpload({ iconUrl, label, onChange }: CubeIconUploadProps
         }
       };
       reader.onerror = () => window.alert('이미지 로드 실패');
+      reader.onabort = () => window.alert('이미지 로드 중단됨');
       reader.readAsDataURL(file);
     };
     input.click();

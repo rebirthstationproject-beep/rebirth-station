@@ -79,7 +79,6 @@ export function App() {
       </div>
       <footer className="library">
         <span className="library-title">플러그인 라이브러리</span>
-        <span className="library-hint">(M4 단계에서 채워집니다)</span>
       </footer>
     </div>
   );
@@ -163,7 +162,13 @@ function TopBar() {
               {l.name}
             </button>
           ))}
-          <button className="pack-tab is-add" type="button" title={t('topbar.add_list')}>
+          <button
+            className="pack-tab is-add"
+            type="button"
+            title="곧 지원 예정 (수정 #2 단계)"
+            disabled
+            aria-disabled="true"
+          >
             +
           </button>
         </nav>
@@ -455,7 +460,11 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
   }
 
   function handleAddCube(): void {
-    const maxSort = sorted.length === 0 ? 0 : sorted[sorted.length - 1].sort_order;
+    // 코드리뷰 M7: sort_order 는 페이지 슬라이스가 아닌 전체 list.cubes 기준이어야
+    // 다른 페이지 큐브와 충돌 안 함.
+    const maxSort = list.cubes.length === 0
+      ? 0
+      : Math.max(...list.cubes.map((c) => c.sort_order));
     const newCube: Cube = {
       id: crypto.randomUUID(),
       sort_order: maxSort + 1,

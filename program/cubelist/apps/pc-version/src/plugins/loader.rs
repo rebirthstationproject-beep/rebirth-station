@@ -39,6 +39,9 @@ pub enum LoaderError {
 
     #[error("invalid utf-8 in manifest")]
     Utf8,
+
+    #[error("signature verification failed: {0}")]
+    SignatureVerificationFailed(String),
 }
 
 /// 설치 루트 디렉토리. Windows = `%USERPROFILE%\.cubelist\plugins\`
@@ -100,7 +103,11 @@ pub fn install_zip(bytes: &[u8]) -> Result<PluginManifest, LoaderError> {
     let manifest_text = read_manifest_text(&mut archive)?;
     let manifest = parse_manifest(&manifest_text)?;
 
-    // 2단계: 서명 hook (선택) — manifest.sig 가 있으면 검증 시도
+    // 2단계: 서명 검증 (코드리뷰 C1: sig 있으면 무조건 통과 강제 — 우회 차단)
+    //   - manifest.sig 가 ZIP 안 존재 → 반드시 verify_signature 통과
+    //   - 공개키 placeholder 인 v1 베타 환경 → 검증 우회로 InvalidPublicKey 만 허용
+    //     (실 PKI 구축 후 PublishedPublicKey::PLACEHOLDER 교체 시 모든 sig 강제)
+    //   - 서명 형식 오류·검증 실패 → SignatureVerificationFailed 로 즉시 거부
     if let Ok(mut sig_entry) = archive.by_name("manifest.sig") {
         let mut sig_buf = String::new();
         let _ = sig_entry.read_to_string(&mut sig_buf);
@@ -108,20 +115,20 @@ pub fn install_zip(bytes: &[u8]) -> Result<PluginManifest, LoaderError> {
         match verify_signature(&manifest_text, sig, &PublishedPublicKey::PLACEHOLDER) {
             Ok(()) => tracing::info!(package_id = %manifest.package_id, "manifest 서명 검증 OK"),
             Err(SignatureError::InvalidPublicKey) => {
-                // 빌드 시 공개키 미교체 — 정상 (v1, 검증 본격 활성은 v2+)
-                tracing::debug!("manifest.sig 발견했으나 공개키 placeholder — 검증 스킵 (v1)");
-            }
-            Err(e) => {
-                // 서명 형식 오류·검증 실패 — v1 경고만 (v2+ 거부)
+                // 빌드 시 공개키 미교체 (v1 베타) — placeholder 환경에서만 우회 허용.
+                // 실 PKI 활성 후 본 분기는 자동 제거 (placeholder 가 아닌 키로 검증).
                 tracing::warn!(
                     package_id = %manifest.package_id,
-                    error = %e,
-                    "manifest 서명 검증 실패 (v1 = 경고만, v2+ = 거부 예정)"
+                    "manifest.sig 발견 + 공개키 placeholder → v1 베타 한정 검증 우회 (v2 = 강제 거부 예정)"
                 );
+            }
+            Err(e) => {
+                // 서명 형식 오류·검증 실패 — 즉시 설치 거부 (코드리뷰 C1)
+                return Err(LoaderError::SignatureVerificationFailed(e.to_string()));
             }
         }
     } else {
-        tracing::debug!("manifest.sig 없음 — 서명 검증 스킵");
+        tracing::debug!("manifest.sig 없음 — 서명 검증 스킵 (서명 없는 플러그인은 허용)");
     }
     // archive borrow 해제 → 재오픈 (manifest 추출 후 두 번째 패스)
     drop(archive);
@@ -142,16 +149,23 @@ pub fn install_zip(bytes: &[u8]) -> Result<PluginManifest, LoaderError> {
             return Err(LoaderError::PathTraversal(name));
         }
         let out_path = target.join(&name);
-        // 정규화 후 target 외부로 탈출했는지 재확인
-        if let Ok(canonical_target) = target.canonicalize() {
-            let parent = out_path.parent().unwrap_or(&out_path);
-            if let Ok(canonical_parent) = parent.canonicalize() {
-                if !canonical_parent.starts_with(&canonical_target)
-                    && canonical_parent != canonical_target
-                {
-                    return Err(LoaderError::PathTraversal(name));
-                }
-            }
+        // 코드리뷰 H1: canonicalize 실패 시 검증 우회 → fail-closed 로 변경.
+        // 1) target canonicalize 는 반드시 성공 (디렉토리 생성 직후)
+        // 2) parent canonicalize 는 디렉토리가 아직 없으면 실패 가능 →
+        //    그 경우 mkdir 후 재시도 + 그래도 실패 시 거부
+        let canonical_target = target.canonicalize().map_err(|e| {
+            LoaderError::PathTraversal(format!("target canonicalize 실패: {e}"))
+        })?;
+        let parent = out_path.parent().unwrap_or(&out_path);
+        // 부모 디렉토리가 아직 없을 수 있음 → 생성 시도 (mkdir -p)
+        if let Some(p) = out_path.parent() {
+            let _ = fs::create_dir_all(p);
+        }
+        let canonical_parent = parent.canonicalize().map_err(|e| {
+            LoaderError::PathTraversal(format!("parent canonicalize 실패 ({name}): {e}"))
+        })?;
+        if !canonical_parent.starts_with(&canonical_target) && canonical_parent != canonical_target {
+            return Err(LoaderError::PathTraversal(name));
         }
 
         if file.is_dir() {

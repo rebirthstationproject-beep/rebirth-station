@@ -7,7 +7,7 @@
  * 변경 시 onChange(payload) 로 통째 새 payload 객체를 부모에 전달.
  */
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { getAction, validatePayload, type FieldSchema } from '../lib/actions';
 import type { CubeActionType, MacroStep } from '../types/cube';
 import { MacroStepEditor } from './MacroStepEditor';
@@ -155,24 +155,63 @@ function FieldInput({ field, value, onPatch }: FieldRowProps) {
         />
       );
     }
-    case 'json': {
-      const json = JSON.stringify(value ?? null, null, 2);
-      return (
-        <textarea
-          id={id}
-          className="json-input"
-          value={json}
-          rows={5}
-          onChange={(e) => {
-            try {
-              const parsed = JSON.parse(e.target.value);
-              onPatch(field.key, parsed);
-            } catch {
-              // invalid JSON — 사용자 타이핑 중일 수 있으므로 무시
-            }
-          }}
-        />
-      );
-    }
+    case 'json':
+      return <JsonField id={id} field={field} value={value} onPatch={onPatch} />;
   }
+}
+
+/**
+ * 코드리뷰 M6: JSON 필드 = raw 문자열 상태 + 파싱 결과 분리.
+ * - 유효 JSON 입력 시 onPatch 호출 + 에러 클리어
+ * - 무효 JSON 도 raw 유지 (커서 사라짐/입력 사라짐 방지) + 인라인 에러 표시
+ * - prop value 외부 변경 시 raw 동기 (큐브 전환 등)
+ */
+function JsonField({
+  id,
+  field,
+  value,
+  onPatch,
+}: {
+  id: string;
+  field: Extract<FieldSchema, { type: 'json' }>;
+  value: unknown;
+  onPatch: (key: string, next: unknown) => void;
+}) {
+  const initial = useMemo(() => JSON.stringify(value ?? null, null, 2), [value]);
+  const [raw, setRaw] = useState(initial);
+  const [parseError, setParseError] = useState<string | null>(null);
+  const [propSnapshot, setPropSnapshot] = useState(initial);
+
+  // 외부 prop 값 변경 시 raw 재동기 (큐브 전환 등)
+  if (initial !== propSnapshot) {
+    setPropSnapshot(initial);
+    setRaw(initial);
+    setParseError(null);
+  }
+
+  return (
+    <>
+      <textarea
+        id={id}
+        className="json-input"
+        value={raw}
+        rows={5}
+        onChange={(e) => {
+          const text = e.target.value;
+          setRaw(text);
+          try {
+            const parsed = JSON.parse(text);
+            onPatch(field.key, parsed);
+            setParseError(null);
+          } catch (err) {
+            setParseError(err instanceof Error ? err.message : 'JSON 형식 오류');
+          }
+        }}
+        aria-invalid={parseError !== null}
+      />
+      {parseError && (
+        <div className="field-error" role="alert">⚠ {parseError}</div>
+      )}
+    </>
+  );
 }

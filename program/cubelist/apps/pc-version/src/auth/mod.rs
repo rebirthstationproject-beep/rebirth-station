@@ -32,8 +32,10 @@ pub const ALLOWED_ORIGINS: &[&str] = &[
 /// HMAC timestamp 허용 오차 (±30초)
 pub const TIMESTAMP_SKEW_TOLERANCE_MS: i64 = 30_000;
 
-/// nonce 재사용 방지 캐시 크기
-pub const NONCE_CACHE_CAPACITY: usize = 100;
+/// nonce 재사용 방지 캐시 크기 (코드리뷰 C2: 100 → 1000)
+/// 30초 TTL window 안에서 N+1 연결로 LRU evict 후 replay 가능성 차단.
+/// 메모리 비용 무시 가능 (≈ 64 KB).
+pub const NONCE_CACHE_CAPACITY: usize = 1000;
 
 /// 페어링 QR TTL (60초)
 pub const PAIRING_QR_TTL_SECONDS: u64 = 60;

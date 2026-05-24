@@ -496,6 +496,19 @@ input[type="checkbox"] { width: auto; }
   color: #d97070;
   font-size: 11px;
 }
+/* M6: JSON 필드 인라인 에러 */
+.field-error {
+  margin-top: 4px;
+  padding: 4px 8px;
+  background: rgba(217, 112, 112, 0.08);
+  border: 1px solid #5a3a3a;
+  border-radius: 4px;
+  color: #d97070;
+  font-size: 10px;
+}
+/* L8: pack-tab disabled */
+.pack-tab[disabled] { opacity: 0.4; cursor: not-allowed; }
+.pack-tab[disabled]:hover { background: transparent; }
 .btn-danger {
   color: #d97070;
   border-color: #5a3a3a;

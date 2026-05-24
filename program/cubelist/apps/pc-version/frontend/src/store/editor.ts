@@ -206,12 +206,15 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   /**
-   * 드래그&드롭 reorder — fromId 의 sort_order 를 toId 와 인접 큐브 사이값으로 변경.
+   * 드래그&드롭 reorder — fromId 의 sort_order 를 toId 와 인접 사이값으로 변경.
+   * 코드리뷰 H2: 사이값 보간 후 인접 간격이 1e-6 이하로 좁아지면 전체 정수 재정규화 (1, 2, 3...).
    * SD-G 결정(모바일 PWA 동일): 1D real sort_order, 사이값 보간으로 row/col 변경 불필요.
    */
   reorderCubes(listId: string, fromId: string, toId: string): void {
     const { pack } = get();
     if (!pack || fromId === toId) return;
+
+    const REORDER_EPSILON = 1e-6;
 
     const nextLists = pack.lists.map((l) => {
       if (l.id !== listId) return l;
@@ -230,10 +233,25 @@ export const useEditor = create<EditorState>((set, get) => ({
             : targetSort - 1;
 
       const newSort = (targetSort + neighborSort) / 2;
-      return {
-        ...l,
-        cubes: l.cubes.map((c) => (c.id === fromId ? { ...c, sort_order: newSort } : c)),
-      };
+
+      // 1차: 사이값 보간 적용
+      let updated = l.cubes.map((c) => (c.id === fromId ? { ...c, sort_order: newSort } : c));
+
+      // 2차: 인접 간격 검사 — 1e-6 이하면 전체 정수 재정규화 (1, 2, 3...)
+      const reSorted = [...updated].sort((a, b) => a.sort_order - b.sort_order);
+      let needsRenorm = false;
+      for (let i = 1; i < reSorted.length; i++) {
+        if (reSorted[i].sort_order - reSorted[i - 1].sort_order < REORDER_EPSILON) {
+          needsRenorm = true;
+          break;
+        }
+      }
+      if (needsRenorm) {
+        const renormMap = new Map(reSorted.map((c, i) => [c.id, i + 1]));
+        updated = updated.map((c) => ({ ...c, sort_order: renormMap.get(c.id) ?? c.sort_order }));
+      }
+
+      return { ...l, cubes: updated };
     });
 
     set({ pack: { ...pack, lists: nextLists } });

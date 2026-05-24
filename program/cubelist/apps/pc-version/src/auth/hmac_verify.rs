@@ -36,9 +36,9 @@ pub fn verify_hmac(
     device_id: &str,
 ) -> Result<(), HmacError> {
     let provided = hex_decode(provided_hmac_hex)?;
-    let expected = compute_hmac(secret, nonce, timestamp_ms, device_id);
 
-    // 상수시간 비교 (Mac::verify_slice가 내부적으로 subtle 사용)
+    // 상수시간 비교 (Mac::verify_slice가 내부적으로 subtle 사용).
+    // 코드리뷰: 미사용 `expected` + debug_assert_eq 제거 — 검증 한 곳에서만 (혼란 방지).
     let mut mac = HmacSha256::new_from_slice(secret).map_err(|_| HmacError::LengthMismatch)?;
     mac.update(nonce.as_bytes());
     mac.update(&timestamp_ms.to_be_bytes());
@@ -47,11 +47,11 @@ pub fn verify_hmac(
     mac.verify_slice(&provided)
         .map_err(|_| HmacError::VerificationFailed)?;
 
-    // expected를 한 번 더 사용하여 결과 일치 보증 (디버그 비교용으로만)
-    debug_assert_eq!(provided, expected);
     Ok(())
 }
 
+/// HMAC-SHA256(secret, nonce | timestamp_ms BE | device_id) → 32 bytes.
+/// 본 함수는 `compute_hmac_hex` 의 내부 + 테스트 fixture 에서 사용.
 fn compute_hmac(secret: &[u8], nonce: &str, timestamp_ms: u64, device_id: &str) -> Vec<u8> {
     let mut mac = HmacSha256::new_from_slice(secret).expect("HMAC accepts any key length");
     mac.update(nonce.as_bytes());
