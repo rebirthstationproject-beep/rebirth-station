@@ -65,6 +65,14 @@ interface EditorState extends EditorSelection {
   addCubeAtSlot(listId: string, slotIndex: number): void;
   /** 큐브를 지정 슬롯으로 이동. 그 슬롯에 다른 큐브 있으면 swap */
   moveCubeToSlot(listId: string, cubeId: string, slotIndex: number): void;
+
+  // === 리스트(페이지) 관리 (수정 #2 — UI 분할) ===
+  /** 새 빈 리스트 추가 (페이지 = 리스트). 자동 선택 */
+  addList(name?: string): void;
+  /** 리스트 이름 변경 */
+  renameList(listId: string, name: string): void;
+  /** 리스트 삭제 */
+  removeList(listId: string): void;
 }
 
 export const useEditor = create<EditorState>((set, get) => ({
@@ -361,6 +369,58 @@ export const useEditor = create<EditorState>((set, get) => ({
       l.id === listId ? { ...l, cubes: nextCubes } : l,
     );
     set({ pack: { ...pack, lists: nextLists } });
+  },
+
+  // === 리스트(페이지) 관리 ===
+
+  addList(name?: string): void {
+    const { pack } = get();
+    if (!pack) return;
+    const maxSort = pack.lists.length === 0
+      ? 0
+      : Math.max(...pack.lists.map((l) => l.sort_order));
+    const idx = pack.lists.length + 1;
+    const newList: CubeList = {
+      id: crypto.randomUUID(),
+      name: name ?? `page ${idx}`,
+      sort_order: maxSort + 1,
+      cols: 4,
+      cubes_per_page: 28,
+      cubes: [],
+    };
+    set({
+      pack: { ...pack, lists: [...pack.lists, newList] },
+      list_id: newList.id,
+      cube_id: null,
+      current_folder_id: null,
+      folder_stack: [],
+      current_page: 0,
+    });
+  },
+
+  renameList(listId: string, name: string): void {
+    const { pack } = get();
+    if (!pack) return;
+    const trimmed = name.trim();
+    if (trimmed.length === 0) return;
+    const nextLists = pack.lists.map((l) =>
+      l.id === listId ? { ...l, name: trimmed } : l,
+    );
+    set({ pack: { ...pack, lists: nextLists } });
+  },
+
+  removeList(listId: string): void {
+    const { pack, list_id } = get();
+    if (!pack || pack.lists.length <= 1) return; // 최소 1개 유지
+    const nextLists = pack.lists.filter((l) => l.id !== listId);
+    set({
+      pack: { ...pack, lists: nextLists },
+      list_id: list_id === listId ? (nextLists[0]?.id ?? null) : list_id,
+      cube_id: null,
+      current_folder_id: null,
+      folder_stack: [],
+      current_page: 0,
+    });
   },
 
   // === 그리드 배치 설정 ===

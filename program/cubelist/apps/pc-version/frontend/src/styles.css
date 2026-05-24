@@ -60,8 +60,59 @@ html, body, #root {
 
 .app {
   display: grid;
-  grid-template-rows: 48px 1fr 36px;
+  grid-template-rows: 48px 40px 1fr 36px;
   height: 100vh;
+}
+
+/* 메인 큰 탭 2개 (수정 #2) */
+.main-tab-bar {
+  display: flex;
+  background: var(--bg-app);
+  border-bottom: 1px solid var(--border);
+  padding: 0 12px;
+}
+.main-tab {
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 500;
+  transition: color 0.1s, border-color 0.1s;
+}
+.main-tab:hover { color: var(--text); }
+.main-tab.is-active {
+  color: var(--text);
+  border-bottom-color: var(--accent);
+}
+
+/* 큐브 만들기 페이지 placeholder */
+.cube-maker-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  overflow-y: auto;
+}
+.cube-maker-hint {
+  max-width: 540px;
+  text-align: center;
+  color: var(--text);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+}
+.cube-maker-hint h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+.cube-maker-hint p {
+  margin: 8px 0;
+  font-size: 13px;
+  line-height: 1.6;
 }
 
 .topbar {

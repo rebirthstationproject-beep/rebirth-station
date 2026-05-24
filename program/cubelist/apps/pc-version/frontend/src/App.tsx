@@ -56,10 +56,13 @@ import {
 } from './lib/plugin-registry';
 import type { Cube, CubeList } from './types/cube';
 
+type MainTab = 'cube-maker' | 'list-maker';
+
 export function App() {
   const pack = useEditor((s) => s.pack);
   const loadPack = useEditor((s) => s.loadPack);
   const refreshPlugins = usePluginRegistry((s) => s.refresh);
+  const [mainTab, setMainTab] = useState<MainTab>('list-maker');
 
   useEffect(() => {
     if (!pack) loadPack(buildDemoPack());
@@ -72,15 +75,59 @@ export function App() {
   return (
     <div className="app">
       <TopBar />
-      <div className="workspace">
-        <Sidebar />
-        <GridArea />
-        <Inspector />
-      </div>
+      <MainTabBar activeTab={mainTab} onChange={setMainTab} />
+      {mainTab === 'list-maker' ? (
+        <div className="workspace">
+          <Sidebar />
+          <GridArea />
+          <Inspector />
+        </div>
+      ) : (
+        <CubeMakerPage />
+      )}
       <footer className="library">
         <span className="library-title">플러그인 라이브러리</span>
       </footer>
     </div>
+  );
+}
+
+function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t: MainTab) => void }) {
+  return (
+    <nav className="main-tab-bar" aria-label="메인 탭">
+      <button
+        type="button"
+        className={`main-tab ${activeTab === 'cube-maker' ? 'is-active' : ''}`}
+        onClick={() => onChange('cube-maker')}
+        aria-pressed={activeTab === 'cube-maker'}
+      >
+        큐브 만들기
+      </button>
+      <button
+        type="button"
+        className={`main-tab ${activeTab === 'list-maker' ? 'is-active' : ''}`}
+        onClick={() => onChange('list-maker')}
+        aria-pressed={activeTab === 'list-maker'}
+      >
+        큐브 리스트 만들기
+      </button>
+    </nav>
+  );
+}
+
+/**
+ * 큐브 만들기 페이지 (수정 #2 — Phase 2 placeholder).
+ * 다음 사이클에서 pack.cubes 라이브러리 모델 도입 + 큐브 어플 아이콘 그리드.
+ */
+function CubeMakerPage() {
+  return (
+    <main className="cube-maker-page">
+      <div className="cube-maker-hint">
+        <h2>큐브 만들기 (Coming Soon)</h2>
+        <p>다음 사이클에 큐브 라이브러리 도입 — 만든 큐브들이 어플 아이콘처럼 나열되고 리스트로 끌어다 놓을 수 있어요.</p>
+        <p className="muted">현재는 "큐브 리스트 만들기" 탭에서 빈 슬롯 클릭으로 큐브 추가하세요.</p>
+      </div>
+    </main>
   );
 }
 
@@ -90,8 +137,15 @@ function TopBar() {
   const activeListId = useEditor((s) => s.list_id);
   const selectList = useEditor((s) => s.selectList);
   const loadPack = useEditor((s) => s.loadPack);
+  const addList = useEditor((s) => s.addList);
+  const renameList = useEditor((s) => s.renameList);
   const installedPlugins = usePluginRegistry((s) => s.installed);
   const installPlugin = usePluginRegistry((s) => s.install);
+
+  function handleRename(listId: string, currentName: string): void {
+    const next = window.prompt('페이지(리스트) 이름:', currentName);
+    if (next && next.trim().length > 0) renameList(listId, next.trim());
+  }
 
   async function handleExport(): Promise<void> {
     if (!pack) return;
@@ -150,14 +204,16 @@ function TopBar() {
     <header className="topbar">
       <div className="topbar-left">
         <span className="brand">{t('app.title')}</span>
-        <nav className="pack-tabs" aria-label={t('topbar.add_list')}>
+        <nav className="pack-tabs" aria-label="페이지 (리스트)">
           {pack?.lists.map((l) => (
             <button
               key={l.id}
               type="button"
               className={`pack-tab ${activeListId === l.id ? 'is-active' : ''}`}
               onClick={() => selectList(l.id)}
+              onDoubleClick={() => handleRename(l.id, l.name)}
               aria-pressed={activeListId === l.id}
+              title={`${l.name} (더블클릭하여 이름 수정)`}
             >
               {l.name}
             </button>
@@ -165,9 +221,8 @@ function TopBar() {
           <button
             className="pack-tab is-add"
             type="button"
-            title="곧 지원 예정 (수정 #2 단계)"
-            disabled
-            aria-disabled="true"
+            title="페이지(리스트) 추가"
+            onClick={() => addList()}
           >
             +
           </button>
