@@ -439,73 +439,103 @@ function GridArea() {
 }
 
 function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[] }) {
-  const reorderCubes = useEditor((s) => s.reorderCubes);
-  const upsertCube = useEditor((s) => s.upsertCube);
-  const selectCube = useEditor((s) => s.selectCube);
-  const pageSize = useEditor((s) => s.pageSize()) // 숫자, 안정;
+  const addCubeAtSlot = useEditor((s) => s.addCubeAtSlot);
+  const moveCubeToSlot = useEditor((s) => s.moveCubeToSlot);
+  const currentPage = useEditor((s) => s.current_page);
+  const pageSize = useEditor((s) => s.pageSize());
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
-  const cols = list.cols ?? 5;
-  // visibleCubes 는 store 에서 이미 sort + page slice 완료
-  const sorted = visibleCubes;
-  // 현재 페이지에 빈 슬롯이 채워져야 할 만큼 (pageSize - 실 큐브)
-  const emptySlots = Math.max(0, pageSize - sorted.length);
+  const cols = list.cols ?? 4;
+  const startSlot = currentPage * pageSize + 1; // 1-based
+  // 슬롯 N (페이지 안 1..pageSize) → 글로벌 sort_order (startSlot..endSlot)
+  // 각 슬롯의 큐브 (있으면) lookup
+  const cubeBySlot = new Map(visibleCubes.map((c) => [c.sort_order, c]));
+
+  // 모든 슬롯 (글로벌 sort_order) — Sortable items 등록 (큐브 ID 또는 'empty-${slot}')
+  const slotIds: string[] = [];
+  for (let i = 0; i < pageSize; i++) {
+    const globalSlot = startSlot + i;
+    const cube = cubeBySlot.get(globalSlot);
+    slotIds.push(cube ? cube.id : `empty-${globalSlot}`);
+  }
 
   function handleDragEnd(e: DragEndEvent): void {
     const { active, over } = e;
     if (!over || active.id === over.id) return;
-    reorderCubes(list.id, String(active.id), String(over.id));
-  }
-
-  function handleAddCube(): void {
-    // 코드리뷰 M7: sort_order 는 페이지 슬라이스가 아닌 전체 list.cubes 기준이어야
-    // 다른 페이지 큐브와 충돌 안 함.
-    const maxSort = list.cubes.length === 0
-      ? 0
-      : Math.max(...list.cubes.map((c) => c.sort_order));
-    const newCube: Cube = {
-      id: crypto.randomUUID(),
-      sort_order: maxSort + 1,
-      label: '새 큐브',
-      icon_url: null,
-      action_type: 'link',
-      action_payload: { url: '' },
-    };
-    upsertCube(list.id, newCube);
-    selectCube(newCube.id);
+    const activeId = String(active.id);
+    const overId = String(over.id);
+    // active 는 항상 큐브 (빈 슬롯은 드래그 불가)
+    if (activeId.startsWith('empty-')) return;
+    // over 가 빈 슬롯 → 큐브 이동
+    if (overId.startsWith('empty-')) {
+      const targetSlot = Number(overId.slice('empty-'.length));
+      if (!Number.isFinite(targetSlot)) return;
+      moveCubeToSlot(list.id, activeId, targetSlot);
+      return;
+    }
+    // over 가 다른 큐브 → swap (moveCubeToSlot 가 swap 도 처리)
+    const overCube = visibleCubes.find((c) => c.id === overId);
+    if (overCube) {
+      moveCubeToSlot(list.id, activeId, overCube.sort_order);
+    }
   }
 
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={sorted.map((c) => c.id)} strategy={rectSortingStrategy}>
+      <SortableContext items={slotIds} strategy={rectSortingStrategy}>
         <div
           className="cube-grid"
           role="grid"
           aria-label="큐브 그리드"
           style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
         >
-          {sorted.map((cube) => (
-            <SortableCubeCell key={cube.id} cube={cube} />
-          ))}
-          {Array.from({ length: emptySlots }, (_, i) => (
-            <button
-              key={`empty-${i}`}
-              type="button"
-              role="gridcell"
-              className="cube-cell is-empty"
-              aria-label="새 큐브 추가"
-              onClick={i === 0 ? handleAddCube : undefined}
-              tabIndex={i === 0 ? 0 : -1}
-              title={i === 0 ? '클릭하여 큐브 추가' : ''}
-            >
-              <span className="cube-empty">{i === 0 ? '＋' : ''}</span>
-            </button>
-          ))}
+          {slotIds.map((id, idx) => {
+            const globalSlot = startSlot + idx;
+            const cube = cubeBySlot.get(globalSlot);
+            if (cube) return <SortableCubeCell key={id} cube={cube} />;
+            return (
+              <EmptySlot
+                key={id}
+                slotId={id}
+                slotIndex={globalSlot}
+                onClick={() => addCubeAtSlot(list.id, globalSlot)}
+              />
+            );
+          })}
         </div>
       </SortableContext>
     </DndContext>
+  );
+}
+
+/**
+ * 빈 슬롯 — Sortable droppable + 클릭 시 해당 슬롯에 큐브 즉시 생성 (수정 #2).
+ */
+function EmptySlot({
+  slotId,
+  slotIndex,
+  onClick,
+}: {
+  slotId: string;
+  slotIndex: number;
+  onClick: () => void;
+}) {
+  const { setNodeRef, isOver } = useSortable({ id: slotId });
+  return (
+    <button
+      ref={setNodeRef}
+      type="button"
+      role="gridcell"
+      className={`cube-cell is-empty ${isOver ? 'is-drop-target' : ''}`}
+      onClick={onClick}
+      title={`슬롯 ${slotIndex} 에 큐브 추가 · 드래그로 큐브 이동 가능`}
+      aria-label={`슬롯 ${slotIndex} (빈 슬롯)`}
+    >
+      <span className="cube-empty">＋</span>
+      <span className="cube-slot-num">{slotIndex}</span>
+    </button>
   );
 }
 

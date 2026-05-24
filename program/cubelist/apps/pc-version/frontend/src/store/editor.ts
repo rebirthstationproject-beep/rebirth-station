@@ -59,6 +59,12 @@ interface EditorState extends EditorSelection {
 
   // === 그리드 배치 설정 (수정 #1) ===
   setListLayout(listId: string, layout: { cols: number; cubes_per_page: number }): void;
+
+  // === 자유 슬롯 배치 (수정 #2) ===
+  /** 지정 슬롯(1-based) 에 빈 큐브 생성 + 선택 */
+  addCubeAtSlot(listId: string, slotIndex: number): void;
+  /** 큐브를 지정 슬롯으로 이동. 그 슬롯에 다른 큐브 있으면 swap */
+  moveCubeToSlot(listId: string, cubeId: string, slotIndex: number): void;
 }
 
 export const useEditor = create<EditorState>((set, get) => ({
@@ -109,14 +115,17 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   /**
-   * 현재 뷰의 가시 큐브 집합 — scopedCubes() 결과를 sort_order 정렬 후 페이지 슬라이스.
+   * 현재 뷰의 가시 큐브 집합 — 수정 #2: sort_order = 절대 슬롯 번호 (1-based).
+   * 페이지 N (0-based)의 슬롯 범위 = [N*size+1, (N+1)*size]. 그 범위 안 큐브만 반환.
+   * 빈 슬롯은 CubeGrid 컴포넌트에서 sort_order 누락 분기 직접 처리.
    */
   visibleCubes(): Cube[] {
     const scoped = get().scopedCubes();
-    const sorted = [...scoped].sort((a, b) => a.sort_order - b.sort_order);
     const size = get().pageSize();
     const page = get().current_page;
-    return sorted.slice(page * size, (page + 1) * size);
+    const startSlot = page * size + 1;
+    const endSlot = (page + 1) * size;
+    return scoped.filter((c) => c.sort_order >= startSlot && c.sort_order <= endSlot);
   },
 
   pageSize(): number {
@@ -127,9 +136,13 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   totalPages(): number {
-    const total = get().scopedCubes().length;
+    // 수정 #2: sort_order = 절대 슬롯. 가장 큰 sort_order 기준으로 페이지 수 계산.
+    // (큐브 개수가 아닌 슬롯 위치 — 1번 + 50번 큐브가 있으면 페이지 2개 필요)
+    const scoped = get().scopedCubes();
+    if (scoped.length === 0) return 1;
+    const maxSlot = Math.max(...scoped.map((c) => c.sort_order));
     const size = get().pageSize();
-    return Math.max(1, Math.ceil(total / size));
+    return Math.max(1, Math.ceil(maxSlot / size));
   },
 
   currentFolder(): Cube | null {
@@ -300,6 +313,54 @@ export const useEditor = create<EditorState>((set, get) => ({
   prevPage(): void {
     const { current_page } = get();
     if (current_page > 0) set({ current_page: current_page - 1 });
+  },
+
+  // === 자유 슬롯 배치 (수정 #2) ===
+
+  addCubeAtSlot(listId: string, slotIndex: number): void {
+    const { pack } = get();
+    if (!pack) return;
+    const list = pack.lists.find((l) => l.id === listId);
+    if (!list) return;
+    // 해당 슬롯에 이미 큐브 있으면 무시 (사용자가 빈 슬롯만 클릭)
+    if (list.cubes.some((c) => c.sort_order === slotIndex)) return;
+
+    const newCube: Cube = {
+      id: crypto.randomUUID(),
+      sort_order: slotIndex,
+      label: '새 큐브',
+      icon_url: null,
+      action_type: 'link',
+      action_payload: { url: '' },
+    };
+    const nextLists = pack.lists.map((l) =>
+      l.id === listId ? { ...l, cubes: [...l.cubes, newCube] } : l,
+    );
+    set({ pack: { ...pack, lists: nextLists }, cube_id: newCube.id });
+  },
+
+  moveCubeToSlot(listId: string, cubeId: string, slotIndex: number): void {
+    const { pack } = get();
+    if (!pack) return;
+    const list = pack.lists.find((l) => l.id === listId);
+    if (!list) return;
+    const moving = list.cubes.find((c) => c.id === cubeId);
+    if (!moving || moving.sort_order === slotIndex) return;
+
+    const occupant = list.cubes.find(
+      (c) => c.sort_order === slotIndex && c.id !== cubeId,
+    );
+
+    const nextCubes = list.cubes.map((c) => {
+      if (c.id === cubeId) return { ...c, sort_order: slotIndex };
+      if (occupant && c.id === occupant.id) return { ...c, sort_order: moving.sort_order };
+      return c;
+    });
+
+    const nextLists = pack.lists.map((l) =>
+      l.id === listId ? { ...l, cubes: nextCubes } : l,
+    );
+    set({ pack: { ...pack, lists: nextLists } });
   },
 
   // === 그리드 배치 설정 ===
