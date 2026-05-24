@@ -48,7 +48,7 @@ E:\Claude-Workspace\rebirth-station\program\cubelist\
 | M6 | 카테고리 뷰 PC 적용 (모바일은 이미 있음) | ✅ **완료** (빌트인 10 + 플러그인 + 카테고리 필터 + manifest category) |
 | M7 | 폴더(서브덱) + 페이지 + 멀티액션 (PC 우선) | ✅ **완료** (폴더 stack + 페이지네이션 + MacroStepEditor 5종 비주얼 폼) |
 | M8 | i18n 동기화(한/영/일) + Tauri Updater + EV 사이닝 | ✅ **핵심 완료** (i18n + LocaleSwitcher + 24 라벨 t() + Updater 매니페스트) · Updater 엔드포인트·EV 사이닝=결정 대기 |
-| M9 | 베타 출시 (PC + 모바일 동시) | 🔄 **준비 단계** (릴리즈 체크리스트 ✅, cargo tauri build 사용자 환경 위임) |
+| M9 | 베타 출시 (PC + 모바일 동시) | 🔄 **준비 완료** (체크리스트 + CHANGELOG v0.1.0 + 버전 일치 ✅) · D-06/07 사용자 결정 + tauri build = 외부 단계 |
 
 **중요 정정**: `docs/01-status-gap.md` / `docs/02-roadmap.md` 의 일부 진단이 틀렸음 — 큐브 리스트는 **모바일 PWA로 ~70% 이미 완성**되어 있음 (`apps/mobile-pwa/components/cube/*` 13 파일 ~340 KB, `/api/cubeone v3` 가동, `/seeds` 카탈로그 + SeedEntry 타입 + 다국어 ko/en/ja 등). 재작성 필요.
 
@@ -396,14 +396,65 @@ cargo tauri dev  # 1280×800 윈도우에 frontend 로드 확인
 - PROJECT.md: "현재 진척률 ≈ 90%" 헤더 추가 + 릴리즈 체크리스트 경로 안내
 - commit/push 대기
 
-### cron 사이클 #25 다음 액션 (M9 베타 본격)
-- (a) Cargo.toml / tauri.conf.json / frontend/package.json 버전 일치 확인 (모두 0.1.0)
-- (b) `CHANGELOG.md` 신설 (v0.1.0 베타 노트 — cron #1~#24 종합)
-- (c) (사용자 환경 의존) `cargo tauri build --features keys` 시도
-  · 통과 시 산출물 size + bundle target 확인 → STATE.md 기록
-  · 실패 시 의존성 (VS Build Tools/Rust/tauri-cli) 사전 조건 점검
-- (d) D-06/07 사용자 결정 받으면 즉시 tauri.conf.json 갱신 + 베타 0.1.0 GitHub Release 작성
-- (e) 모바일 PWA 트랙 베타 준비는 별도 사이클 (mobile-pwa 작업)
+### cron 사이클 #25 (2026-05-24) 산출물 — M9 베타 준비 완료
+- 3 파일 버전 0.1.0 일치 확인 (Cargo.toml + tauri.conf.json + frontend/package.json)
+- `CHANGELOG.md` v0.1.0 베타 노트 — Keep a Changelog 형식, cron #1~#24 종합:
+  · Added: 8 영역 (파일포맷·UI·데모·M3 actions·M4 SDK·M5 호환·M6 카탈로그·M7 폴더+페이지+매크로·M8 i18n+Updater·문서 9종)
+  · Changed: 사전 결함 4건 정정
+  · Removed: tsc .js 부산물
+  · Security: ZIP traversal · AppLaunch 위험경로 · HMAC · Tier 1~3
+  · Known Limitations: 6건 (서명 placeholder / LAN WS / iframe inspector / 시드 / E2E / macOS)
+  · Decisions: D-01~05 영구 + D-06/07 pending
+- commit `7a75681` (+129, 1 file)
+
+### 종합 산출 (M0 ~ M9 베타 준비, cron #0 ~ #25)
+- 9 마일스톤 완료 (M0/M3/M4/M5/M6/M7/M8 ✅ · M1/M2 정착 · M9 베타 준비)
+- 26 git commits (5a86d60 ~ 7a75681)
+- 코드: frontend 67 modules (gzip 103.60 KB) + Rust pc-helper + 12 actions + 11 plugins manifest
+- 문서: PROJECT.md / STATE.md / CHANGELOG.md / docs/{01~07} + specs/cubeplugin.md
+
+### Pending Decisions (사용자 답 필요)
+- **D-06 Updater 엔드포인트**: GitHub Releases (권장 · 무료) / Vercel / S3
+  · 결정 후 Ed25519 키 생성 + tauri.conf.json plugins.updater 채우기 + GitHub Action 매니페스트 자동 업로드
+- **D-07 EV 코드 사이닝**: 베타=무서명+안내 / OV 인증서 $100~200/년 / EV $300~500/년 즉시 통과
+  · 베타 단계는 무서명 가능. Q2 진입 직전 EV 권장
+
+### cron 사이클 #26 (2026-05-24) 산출물 — Pending Task #8 80% 정리
+- docs/01-status-gap.md 상단 정정 노트 (편집기 0%·파일포맷 미정의·PC 메인 격상 등 4건 정정 + 권위 소스 이관)
+- docs/02-roadmap.md 상단 정정 노트 (cron #1~#25 실 진행 완료 + 가정 정정)
+- 두 문서 historical record 보존 — 초기 진단 + 사용자 결정 흐름 추적용
+- jusomoa-list/apps/web 빈 디렉토리: 잠금 유지 (80+ node 프로세스 핸들) → 사용자 dev server 종료 후 manual 제거 권장
+- commit `a266e40` (+42, 2 files)
+
+### ⚠ cron 자동 진행 한계 도달 (2026-05-24 · cron #26)
+
+본 cron 사이클 (id `1251e70a`, 매시 7/22/37/52분) 으로 의미 있게 진행 가능한 작업이 사실상
+종결. 남은 작업은 모두 **외부 의존**:
+
+| 잔여 | 차단 요인 |
+|---|---|
+| D-06 Updater 엔드포인트 + Ed25519 키 | 사용자 결정 필요 (GitHub Releases vs Vercel vs S3) |
+| D-07 EV 코드 사이닝 | 사용자 결정 + $300~500/년 인증서 구매 (베타는 무서명 가능) |
+| 실 `cargo tauri build` | 사용자 환경 의존 (VS Build Tools + Rust 1.95 + tauri-cli, 5~30분) |
+| GUI 시각 검증 | 헤드리스 환경에서 수행 불가 |
+| jusomoa-list 빈 web 제거 | dev server 종료 필요 (사용자 수동) |
+| 모바일 PWA 베타 (Capacitor) | mobile-pwa 별도 트랙 |
+
+[memory: feedback_no_meaningless_phases] "사용자 목표 미연결 시 즉시 고지" 준수 — cron 자동
+진행 의미 있는 작업이 더 이상 없으므로 본 cron 은 다음 사이클부터 휴면 권장.
+
+### 사용자 결정 / 다음 단계 (선택)
+
+- **옵션 1** — D-06/07 답변 (Updater 엔드포인트 + 사이닝 정책) → cron 즉시 재가동 + GitHub Release 작성
+- **옵션 2** — 사용자 환경에서 `cargo tauri build --features keys` 시도 → 결과 STATE 기록 후 cron 재가동
+- **옵션 3** — 모바일 PWA 베타 트랙 (Capacitor internal testing) 별도 진행 — cron prompt 변경 필요
+- **옵션 4** — 다른 클라이언트 프로젝트로 전환 (jusomoa / aiklink / thaipl / placecite / btceater 등)
+- **옵션 5** — cron 즉시 해제 (`CronDelete 1251e70a`)
+
+### cron 사이클 #27 다음 액션 (휴면 권장)
+
+위 옵션 중 사용자 명시 결정 도착 시점에 cron 재가동. 그때까지 본 cron 은 매시 7/22/37/52분
+**STATE.md 점검만** 수행하고 추가 변경 없이 보고. 새 정보 / 결정 없으면 noop.
 
 ### 자동 진행 cron (id: `1251e70a`)
 - 스케줄: 매시 7/22/37/52분 (15분 간격, off-minute)
