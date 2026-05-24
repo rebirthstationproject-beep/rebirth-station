@@ -4,6 +4,31 @@
 
 ---
 
+> ## ⚠️ 정정 노트 (2026-05-24 · cron #26)
+>
+> 본 문서의 일부 진단은 **사전 검토 부족 상태에서 작성**되어 사실과 다릅니다. 정확한 정정:
+>
+> | 항목 | 본 문서 (틀림) | 실제 |
+> |---|---|---|
+> | 편집기 UI 진척 | "0%" | 모바일 PWA `apps/mobile-pwa/components/cube/*` 13 파일 ~340 KB 이미 존재 (인스펙터 59 KB · 매크로 26 KB) |
+> | 파일 포맷 | "미정의" | `.cubeone v3` ZIP 컨테이너 이미 가동 (`apps/mobile-pwa/lib/cube-format/spec.ts`) |
+> | "PC 메인 격상" 제안 | D1=A 권장 | **D-01 결정**: 모바일 PWA + PC 두 트랙 분리 (`docs/05-decisions.md`) |
+> | 카테고리 시드 | "없음" | `apps/mobile-pwa/app/seeds/SeedsList.tsx` 22 KB 가동 |
+>
+> **현재 실제 진척률 (2026-05-24)**: ≈ 90% — M0~M8 핵심 9 마일스톤 완료, M9 베타 준비 단계.
+>
+> **권위 소스**:
+> - 산출 종합: `CHANGELOG.md` v0.1.0
+> - 현재 상태: `STATE.md`
+> - 영구 결정: `docs/05-decisions.md`
+> - 베타 체크리스트: `docs/07-release-checklist.md`
+>
+> 본 문서는 **historical record** 로 보존 — 초기 진단의 한계 + 사용자 분리 결정 흐름 추적용.
+
+---
+
+---
+
 ## 1. 핵심 결론 (먼저)
 
 **큐브 리스트는 현재 StreamDeck과 동등 수준이 아니다.** 같은 카테고리의 제품군에 속하지도 않는 단계.
