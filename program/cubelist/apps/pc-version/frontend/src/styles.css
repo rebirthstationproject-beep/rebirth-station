@@ -6,7 +6,7 @@
  */
 
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
   --bg-app: #1a1a1a;
   --bg-surface: #232323;
   --bg-surface-2: #2c2c2c;
@@ -16,8 +16,35 @@
   --text: #e8e8e8;
   --text-muted: #8a8a8a;
   --accent: #cfcfcf;
+  --scrollbar-track: #1a1a1a;
+  --scrollbar-thumb: #3a3a3a;
+  --scrollbar-thumb-hover: #4a4a4a;
   font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
   font-size: 13px;
+}
+
+/* 스크롤바 다크 그레이 (WebView2/Chromium) */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 5px;
+  border: 2px solid var(--scrollbar-track);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+*::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
 }
 
 * {

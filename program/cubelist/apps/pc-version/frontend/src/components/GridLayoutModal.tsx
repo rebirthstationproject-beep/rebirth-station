@@ -12,9 +12,9 @@
 
 import { useState } from 'react';
 
-type Orientation = 'portrait' | 'landscape';
+type Orientation = 'portrait' | 'landscape' | 'custom';
 
-const ROWS_BY_ORIENT: Record<Orientation, number> = {
+const ROWS_BY_ORIENT: Record<Exclude<Orientation, 'custom'>, number> = {
   portrait: 7,
   landscape: 4,
 };
@@ -32,14 +32,22 @@ export function GridLayoutModal({
   onApply,
   onCancel,
 }: GridLayoutModalProps) {
-  // 초기 orientation 추정: pageSize/cols == 7 → portrait, == 4 → landscape, 그 외 portrait fallback
+  // 초기 orientation 추정
+  const inferredRows = initialPageSize / initialCols;
   const inferredOrient: Orientation =
-    initialPageSize / initialCols >= 6 ? 'portrait' : 'landscape';
+    inferredRows === 7
+      ? 'portrait'
+      : inferredRows === 4
+        ? 'landscape'
+        : 'custom';
 
   const [orientation, setOrientation] = useState<Orientation>(inferredOrient);
   const [cols, setCols] = useState<number>(initialCols);
+  const [customRows, setCustomRows] = useState<number>(
+    inferredOrient === 'custom' ? inferredRows : initialCols, // 기본 = cols 와 동일 (정사각)
+  );
 
-  const rows = ROWS_BY_ORIENT[orientation];
+  const rows = orientation === 'custom' ? customRows : ROWS_BY_ORIENT[orientation];
   const previewSize = cols * rows;
 
   function handleApply(): void {
@@ -76,6 +84,17 @@ export function GridLayoutModal({
               <span>가로 (태블릿 · 거치)</span>
               <span className="modal-hint">기본 7 × 4</span>
             </label>
+            <label className={orientation === 'custom' ? 'is-active' : ''}>
+              <input
+                type="radio"
+                name="orientation"
+                value="custom"
+                checked={orientation === 'custom'}
+                onChange={() => setOrientation('custom')}
+              />
+              <span>커스텀</span>
+              <span className="modal-hint">가로 × 세로 직접 입력</span>
+            </label>
           </div>
         </div>
 
@@ -87,19 +106,30 @@ export function GridLayoutModal({
             id="cols-input"
             type="number"
             min={1}
-            max={10}
+            max={20}
             value={cols}
-            onChange={(e) => setCols(Math.max(1, Math.min(10, Number(e.target.value) || 1)))}
+            onChange={(e) => setCols(Math.max(1, Math.min(20, Number(e.target.value) || 1)))}
           />
-          <div className="modal-hint">1 ~ 10 사이 정수</div>
         </div>
 
-        <div className="modal-preview">
-          <div className="modal-preview-label">미리보기 (한 페이지 슬롯 수)</div>
-          <div className="modal-preview-value">
-            {cols} × {rows} = <strong>{previewSize}</strong> 슬롯
+        {orientation === 'custom' && (
+          <div className="modal-section">
+            <label className="modal-label" htmlFor="rows-input">
+              세로 개수 (rows)
+            </label>
+            <input
+              id="rows-input"
+              type="number"
+              min={1}
+              max={20}
+              value={customRows}
+              onChange={(e) =>
+                setCustomRows(Math.max(1, Math.min(20, Number(e.target.value) || 1)))
+              }
+            />
+            <div className="modal-hint">총 {previewSize} 슬롯</div>
           </div>
-        </div>
+        )}
 
         <div className="modal-actions">
           <button type="button" className="btn-ghost" onClick={onCancel}>
