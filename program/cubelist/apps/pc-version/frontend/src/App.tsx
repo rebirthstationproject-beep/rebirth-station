@@ -651,6 +651,66 @@ function TopBar() {
     }
   }
 
+  async function handleAddPlugin(): Promise<void> {
+    const libraryDir = window.localStorage.getItem('cubelist:library_dir') ?? '';
+    if (!libraryDir) {
+      window.alert('먼저 우상단 📁 폴더로 라이브러리 폴더를 등록하세요.');
+      return;
+    }
+    if (!isTauri()) {
+      window.alert('PC 앱 (Tauri) 환경에서만 변환 가능합니다.');
+      return;
+    }
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.streamDeckPlugin,application/octet-stream';
+    input.multiple = true;
+    input.onchange = async () => {
+      const files = input.files;
+      if (!files || files.length === 0) return;
+      const { convertPlugin } = await import('./lib/plugin-converter');
+      const { invoke } = await import('@tauri-apps/api/core');
+      const { loadLibraryFromDir } = await import('./lib/library-loader');
+      const results: string[] = [];
+      const errors: string[] = [];
+      for (const file of Array.from(files)) {
+        try {
+          const buf = await file.arrayBuffer();
+          const result = await convertPlugin(buf, file.name);
+          // 라이브러리 폴더에 저장 — 각 .cubeone 파일
+          for (const cube of result.cubes) {
+            await invoke('write_library_file', {
+              libraryDir,
+              folder: result.folderName,
+              filename: cube.filename,
+              bytes: Array.from(cube.bytes),
+            });
+          }
+          const tag = result.fallback ? '(en.json fallback)' : '';
+          results.push(`✓ ${result.pluginName}: ${result.cubes.length} 큐브 → ${result.folderName}/ ${tag}`);
+          if (result.warnings.length > 0) {
+            for (const w of result.warnings) errors.push(`${result.pluginName}: ${w}`);
+          }
+        } catch (e) {
+          errors.push(`${file.name}: ${e instanceof Error ? e.message : String(e)}`);
+        }
+      }
+      // 라이브러리 즉시 갱신
+      try {
+        const refreshed = await loadLibraryFromDir(libraryDir);
+        useEditor.getState().loadPack(refreshed);
+      } catch (e) {
+        errors.push(`라이브러리 reload 실패: ${e instanceof Error ? e.message : String(e)}`);
+      }
+      const summary =
+        `${files.length}개 플러그인 처리\n\n` +
+        `[성공]\n${results.join('\n') || '없음'}\n\n` +
+        (errors.length > 0 ? `[경고/오류]\n${errors.join('\n')}` : '');
+      window.alert(summary);
+    };
+    input.click();
+  }
+
   function handleInstallPlugin(): void {
     if (!isTauri()) {
       window.alert('플러그인 설치는 Tauri 환경에서만 가능합니다.');
@@ -705,6 +765,14 @@ function TopBar() {
           title={`.cubeplugin (${installedPlugins.length})`}
         >
           {t('topbar.add_plugin')}
+        </button>
+        <button
+          type="button"
+          className="btn-ghost"
+          onClick={handleAddPlugin}
+          title="StreamDeck 플러그인(.streamDeckPlugin) → 폴더 + .cubeone 자동 변환 후 라이브러리에 추가"
+        >
+          📥 플러그인 변환
         </button>
         <button
           type="button"
