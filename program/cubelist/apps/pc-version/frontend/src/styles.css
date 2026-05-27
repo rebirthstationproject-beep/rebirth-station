@@ -415,8 +415,10 @@ html, body, #root {
 }
 
 .cube-cell {
-  aspect-ratio: 1;
   width: 112px;
+  height: 112px;
+  aspect-ratio: 1;
+  box-sizing: border-box;
   background: transparent;
   border: none;
   cursor: pointer;
@@ -427,9 +429,10 @@ html, body, #root {
   gap: 0;
   color: var(--text);
   font-size: 11px;
-  padding: 0;
+  padding: 4px;
   transition: transform 0.1s;
   position: relative;
+  overflow: hidden;
 }
 .cube-cell:hover { transform: translateY(-1px); }
 .cube-cell.is-selected .cube-icon-bg { outline: 2px solid var(--accent); }
@@ -881,24 +884,35 @@ html, body, #root {
 /* === 큐브 셀 아이콘 배경 === */
 .cube-cell { position: relative; overflow: hidden; }
 .cube-icon-bg {
-  width: 88px;
-  height: 88px;
+  width: 84px;
+  height: 84px;
   border-radius: 14px;
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   background-color: var(--bg-surface, #2a2a2a);
-  margin-top: 4px;
+  flex-shrink: 0;
+  margin-top: 0;
 }
 .cube-cell.has-icon .cube-label { color: var(--text); }
 .cube-cell .cube-action-badge {
   display: none; /* 사용자 요청: 라벨 1줄 + 깔끔하게, action 배지는 숨김 */
 }
 .cube-cell .cube-label {
-  width: 100%;
-  margin-top: 4px;
-  padding: 0 4px;
+  position: absolute;
+  bottom: 2px;
+  left: 4px;
+  right: 4px;
+  height: 14px;
+  line-height: 14px;
+  margin: 0;
+  padding: 0;
   font-size: 10px;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
 }
 .cube-cell.is-empty {
   background: transparent;
