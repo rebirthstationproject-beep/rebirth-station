@@ -679,7 +679,6 @@ function TopBar() {
       }
       const { convertPlugin } = await import('./lib/plugin-converter');
       const { invoke } = await import('@tauri-apps/api/core');
-      const { loadLibraryFromDir } = await import('./lib/library-loader');
       const results: string[] = [];
       const errors: string[] = [];
       if (skipped.length > 0) {
@@ -707,18 +706,14 @@ function TopBar() {
           errors.push(`${file.name}: ${e instanceof Error ? e.message : String(e)}`);
         }
       }
-      // 라이브러리 즉시 갱신
-      try {
-        const refreshed = await loadLibraryFromDir(libraryDir);
-        useEditor.getState().loadPack(refreshed);
-      } catch (e) {
-        errors.push(`라이브러리 reload 실패: ${e instanceof Error ? e.message : String(e)}`);
-      }
       const summary =
-        `${plugins.length}개 플러그인 처리\n\n` +
+        `${plugins.length}개 플러그인 변환 완료\n\n` +
         `[성공]\n${results.join('\n') || '없음'}\n\n` +
-        (errors.length > 0 ? `[경고/오류]\n${errors.join('\n')}` : '');
+        (errors.length > 0 ? `[경고/오류]\n${errors.join('\n')}\n\n` : '') +
+        `확인 클릭 시 앱을 새로고침해서 새 폴더가 반영됩니다.`;
       window.alert(summary);
+      // 새 폴더 반영 위해 frontend 전체 reload (부팅 시 자동 라이브러리 로드 활용)
+      window.location.reload();
     };
     input.click();
   }
