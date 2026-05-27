@@ -202,10 +202,11 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t:
         window.alert(
           `저장 완료 (${pages}페이지 → .${ext})\n경로: ${path}\n좌측 사이드바에서 자동 갱신됩니다.`,
         );
-        // 라이브러리 폴더에서 다시 로드 → 새 파일 반영
+        // 라이브러리 폴더에서 다시 로드 → 새 파일 반영 + draft clear
         const { loadLibraryFromDir } = await import('./lib/library-loader');
         const refreshed = await loadLibraryFromDir(libraryDir);
         useEditor.getState().loadPack(refreshed);
+        useEditor.getState().setDraftList(null);
       } else {
         const { downloadCubelist } = await import('./lib/cubepack-io');
         await downloadCubelist(activeList);
@@ -404,11 +405,13 @@ function CubeMakerCenter() {
   }
 
   const selectList = useEditor((s) => s.selectList);
+  const draftList = useEditor((s) => s.draft_list);
   // 큐브 만들기 그리드 표시 큐브 = 현재 활성 리스트의 cubes (sort_order 순)
   const listCubes = activeList?.cubes ?? [];
   const cubesToShow = listCubes.length > 0 ? listCubes : libraryCubes;
   const cols = activeList?.cols ?? 4;
-  const isAllMode = activeList === null;
+  // draft 가 활성이면 큐브 만들기 페이지는 "전체" 폴더 그리드로 폴백 (draft 는 큐브 리스트 만들기 페이지 전용)
+  const isAllMode = activeList === null || (!!draftList && activeList?.id === draftList.id);
   const lists = pack?.lists ?? [];
 
   // "전체" 모드: 각 리스트(폴더)를 큐브 셀처럼 표시
@@ -542,24 +545,42 @@ function PageTabs() {
   // 마우스 드래그 가로 스크롤 (Apple Trackpad 식)
   function onPointerDown(e: React.PointerEvent<HTMLElement>): void {
     if (!scrollRef.current) return;
+    // 버튼 위 = 클릭 우선, 드래그 안 시작 (사용자가 탭 클릭 시 작동 보장)
+    const target = e.target as HTMLElement;
+    if (target.closest('button')) {
+      dragRef.current = { active: false, startX: 0, startScroll: 0, moved: false };
+      return;
+    }
     dragRef.current = {
       active: true,
       startX: e.clientX,
       startScroll: scrollRef.current.scrollLeft,
       moved: false,
     };
-    scrollRef.current.setPointerCapture(e.pointerId);
+    try {
+      scrollRef.current.setPointerCapture(e.pointerId);
+    } catch {
+      /* 일부 환경에서 setPointerCapture 실패해도 무시 */
+    }
   }
   function onPointerMove(e: React.PointerEvent<HTMLElement>): void {
     if (!dragRef.current.active || !scrollRef.current) return;
     const dx = e.clientX - dragRef.current.startX;
-    if (Math.abs(dx) > 3) dragRef.current.moved = true;
-    scrollRef.current.scrollLeft = dragRef.current.startScroll - dx;
+    if (Math.abs(dx) > 8) dragRef.current.moved = true;
+    if (dragRef.current.moved) {
+      scrollRef.current.scrollLeft = dragRef.current.startScroll - dx;
+    }
   }
   function onPointerUp(e: React.PointerEvent<HTMLElement>): void {
     if (!scrollRef.current) return;
-    scrollRef.current.releasePointerCapture(e.pointerId);
+    try {
+      scrollRef.current.releasePointerCapture(e.pointerId);
+    } catch {
+      /* ignore */
+    }
     dragRef.current.active = false;
+    // click 이벤트 처리 후 moved reset (다음 클릭 정상 작동)
+    setTimeout(() => { dragRef.current.moved = false; }, 50);
   }
   function onWheel(e: React.WheelEvent<HTMLElement>): void {
     if (!scrollRef.current) return;
