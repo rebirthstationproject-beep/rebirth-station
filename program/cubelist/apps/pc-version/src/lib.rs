@@ -41,6 +41,7 @@ pub fn run_tauri() -> tauri::Result<()> {
             commands::execute_cube,
             commands::list_plugins,
             commands::install_plugin,
+            commands::read_library_files,
         ])
         .setup(|app| {
             // 시스템 트레이 메뉴

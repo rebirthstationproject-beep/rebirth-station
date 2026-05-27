@@ -204,6 +204,15 @@ async function buildCubelistFromPlugin(pluginZipPath) {
   return { pluginName, cubelist, cubeCount, mapStats, listManifest };
 }
 
+/** Windows 호환 폴더명으로 정규화 (한글/공백 OK, 금지 문자만 _ 로) */
+function safeFolderName(s) {
+  return s.replace(/[<>:"/\\|?*\x00-\x1F]/g, '_').trim().slice(0, 100);
+}
+
+function pad2(n) {
+  return String(n).padStart(2, '0');
+}
+
 async function main() {
   console.log(`입력: ${INPUT_ROOT}`);
   console.log(`출력: ${OUTPUT_ROOT}`);
@@ -216,66 +225,51 @@ async function main() {
 
   console.log(`\n.streamDeckPlugin 파일 ${pluginFiles.length}개 발견:`);
 
-  const pack = new JSZip();
-  const packOrder = [];
   const summary = [];
   let totalCubes = 0;
   let totalBuiltin = 0;
   let totalPluginAction = 0;
+  let totalCubeoneFiles = 0;
 
   for (let i = 0; i < pluginFiles.length; i++) {
     const file = pluginFiles[i];
     const name = basename(file);
     try {
-      const { pluginName, cubelist, cubeCount, mapStats, listManifest } = await buildCubelistFromPlugin(file);
-      const cubelistBlob = await cubelist.generateAsync({
-        type: 'uint8array',
-        compression: 'DEFLATE',
-      });
+      // buildCubelistFromPlugin 의 결과 cubelist (ZIP) 안에서 cubes/* 를 꺼내 폴더로 풀기
+      const built = await buildCubelistFromPlugin(file);
+      const folderName = safeFolderName(built.pluginName);
+      const folderPath = join(OUTPUT_ROOT, folderName);
+      await mkdir(folderPath, { recursive: true });
 
-      const safeFilename = `${safeId(pluginName)}.cubelist`;
-      const outPath = join(OUTPUT_ROOT, safeFilename);
-      await writeFile(outPath, cubelistBlob);
-
-      // 큐브팩 에도 추가
-      const ref = `lists/${safeFilename}`;
-      pack.file(ref, cubelistBlob);
-      packOrder.push({ ref, sort_order: i + 1 });
+      // cubelist ZIP 안의 cubes/*.cubeone 을 폴더에 개별 파일로 풀기
+      const order = built.listManifest.list.order;
+      let folderCubeCount = 0;
+      for (let j = 0; j < order.length; j++) {
+        const ref = order[j].ref; // "cubes/<id>.cubeone"
+        const entry = built.cubelist.file(ref);
+        if (!entry) continue;
+        const cubeBytes = await entry.async('uint8array');
+        const outName = `${folderName}${pad2(j + 1)}.cubeone`;
+        await writeFile(join(folderPath, outName), cubeBytes);
+        folderCubeCount++;
+        totalCubeoneFiles++;
+      }
 
       summary.push({
-        plugin: pluginName,
-        file: safeFilename,
-        cubes: cubeCount,
-        mapped: mapStats.builtin,
-        placeholder: mapStats.plugin_action,
-        size_kb: Math.round(cubelistBlob.byteLength / 1024),
+        plugin: built.pluginName,
+        folder: folderName,
+        cubes: folderCubeCount,
+        mapped: built.mapStats.builtin,
+        placeholder: built.mapStats.plugin_action,
       });
-      totalCubes += cubeCount;
-      totalBuiltin += mapStats.builtin;
-      totalPluginAction += mapStats.plugin_action;
-      console.log(`  ✓ ${pluginName}: ${cubeCount} 큐브 (빌트인 ${mapStats.builtin}, plugin_action ${mapStats.plugin_action}) → ${safeFilename}`);
+      totalCubes += folderCubeCount;
+      totalBuiltin += built.mapStats.builtin;
+      totalPluginAction += built.mapStats.plugin_action;
+      console.log(`  ✓ ${built.pluginName}: ${folderCubeCount} 큐브 → ${folderName}\\${folderName}01.cubeone .. ${pad2(folderCubeCount)}.cubeone`);
     } catch (e) {
       console.error(`  ✗ ${name}: ${e.message}`);
     }
   }
-
-  // 전체 cubepack
-  const packManifest = {
-    rbs_format_version: RBS_FORMAT_VERSION,
-    kind: 'cubepack',
-    id: 'streamdeck-import',
-    author: 'StreamDeck Import',
-    description: '사용자 다운로드 폴더의 StreamDeck 플러그인 일괄 변환본',
-    license: 'free',
-    created_at: NOW,
-    updated_at: NOW,
-    rbs_min_version: RBS_MIN_VERSION,
-    pack: { name: 'StreamDeck 임포트', order: packOrder },
-  };
-  pack.file('manifest.json', JSON.stringify(packManifest, null, 2));
-  const packBlob = await pack.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
-  const packPath = join(OUTPUT_ROOT, 'all.cubepack');
-  await writeFile(packPath, packBlob);
 
   // 변환 보고서
   const report = {
@@ -284,22 +278,21 @@ async function main() {
     output: OUTPUT_ROOT,
     plugins: pluginFiles.length,
     total_cubes: totalCubes,
+    total_cubeone_files: totalCubeoneFiles,
     builtin_mapped: totalBuiltin,
     plugin_action_placeholder: totalPluginAction,
-    cubepack: 'all.cubepack',
-    cubepack_size_kb: Math.round(packBlob.byteLength / 1024),
     items: summary,
     note: 'plugin_action 큐브는 PC 헬퍼에 .cubeplugin SDK 가 구현되어야 실행됩니다. 현재는 아이콘+라벨만 표시.',
+    library_structure: 'CUBE/<폴더(=큐브리스트)>/<폴더명>NN.cubeone',
   };
   await writeFile(join(OUTPUT_ROOT, 'report.json'), JSON.stringify(report, null, 2));
 
   console.log(`\n=== 완료 ===`);
-  console.log(`총 큐브: ${totalCubes}`);
+  console.log(`총 .cubeone 파일: ${totalCubeoneFiles}`);
   console.log(`  빌트인 매핑: ${totalBuiltin}`);
   console.log(`  plugin_action placeholder: ${totalPluginAction}`);
   console.log(`산출:`);
-  console.log(`  ${OUTPUT_ROOT}\\<plugin>.cubelist × ${pluginFiles.length}`);
-  console.log(`  ${packPath} (${Math.round(packBlob.byteLength / 1024)} KB)`);
+  console.log(`  ${OUTPUT_ROOT}\\<폴더(=큐브리스트)>\\<폴더명>NN.cubeone × ${totalCubeoneFiles}`);
   console.log(`  ${join(OUTPUT_ROOT, 'report.json')}`);
 }
 

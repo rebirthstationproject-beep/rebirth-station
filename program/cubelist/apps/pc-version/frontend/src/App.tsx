@@ -35,6 +35,7 @@ import {
   exportCubepack,
   importCubepack,
 } from './lib/cubepack-io';
+import { loadLibraryFromDir } from './lib/library-loader';
 import {
   ACTIONS,
   ACTION_CATEGORIES,
@@ -59,6 +60,7 @@ import type { Cube, CubeList } from './types/cube';
 type MainTab = 'cube-maker' | 'list-maker';
 
 const PACK_STORAGE_KEY = 'cubelist:last_pack';
+const LIBRARY_DIR_KEY = 'cubelist:library_dir';
 
 export function App() {
   const pack = useEditor((s) => s.pack);
@@ -66,22 +68,41 @@ export function App() {
   const refreshPlugins = usePluginRegistry((s) => s.refresh);
   const [mainTab, setMainTab] = useState<MainTab>('list-maker');
 
-  // 부팅 시 마지막 큐브팩 복원 — 없으면 데모
+  // 부팅 시 우선순위: 라이브러리 폴더 → localStorage cubepack → 데모
   useEffect(() => {
     if (pack) return;
-    try {
-      const stored = window.localStorage.getItem(PACK_STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        if (parsed && parsed.id && Array.isArray(parsed.lists)) {
-          loadPack(parsed);
+    let cancelled = false;
+    (async () => {
+      // 1. 등록된 라이브러리 폴더 (Tauri 환경 한정)
+      const libDir = window.localStorage.getItem(LIBRARY_DIR_KEY);
+      if (libDir && isTauri()) {
+        try {
+          const libPack = await loadLibraryFromDir(libDir);
+          if (!cancelled) loadPack(libPack);
           return;
+        } catch (e) {
+          console.warn('[boot] 라이브러리 폴더 로드 실패 — last_pack 폴백', e);
         }
       }
-    } catch {
-      /* 손상된 localStorage 는 무시하고 데모로 */
-    }
-    loadPack(buildDemoPack());
+      // 2. 마지막 큐브팩 (가져오기 캐시 또는 직접 편집)
+      try {
+        const stored = window.localStorage.getItem(PACK_STORAGE_KEY);
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (parsed && parsed.id && Array.isArray(parsed.lists)) {
+            if (!cancelled) loadPack(parsed);
+            return;
+          }
+        }
+      } catch {
+        /* 손상된 localStorage 는 무시 */
+      }
+      // 3. 데모 큐브팩
+      if (!cancelled) loadPack(buildDemoPack());
+    })();
+    return () => {
+      cancelled = true;
+    };
   }, [pack, loadPack]);
 
   // pack 변경 시 localStorage 동기 (200 ms debounce — 빈번한 큐브 편집 대비)
@@ -439,6 +460,35 @@ function TopBar() {
     input.click();
   }
 
+  async function handleSetLibraryDir(): Promise<void> {
+    const current = window.localStorage.getItem(LIBRARY_DIR_KEY) ?? '';
+    const next = window.prompt(
+      '라이브러리 폴더 경로 (모든 .cubeone / .cubelist / .cubepack 자동 로드)',
+      current,
+    );
+    if (next === null) return; // 취소
+    const trimmed = next.trim();
+    if (trimmed.length === 0) {
+      window.localStorage.removeItem(LIBRARY_DIR_KEY);
+      window.alert('라이브러리 폴더 해제됨. 다음 시작 시 데모로 복귀합니다.');
+      return;
+    }
+    if (!isTauri()) {
+      window.alert('라이브러리 폴더 자동 로드는 PC 앱 (Tauri) 에서만 동작합니다.');
+      return;
+    }
+    try {
+      const libPack = await loadLibraryFromDir(trimmed);
+      window.localStorage.setItem(LIBRARY_DIR_KEY, trimmed);
+      loadPack(libPack);
+      const cubeCount = libPack.lists.reduce((a, l) => a + l.cubes.length, 0);
+      window.alert(`라이브러리 로드 완료: ${libPack.lists.length} 큐브리스트 · ${cubeCount} 큐브`);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      window.alert(`라이브러리 폴더 로드 실패: ${msg}`);
+    }
+  }
+
   function handleInstallPlugin(): void {
     if (!isTauri()) {
       window.alert('플러그인 설치는 Tauri 환경에서만 가능합니다.');
@@ -493,6 +543,14 @@ function TopBar() {
           title={`.cubeplugin (${installedPlugins.length})`}
         >
           {t('topbar.add_plugin')}
+        </button>
+        <button
+          type="button"
+          className="btn-ghost"
+          onClick={handleSetLibraryDir}
+          title="라이브러리 폴더 자동 로드 (등록 1회, 다음 부팅부터 자동 불러오기)"
+        >
+          📁 폴더
         </button>
         <LocaleSwitcher />
         <button className="icon-btn" title={t('app.settings')} aria-label={t('app.settings')}>⚙</button>

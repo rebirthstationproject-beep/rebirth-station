@@ -286,7 +286,7 @@ async function readListZip(buf: Uint8Array, sortOrder: number): Promise<CubeList
   };
 }
 
-async function readCubeZip(buf: Uint8Array, sortOrder: number): Promise<Cube> {
+export async function readCubeZip(buf: Uint8Array, sortOrder: number): Promise<Cube> {
   const zip = await JSZip.loadAsync(buf);
   const manifestFile = zip.file('manifest.json');
   if (!manifestFile) throw new CubepackFormatError('cube manifest.json 누락');

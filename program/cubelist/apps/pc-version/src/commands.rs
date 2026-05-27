@@ -53,6 +53,90 @@ fn open_in_browser(url: &str) -> anyhow::Result<()> {
         .map_err(|e| anyhow::anyhow!(e.to_string()))
 }
 
+/// 라이브러리 폴더 1회 스캔 — .cubeone / .cubelist / .cubepack 파일 raw bytes 반환.
+///
+/// 보안: 디렉토리 트래버설 차단 (..), 심볼릭 링크 미추적
+/// 파일 1개 최대 32 MB, 전체 256 MB 제한
+#[derive(serde::Serialize)]
+pub struct LibraryFile {
+    pub relative_path: String,
+    pub bytes: Vec<u8>,
+}
+
+const MAX_FILE_BYTES: u64 = 32 * 1024 * 1024;
+const MAX_TOTAL_BYTES: u64 = 256 * 1024 * 1024;
+
+#[cfg_attr(feature = "gui", tauri::command)]
+pub fn read_library_files(path: String) -> Result<Vec<LibraryFile>, String> {
+    let root = std::path::PathBuf::from(&path);
+    if !root.is_dir() {
+        return Err(format!("디렉토리 아님: {path}"));
+    }
+    let canonical = root
+        .canonicalize()
+        .map_err(|e| format!("경로 정규화 실패: {e}"))?;
+    let mut files = Vec::new();
+    let mut total: u64 = 0;
+    scan_library_dir(&canonical, &canonical, &mut files, &mut total)
+        .map_err(|e| e.to_string())?;
+    Ok(files)
+}
+
+fn scan_library_dir(
+    root: &std::path::Path,
+    current: &std::path::Path,
+    files: &mut Vec<LibraryFile>,
+    total: &mut u64,
+) -> std::io::Result<()> {
+    let entries = std::fs::read_dir(current)?;
+    for entry in entries {
+        let entry = entry?;
+        let metadata = entry.metadata()?;
+        let path = entry.path();
+        if metadata.file_type().is_symlink() {
+            continue; // 심볼릭 링크 차단 (트래버설 방지)
+        }
+        if metadata.is_dir() {
+            scan_library_dir(root, &path, files, total)?;
+            continue;
+        }
+        let Some(ext) = path.extension().and_then(|e| e.to_str()) else {
+            continue;
+        };
+        let lower = ext.to_ascii_lowercase();
+        if !matches!(lower.as_str(), "cubeone" | "cubelist" | "cubepack") {
+            continue;
+        }
+        let size = metadata.len();
+        if size > MAX_FILE_BYTES {
+            tracing::warn!(
+                path = ?path,
+                size,
+                "라이브러리 파일이 너무 큼 — 건너뜀"
+            );
+            continue;
+        }
+        if *total + size > MAX_TOTAL_BYTES {
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::Other,
+                format!("라이브러리 총 크기 한도 초과 ({MAX_TOTAL_BYTES} bytes)"),
+            ));
+        }
+        let bytes = std::fs::read(&path)?;
+        *total += size;
+        let relative = path
+            .strip_prefix(root)
+            .unwrap_or(&path)
+            .to_string_lossy()
+            .replace('\\', "/");
+        files.push(LibraryFile {
+            relative_path: relative,
+            bytes,
+        });
+    }
+    Ok(())
+}
+
 /// 페어링용 QR 페이로드 생성 (UI가 호출 → QR로 렌더)
 #[cfg_attr(feature = "gui", tauri::command)]
 pub fn generate_pairing_qr(session_token: String, device_fingerprint: String) -> Result<PairingQrDto, String> {
