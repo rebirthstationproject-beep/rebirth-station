@@ -109,6 +109,12 @@ interface EditorState extends EditorSelection {
   removeCubeFromDraft(cubeId: string): void;
   /** draft 안 큐브 수정 */
   updateCubeInDraft(cubeId: string, partial: Partial<Cube>): void;
+
+  // === M4 Plugin SDK 연동 ===
+  /** plugin setImage → 큐브 아이콘 실시간 갱신 (pack.lists / pack.cubes / draft_list 모두 검색) */
+  updateCubeIconUrl(cubeId: string, iconUrl: string): void;
+  /** PropertyInspector setSettings → 큐브 action_payload.settings 갱신 */
+  updateCubeSettings(cubeId: string, settings: Record<string, unknown>): void;
 }
 
 export const useEditor = create<EditorState>((set, get) => ({
@@ -682,6 +688,70 @@ export const useEditor = create<EditorState>((set, get) => ({
         cubes: cur.cubes.map((c) => (c.id === cubeId ? { ...c, ...partial } : c)),
       },
     });
+  },
+
+  updateCubeIconUrl(cubeId: string, iconUrl: string): void {
+    const { pack, draft_list } = get();
+    let changed = false;
+    let nextPack = pack;
+    if (pack) {
+      const newLists = pack.lists.map((l) => {
+        const cubes = l.cubes.map((c) => {
+          if (c.id === cubeId) {
+            changed = true;
+            return { ...c, icon_url: iconUrl };
+          }
+          return c;
+        });
+        return changed ? { ...l, cubes } : l;
+      });
+      const newCubes = pack.cubes?.map((c) => {
+        if (c.id === cubeId) {
+          changed = true;
+          return { ...c, icon_url: iconUrl };
+        }
+        return c;
+      });
+      nextPack = { ...pack, lists: newLists, ...(newCubes ? { cubes: newCubes } : {}) };
+    }
+    let nextDraft = draft_list;
+    if (draft_list) {
+      const dcubes = draft_list.cubes.map((c) => {
+        if (c.id === cubeId) {
+          changed = true;
+          return { ...c, icon_url: iconUrl };
+        }
+        return c;
+      });
+      nextDraft = { ...draft_list, cubes: dcubes };
+    }
+    if (changed) {
+      set({ pack: nextPack, draft_list: nextDraft });
+    }
+  },
+
+  updateCubeSettings(cubeId: string, settings: Record<string, unknown>): void {
+    const updater = (c: Cube): Cube => {
+      if (c.id !== cubeId) return c;
+      const existing = (c.action_payload ?? {}) as Record<string, unknown>;
+      return {
+        ...c,
+        action_payload: { ...existing, settings },
+      };
+    };
+    const { pack, draft_list } = get();
+    let nextPack = pack;
+    if (pack) {
+      nextPack = {
+        ...pack,
+        lists: pack.lists.map((l) => ({ ...l, cubes: l.cubes.map(updater) })),
+        cubes: pack.cubes ? pack.cubes.map(updater) : pack.cubes,
+      };
+    }
+    const nextDraft = draft_list
+      ? { ...draft_list, cubes: draft_list.cubes.map(updater) }
+      : draft_list;
+    set({ pack: nextPack, draft_list: nextDraft });
   },
 
   cancelListMaker(): void {

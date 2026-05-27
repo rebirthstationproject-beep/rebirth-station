@@ -38,6 +38,11 @@ import {
 } from './lib/cubepack-io';
 import { loadLibraryFromDir } from './lib/library-loader';
 import {
+  PluginActionsBackground,
+  PluginPropertyInspector,
+  fireCubeKey,
+} from './components/PluginRunnerHost';
+import {
   ACTIONS,
   ACTION_CATEGORIES,
   defaultPayloadFor,
@@ -149,6 +154,8 @@ export function App() {
         </main>
         <Inspector />
       </div>
+      {/* M4: plugin_action 큐브들 백그라운드 runtime (보이지 않는 iframe + JS 실행) */}
+      <PluginActionsBackground />
     </div>
   );
 }
@@ -1300,9 +1307,19 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       type="button"
       role="gridcell"
       className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''} ${cube.icon_url ? 'has-icon' : ''}`}
-      onClick={() => selectCube(selected ? null : cube.id)}
+      onClick={() => {
+        // M4: plugin_action 큐브 더블클릭 → fireCubeKey, 단일클릭 → select
+        selectCube(selected ? null : cube.id);
+      }}
       onDoubleClick={() => {
-        if (isFolder) enterFolder(cube.id);
+        if (isFolder) {
+          enterFolder(cube.id);
+          return;
+        }
+        // plugin_action 큐브 더블클릭 = key 실행
+        if (cube.action_type === 'plugin_action') {
+          fireCubeKey(cube.id);
+        }
       }}
       aria-pressed={selected}
       title={`${cube.label} (${cube.action_type})${isFolder ? '\n더블클릭 → 진입' : ''}`}
@@ -1424,11 +1441,32 @@ function Inspector() {
         value={cube.action_payload}
         onChange={(next) => patch({ action_payload: next })}
       />
+      {/* M4: plugin_action 큐브 시 PropertyInspector iframe 임베드 */}
+      {cube.action_type === 'plugin_action' && (() => {
+        const p = cube.action_payload as { plugin_id?: string; plugin_dir?: string; plugin_uuid?: string };
+        if (!p.plugin_id || !p.plugin_dir || !p.plugin_uuid) return null;
+        return (
+          <div className="plugin-pi-wrap">
+            <h4 className="inspector-subtitle">Plugin PropertyInspector</h4>
+            <PluginPropertyInspector cube={cube} />
+          </div>
+        );
+      })()}
       <div className="inspector-actions">
         <button
           type="button"
           className="btn-ghost"
           onClick={async () => {
+            // M4: plugin_action 큐브 시 fireCubeKey (keyDown/Up 발송 — plugin JS 가 처리)
+            if (cube.action_type === 'plugin_action') {
+              const ok = fireCubeKey(cube.id);
+              if (ok) {
+                // alert 없이 즉시 — plugin 이 화면 갱신
+                return;
+              }
+              window.alert('Plugin runtime 미마운트 (라이브러리 폴더 등록 + 자산 추출 확인 필요)');
+              return;
+            }
             try {
               const r = await executeCube(cube);
               const env = isTauri() ? 'Tauri' : 'browser-dev';
@@ -1437,7 +1475,7 @@ function Inspector() {
               window.alert(describeExecuteError(err));
             }
           }}
-          title={isTauri() ? 'PC 헬퍼로 실행' : '브라우저 dev — link 만 즉시, 나머지는 mock'}
+          title={cube.action_type === 'plugin_action' ? 'Plugin keyDown 발송' : (isTauri() ? 'PC 헬퍼로 실행' : '브라우저 dev')}
         >
           {t('inspector.test_run')}
         </button>

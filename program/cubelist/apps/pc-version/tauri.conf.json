@@ -36,20 +36,30 @@
     },
     "security": {
       "csp": {
-        "default-src": "'self'",
+        "default-src": "'self' asset: https://asset.localhost",
         "connect-src": [
           "'self'",
           "ws://127.0.0.1:23456",
           "http://127.0.0.1:3002",
           "ws://127.0.0.1:3002",
           "https://*.supabase.co",
-          "wss://*.supabase.co"
+          "wss://*.supabase.co",
+          "asset:",
+          "https://asset.localhost",
+          "ipc:",
+          "http://ipc.localhost"
         ],
-        "img-src": "'self' data: https:",
-        "style-src": "'self' 'unsafe-inline'"
+        "img-src": "'self' data: https: asset: https://asset.localhost",
+        "style-src": "'self' 'unsafe-inline' asset: https://asset.localhost",
+        "script-src": "'self' 'unsafe-inline' 'unsafe-eval' asset: https://asset.localhost",
+        "media-src": "'self' data: asset: https://asset.localhost",
+        "frame-src": "'self' asset: https://asset.localhost"
       },
       "assetProtocol": {
-        "enable": false
+        "enable": true,
+        "scope": [
+          "**/*"
+        ]
       }
     }
   },
