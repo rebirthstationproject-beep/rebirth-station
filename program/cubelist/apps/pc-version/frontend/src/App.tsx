@@ -688,7 +688,7 @@ function TopBar() {
         try {
           const buf = await file.arrayBuffer();
           const result = await convertPlugin(buf, file.name);
-          // 라이브러리 폴더에 저장 — 각 .cubeone 파일
+          // 1) .cubeone 큐브 파일들
           for (const cube of result.cubes) {
             await invoke('write_library_file', {
               libraryDir,
@@ -697,8 +697,20 @@ function TopBar() {
               bytes: Array.from(cube.bytes),
             });
           }
+          // 2) M4: plugin 자산 ZIP 통째 _plugins/<plugin_id>/ 안에 풀기 (HTML/JS/이미지/사운드)
+          try {
+            await invoke('write_plugin_zip', {
+              libraryDir,
+              pluginId: result.pluginId,
+              zipBytes: Array.from(new Uint8Array(buf)),
+            });
+          } catch (e) {
+            errors.push(`${result.pluginName}: plugin 자산 풀기 실패 — ${e instanceof Error ? e.message : String(e)}`);
+          }
           const tag = result.fallback ? '(en.json fallback)' : '';
-          results.push(`✓ ${result.pluginName}: ${result.cubes.length} 큐브 → ${result.folderName}/ ${tag}`);
+          results.push(
+            `✓ ${result.pluginName}: ${result.cubes.length} 큐브 + 자산 _plugins/${result.pluginId}/ ${tag}`,
+          );
           if (result.warnings.length > 0) {
             for (const w of result.warnings) errors.push(`${result.pluginName}: ${w}`);
           }

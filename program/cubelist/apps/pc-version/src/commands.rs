@@ -116,6 +116,69 @@ pub fn write_library_file(
     Ok(file_path.to_string_lossy().to_string())
 }
 
+/// Plugin .streamDeckPlugin ZIP 통째 라이브러리 폴더 안 _plugins/<plugin_id>/ 에 풀기.
+///
+/// 보안: library_dir 안 경로만 허용 (트래버설 차단), plugin_id 검증.
+/// 사용 패턴: M4 plugin SDK 가 plugin html/js/css/images 자산을 그대로 접근 가능하게.
+#[cfg_attr(feature = "gui", tauri::command)]
+pub fn write_plugin_zip(
+    library_dir: String,
+    plugin_id: String,
+    zip_bytes: Vec<u8>,
+) -> Result<String, String> {
+    let root = std::path::PathBuf::from(&library_dir);
+    if !root.is_dir() {
+        return Err(format!("라이브러리 폴더 없음: {library_dir}"));
+    }
+    if plugin_id.is_empty()
+        || plugin_id.contains('/')
+        || plugin_id.contains('\\')
+        || plugin_id.contains("..")
+    {
+        return Err(format!("잘못된 plugin_id: {plugin_id}"));
+    }
+    let plugins_root = root.join("_plugins").join(&plugin_id);
+    std::fs::create_dir_all(&plugins_root).map_err(|e| format!("폴더 생성 실패: {e}"))?;
+
+    let canon_root = root.canonicalize().map_err(|e| e.to_string())?;
+    let canon_plugins = plugins_root.canonicalize().map_err(|e| e.to_string())?;
+    if !canon_plugins.starts_with(&canon_root) {
+        return Err("트래버설 차단".to_string());
+    }
+
+    let reader = std::io::Cursor::new(&zip_bytes);
+    let mut archive = zip::ZipArchive::new(reader).map_err(|e| format!("ZIP 파싱 실패: {e}"))?;
+
+    for i in 0..archive.len() {
+        let mut entry = archive
+            .by_index(i)
+            .map_err(|e| format!("ZIP entry {i} 실패: {e}"))?;
+        let name = entry
+            .enclosed_name()
+            .ok_or_else(|| format!("잘못된 entry 이름: {}", entry.name()))?;
+        let outpath = plugins_root.join(&name);
+
+        // 경로 트래버설 재검증
+        if let Ok(p) = outpath.parent().map(|p| p.to_path_buf()).unwrap_or_default().canonicalize() {
+            if !p.starts_with(&canon_plugins) && !p.starts_with(&canon_root) {
+                continue;
+            }
+        }
+
+        if entry.is_dir() {
+            std::fs::create_dir_all(&outpath).map_err(|e| format!("디렉토리 생성: {e}"))?;
+        } else {
+            if let Some(parent) = outpath.parent() {
+                std::fs::create_dir_all(parent).map_err(|e| format!("부모 폴더 생성: {e}"))?;
+            }
+            let mut out_file =
+                std::fs::File::create(&outpath).map_err(|e| format!("파일 생성: {e}"))?;
+            std::io::copy(&mut entry, &mut out_file).map_err(|e| format!("쓰기: {e}"))?;
+        }
+    }
+    Ok(plugins_root.to_string_lossy().to_string())
+}
+
 #[cfg_attr(feature = "gui", tauri::command)]
 pub fn read_library_files(path: String) -> Result<Vec<LibraryFile>, String> {
     let root = std::path::PathBuf::from(&path);

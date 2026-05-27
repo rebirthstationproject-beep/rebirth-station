@@ -34,6 +34,8 @@ export interface ConvertedCubeFile {
 export interface ConvertResult {
   folderName: string;
   pluginName: string;
+  pluginId: string; // M4: 라이브러리 _plugins/<pluginId>/ 식별자
+  pluginDir: string; // ZIP 안 .sdPlugin 디렉토리 prefix (예: "com.elgato.cpu.sdPlugin/")
   cubes: ConvertedCubeFile[];
   fallback: boolean;
   iconSources: Record<string, number>;
@@ -288,6 +290,7 @@ async function buildCubeOneZipBytes(
   action: ManifestAction,
   defaultIconUrl: string | null,
   iconStats: Record<string, number>,
+  pluginId: string,
 ): Promise<Uint8Array> {
   const id = safeId(action.UUID ?? action.Name ?? 'action');
   const label = action.Name ?? id;
@@ -310,11 +313,24 @@ async function buildCubeOneZipBytes(
   iconStats[iconSource] = (iconStats[iconSource] ?? 0) + 1;
 
   const now = new Date().toISOString();
+  // M4 plugin_action 큐브는 plugin runtime 정보 포함
+  const payload: Record<string, unknown> =
+    mappedType === 'plugin_action'
+      ? {
+          plugin_uuid: action.UUID ?? '',
+          action_id: 'default',
+          plugin_id: pluginId, // _plugins/<pluginId>/ 안에 자산 있음
+          plugin_dir: pluginDir, // ZIP 안 sdPlugin 경로 prefix
+          settings: {}, // PropertyInspector 옵션
+          payload: {},
+        }
+      : buildActionPayload(action.UUID, mappedType);
+
   const cube = {
     label,
     icon_url: iconUrl,
     action_type: mappedType,
-    action_payload: buildActionPayload(action.UUID, mappedType),
+    action_payload: payload,
     metadata: {
       source: 'streamdeck-import',
       sd_uuid: action.UUID,
@@ -361,6 +377,8 @@ export async function convertPlugin(
     return {
       folderName,
       pluginName: stem,
+      pluginId: safeFolderName(stem).toLowerCase().replace(/[^a-zA-Z0-9._-]/g, '_'),
+      pluginDir: '',
       cubes: [{ filename: `${folderName}01.cubeone`, bytes: placeholder }],
       fallback: false,
       iconSources: { unreadable: 1 },
@@ -378,6 +396,8 @@ export async function convertPlugin(
     return {
       folderName,
       pluginName: stem,
+      pluginId: safeFolderName(stem).toLowerCase().replace(/[^a-zA-Z0-9._-]/g, '_'),
+      pluginDir: '',
       cubes: [{ filename: `${folderName}01.cubeone`, bytes: placeholder }],
       fallback: false,
       iconSources: { unreadable: 1 },
@@ -387,6 +407,12 @@ export async function convertPlugin(
   const { manifest, pluginDir, fallback } = manifestResult;
   const pluginName = manifest.Name ?? pluginStemFromFilename(zipFilename);
   const folderName = safeFolderName(pluginName);
+  // pluginId = sdPlugin 디렉토리명 (com.elgato.cpu) 우선, 폴백은 folderName
+  const sdMatch = pluginDir.match(/^([^/]+)\.sdPlugin\/?$/);
+  const pluginId = (sdMatch ? sdMatch[1] : safeFolderName(pluginName).toLowerCase()).replace(
+    /[^a-zA-Z0-9._-]/g,
+    '_',
+  );
   const pluginIconResult = await loadIconAsDataUrl(zip, pluginDir, manifest.Icon);
   const pluginIconUrl = pluginIconResult.dataUrl;
   const actions = Array.isArray(manifest.Actions) ? manifest.Actions : [];
@@ -395,7 +421,14 @@ export async function convertPlugin(
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i];
     try {
-      const bytes = await buildCubeOneZipBytes(zip, pluginDir, action, pluginIconUrl, iconStats);
+      const bytes = await buildCubeOneZipBytes(
+        zip,
+        pluginDir,
+        action,
+        pluginIconUrl,
+        iconStats,
+        pluginId,
+      );
       cubes.push({ filename: `${folderName}${pad2(i + 1)}.cubeone`, bytes });
     } catch (e) {
       warnings.push(`action ${action.UUID ?? '?'} 변환 실패: ${(e as Error).message}`);
@@ -407,7 +440,16 @@ export async function convertPlugin(
     iconStats['placeholder_empty'] = (iconStats['placeholder_empty'] ?? 0) + 1;
     warnings.push('actions[] 비어있음 — placeholder 큐브 1개 생성');
   }
-  return { folderName, pluginName, cubes, fallback, iconSources: iconStats, warnings };
+  return {
+    folderName,
+    pluginName,
+    pluginId,
+    pluginDir,
+    cubes,
+    fallback,
+    iconSources: iconStats,
+    warnings,
+  };
 }
 
 async function buildPlaceholderCubeOne(folderName: string, reason: string): Promise<Uint8Array> {
