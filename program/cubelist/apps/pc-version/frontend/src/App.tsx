@@ -530,61 +530,15 @@ function PageTabs() {
   const addList = useEditor((s) => s.addList);
   const renameList = useEditor((s) => s.renameList);
   const scrollRef = useRef<HTMLElement>(null);
-  const dragRef = useRef<{ active: boolean; startX: number; startScroll: number; moved: boolean }>({
-    active: false,
-    startX: 0,
-    startScroll: 0,
-    moved: false,
-  });
 
   function handleRename(listId: string, current: string): void {
     const next = window.prompt('페이지(리스트) 이름:', current);
     if (next && next.trim().length > 0) renameList(listId, next.trim());
   }
 
-  // 마우스 드래그 가로 스크롤 (Apple Trackpad 식)
-  function onPointerDown(e: React.PointerEvent<HTMLElement>): void {
-    if (!scrollRef.current) return;
-    // 버튼 위 = 클릭 우선, 드래그 안 시작 (사용자가 탭 클릭 시 작동 보장)
-    const target = e.target as HTMLElement;
-    if (target.closest('button')) {
-      dragRef.current = { active: false, startX: 0, startScroll: 0, moved: false };
-      return;
-    }
-    dragRef.current = {
-      active: true,
-      startX: e.clientX,
-      startScroll: scrollRef.current.scrollLeft,
-      moved: false,
-    };
-    try {
-      scrollRef.current.setPointerCapture(e.pointerId);
-    } catch {
-      /* 일부 환경에서 setPointerCapture 실패해도 무시 */
-    }
-  }
-  function onPointerMove(e: React.PointerEvent<HTMLElement>): void {
-    if (!dragRef.current.active || !scrollRef.current) return;
-    const dx = e.clientX - dragRef.current.startX;
-    if (Math.abs(dx) > 8) dragRef.current.moved = true;
-    if (dragRef.current.moved) {
-      scrollRef.current.scrollLeft = dragRef.current.startScroll - dx;
-    }
-  }
-  function onPointerUp(e: React.PointerEvent<HTMLElement>): void {
-    if (!scrollRef.current) return;
-    try {
-      scrollRef.current.releasePointerCapture(e.pointerId);
-    } catch {
-      /* ignore */
-    }
-    dragRef.current.active = false;
-    // click 이벤트 처리 후 moved reset (다음 클릭 정상 작동)
-    setTimeout(() => { dragRef.current.moved = false; }, 50);
-  }
+  // 세로 휠 → 가로 스크롤 변환 (드래그 핸들러 제거, click 보장)
   function onWheel(e: React.WheelEvent<HTMLElement>): void {
     if (!scrollRef.current) return;
-    // 세로 휠 → 가로 스크롤로 변환 (Shift 누른 듯한 효과)
     if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
       scrollRef.current.scrollLeft += e.deltaY;
     }
@@ -595,19 +549,12 @@ function PageTabs() {
       ref={scrollRef}
       className="page-tabs"
       aria-label="페이지 (리스트)"
-      onPointerDown={onPointerDown}
-      onPointerMove={onPointerMove}
-      onPointerUp={onPointerUp}
-      onPointerLeave={onPointerUp}
       onWheel={onWheel}
     >
       <button
         type="button"
         className={`page-tab page-tab-all ${activeListId === null ? 'is-active' : ''}`}
-        onClick={(e) => {
-          if (dragRef.current.moved) { e.preventDefault(); return; }
-          selectList(null);
-        }}
+        onClick={() => selectList(null)}
         aria-pressed={activeListId === null}
         title="전체 폴더 그리드"
       >
@@ -618,10 +565,7 @@ function PageTabs() {
           key={l.id}
           type="button"
           className={`page-tab ${activeListId === l.id ? 'is-active' : ''}`}
-          onClick={(e) => {
-            if (dragRef.current.moved) { e.preventDefault(); return; }
-            selectList(l.id);
-          }}
+          onClick={() => selectList(l.id)}
           onDoubleClick={() => handleRename(l.id, l.name)}
           aria-pressed={activeListId === l.id}
           title={`${l.name} (더블클릭하여 이름 수정)`}
@@ -633,10 +577,7 @@ function PageTabs() {
         className="page-tab is-add"
         type="button"
         title="페이지(리스트) 추가"
-        onClick={(e) => {
-          if (dragRef.current.moved) { e.preventDefault(); return; }
-          addList();
-        }}
+        onClick={() => addList()}
       >
         +
       </button>

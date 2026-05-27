@@ -409,6 +409,9 @@ html, body, #root {
   gap: 12px;
   justify-content: start;
   padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+  align-content: start;
 }
 
 .cube-cell {
@@ -644,10 +647,8 @@ html, body, #root {
   overflow-y: hidden;
   scrollbar-width: thin;
   background: transparent;
-  cursor: grab;
   user-select: none;
 }
-.page-tabs:active { cursor: grabbing; }
 .page-tabs::-webkit-scrollbar { height: 6px; }
 .page-tabs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 .page-tab {
