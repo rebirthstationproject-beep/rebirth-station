@@ -663,17 +663,29 @@ function TopBar() {
     }
     const input = document.createElement('input');
     input.type = 'file';
-    input.accept = '.streamDeckPlugin,application/octet-stream';
+    // WebView2 file dialog 가 사용자 정의 확장자 (.streamDeckPlugin) 인식 안 함 → 모든 파일 표시
     input.multiple = true;
     input.onchange = async () => {
       const files = input.files;
       if (!files || files.length === 0) return;
+      // .streamDeckPlugin 만 처리 (다른 파일은 경고)
+      const plugins = Array.from(files).filter((f) => /\.streamDeckPlugin$/i.test(f.name));
+      const skipped = Array.from(files).filter((f) => !/\.streamDeckPlugin$/i.test(f.name));
+      if (plugins.length === 0) {
+        window.alert(
+          `.streamDeckPlugin 파일이 선택되지 않았습니다.\n선택된 파일:\n${Array.from(files).map((f) => f.name).join('\n')}`,
+        );
+        return;
+      }
       const { convertPlugin } = await import('./lib/plugin-converter');
       const { invoke } = await import('@tauri-apps/api/core');
       const { loadLibraryFromDir } = await import('./lib/library-loader');
       const results: string[] = [];
       const errors: string[] = [];
-      for (const file of Array.from(files)) {
+      if (skipped.length > 0) {
+        for (const f of skipped) errors.push(`${f.name}: .streamDeckPlugin 아님 — 건너뜀`);
+      }
+      for (const file of plugins) {
         try {
           const buf = await file.arrayBuffer();
           const result = await convertPlugin(buf, file.name);
@@ -703,7 +715,7 @@ function TopBar() {
         errors.push(`라이브러리 reload 실패: ${e instanceof Error ? e.message : String(e)}`);
       }
       const summary =
-        `${files.length}개 플러그인 처리\n\n` +
+        `${plugins.length}개 플러그인 처리\n\n` +
         `[성공]\n${results.join('\n') || '없음'}\n\n` +
         (errors.length > 0 ? `[경고/오류]\n${errors.join('\n')}` : '');
       window.alert(summary);
