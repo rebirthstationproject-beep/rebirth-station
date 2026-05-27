@@ -9,7 +9,8 @@
  * 상단: 다중 리스트 탭 · 하단: 플러그인 라이브러리 (M4)
  */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import {
   DndContext,
@@ -150,6 +151,63 @@ export function App() {
 }
 
 function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t: MainTab) => void }) {
+  const activeList = useEditor(useShallow((s) => s.activeList()));
+  const startListMaker = useEditor((s) => s.startListMaker);
+  const cancelListMaker = useEditor((s) => s.cancelListMaker);
+  const listMakerActive = useEditor((s) => s.list_maker_active);
+  const listMakerSelection = useEditor(useShallow((s) => s.list_maker_selection));
+  const finishListMaker = useEditor((s) => s.finishListMaker);
+  const addLibraryCube = useEditor((s) => s.addLibraryCube);
+
+  function handleFolderImport(): void {
+    const input = document.createElement('input');
+    input.type = 'file';
+    (input as HTMLInputElement & { webkitdirectory?: boolean }).webkitdirectory = true;
+    input.multiple = true;
+    input.onchange = () => {
+      const files = input.files;
+      if (!files || files.length === 0) return;
+      const folderSet = new Set<string>();
+      Array.from(files).forEach((f) => {
+        const path = (f as File & { webkitRelativePath?: string }).webkitRelativePath ?? f.name;
+        const label = path.split('/').pop()?.replace(/\.[^.]+$/, '') ?? f.name;
+        addLibraryCube({
+          label,
+          action_type: 'app_launch',
+          action_payload: { path, args: [] },
+          metadata: { source: 'folder-import', original_path: path },
+        });
+        const folderPath = path.split('/').slice(0, -1).join('/');
+        if (folderPath) folderSet.add(folderPath);
+      });
+      window.alert(`${files.length}개 파일을 라이브러리에 추가했습니다.`);
+    };
+    input.click();
+  }
+
+  async function handleSaveActiveList(): Promise<void> {
+    if (!activeList) {
+      window.alert('저장할 리스트가 선택되지 않았습니다.');
+      return;
+    }
+    try {
+      const { downloadCubelist } = await import('./lib/cubepack-io');
+      await downloadCubelist(activeList);
+      window.alert(`"${activeList.name}.cubelist" 저장됨. 라이브러리 폴더에 옮겨 넣으면 다음 부팅 시 자동 로드됩니다.`);
+    } catch (e) {
+      window.alert(`저장 실패: ${e instanceof Error ? e.message : String(e)}`);
+    }
+  }
+
+  function handleFinishListMaker(): void {
+    if (listMakerSelection.length === 0) {
+      window.alert('큐브를 1개 이상 선택하세요.');
+      return;
+    }
+    const name = window.prompt('새 리스트 이름:', '새 리스트');
+    if (name && name.trim()) finishListMaker(name.trim());
+  }
+
   return (
     <nav className="main-tab-bar" aria-label="메인 탭">
       <button
@@ -168,6 +226,33 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t:
       >
         큐브 리스트 만들기
       </button>
+      <div className="main-tab-spacer" />
+      {activeTab === 'cube-maker' && !listMakerActive && (
+        <>
+          <button type="button" className="btn-ghost" onClick={handleFolderImport}>
+            폴더 불러오기
+          </button>
+          <button type="button" className="btn-ghost" onClick={() => startListMaker()}>
+            리스트 만들기
+          </button>
+        </>
+      )}
+      {activeTab === 'cube-maker' && listMakerActive && (
+        <>
+          <span className="list-maker-status">선택 {listMakerSelection.length}개</span>
+          <button type="button" className="btn-ghost" onClick={cancelListMaker}>
+            취소
+          </button>
+          <button type="button" className="btn-ghost btn-primary" onClick={handleFinishListMaker}>
+            완료
+          </button>
+        </>
+      )}
+      {activeTab === 'list-maker' && (
+        <button type="button" className="btn-ghost btn-primary" onClick={handleSaveActiveList}>
+          저장
+        </button>
+      )}
     </nav>
   );
 }
@@ -203,40 +288,15 @@ function CubeMakerCenter() {
 
   const listMakerActive = useEditor((s) => s.list_maker_active);
   const listMakerSelection = useEditor(useShallow((s) => s.list_maker_selection));
-  const startListMaker = useEditor((s) => s.startListMaker);
   const toggleListMakerSelection = useEditor((s) => s.toggleListMakerSelection);
   const finishListMaker = useEditor((s) => s.finishListMaker);
-  const cancelListMaker = useEditor((s) => s.cancelListMaker);
 
   const [saveModalOpen, setSaveModalOpen] = useState(false);
 
-  function handleFolderImport(): void {
-    const input = document.createElement('input');
-    input.type = 'file';
-    (input as HTMLInputElement & { webkitdirectory?: boolean }).webkitdirectory = true;
-    input.multiple = true;
-    input.onchange = () => {
-      const files = input.files;
-      if (!files || files.length === 0) return;
-      const folderSet = new Set<string>();
-      Array.from(files).forEach((f) => {
-        const path = (f as File & { webkitRelativePath?: string }).webkitRelativePath ?? f.name;
-        // 파일 → 큐브 (라벨 = 파일명 prefix 제거)
-        const label = path.split('/').pop()?.replace(/\.[^.]+$/, '') ?? f.name;
-        addLibraryCube({
-          label,
-          action_type: 'app_launch',
-          action_payload: { path, args: [] },
-          metadata: { source: 'folder-import', original_path: path },
-        });
-        // 폴더 경로 수집 (마지막 / 앞부분)
-        const folderPath = path.split('/').slice(0, -1).join('/');
-        if (folderPath) folderSet.add(folderPath);
-      });
-      window.alert(`${files.length}개 파일을 라이브러리에 추가했습니다. 폴더 ${folderSet.size}개 인식.`);
-    };
-    input.click();
-  }
+  // 다중 선택 완료 후 모달 트리거는 MainTabBar 의 prompt 로 대체. saveModal 은 추후 풀-기능 시.
+  void saveModalOpen;
+  void setSaveModalOpen;
+  void finishListMaker;
 
   function handleClickCube(cubeId: string): void {
     if (listMakerActive) {
@@ -249,7 +309,6 @@ function CubeMakerCenter() {
 
   function handleAddNewCube(): void {
     if (activeList) {
-      // 활성 리스트의 가장 빈 슬롯 찾기 (1 부터)
       const usedSlots = new Set(activeList.cubes.map((c) => c.sort_order));
       let slot = 1;
       while (usedSlots.has(slot)) slot++;
@@ -259,55 +318,59 @@ function CubeMakerCenter() {
     }
   }
 
-  function handleFinishListMaker(): void {
-    if (listMakerSelection.length === 0) {
-      window.alert('큐브를 1개 이상 선택하세요.');
-      return;
-    }
-    setSaveModalOpen(true);
-  }
-
+  const selectList = useEditor((s) => s.selectList);
   // 큐브 만들기 그리드 표시 큐브 = 현재 활성 리스트의 cubes (sort_order 순)
   const listCubes = activeList?.cubes ?? [];
   const cubesToShow = listCubes.length > 0 ? listCubes : libraryCubes;
   const cols = activeList?.cols ?? 4;
+  const isAllMode = activeList === null;
+  const lists = pack?.lists ?? [];
+
+  // "전체" 모드: 각 리스트(폴더)를 큐브 셀처럼 표시
+  if (isAllMode) {
+    return (
+      <div className="cube-maker-center">
+        <PageTabs />
+        {lists.length === 0 ? (
+          <div className="cube-maker-empty">
+            <p>큐브 리스트가 없습니다.</p>
+            <p className="muted small">우상단 📁 폴더 등록하거나 + 로 새 리스트 추가</p>
+          </div>
+        ) : (
+          <div
+            className="cube-grid"
+            style={{ gridTemplateColumns: `repeat(auto-fill, 112px)` }}
+          >
+            {lists.map((list) => {
+              const folderIcon = list.cubes[0]?.icon_url ?? null;
+              return (
+                <button
+                  key={list.id}
+                  type="button"
+                  className={`cube-cell folder-cell ${folderIcon ? 'has-icon' : ''}`}
+                  onClick={() => selectList(list.id)}
+                  title={`${list.name} · ${list.cubes.length} 큐브`}
+                >
+                  <div
+                    className="cube-icon-bg"
+                    style={folderIcon ? { backgroundImage: `url("${folderIcon}")` } : undefined}
+                    aria-hidden
+                  >
+                    {!folderIcon && <span className="folder-cell-emoji">📁</span>}
+                  </div>
+                  <span className="cube-label">{list.name}</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+      </div>
+    );
+  }
 
   return (
     <div className="cube-maker-center">
       <PageTabs />
-      <div className="cube-maker-toolbar">
-        <button type="button" className="btn-ghost" onClick={handleFolderImport}>
-          📁 폴더 불러오기
-        </button>
-        <div className="cube-maker-spacer" />
-        {listMakerActive ? (
-          <>
-            <span className="list-maker-status">
-              선택 {listMakerSelection.length}개
-            </span>
-            <button type="button" className="btn-ghost" onClick={cancelListMaker}>
-              취소
-            </button>
-            <button
-              type="button"
-              className="btn-ghost btn-primary"
-              onClick={handleFinishListMaker}
-            >
-              ✓ 완료
-            </button>
-          </>
-        ) : (
-          <button
-            type="button"
-            className="btn-ghost btn-primary"
-            onClick={startListMaker}
-            disabled={cubesToShow.length === 0}
-            title={cubesToShow.length === 0 ? '먼저 큐브를 추가하세요' : '큐브를 순서대로 클릭하여 리스트 생성'}
-          >
-            📋 리스트 만들기
-          </button>
-        )}
-      </div>
 
       {cubesToShow.length === 0 ? (
         <div className="cube-maker-empty">
@@ -330,7 +393,10 @@ function CubeMakerCenter() {
             title="＋ 새 큐브 추가"
             aria-label="새 큐브 추가"
           >
-            <span className="cube-cell-add-plus">＋</span>
+            <div className="cube-icon-bg">
+              <span className="cube-cell-add-plus">＋</span>
+            </div>
+            <span className="cube-label">새 큐브</span>
           </button>
           {cubesToShow.map((cube) => {
             const selectionIdx = listMakerSelection.indexOf(cube.id);
@@ -361,73 +427,14 @@ function CubeMakerCenter() {
         </div>
       )}
 
-      {saveModalOpen && (
-        <ListMakerSaveModal
-          count={listMakerSelection.length}
-          onSave={(name) => {
-            finishListMaker(name);
-            setSaveModalOpen(false);
-          }}
-          onCancel={() => setSaveModalOpen(false)}
-        />
-      )}
     </div>
   );
 }
 
 /**
- * 리스트 만들기 완료 모달 (Phase 3) — 리스트명 + 개수 + 저장.
- */
-function ListMakerSaveModal({
-  count,
-  onSave,
-  onCancel,
-}: {
-  count: number;
-  onSave: (name: string) => void;
-  onCancel: () => void;
-}) {
-  const [name, setName] = useState('새 리스트');
-
-  return (
-    <div className="modal-backdrop" onClick={onCancel}>
-      <div className="modal" onClick={(e) => e.stopPropagation()} role="dialog" aria-label="리스트 저장">
-        <h2 className="modal-title">리스트 저장</h2>
-        <div className="modal-section">
-          <label className="modal-label" htmlFor="list-name">리스트명</label>
-          <input
-            id="list-name"
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            autoFocus
-            onKeyDown={(e) => {
-              if (e.key === 'Enter' && name.trim()) onSave(name.trim());
-            }}
-          />
-        </div>
-        <div className="modal-section">
-          <div className="modal-label">선택된 큐브 수</div>
-          <div className="modal-preview-value"><strong>{count}</strong>개</div>
-        </div>
-        <div className="modal-actions">
-          <button type="button" className="btn-ghost" onClick={onCancel}>취소</button>
-          <button
-            type="button"
-            className="btn-ghost btn-primary"
-            onClick={() => onSave(name.trim())}
-            disabled={name.trim().length === 0}
-          >
-            저장
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * 페이지 탭 (큐브 리스트 페이지 = pack.lists). 가운데 영역 상단 (수정).
+ * 페이지 탭 (큐브 리스트 페이지 = pack.lists).
+ * 첫 탭 = "전체" (selectList(null) — 폴더 그리드 모드)
+ * 가로 스크롤 + 마우스 드래그 + 휠 ↔ 변환 지원.
  */
 function PageTabs() {
   const pack = useEditor((s) => s.pack);
@@ -435,20 +442,81 @@ function PageTabs() {
   const selectList = useEditor((s) => s.selectList);
   const addList = useEditor((s) => s.addList);
   const renameList = useEditor((s) => s.renameList);
+  const scrollRef = useRef<HTMLElement>(null);
+  const dragRef = useRef<{ active: boolean; startX: number; startScroll: number; moved: boolean }>({
+    active: false,
+    startX: 0,
+    startScroll: 0,
+    moved: false,
+  });
 
   function handleRename(listId: string, current: string): void {
     const next = window.prompt('페이지(리스트) 이름:', current);
     if (next && next.trim().length > 0) renameList(listId, next.trim());
   }
 
+  // 마우스 드래그 가로 스크롤 (Apple Trackpad 식)
+  function onPointerDown(e: React.PointerEvent<HTMLElement>): void {
+    if (!scrollRef.current) return;
+    dragRef.current = {
+      active: true,
+      startX: e.clientX,
+      startScroll: scrollRef.current.scrollLeft,
+      moved: false,
+    };
+    scrollRef.current.setPointerCapture(e.pointerId);
+  }
+  function onPointerMove(e: React.PointerEvent<HTMLElement>): void {
+    if (!dragRef.current.active || !scrollRef.current) return;
+    const dx = e.clientX - dragRef.current.startX;
+    if (Math.abs(dx) > 3) dragRef.current.moved = true;
+    scrollRef.current.scrollLeft = dragRef.current.startScroll - dx;
+  }
+  function onPointerUp(e: React.PointerEvent<HTMLElement>): void {
+    if (!scrollRef.current) return;
+    scrollRef.current.releasePointerCapture(e.pointerId);
+    dragRef.current.active = false;
+  }
+  function onWheel(e: React.WheelEvent<HTMLElement>): void {
+    if (!scrollRef.current) return;
+    // 세로 휠 → 가로 스크롤로 변환 (Shift 누른 듯한 효과)
+    if (Math.abs(e.deltaY) > Math.abs(e.deltaX)) {
+      scrollRef.current.scrollLeft += e.deltaY;
+    }
+  }
+
   return (
-    <nav className="page-tabs" aria-label="페이지 (리스트)">
+    <nav
+      ref={scrollRef}
+      className="page-tabs"
+      aria-label="페이지 (리스트)"
+      onPointerDown={onPointerDown}
+      onPointerMove={onPointerMove}
+      onPointerUp={onPointerUp}
+      onPointerLeave={onPointerUp}
+      onWheel={onWheel}
+    >
+      <button
+        type="button"
+        className={`page-tab page-tab-all ${activeListId === null ? 'is-active' : ''}`}
+        onClick={(e) => {
+          if (dragRef.current.moved) { e.preventDefault(); return; }
+          selectList(null);
+        }}
+        aria-pressed={activeListId === null}
+        title="전체 폴더 그리드"
+      >
+        전체
+      </button>
       {pack?.lists.map((l) => (
         <button
           key={l.id}
           type="button"
           className={`page-tab ${activeListId === l.id ? 'is-active' : ''}`}
-          onClick={() => selectList(l.id)}
+          onClick={(e) => {
+            if (dragRef.current.moved) { e.preventDefault(); return; }
+            selectList(l.id);
+          }}
           onDoubleClick={() => handleRename(l.id, l.name)}
           aria-pressed={activeListId === l.id}
           title={`${l.name} (더블클릭하여 이름 수정)`}
@@ -460,7 +528,10 @@ function PageTabs() {
         className="page-tab is-add"
         type="button"
         title="페이지(리스트) 추가"
-        onClick={() => addList()}
+        onClick={(e) => {
+          if (dragRef.current.moved) { e.preventDefault(); return; }
+          addList();
+        }}
       >
         +
       </button>
@@ -605,6 +676,96 @@ function TopBar() {
 }
 
 function Sidebar() {
+  const pack = useEditor((s) => s.pack);
+  const activeListId = useEditor((s) => s.list_id);
+  const selectedCubeId = useEditor((s) => s.cube_id);
+  const selectList = useEditor((s) => s.selectList);
+  const selectCubeFn = useEditor((s) => s.selectCube);
+  const lists = pack?.lists ?? [];
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const libDir = typeof window !== 'undefined'
+    ? window.localStorage.getItem('cubelist:library_dir') ?? ''
+    : '';
+  const libDirShort = libDir
+    ? (libDir.split(/[\\/]/).filter(Boolean).slice(-2).join('/') || libDir)
+    : '(폴더 미등록)';
+
+  function toggleExpand(id: string): void {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  return (
+    <aside className="sidebar sidebar-tree" aria-label="라이브러리 트리">
+      <div className="sidebar-path" title={libDir}>
+        <span className="path-icon">📁</span>
+        <span className="path-text">{libDirShort}</span>
+      </div>
+      <div className="sidebar-tree-body">
+        <button
+          type="button"
+          className={`tree-folder tree-folder-root ${activeListId === null ? 'is-active' : ''}`}
+          onClick={() => selectList(null)}
+        >
+          <span className="tree-icon">📂</span>
+          <span className="tree-label">전체</span>
+          <span className="tree-count">({lists.length})</span>
+        </button>
+        {lists.map((list) => {
+          const isExpanded = expanded.has(list.id);
+          return (
+            <div key={list.id} className="tree-folder-group">
+              <button
+                type="button"
+                className={`tree-folder ${activeListId === list.id ? 'is-active' : ''}`}
+                onClick={() => selectList(list.id)}
+              >
+                <span
+                  className="tree-arrow"
+                  onClick={(e) => { e.stopPropagation(); toggleExpand(list.id); }}
+                  role="button"
+                  aria-label="펼치기"
+                >
+                  {isExpanded ? '▼' : '▶'}
+                </span>
+                <span className="tree-icon">📁</span>
+                <span className="tree-label">{list.name}</span>
+                <span className="tree-count">({list.cubes.length})</span>
+              </button>
+              {isExpanded && (
+                <ul className="tree-cube-list">
+                  {list.cubes.map((cube) => (
+                    <li key={cube.id}>
+                      <button
+                        type="button"
+                        className={`tree-cube ${selectedCubeId === cube.id ? 'is-active' : ''}`}
+                        onClick={() => {
+                          selectList(list.id);
+                          selectCubeFn(cube.id);
+                        }}
+                        title={`${cube.label} (${cube.action_type})`}
+                      >
+                        <span className="tree-icon-cube">▫</span>
+                        <span className="tree-label">{cube.label}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </aside>
+  );
+}
+
+// @ts-expect-error: 구 카탈로그 Sidebar — 라이브러리 트리로 대체, 향후 인스펙터 통합 시 부활 가능
+function _LegacySidebar() {
   const { t } = useTranslation();
   const pluginActions = usePluginRegistry(useShallow((s) => s.allActions()));
   const installedPlugins = usePluginRegistry((s) => s.installed);

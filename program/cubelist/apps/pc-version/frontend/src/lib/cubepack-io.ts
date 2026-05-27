@@ -332,6 +332,57 @@ export function downloadCubepack(blob: Blob, filename: string): void {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
+/** 단일 CubeList → .cubelist ZIP 다운로드 (cubes/*.cubeone + manifest.json) */
+export async function downloadCubelist(list: import('../types/cube').CubeList): Promise<void> {
+  const zip = new JSZip();
+  const order: { ref: string; sort_order: number }[] = [];
+  for (const cube of list.cubes) {
+    const cubeManifest = {
+      rbs_format_version: 3,
+      kind: 'cubeone',
+      id: cube.id,
+      license: 'free',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+      rbs_min_version: '0.1.0',
+      cube: {
+        label: cube.label,
+        icon_url: cube.icon_url,
+        action_type: cube.action_type,
+        action_payload: cube.action_payload,
+        ...(cube.metadata ? { metadata: cube.metadata } : {}),
+      },
+    };
+    const cubeZip = new JSZip();
+    cubeZip.file('manifest.json', JSON.stringify(cubeManifest, null, 2));
+    const cubeBytes = await cubeZip.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
+    const ref = `cubes/${cube.id}.cubeone`;
+    zip.file(ref, cubeBytes);
+    order.push({ ref, sort_order: cube.sort_order });
+  }
+  const listManifest = {
+    rbs_format_version: 3,
+    kind: 'cubelist',
+    id: list.id,
+    license: 'free',
+    created_at: new Date().toISOString(),
+    updated_at: new Date().toISOString(),
+    rbs_min_version: '0.1.0',
+    list: { name: list.name, order, cols: list.cols, cubes_per_page: list.cubes_per_page },
+  };
+  zip.file('manifest.json', JSON.stringify(listManifest, null, 2));
+  const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `${list.name}.cubelist`;
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
 // === Helpers ===============================================================
 
 function safeParseJson(text: string, context: string): Record<string, unknown> {
