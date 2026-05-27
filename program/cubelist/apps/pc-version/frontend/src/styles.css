@@ -465,9 +465,63 @@ html, body, #root {
 .sidebar.sidebar-tree {
   background: var(--bg-surface);
   border-right: 1px solid var(--border);
-  overflow-y: auto;
+  overflow: hidden;
   padding: 0;
+  display: flex;
+  flex-direction: column;
 }
+.sidebar-section-top {
+  flex: 1 1 60%;
+  overflow-y: auto;
+  min-height: 0;
+}
+.sidebar-section-bottom {
+  flex: 1 1 40%;
+  overflow-y: auto;
+  min-height: 0;
+  border-top: 1px solid var(--border);
+  background: var(--bg-app);
+}
+.sidebar-section-title {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  padding: 8px 12px 4px;
+}
+.sidebar-recent-empty {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 12px;
+  text-align: center;
+}
+.recent-list { list-style: none; margin: 0; padding: 0; }
+.recent-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  padding: 6px 12px;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-size: 12px;
+  text-align: left;
+  cursor: pointer;
+}
+.recent-item:hover { background: rgba(255, 255, 255, 0.04); }
+.recent-item.is-active {
+  background: rgba(217, 119, 6, 0.12);
+  color: var(--accent, #d97706);
+}
+.recent-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.recent-count { font-size: 10px; color: var(--text-muted); }
+.recent-icon { font-size: 12px; }
 .sidebar-path {
   display: flex;
   align-items: center;
@@ -570,8 +624,7 @@ html, body, #root {
   overflow-x: auto;
   overflow-y: hidden;
   scrollbar-width: thin;
-  background: var(--bg-surface);
-  border-bottom: 1px solid var(--border);
+  background: transparent;
   cursor: grab;
   user-select: none;
 }

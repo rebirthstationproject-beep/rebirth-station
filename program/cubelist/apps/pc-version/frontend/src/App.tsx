@@ -143,9 +143,6 @@ export function App() {
         </main>
         <Inspector />
       </div>
-      <footer className="library">
-        <span className="library-title">플러그인 라이브러리</span>
-      </footer>
     </div>
   );
 }
@@ -329,7 +326,7 @@ function CubeMakerCenter() {
   // "전체" 모드: 각 리스트(폴더)를 큐브 셀처럼 표시
   if (isAllMode) {
     return (
-      <div className="cube-maker-center">
+      <>
         <PageTabs />
         {lists.length === 0 ? (
           <div className="cube-maker-empty">
@@ -339,7 +336,7 @@ function CubeMakerCenter() {
         ) : (
           <div
             className="cube-grid"
-            style={{ gridTemplateColumns: `repeat(auto-fill, 112px)` }}
+            style={{ gridTemplateColumns: `repeat(auto-fill, 112px)`, padding: '16px' }}
           >
             {lists.map((list) => {
               const folderIcon = list.cubes[0]?.icon_url ?? null;
@@ -364,12 +361,12 @@ function CubeMakerCenter() {
             })}
           </div>
         )}
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="cube-maker-center">
+    <>
       <PageTabs />
 
       {cubesToShow.length === 0 ? (
@@ -383,7 +380,7 @@ function CubeMakerCenter() {
       ) : (
         <div
           className="cube-grid"
-          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))` }}
+          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))`, padding: '16px' }}
         >
           {/* 첫 셀: + 새 큐브 추가 */}
           <button
@@ -426,8 +423,7 @@ function CubeMakerCenter() {
           })}
         </div>
       )}
-
-    </div>
+    </>
   );
 }
 
@@ -683,12 +679,23 @@ function Sidebar() {
   const selectCubeFn = useEditor((s) => s.selectCube);
   const lists = pack?.lists ?? [];
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [recentIds, setRecentIds] = useState<string[]>([]);
   const libDir = typeof window !== 'undefined'
     ? window.localStorage.getItem('cubelist:library_dir') ?? ''
     : '';
   const libDirShort = libDir
     ? (libDir.split(/[\\/]/).filter(Boolean).slice(-2).join('/') || libDir)
     : '(폴더 미등록)';
+
+  // activeListId 변경 시 recent 갱신을 따라가기
+  useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem('cubelist:recent_lists') ?? '[]';
+      setRecentIds(JSON.parse(raw));
+    } catch {
+      setRecentIds([]);
+    }
+  }, [activeListId]);
 
   function toggleExpand(id: string): void {
     setExpanded((prev) => {
@@ -699,13 +706,19 @@ function Sidebar() {
     });
   }
 
+  const recentLists = recentIds
+    .map((id) => lists.find((l) => l.id === id))
+    .filter((l): l is NonNullable<typeof l> => l != null)
+    .slice(0, 6);
+
   return (
     <aside className="sidebar sidebar-tree" aria-label="라이브러리 트리">
       <div className="sidebar-path" title={libDir}>
         <span className="path-icon">📁</span>
         <span className="path-text">{libDirShort}</span>
       </div>
-      <div className="sidebar-tree-body">
+      {/* 상단: 폴더 트리 */}
+      <div className="sidebar-tree-body sidebar-section-top">
         <button
           type="button"
           className={`tree-folder tree-folder-root ${activeListId === null ? 'is-active' : ''}`}
@@ -759,6 +772,30 @@ function Sidebar() {
             </div>
           );
         })}
+      </div>
+      {/* 하단: 최근 리스트 */}
+      <div className="sidebar-section-bottom">
+        <div className="sidebar-section-title">최근 리스트</div>
+        {recentLists.length === 0 ? (
+          <div className="sidebar-recent-empty">아직 작업한 리스트가 없습니다</div>
+        ) : (
+          <ul className="recent-list">
+            {recentLists.map((list) => (
+              <li key={list.id}>
+                <button
+                  type="button"
+                  className={`recent-item ${activeListId === list.id ? 'is-active' : ''}`}
+                  onClick={() => selectList(list.id)}
+                  title={`${list.name} · ${list.cubes.length} 큐브`}
+                >
+                  <span className="recent-icon">📋</span>
+                  <span className="recent-label">{list.name}</span>
+                  <span className="recent-count">{list.cubes.length}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </aside>
   );

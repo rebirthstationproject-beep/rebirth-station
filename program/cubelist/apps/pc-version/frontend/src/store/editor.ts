@@ -187,11 +187,11 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   loadPack(pack: CubePack): void {
-    const firstListId = pack.lists[0]?.id ?? null;
+    // 부팅 시 list_id = null (빈 상태로 시작) — 사용자가 직접 폴더 선택
     set({
       pack,
       pack_id: pack.id,
-      list_id: firstListId,
+      list_id: null,
       cube_id: null,
       current_folder_id: null,
       folder_stack: [],
@@ -212,6 +212,17 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   selectList(listId: string | null): void {
+    // 최근 리스트 갱신 (localStorage cubelist:recent_lists, 최대 8개)
+    if (listId) {
+      try {
+        const raw = window.localStorage.getItem('cubelist:recent_lists') ?? '[]';
+        const recent: string[] = JSON.parse(raw);
+        const next = [listId, ...recent.filter((x) => x !== listId)].slice(0, 8);
+        window.localStorage.setItem('cubelist:recent_lists', JSON.stringify(next));
+      } catch {
+        /* localStorage 손상은 무시 */
+      }
+    }
     // 리스트 전환 시 폴더 스택 + 페이지 초기화
     set({
       list_id: listId,
