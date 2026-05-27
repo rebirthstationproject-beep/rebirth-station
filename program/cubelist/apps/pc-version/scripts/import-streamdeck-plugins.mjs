@@ -60,29 +60,33 @@ async function readPluginManifest(zip) {
   };
 }
 
+/**
+ * StreamDeck 안 이미지 → data URL.
+ *
+ * 우선순위: .svg (벡터) → @2x.png (HiDPI) → .png → 확장자 없는 원본
+ * 1MB 까지 허용 (vendor PNG 대부분 < 50KB · cubepack 전체 5~10MB 안전)
+ */
 async function loadIconAsDataUrl(zip, pluginDir, iconRef) {
   if (!iconRef) return null;
-  // StreamDeck 은 확장자 없이 base name 만 명시 (예: "icon"). 실 파일은 icon.png, icon@2x.png 등.
   const candidates = [
-    iconRef,
-    `${iconRef}.png`,
-    `${iconRef}@2x.png`,
     `${iconRef}.svg`,
+    `${iconRef}@2x.png`,
+    `${iconRef}.png`,
+    iconRef,
   ];
+  const MAX_BYTES = 1024 * 1024; // 1 MB raw
   for (const c of candidates) {
     const full = `${pluginDir}${c}`;
     const entry = zip.file(full);
-    if (entry) {
-      const buf = await entry.async('uint8array');
-      const ext = c.split('.').pop().toLowerCase();
-      const mime = ext === 'svg' ? 'image/svg+xml' : `image/${ext === 'jpg' ? 'jpeg' : ext}`;
-      const b64 = Buffer.from(buf).toString('base64');
-      // 256 KB 제한 (frontend MAX_BYTES base64 = 약 175 KB)
-      if (b64.length > 256 * 1024) {
-        return null; // 너무 큼 — 스킵
-      }
-      return `data:${mime};base64,${b64}`;
-    }
+    if (!entry) continue;
+    const buf = await entry.async('uint8array');
+    if (buf.byteLength > MAX_BYTES) continue;
+    const ext = c.split('.').pop().toLowerCase();
+    const mime = ext === 'svg'
+      ? 'image/svg+xml'
+      : `image/${ext === 'jpg' ? 'jpeg' : ext === 'jpeg' ? 'jpeg' : ext === 'gif' ? 'gif' : 'png'}`;
+    const b64 = Buffer.from(buf).toString('base64');
+    return `data:${mime};base64,${b64}`;
   }
   return null;
 }
@@ -113,7 +117,12 @@ async function buildCubeOneZip(zip, pluginDir, action, defaultIconUrl) {
   const id = safeId(action.UUID ?? action.Name ?? 'action');
   const label = action.Name ?? id;
   const mappedType = mapActionType(action.UUID);
-  const icon_url = await loadIconAsDataUrl(zip, pluginDir, action.Icon) ?? defaultIconUrl;
+  // 우선순위: 액션 별 States[0].Image (고유 시각) → Action.Icon (plugin 카탈로그용) → plugin Icon
+  const stateImage = Array.isArray(action.States) && action.States[0]?.Image;
+  const icon_url =
+    (stateImage && await loadIconAsDataUrl(zip, pluginDir, stateImage)) ??
+    (action.Icon && await loadIconAsDataUrl(zip, pluginDir, action.Icon)) ??
+    defaultIconUrl;
 
   const cube = {
     label,

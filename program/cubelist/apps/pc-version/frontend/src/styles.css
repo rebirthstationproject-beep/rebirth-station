@@ -158,7 +158,8 @@ html, body, #root {
   width: 56px;
   height: 56px;
   border-radius: 12px;
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
   background-color: var(--bg-surface);
   display: flex;
@@ -611,7 +612,8 @@ html, body, #root {
   border-radius: 12px;
   background: var(--bg-app);
   border: 1px solid var(--border);
-  background-size: cover;
+  background-size: contain;
+  background-repeat: no-repeat;
   background-position: center;
   background-repeat: no-repeat;
   display: flex;
@@ -643,11 +645,11 @@ html, body, #root {
 .cube-cell { position: relative; overflow: hidden; }
 .cube-icon-bg {
   position: absolute;
-  inset: 0;
-  background-size: cover;
+  inset: 8px;
+  background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.85;
+  opacity: 0.95;
   z-index: 0;
 }
 .cube-cell.has-icon .cube-label,
