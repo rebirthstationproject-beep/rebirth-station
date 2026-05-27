@@ -157,6 +157,10 @@ export class PluginRuntime {
   private mockSocket: MockWebSocket | null = null;
   private mounted = false;
   private currentSettings: Record<string, unknown>;
+  /** 진단용 — connectElgatoStreamDeckSocket 호출 성공 시 true */
+  connected = false;
+  /** 진단용 — 마지막 에러 메시지 */
+  lastError: string | null = null;
 
   constructor(public readonly options: PluginRuntimeOptions) {
     this.currentSettings = { ...options.settings };
@@ -171,8 +175,9 @@ export class PluginRuntime {
     iframe.className = 'plugin-iframe';
     iframe.style.cssText =
       'width:100%;height:100%;border:none;background:transparent;';
-    iframe.sandbox.add('allow-scripts', 'allow-same-origin', 'allow-popups', 'allow-forms');
-    iframe.allow = 'autoplay';
+    // sandbox 제거 — WebView2 가 sandbox + asset:// 조합 차단함 ("이 콘텐츠는 차단되었습니다")
+    iframe.allow = 'autoplay; clipboard-read; clipboard-write';
+    iframe.referrerPolicy = 'no-referrer';
 
     // src = Tauri asset:// 경로 (라이브러리 폴더 안 plugin html)
     const filePath = `${this.options.libraryDir}/_plugins/${this.options.pluginId}/${this.options.pluginDir}${htmlRelativePath}`;
@@ -189,8 +194,10 @@ export class PluginRuntime {
         const win = iframe.contentWindow as Window | null;
         if (!win) {
           this.options.onLog?.('[PluginRuntime] iframe.contentWindow 없음', 'error');
+          this.lastError = 'iframe.contentWindow 없음';
           return;
         }
+        this.options.onLog?.(`[PluginRuntime] iframe loaded · src=${iframe.src}`);
 
         // 1. plugin 안에 MockWebSocket 을 window.WebSocket 으로 주입
         // plugin 의 new WebSocket(...) 호출 = 우리 mock 인스턴스 반환
@@ -244,7 +251,10 @@ export class PluginRuntime {
         if (typeof connector === 'function') {
           // SDK 표준 시그니처 (4 인자 + info JSON string)
           connector.call(win, 0, this.options.contextUuid, registerEvent, JSON.stringify(info));
+          this.connected = true;
+          this.options.onLog?.(`[PluginRuntime] connectElgatoStreamDeckSocket 호출 OK · ${this.options.actionUuid}`);
         } else {
+          this.lastError = 'connectElgatoStreamDeckSocket 미정의';
           this.options.onLog?.(
             '[PluginRuntime] connectElgatoStreamDeckSocket 함수 미정의 — SDK 미사용 plugin?',
             'warn',
@@ -266,6 +276,7 @@ export class PluginRuntime {
     });
 
     iframe.addEventListener('error', () => {
+      this.lastError = 'iframe load 에러';
       this.options.onLog?.('[PluginRuntime] iframe load 에러', 'error');
     });
 

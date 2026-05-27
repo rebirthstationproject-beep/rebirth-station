@@ -36,7 +36,7 @@
     },
     "security": {
       "csp": {
-        "default-src": "'self' asset: https://asset.localhost",
+        "default-src": "'self' asset: https://asset.localhost http://asset.localhost",
         "connect-src": [
           "'self'",
           "ws://127.0.0.1:23456",
@@ -46,19 +46,28 @@
           "wss://*.supabase.co",
           "asset:",
           "https://asset.localhost",
+          "http://asset.localhost",
           "ipc:",
           "http://ipc.localhost"
         ],
-        "img-src": "'self' data: https: asset: https://asset.localhost",
-        "style-src": "'self' 'unsafe-inline' asset: https://asset.localhost",
-        "script-src": "'self' 'unsafe-inline' 'unsafe-eval' asset: https://asset.localhost",
-        "media-src": "'self' data: asset: https://asset.localhost",
-        "frame-src": "'self' asset: https://asset.localhost"
+        "img-src": "'self' data: blob: https: asset: https://asset.localhost http://asset.localhost",
+        "style-src": "'self' 'unsafe-inline' asset: https://asset.localhost http://asset.localhost",
+        "script-src": "'self' 'unsafe-inline' 'unsafe-eval' asset: https://asset.localhost http://asset.localhost",
+        "media-src": "'self' data: blob: asset: https://asset.localhost http://asset.localhost",
+        "frame-src": "'self' asset: https://asset.localhost http://asset.localhost",
+        "child-src": "'self' asset: https://asset.localhost http://asset.localhost"
       },
       "assetProtocol": {
         "enable": true,
         "scope": [
-          "**/*"
+          "**",
+          "**/*",
+          "C:/**",
+          "C:/Users/**",
+          "$HOME/**",
+          "$DESKTOP/**",
+          "$DOWNLOAD/**",
+          "$DOCUMENT/**"
         ]
       }
     }

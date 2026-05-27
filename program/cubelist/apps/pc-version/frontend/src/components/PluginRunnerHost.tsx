@@ -122,6 +122,17 @@ export function fireCubeKey(cubeId: string): boolean {
   return true;
 }
 
+/** 진단용 — 큐브의 plugin runtime 상태 반환 */
+export function getCubeRuntimeStatus(cubeId: string): {
+  mounted: boolean;
+  connected: boolean;
+  lastError: string | null;
+} | null {
+  const r = cubeRuntimeMap.get(cubeId);
+  if (!r) return null;
+  return { mounted: true, connected: r.connected, lastError: r.lastError };
+}
+
 /**
  * 활성 plugin_action 큐브들을 화면 밖 host 에서 모두 마운트.
  * - pack.lists 안 모든 cubes 중 plugin_action 만 필터링

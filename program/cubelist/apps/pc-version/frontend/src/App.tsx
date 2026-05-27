@@ -41,6 +41,7 @@ import {
   PluginActionsBackground,
   PluginPropertyInspector,
   fireCubeKey,
+  getCubeRuntimeStatus,
 } from './components/PluginRunnerHost';
 import {
   ACTIONS,
@@ -1441,14 +1442,38 @@ function Inspector() {
         value={cube.action_payload}
         onChange={(next) => patch({ action_payload: next })}
       />
-      {/* M4: plugin_action 큐브 시 PropertyInspector iframe 임베드 */}
+      {/* M4: plugin_action 큐브 시 runtime 상태 + PropertyInspector iframe 임베드 */}
       {cube.action_type === 'plugin_action' && (() => {
         const p = cube.action_payload as { plugin_id?: string; plugin_dir?: string; plugin_uuid?: string };
-        if (!p.plugin_id || !p.plugin_dir || !p.plugin_uuid) return null;
+        if (!p.plugin_id || !p.plugin_dir || !p.plugin_uuid) {
+          return (
+            <div className="plugin-pi-wrap">
+              <h4 className="inspector-subtitle">Plugin Runtime</h4>
+              <div className="plugin-runtime-status err">
+                plugin 메타데이터 누락 — 다시 변환 필요 (plugin_id/plugin_dir/plugin_uuid)
+              </div>
+            </div>
+          );
+        }
+        const status = getCubeRuntimeStatus(cube.id);
         return (
           <div className="plugin-pi-wrap">
-            <h4 className="inspector-subtitle">Plugin PropertyInspector</h4>
+            <h4 className="inspector-subtitle">Plugin Runtime</h4>
+            <div className={`plugin-runtime-status ${status?.connected ? 'ok' : status?.lastError ? 'err' : 'warn'}`}>
+              {status?.connected
+                ? `● 작동 중 · ${p.plugin_uuid}`
+                : status?.lastError
+                  ? `⚠ ${status.lastError}`
+                  : `⏳ 마운트 중 또는 SDK 미초기화...`}
+              <div className="muted small" style={{ marginTop: 4 }}>
+                _plugins/{p.plugin_id}/{p.plugin_dir}index.html
+              </div>
+            </div>
+            <h4 className="inspector-subtitle" style={{ marginTop: 12 }}>PropertyInspector</h4>
             <PluginPropertyInspector cube={cube} />
+            <div className="muted small" style={{ marginTop: 8 }}>
+              💡 같은 큐브를 큐브 리스트 만들기 페이지에 N번 배치하면 N개 독립 instance 작동
+            </div>
           </div>
         );
       })()}
