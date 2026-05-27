@@ -81,6 +81,17 @@ export async function exportCubepack(pack: CubePack): Promise<Blob> {
     zip.file(`lists/${list.id}.cubelist`, listBlob);
   }
 
+  // 라이브러리 큐브 (수정 #2 — pack.cubes) 도 보존
+  if (pack.cubes && pack.cubes.length > 0) {
+    for (const c of pack.cubes) {
+      const cubeBlob = await buildCubeZip(c, now).generateAsync({
+        type: 'uint8array',
+        compression: 'DEFLATE',
+      });
+      zip.file(`library/${c.id}.cubeone`, cubeBlob);
+    }
+  }
+
   return zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
 }
 
@@ -189,10 +200,53 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
     lists.push(list);
   }
 
+  // === 라이브러리 큐브 복원 (수정 #2) ===
+  // 1) ZIP 안 library/ 폴더 명시 큐브 우선
+  // 2) 추가로 list.cubes 의 모든 큐브를 라이브러리에도 자동 충원 (중복 제거: label+action_type+payload 기준)
+  const libraryCubes: Cube[] = [];
+  const libSeen = new Set<string>();
+  function libKey(c: Cube): string {
+    return `${c.label}|${c.action_type}|${JSON.stringify(c.action_payload)}`;
+  }
+
+  for (const fileName of Object.keys(zip.files)) {
+    if (!fileName.startsWith('library/') || !fileName.endsWith('.cubeone')) continue;
+    const entry = zip.file(fileName);
+    if (!entry) continue;
+    try {
+      const buf = await entry.async('uint8array');
+      const c = await readCubeZip(buf, 0);
+      // sort_order 0 = 라이브러리
+      const libCube: Cube = { ...c, sort_order: 0 };
+      libraryCubes.push(libCube);
+      libSeen.add(libKey(libCube));
+    } catch {
+      /* 손상된 라이브러리 큐브는 스킵 */
+    }
+  }
+
+  // 자동 충원: list.cubes 중 라이브러리에 없는 것 추가 (sort_order 0 + 새 id)
+  for (const list of lists) {
+    for (const c of list.cubes) {
+      const k = libKey(c);
+      if (libSeen.has(k)) continue;
+      libSeen.add(k);
+      libraryCubes.push({
+        ...c,
+        id:
+          typeof crypto !== 'undefined' && crypto.randomUUID
+            ? (crypto.randomUUID() as string)
+            : `lib-${Date.now()}-${libraryCubes.length}`,
+        sort_order: 0,
+      });
+    }
+  }
+
   return {
     id: packId,
     name: typeof packBody.name === 'string' ? packBody.name : '(이름 없음)',
     category: extractCategory(packBody),
+    cubes: libraryCubes,
     lists,
   };
 }
