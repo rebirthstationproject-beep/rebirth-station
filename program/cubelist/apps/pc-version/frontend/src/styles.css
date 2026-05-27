@@ -722,6 +722,25 @@ html, body, #root {
 .tier-badge.tier-2 { color: #d9c270; border-color: #5a4a3a; }
 .tier-badge.tier-3 { color: #d97070; border-color: #5a3a3a; }
 .payload-desc { color: var(--text-muted); font-size: 11px; }
+.plugin-action-hint {
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 1px solid #444;
+  border-left: 3px solid #d97706;
+  background: rgba(217, 119, 6, 0.06);
+  border-radius: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.plugin-action-hint strong { display: block; margin-bottom: 4px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; }
+.plugin-action-hint p { margin: 4px 0 0 0; }
+.plugin-action-hint code {
+  background: rgba(255,255,255,0.08);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-family: ui-monospace, SFMono-Regular, monospace;
+  font-size: 11px;
+}
 .field-row { display: flex; flex-direction: column; gap: 4px; }
 .field-label {
   font-size: 11px;

@@ -29,12 +29,25 @@ export function ActionPayloadForm({ actionType, value, onChange }: ActionPayload
   // M7 cron #21: macro 는 전용 step 에디터 사용 (schema 의 json fallback 대신)
   const isMacro = actionType === 'macro';
 
+  const isPluginAction = actionType === 'plugin_action';
+
   return (
     <div className="payload-form">
       <div className="payload-meta">
         <span className={`tier-badge tier-${spec.tier}`}>Tier {spec.tier}</span>
         <span className="payload-desc">{spec.description}</span>
       </div>
+      {isPluginAction && (
+        <div className="plugin-action-hint" role="note">
+          <strong>안내</strong>
+          <p>
+            이 큐브는 외부 vendor SDK (.cubeplugin) 가 있어야 실제로 작동합니다. 현재는 아이콘과 라벨만 표시됩니다.
+          </p>
+          <p>
+            상단 <strong>액션 타입</strong> 드롭다운에서 <code>링크</code>·<code>단축키</code>·<code>앱 실행</code>·<code>텍스트 삽입</code> 중 하나로 바꾸면 즉시 사용할 수 있습니다.
+          </p>
+        </div>
+      )}
       {isMacro ? (
         <MacroStepEditor
           steps={Array.isArray(value.steps) ? (value.steps as MacroStep[]) : []}

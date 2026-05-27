@@ -58,15 +58,45 @@ import type { Cube, CubeList } from './types/cube';
 
 type MainTab = 'cube-maker' | 'list-maker';
 
+const PACK_STORAGE_KEY = 'cubelist:last_pack';
+
 export function App() {
   const pack = useEditor((s) => s.pack);
   const loadPack = useEditor((s) => s.loadPack);
   const refreshPlugins = usePluginRegistry((s) => s.refresh);
   const [mainTab, setMainTab] = useState<MainTab>('list-maker');
 
+  // 부팅 시 마지막 큐브팩 복원 — 없으면 데모
   useEffect(() => {
-    if (!pack) loadPack(buildDemoPack());
+    if (pack) return;
+    try {
+      const stored = window.localStorage.getItem(PACK_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (parsed && parsed.id && Array.isArray(parsed.lists)) {
+          loadPack(parsed);
+          return;
+        }
+      }
+    } catch {
+      /* 손상된 localStorage 는 무시하고 데모로 */
+    }
+    loadPack(buildDemoPack());
   }, [pack, loadPack]);
+
+  // pack 변경 시 localStorage 동기 (200 ms debounce — 빈번한 큐브 편집 대비)
+  useEffect(() => {
+    if (!pack) return;
+    const t = setTimeout(() => {
+      try {
+        window.localStorage.setItem(PACK_STORAGE_KEY, JSON.stringify(pack));
+      } catch (e) {
+        // QuotaExceededError 등 — 무시
+        console.warn('[cubelist] localStorage 저장 실패', e);
+      }
+    }, 200);
+    return () => clearTimeout(t);
+  }, [pack]);
 
   useEffect(() => {
     void refreshPlugins();
