@@ -68,8 +68,14 @@ const DEFAULT_LIBRARY_DIR = 'C:\\Users\\PC\\Downloads\\플러그인\\CUBE';
 export function App() {
   const pack = useEditor((s) => s.pack);
   const loadPack = useEditor((s) => s.loadPack);
+  const draftList = useEditor((s) => s.draft_list);
   const refreshPlugins = usePluginRegistry((s) => s.refresh);
-  const [mainTab, setMainTab] = useState<MainTab>('list-maker');
+  const [mainTab, setMainTab] = useState<MainTab>('cube-maker');
+
+  // draft 가 새로 생성되면 큐브 리스트 만들기 탭으로 자동 전환 (워크플로우 자동화)
+  useEffect(() => {
+    if (draftList) setMainTab('list-maker');
+  }, [draftList?.id]);
 
   // 부팅 시 우선순위: 라이브러리 폴더 → localStorage cubepack → 데모
   useEffect(() => {
@@ -187,10 +193,26 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t:
       window.alert('저장할 리스트가 선택되지 않았습니다.');
       return;
     }
+    const libraryDir = window.localStorage.getItem('cubelist:library_dir') ?? '';
     try {
-      const { downloadCubelist } = await import('./lib/cubepack-io');
-      await downloadCubelist(activeList);
-      window.alert(`"${activeList.name}.cubelist" 저장됨. 라이브러리 폴더에 옮겨 넣으면 다음 부팅 시 자동 로드됩니다.`);
+      const { saveCubelistToLibrary, computePageCount } = await import('./lib/cubepack-io');
+      const pages = computePageCount(activeList);
+      if (libraryDir) {
+        const { path, ext } = await saveCubelistToLibrary(activeList, libraryDir);
+        window.alert(
+          `저장 완료 (${pages}페이지 → .${ext})\n경로: ${path}\n좌측 사이드바에서 자동 갱신됩니다.`,
+        );
+        // 라이브러리 폴더에서 다시 로드 → 새 파일 반영
+        const { loadLibraryFromDir } = await import('./lib/library-loader');
+        const refreshed = await loadLibraryFromDir(libraryDir);
+        useEditor.getState().loadPack(refreshed);
+      } else {
+        const { downloadCubelist } = await import('./lib/cubepack-io');
+        await downloadCubelist(activeList);
+        window.alert(
+          `라이브러리 폴더 미등록 — 다운로드 폴더에 ${pages >= 2 ? '.cubedeck' : '.cubelist'} 파일 저장됨. 우상단 📁 폴더 등록 후 다음 부팅 시 자동 로드.`,
+        );
+      }
     } catch (e) {
       window.alert(`저장 실패: ${e instanceof Error ? e.message : String(e)}`);
     }
@@ -246,7 +268,13 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t:
         </>
       )}
       {activeTab === 'list-maker' && (
-        <button type="button" className="btn-ghost btn-primary" onClick={handleSaveActiveList}>
+        <button
+          type="button"
+          className="btn-ghost btn-primary"
+          onClick={handleSaveActiveList}
+          disabled={!activeList || activeList.cubes.length === 0}
+          title={!activeList ? '먼저 큐브 만들기에서 리스트 생성' : ''}
+        >
           저장
         </button>
       )}
@@ -257,12 +285,72 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t:
 /**
  * 큐브 리스트 만들기 가운데 영역 — 페이지 탭 + GridArea (기존).
  */
+/**
+ * 큐브 리스트 만들기 = draft_list 만 표시.
+ * draft 가 없으면 빈 안내. draft 가 있으면 PageTabs (draft 페이지 1, 2, 3...) + GridArea.
+ */
 function ListMakerCenter() {
+  const draftList = useEditor((s) => s.draft_list);
+  const selectList = useEditor((s) => s.selectList);
+  const list_id = useEditor((s) => s.list_id);
+
+  // draft 가 있는데 list_id 가 draft.id 아니면 강제 활성 (페이지 전환 동기)
+  useEffect(() => {
+    if (draftList && list_id !== draftList.id) {
+      selectList(draftList.id);
+    }
+  }, [draftList?.id, list_id, selectList]);
+
+  if (!draftList) {
+    return (
+      <div className="list-maker-empty">
+        <h3>큐브 리스트 비어 있음</h3>
+        <p className="muted">
+          큐브 만들기 탭 → 라이브러리 큐브 선택 → 우상단 <strong>리스트 만들기</strong> 클릭
+        </p>
+        <p className="muted small">완료 시 자동으로 이 페이지로 이동하여 배치 + 저장합니다.</p>
+      </div>
+    );
+  }
+
   return (
     <>
-      <PageTabs />
+      <DraftPageTabs />
       <GridArea />
     </>
+  );
+}
+
+/** draft 의 페이지 탭 — sort_order 기준 페이지 수 자동 계산 */
+function DraftPageTabs() {
+  const draft = useEditor((s) => s.draft_list);
+  const currentPage = useEditor((s) => s.current_page);
+  const setPage = useEditor((s) => s.setPage);
+  if (!draft) return null;
+  const pageSize = draft.cubes_per_page ?? 28;
+  const maxSort = draft.cubes.length === 0 ? 0 : Math.max(...draft.cubes.map((c) => c.sort_order));
+  const totalPages = Math.max(1, Math.ceil(maxSort / pageSize));
+  return (
+    <nav className="page-tabs" aria-label="draft 페이지">
+      {Array.from({ length: totalPages }, (_, i) => (
+        <button
+          key={i}
+          type="button"
+          className={`page-tab ${currentPage === i ? 'is-active' : ''}`}
+          onClick={() => setPage(i)}
+        >
+          {i + 1}페이지
+        </button>
+      ))}
+      <button
+        type="button"
+        className="page-tab is-add"
+        title="다음 페이지 (큐브 추가 시 자동 확장)"
+        onClick={() => setPage(totalPages)}
+      >
+        +
+      </button>
+    </nav>
   );
 }
 

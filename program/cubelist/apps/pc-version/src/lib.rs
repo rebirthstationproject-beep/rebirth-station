@@ -42,6 +42,7 @@ pub fn run_tauri() -> tauri::Result<()> {
             commands::list_plugins,
             commands::install_plugin,
             commands::read_library_files,
+            commands::write_library_file,
         ])
         .setup(|app| {
             // 시스템 트레이 메뉴

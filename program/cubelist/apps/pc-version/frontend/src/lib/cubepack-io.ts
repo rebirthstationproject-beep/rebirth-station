@@ -332,8 +332,8 @@ export function downloadCubepack(blob: Blob, filename: string): void {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-/** 단일 CubeList → .cubelist ZIP 다운로드 (cubes/*.cubeone + manifest.json) */
-export async function downloadCubelist(list: import('../types/cube').CubeList): Promise<void> {
+/** CubeList → ZIP Blob 생성 (cubes/*.cubeone + manifest.json). 확장자 분기는 호출자 책임. */
+export async function buildCubelistBlob(list: import('../types/cube').CubeList): Promise<Blob> {
   const zip = new JSZip();
   const order: { ref: string; sort_order: number }[] = [];
   for (const cube of list.cubes) {
@@ -371,16 +371,61 @@ export async function downloadCubelist(list: import('../types/cube').CubeList): 
     list: { name: list.name, order, cols: list.cols, cubes_per_page: list.cubes_per_page },
   };
   zip.file('manifest.json', JSON.stringify(listManifest, null, 2));
-  const blob = await zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+  return zip.generateAsync({ type: 'blob', compression: 'DEFLATE' });
+}
+
+/** 페이지 수 계산: cubes 의 max sort_order / cubes_per_page */
+export function computePageCount(list: import('../types/cube').CubeList): number {
+  const pageSize = list.cubes_per_page ?? 28;
+  const maxSort = list.cubes.length === 0 ? 0 : Math.max(...list.cubes.map((c) => c.sort_order));
+  return Math.max(1, Math.ceil(maxSort / pageSize));
+}
+
+/** 단일 CubeList → .cubelist (1페이지) 또는 .cubedeck (2+페이지) ZIP 다운로드 */
+export async function downloadCubelist(list: import('../types/cube').CubeList): Promise<void> {
+  const blob = await buildCubelistBlob(list);
+  const pages = computePageCount(list);
+  const ext = pages >= 2 ? 'cubedeck' : 'cubelist';
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `${list.name}.cubelist`;
+  a.download = `${list.name}.${ext}`;
   a.style.display = 'none';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);
   setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/**
+ * Tauri 환경: 라이브러리 폴더 안에 직접 저장 (즉시 반영, 다음 부팅 안 기다림).
+ * 비-Tauri: download 로 폴백.
+ */
+export async function saveCubelistToLibrary(
+  list: import('../types/cube').CubeList,
+  libraryDir: string,
+): Promise<{ path: string; ext: string }> {
+  const blob = await buildCubelistBlob(list);
+  const pages = computePageCount(list);
+  const ext = pages >= 2 ? 'cubedeck' : 'cubelist';
+  const folderName = list.name.replace(/[<>:"/\\|?*\x00-\x1F]/g, '_').trim().slice(0, 100) || 'untitled';
+  const fileName = `${folderName}.${ext}`;
+  const isTauri = typeof window !== 'undefined' && '__TAURI_INTERNALS__' in window;
+  if (!isTauri) {
+    // 폴백: download
+    await downloadCubelist(list);
+    return { path: `(download) ${fileName}`, ext };
+  }
+  const { invoke } = await import('@tauri-apps/api/core');
+  const buf = await blob.arrayBuffer();
+  const bytes = Array.from(new Uint8Array(buf));
+  const path = await invoke<string>('write_library_file', {
+    libraryDir,
+    folder: folderName,
+    filename: fileName,
+    bytes,
+  });
+  return { path, ext };
 }
 
 // === Helpers ===============================================================

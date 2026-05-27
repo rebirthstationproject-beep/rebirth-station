@@ -408,6 +408,7 @@ html, body, #root {
   display: grid;
   gap: 12px;
   justify-content: start;
+  padding: 16px;
 }
 
 .cube-cell {
@@ -522,6 +523,20 @@ html, body, #root {
 }
 .recent-count { font-size: 10px; color: var(--text-muted); }
 .recent-icon { font-size: 12px; }
+
+/* 큐브 리스트 만들기 페이지 - draft 빈 안내 */
+.list-maker-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  text-align: center;
+  gap: 8px;
+}
+.list-maker-empty h3 { margin: 0; font-size: 16px; color: var(--text); }
+.list-maker-empty p { margin: 0; }
 .sidebar-path {
   display: flex;
   align-items: center;
@@ -609,6 +624,10 @@ html, body, #root {
   background: var(--accent, #d97706);
   color: white;
   border-color: var(--accent, #d97706);
+}
+.main-tab-bar .btn-ghost:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 .main-tab-bar .list-maker-status {
   font-size: 12px;

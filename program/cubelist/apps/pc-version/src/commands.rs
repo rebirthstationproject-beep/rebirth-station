@@ -66,6 +66,56 @@ pub struct LibraryFile {
 const MAX_FILE_BYTES: u64 = 32 * 1024 * 1024;
 const MAX_TOTAL_BYTES: u64 = 256 * 1024 * 1024;
 
+/// 라이브러리 폴더 안 단일 파일 쓰기 (.cubelist / .cubedeck / .cubeone 만 허용).
+///
+/// 보안: library_dir 안 경로만 허용 (트래버설 차단), 확장자 화이트리스트.
+#[cfg_attr(feature = "gui", tauri::command)]
+pub fn write_library_file(
+    library_dir: String,
+    folder: String,
+    filename: String,
+    bytes: Vec<u8>,
+) -> Result<String, String> {
+    let root = std::path::PathBuf::from(&library_dir);
+    if !root.is_dir() {
+        return Err(format!("라이브러리 폴더 없음: {library_dir}"));
+    }
+    // 폴더/파일명 검증
+    if folder.contains('/') || folder.contains('\\') || folder.contains("..") {
+        return Err(format!("잘못된 폴더명: {folder}"));
+    }
+    if filename.contains('/') || filename.contains('\\') || filename.contains("..") {
+        return Err(format!("잘못된 파일명: {filename}"));
+    }
+    let allowed = filename.to_ascii_lowercase();
+    let ok = allowed.ends_with(".cubeone")
+        || allowed.ends_with(".cubelist")
+        || allowed.ends_with(".cubedeck");
+    if !ok {
+        return Err(format!("확장자 화이트리스트 외: {filename}"));
+    }
+    let folder_path = root.join(&folder);
+    std::fs::create_dir_all(&folder_path).map_err(|e| format!("폴더 생성 실패: {e}"))?;
+    let file_path = folder_path.join(&filename);
+    // 경로 트래버설 최종 검증 (canonicalize 후 root 안 확인)
+    let canon_root = root.canonicalize().map_err(|e| e.to_string())?;
+    let canon_folder = folder_path
+        .canonicalize()
+        .or_else(|_| {
+            // 폴더가 방금 만들어졌을 경우 parent 검증
+            folder_path
+                .parent()
+                .ok_or_else(|| "parent 없음".to_string())
+                .and_then(|p| p.canonicalize().map_err(|e| e.to_string()))
+        })
+        .map_err(|e| format!("경로 검증 실패: {e}"))?;
+    if !canon_folder.starts_with(&canon_root) {
+        return Err("트래버설 차단".to_string());
+    }
+    std::fs::write(&file_path, &bytes).map_err(|e| format!("쓰기 실패: {e}"))?;
+    Ok(file_path.to_string_lossy().to_string())
+}
+
 #[cfg_attr(feature = "gui", tauri::command)]
 pub fn read_library_files(path: String) -> Result<Vec<LibraryFile>, String> {
     let root = std::path::PathBuf::from(&path);

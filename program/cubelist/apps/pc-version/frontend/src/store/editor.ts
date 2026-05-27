@@ -94,6 +94,21 @@ interface EditorState extends EditorSelection {
   toggleListMakerSelection(cubeId: string): void;
   finishListMaker(name: string): void;
   cancelListMaker(): void;
+
+  // === Draft 리스트 (사용자가 편집 중, 라이브러리와 별개) ===
+  draft_list: CubeList | null;
+  /** draft 통째 교체 (null 이면 초기화) */
+  setDraftList(list: CubeList | null): void;
+  /** draft 의 메타 변경 (이름, cols, cubes_per_page) */
+  updateDraftMeta(partial: Partial<Pick<CubeList, 'name' | 'cols' | 'cubes_per_page'>>): void;
+  /** draft 에 빈 큐브 슬롯 추가 */
+  addCubeToDraftSlot(slotIndex: number): void;
+  /** draft 안 큐브 이동/swap */
+  moveCubeInDraft(cubeId: string, toSlot: number): void;
+  /** draft 안 큐브 삭제 */
+  removeCubeFromDraft(cubeId: string): void;
+  /** draft 안 큐브 수정 */
+  updateCubeInDraft(cubeId: string, partial: Partial<Cube>): void;
 }
 
 export const useEditor = create<EditorState>((set, get) => ({
@@ -107,9 +122,12 @@ export const useEditor = create<EditorState>((set, get) => ({
   library_selected_id: null,
   list_maker_active: false,
   list_maker_selection: [],
+  draft_list: null,
 
   activeList(): CubeList | null {
-    const { pack, list_id } = get();
+    const { pack, list_id, draft_list } = get();
+    // draft 가 활성이면 우선 반환
+    if (draft_list && list_id === draft_list.id) return draft_list;
     if (!pack || !list_id) return null;
     return pack.lists.find((l) => l.id === list_id) ?? null;
   },
@@ -363,7 +381,12 @@ export const useEditor = create<EditorState>((set, get) => ({
   // === 자유 슬롯 배치 (수정 #2) ===
 
   addCubeAtSlot(listId: string, slotIndex: number): void {
-    const { pack } = get();
+    const { pack, draft_list } = get();
+    // Draft 분기
+    if (draft_list && listId === draft_list.id) {
+      get().addCubeToDraftSlot(slotIndex);
+      return;
+    }
     if (!pack) return;
     const list = pack.lists.find((l) => l.id === listId);
     if (!list) return;
@@ -385,7 +408,12 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   moveCubeToSlot(listId: string, cubeId: string, slotIndex: number): void {
-    const { pack } = get();
+    const { pack, draft_list } = get();
+    // Draft 분기
+    if (draft_list && listId === draft_list.id) {
+      get().moveCubeInDraft(cubeId, slotIndex);
+      return;
+    }
     if (!pack) return;
     const list = pack.lists.find((l) => l.id === listId);
     if (!list) return;
@@ -555,12 +583,105 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   finishListMaker(name: string): void {
-    const { list_maker_selection } = get();
-    if (list_maker_selection.length === 0) {
+    const { list_maker_selection, pack } = get();
+    if (list_maker_selection.length === 0 || !pack) {
       set({ list_maker_active: false });
       return;
     }
-    get().addListFromLibrary(name, list_maker_selection);
+    // draft_list 생성 (pack.lists 에 추가하지 X — 사용자 명시 "비어 있는 상태로 시작 > 저장하면 파일 생성")
+    const libAll = pack.lists.flatMap((l) => l.cubes).concat(pack.cubes ?? []);
+    const draftCubes: Cube[] = [];
+    list_maker_selection.forEach((id, idx) => {
+      const src = libAll.find((c) => c.id === id);
+      if (!src) return;
+      draftCubes.push({
+        ...src,
+        id: crypto.randomUUID() as string,
+        sort_order: idx + 1,
+      });
+    });
+    const draft: CubeList = {
+      id: crypto.randomUUID() as string,
+      name: name.trim() || '새 리스트',
+      sort_order: 1,
+      cols: 4,
+      cubes_per_page: 28,
+      cubes: draftCubes,
+    };
+    set({
+      draft_list: draft,
+      list_id: draft.id,
+      list_maker_active: false,
+      list_maker_selection: [],
+      current_page: 0,
+    });
+  },
+
+  // === Draft 액션 ===
+
+  setDraftList(list: CubeList | null): void {
+    if (list) {
+      set({ draft_list: list, list_id: list.id, current_page: 0 });
+    } else {
+      const cur = get();
+      const wasDraft = cur.draft_list && cur.list_id === cur.draft_list.id;
+      set({ draft_list: null, list_id: wasDraft ? null : cur.list_id });
+    }
+  },
+
+  updateDraftMeta(partial): void {
+    const cur = get().draft_list;
+    if (!cur) return;
+    set({ draft_list: { ...cur, ...partial } });
+  },
+
+  addCubeToDraftSlot(slotIndex: number): void {
+    const cur = get().draft_list;
+    if (!cur) return;
+    if (cur.cubes.some((c) => c.sort_order === slotIndex)) return; // 이미 있음
+    const newCube: Cube = {
+      id: crypto.randomUUID() as string,
+      sort_order: slotIndex,
+      label: '새 큐브',
+      icon_url: null,
+      action_type: 'link',
+      action_payload: { url: '' },
+    };
+    set({
+      draft_list: { ...cur, cubes: [...cur.cubes, newCube] },
+      cube_id: newCube.id,
+    });
+  },
+
+  moveCubeInDraft(cubeId: string, toSlot: number): void {
+    const cur = get().draft_list;
+    if (!cur) return;
+    const moving = cur.cubes.find((c) => c.id === cubeId);
+    if (!moving) return;
+    const occupant = cur.cubes.find((c) => c.sort_order === toSlot && c.id !== cubeId);
+    const next = cur.cubes.map((c) => {
+      if (c.id === cubeId) return { ...c, sort_order: toSlot };
+      if (occupant && c.id === occupant.id) return { ...c, sort_order: moving.sort_order };
+      return c;
+    });
+    set({ draft_list: { ...cur, cubes: next } });
+  },
+
+  removeCubeFromDraft(cubeId: string): void {
+    const cur = get().draft_list;
+    if (!cur) return;
+    set({ draft_list: { ...cur, cubes: cur.cubes.filter((c) => c.id !== cubeId) } });
+  },
+
+  updateCubeInDraft(cubeId: string, partial: Partial<Cube>): void {
+    const cur = get().draft_list;
+    if (!cur) return;
+    set({
+      draft_list: {
+        ...cur,
+        cubes: cur.cubes.map((c) => (c.id === cubeId ? { ...c, ...partial } : c)),
+      },
+    });
   },
 
   cancelListMaker(): void {
