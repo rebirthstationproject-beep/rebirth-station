@@ -193,10 +193,13 @@ function ListMakerCenter() {
  */
 function CubeMakerCenter() {
   const pack = useEditor((s) => s.pack);
+  const activeList = useEditor(useShallow((s) => s.activeList()));
   const libraryCubes = pack?.cubes ?? [];
   const librarySelectedId = useEditor((s) => s.library_selected_id);
   const selectLibraryCube = useEditor((s) => s.selectLibraryCube);
   const addLibraryCube = useEditor((s) => s.addLibraryCube);
+  const addCubeAtSlot = useEditor((s) => s.addCubeAtSlot);
+  const selectCube = useEditor((s) => s.selectCube);
 
   const listMakerActive = useEditor((s) => s.list_maker_active);
   const listMakerSelection = useEditor(useShallow((s) => s.list_maker_selection));
@@ -240,6 +243,19 @@ function CubeMakerCenter() {
       toggleListMakerSelection(cubeId);
     } else {
       selectLibraryCube(librarySelectedId === cubeId ? null : cubeId);
+      selectCube(cubeId);
+    }
+  }
+
+  function handleAddNewCube(): void {
+    if (activeList) {
+      // 활성 리스트의 가장 빈 슬롯 찾기 (1 부터)
+      const usedSlots = new Set(activeList.cubes.map((c) => c.sort_order));
+      let slot = 1;
+      while (usedSlots.has(slot)) slot++;
+      addCubeAtSlot(activeList.id, slot);
+    } else {
+      addLibraryCube();
     }
   }
 
@@ -251,12 +267,15 @@ function CubeMakerCenter() {
     setSaveModalOpen(true);
   }
 
+  // 큐브 만들기 그리드 표시 큐브 = 현재 활성 리스트의 cubes (sort_order 순)
+  const listCubes = activeList?.cubes ?? [];
+  const cubesToShow = listCubes.length > 0 ? listCubes : libraryCubes;
+  const cols = activeList?.cols ?? 4;
+
   return (
     <div className="cube-maker-center">
+      <PageTabs />
       <div className="cube-maker-toolbar">
-        <button type="button" className="btn-ghost" onClick={() => addLibraryCube()}>
-          ＋ 새 큐브
-        </button>
         <button type="button" className="btn-ghost" onClick={handleFolderImport}>
           📁 폴더 불러오기
         </button>
@@ -282,22 +301,38 @@ function CubeMakerCenter() {
             type="button"
             className="btn-ghost btn-primary"
             onClick={startListMaker}
-            disabled={libraryCubes.length === 0}
-            title={libraryCubes.length === 0 ? '먼저 큐브를 추가하세요' : '큐브를 순서대로 클릭하여 리스트 생성'}
+            disabled={cubesToShow.length === 0}
+            title={cubesToShow.length === 0 ? '먼저 큐브를 추가하세요' : '큐브를 순서대로 클릭하여 리스트 생성'}
           >
             📋 리스트 만들기
           </button>
         )}
       </div>
 
-      {libraryCubes.length === 0 ? (
+      {cubesToShow.length === 0 ? (
         <div className="cube-maker-empty">
-          <p>라이브러리에 큐브가 없습니다.</p>
+          <p>큐브가 없습니다.</p>
           <p className="muted small">＋ 새 큐브 또는 📁 폴더 불러오기로 큐브 추가</p>
+          <button type="button" className="btn-ghost" onClick={handleAddNewCube}>
+            ＋ 첫 큐브 추가
+          </button>
         </div>
       ) : (
-        <div className="cube-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(112px, 112px))' }}>
-          {libraryCubes.map((cube) => {
+        <div
+          className="cube-grid"
+          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))` }}
+        >
+          {/* 첫 셀: + 새 큐브 추가 */}
+          <button
+            type="button"
+            className="cube-cell cube-cell-add"
+            onClick={handleAddNewCube}
+            title="＋ 새 큐브 추가"
+            aria-label="새 큐브 추가"
+          >
+            <span className="cube-cell-add-plus">＋</span>
+          </button>
+          {cubesToShow.map((cube) => {
             const selectionIdx = listMakerSelection.indexOf(cube.id);
             const isSelected = librarySelectedId === cube.id;
             const inSelection = selectionIdx !== -1;

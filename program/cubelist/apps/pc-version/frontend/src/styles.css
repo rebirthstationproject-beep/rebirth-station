@@ -439,6 +439,19 @@ html, body, #root {
 }
 .cube-cell.is-folder:hover { border-color: var(--accent); }
 .cube-cell.is-in-selection { border-color: #d9c270; background: rgba(217, 194, 112, 0.08); }
+.cube-cell.cube-cell-add {
+  background: transparent;
+  border: 2px dashed var(--border);
+  color: var(--text-muted);
+  font-size: 28px;
+  font-weight: 300;
+}
+.cube-cell.cube-cell-add:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(255, 255, 255, 0.02);
+}
+.cube-cell-add-plus { line-height: 1; }
 
 /* M7 breadcrumb */
 .breadcrumb {
@@ -649,20 +662,22 @@ html, body, #root {
 .cube-cell { position: relative; overflow: hidden; }
 .cube-icon-bg {
   position: absolute;
-  inset: 8px;
+  inset: 4px 4px 28px 4px; /* 하단 라벨 영역 확보, 아이콘 더 크게 */
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  opacity: 0.95;
   z-index: 0;
 }
-.cube-cell.has-icon .cube-label,
-.cube-cell.has-icon .cube-action-badge {
+.cube-cell {
+  justify-content: flex-end; /* 아이콘 상단, 라벨 하단 */
+}
+.cube-cell.has-icon .cube-label {
   position: relative;
   z-index: 1;
-  background: rgba(0, 0, 0, 0.55);
-  padding: 1px 4px;
-  border-radius: 3px;
+  color: var(--text);
+}
+.cube-cell.has-icon .cube-action-badge {
+  display: none; /* 사용자 요청: 라벨 1줄 + 깔끔하게, action 배지는 숨김 */
 }
 .cube-cell.is-empty {
   background: transparent;
@@ -803,13 +818,22 @@ input[type="checkbox"] { width: auto; }
   font-weight: 500;
   text-align: center;
   line-height: 1.2;
-  word-break: keep-all;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+  padding: 0 4px;
 }
 .cube-action-badge {
   font-size: 9px;
   color: var(--text-muted);
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 .cube-empty { opacity: 0.7; }
 .grid-empty {

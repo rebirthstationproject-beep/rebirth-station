@@ -162,9 +162,11 @@ export const useEditor = create<EditorState>((set, get) => ({
 
   pageSize(): number {
     const list = get().activeList();
-    if (!list) return 15;
-    const cols = list.cols ?? 5;
-    return list.cubes_per_page ?? cols * 3;
+    if (!list) return 28;
+    // 명시값 우선, 미설정 시 cols * 7 (= 4 × 7 = 28 기본)
+    if (list.cubes_per_page && list.cubes_per_page > 0) return list.cubes_per_page;
+    const cols = list.cols ?? 4;
+    return Math.max(28, cols * 7);
   },
 
   totalPages(): number {
