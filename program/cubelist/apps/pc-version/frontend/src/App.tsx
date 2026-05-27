@@ -61,6 +61,8 @@ type MainTab = 'cube-maker' | 'list-maker';
 
 const PACK_STORAGE_KEY = 'cubelist:last_pack';
 const LIBRARY_DIR_KEY = 'cubelist:library_dir';
+/** 최초 부팅 시 사용할 기본 라이브러리 경로 — 폴더 존재 시 자동 등록 */
+const DEFAULT_LIBRARY_DIR = 'C:\\Users\\PC\\Downloads\\플러그인\\CUBE';
 
 export function App() {
   const pack = useEditor((s) => s.pack);
@@ -74,10 +76,16 @@ export function App() {
     let cancelled = false;
     (async () => {
       // 1. 등록된 라이브러리 폴더 (Tauri 환경 한정)
-      const libDir = window.localStorage.getItem(LIBRARY_DIR_KEY);
+      let libDir = window.localStorage.getItem(LIBRARY_DIR_KEY);
+      // 최초 부팅 시 DEFAULT 경로 자동 시도 — 존재하면 자동 등록
+      if (!libDir && isTauri()) {
+        libDir = DEFAULT_LIBRARY_DIR;
+      }
       if (libDir && isTauri()) {
         try {
           const libPack = await loadLibraryFromDir(libDir);
+          // 성공 시 자동 등록 (사용자 명시 등록과 동일하게 영구 저장)
+          window.localStorage.setItem(LIBRARY_DIR_KEY, libDir);
           if (!cancelled) loadPack(libPack);
           return;
         } catch (e) {
@@ -288,27 +296,29 @@ function CubeMakerCenter() {
           <p className="muted small">＋ 새 큐브 또는 📁 폴더 불러오기로 큐브 추가</p>
         </div>
       ) : (
-        <div className="cube-maker-grid">
+        <div className="cube-grid" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(112px, 112px))' }}>
           {libraryCubes.map((cube) => {
             const selectionIdx = listMakerSelection.indexOf(cube.id);
             const isSelected = librarySelectedId === cube.id;
             const inSelection = selectionIdx !== -1;
+            const hasIcon = !!cube.icon_url;
             return (
               <button
                 key={cube.id}
                 type="button"
-                className={`library-cube ${isSelected ? 'is-selected' : ''} ${inSelection ? 'is-in-selection' : ''}`}
+                className={`cube-cell ${hasIcon ? 'has-icon' : ''} ${isSelected ? 'is-selected' : ''} ${inSelection ? 'is-in-selection' : ''}`}
                 onClick={() => handleClickCube(cube.id)}
                 title={`${cube.label} (${cube.action_type})`}
               >
-                {cube.icon_url ? (
-                  <div className="library-cube-icon" style={{ backgroundImage: `url("${cube.icon_url}")` }} />
-                ) : (
-                  <div className="library-cube-icon library-cube-icon-empty">
-                    <span>{cube.label.slice(0, 2)}</span>
-                  </div>
+                {hasIcon && (
+                  <div
+                    className="cube-icon-bg"
+                    style={{ backgroundImage: `url("${cube.icon_url}")` }}
+                    aria-hidden
+                  />
                 )}
-                <span className="library-cube-label">{cube.label}</span>
+                <span className="cube-label">{cube.label}</span>
+                <span className="cube-action-badge">{cube.action_type}</span>
                 {inSelection && <span className="library-cube-order">{selectionIdx + 1}</span>}
               </button>
             );

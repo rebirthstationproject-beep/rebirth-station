@@ -48,15 +48,155 @@ function safeId(s) {
   return s.replace(/[^a-zA-Z0-9._-]/g, '_').slice(0, 80);
 }
 
-async function readPluginManifest(zip) {
+async function readPluginManifest(zip, zipFilename) {
   // .sdPlugin 디렉토리 안 manifest.json 탐색
   const files = Object.keys(zip.files);
   const manifestEntry = files.find((f) => /\.sdPlugin\/manifest\.json$/i.test(f));
-  if (!manifestEntry) throw new Error('manifest.json not found');
-  const text = await zip.file(manifestEntry).async('text');
+  if (!manifestEntry) {
+    // manifest.json 누락 ZIP — en.json 만으로 fallback 시도
+    const enEntry = files.find((f) => /\.sdPlugin\/en\.json$/i.test(f));
+    if (enEntry) {
+      const pluginDir = enEntry.replace(/en\.json$/i, '');
+      return buildFallbackManifest(zip, pluginDir, zipFilename);
+    }
+    throw new Error('manifest.json not found');
+  }
+  const buf = await zip.file(manifestEntry).async('uint8array');
+  const pluginDir = manifestEntry.replace(/manifest\.json$/i, '');
+  // ELGATO 매직(6 byte) → 1st-party 암호화 manifest. en.json 폴백 사용.
+  if (
+    buf.length >= 6 &&
+    buf[0] === 0x45 && buf[1] === 0x4c && buf[2] === 0x47 &&
+    buf[3] === 0x41 && buf[4] === 0x54 && buf[5] === 0x4f
+  ) {
+    return buildFallbackManifest(zip, pluginDir, zipFilename);
+  }
+  const text = new TextDecoder('utf-8').decode(buf);
   return {
     manifest: JSON.parse(text),
-    pluginDir: manifestEntry.replace(/manifest\.json$/i, ''),
+    pluginDir,
+    fallback: false,
+  };
+}
+
+/**
+ * ZIP 파일명에서 plugin stem 추출 — 버전/플랫폼 suffix 제거
+ * 예: "PowerPoint-3.0.2-mac_windows.streamDeckPlugin" → "PowerPoint"
+ *     "Wave Link (Legacy)-2.3.0.120-mac_windows.streamDeckPlugin" → "Wave Link (Legacy)"
+ */
+function pluginStemFromFilename(filename) {
+  let stem = filename.replace(/\.streamDeckPlugin$/i, '');
+  // 첫 "-<숫자>" 이전까지
+  const versionPos = stem.search(/-\d/);
+  if (versionPos > 0) stem = stem.slice(0, versionPos);
+  return stem.trim();
+}
+
+/**
+ * 암호화 manifest 의 평문 fallback.
+ *
+ * en.json (i18n 평문) 에서 "com.<vendor>.<plugin>.<action>" 키 + Name 추출 →
+ * 가상 Actions[] 재구성. Icon 은 imgs/ 하위에서 액션명/UUID 기반 best-match 탐색.
+ */
+async function buildFallbackManifest(zip, pluginDir, zipFilename) {
+  const enEntry = zip.file(`${pluginDir}en.json`);
+  const fileStem = zipFilename ? pluginStemFromFilename(zipFilename) : null;
+
+  // ZIP 전체 이미지 인덱스 — fallback action 이미지 탐색 시 사용
+  const imageFiles = Object.keys(zip.files).filter((f) =>
+    /\.(svg|png|jpg|jpeg|gif)$/i.test(f) && f.startsWith(pluginDir)
+  );
+
+  function bestImageForAction(actionSlug) {
+    // 우선순위: @2x.png > .svg > .png > 첫 매칭
+    const slugLower = actionSlug.toLowerCase();
+    const matches = imageFiles.filter((f) => f.toLowerCase().includes(slugLower));
+    if (matches.length === 0) return null;
+    const at2x = matches.find((f) => /@2x\.png$/i.test(f));
+    if (at2x) return at2x;
+    const svg = matches.find((f) => /\.svg$/i.test(f));
+    if (svg) return svg;
+    const png = matches.find((f) => /\.png$/i.test(f) && !/@2x/.test(f));
+    if (png) return png;
+    return matches[0];
+  }
+
+  // plugin name fallback chain
+  let pluginNameFromEn = null;
+  let pluginAuthorFromEn = null;
+  let pluginDescFromEn = null;
+  let en = null;
+  if (enEntry) {
+    try {
+      en = JSON.parse(await enEntry.async('text'));
+      if (typeof en.Name === 'string' && en.Name.length > 0) pluginNameFromEn = en.Name;
+      if (typeof en.Author === 'string') pluginAuthorFromEn = en.Author;
+      if (typeof en.Description === 'string') pluginDescFromEn = en.Description;
+    } catch {
+      /* en.json 파싱 실패 — 파일명 stem 으로 폴백 */
+    }
+  }
+  const name = pluginNameFromEn || fileStem || pluginDir.replace(/\.sdPlugin\/$/i, '').split('/').pop() || 'Plugin';
+
+  const actions = [];
+  if (en) {
+    for (const [key, val] of Object.entries(en)) {
+      if (typeof key !== 'string' || !key.startsWith('com.') || key.split('.').length < 3) continue;
+      if (!val || typeof val !== 'object') continue;
+      if (typeof val.Name !== 'string') continue;
+      // 액션 imgs 탐색: 정확 candidate → ZIP 전체 글로벌 검색
+      const actionSlug = key.split('.').pop();
+      const candidates = [
+        `imgs/${actionSlug}/icon`,
+        `imgs/actions/${actionSlug}/icon`,
+        `imgs/${actionSlug}`,
+        `imgs/plugin/${actionSlug}`,
+      ];
+      let iconRef = null;
+      for (const c of candidates) {
+        const probe = zip.file(`${pluginDir}${c}@2x.png`) ||
+                      zip.file(`${pluginDir}${c}.png`) ||
+                      zip.file(`${pluginDir}${c}.svg`);
+        if (probe) { iconRef = c; break; }
+      }
+      // 글로벌 검색 폴백 — actionSlug 가 파일명에 포함된 첫 이미지
+      if (!iconRef) {
+        const found = bestImageForAction(actionSlug);
+        if (found) {
+          // pluginDir 와 확장자 제거 — loadIconAsDataUrl 가 .svg/@2x.png/.png 모두 시도
+          const stripped = found.replace(pluginDir, '').replace(/\.(svg|png|jpg|jpeg|gif)$/i, '').replace(/@\dx$/i, '');
+          iconRef = stripped;
+        }
+      }
+      actions.push({
+        UUID: key,
+        Name: val.Name,
+        Tooltip: val.Tooltip,
+        Icon: iconRef,
+        States: iconRef ? [{ Image: iconRef }] : [],
+      });
+    }
+  }
+
+  // plugin 전체 fallback icon — imgs/plugin/category 또는 첫 이미지
+  let pluginIcon = 'imgs/plugin/category';
+  if (!zip.file(`${pluginDir}${pluginIcon}@2x.png`) && !zip.file(`${pluginDir}${pluginIcon}.png`)) {
+    const first = imageFiles[0];
+    if (first) {
+      pluginIcon = first.replace(pluginDir, '').replace(/\.(svg|png|jpg|jpeg|gif)$/i, '').replace(/@\dx$/i, '');
+    }
+  }
+
+  return {
+    manifest: {
+      Name: name,
+      Author: pluginAuthorFromEn || 'StreamDeck',
+      Description: pluginDescFromEn || '',
+      Icon: pluginIcon,
+      Actions: actions,
+    },
+    pluginDir,
+    fallback: true,
   };
 }
 
@@ -205,7 +345,7 @@ async function buildCubeOneZip(zip, pluginDir, action, defaultIconUrl, iconStats
 async function buildCubelistFromPlugin(pluginZipPath, globalIconStats) {
   const buf = await readFile(pluginZipPath);
   const zip = await JSZip.loadAsync(buf);
-  const { manifest: pluginManifest, pluginDir } = await readPluginManifest(zip);
+  const { manifest: pluginManifest, pluginDir, fallback } = await readPluginManifest(zip, basename(pluginZipPath));
 
   const pluginName = pluginManifest.Name ?? basename(pluginZipPath, '.streamDeckPlugin');
   const pluginAuthor = pluginManifest.Author ?? 'StreamDeck Vendor';
@@ -252,7 +392,7 @@ async function buildCubelistFromPlugin(pluginZipPath, globalIconStats) {
   };
   cubelist.file('manifest.json', JSON.stringify(listManifest, null, 2));
 
-  return { pluginName, cubelist, cubeCount, mapStats, listManifest };
+  return { pluginName, cubelist, cubeCount, mapStats, listManifest, fallback: !!fallback };
 }
 
 /** Windows 호환 폴더명으로 정규화 (한글/공백 OK, 금지 문자만 _ 로) */
@@ -289,6 +429,7 @@ async function main() {
     try {
       // buildCubelistFromPlugin 의 결과 cubelist (ZIP) 안에서 cubes/* 를 꺼내 폴더로 풀기
       const built = await buildCubelistFromPlugin(file, iconStats);
+      const fallback = built.fallback;
       const folderName = safeFolderName(built.pluginName);
       const folderPath = join(OUTPUT_ROOT, folderName);
       await mkdir(folderPath, { recursive: true });
@@ -307,19 +448,87 @@ async function main() {
         totalCubeoneFiles++;
       }
 
+      // 액션 0개 폴백 — 폴더는 생성하되 plugin icon 으로 placeholder 큐브 1개
+      if (folderCubeCount === 0) {
+        const placeholder = {
+          rbs_format_version: RBS_FORMAT_VERSION,
+          kind: 'cubeone',
+          id: safeId(`${built.pluginName}-placeholder`),
+          license: 'free',
+          created_at: NOW,
+          updated_at: NOW,
+          rbs_min_version: RBS_MIN_VERSION,
+          cube: {
+            label: built.pluginName,
+            icon_url: null,
+            action_type: 'plugin_action',
+            action_payload: { plugin_uuid: '', action_id: 'placeholder', payload: {} },
+            metadata: { source: 'streamdeck-import', encrypted_manifest: true },
+          },
+        };
+        const z = new JSZip();
+        z.file('manifest.json', JSON.stringify(placeholder, null, 2));
+        const bytes = await z.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
+        await writeFile(join(folderPath, `${folderName}01.cubeone`), bytes);
+        folderCubeCount = 1;
+        totalCubeoneFiles++;
+        iconStats['placeholder_empty'] = (iconStats['placeholder_empty'] ?? 0) + 1;
+      }
+
       summary.push({
         plugin: built.pluginName,
         folder: folderName,
         cubes: folderCubeCount,
         mapped: built.mapStats.builtin,
         placeholder: built.mapStats.plugin_action,
+        fallback_used: !!fallback,
       });
       totalCubes += folderCubeCount;
       totalBuiltin += built.mapStats.builtin;
       totalPluginAction += built.mapStats.plugin_action;
-      console.log(`  ✓ ${built.pluginName}: ${folderCubeCount} 큐브 → ${folderName}\\${folderName}01.cubeone .. ${pad2(folderCubeCount)}.cubeone`);
+      console.log(`  ${fallback ? '⚡' : '✓'} ${built.pluginName}: ${folderCubeCount} 큐브 → ${folderName}\\${folderName}01.cubeone .. ${pad2(folderCubeCount)}.cubeone${fallback ? ' (en.json fallback)' : ''}`);
     } catch (e) {
-      console.error(`  ✗ ${name}: ${e.message}`);
+      // ZIP 자체 파싱도 실패한 경우 — plugin 이름만으로 폴더 + 빈 placeholder
+      const stem = basename(name, '.streamDeckPlugin').replace(/[-_.\d]+$/, '');
+      const folderName = safeFolderName(stem || basename(name));
+      const folderPath = join(OUTPUT_ROOT, folderName);
+      try {
+        await mkdir(folderPath, { recursive: true });
+        const placeholder = {
+          rbs_format_version: RBS_FORMAT_VERSION,
+          kind: 'cubeone',
+          id: safeId(`${stem}-unreadable`),
+          license: 'free',
+          created_at: NOW,
+          updated_at: NOW,
+          rbs_min_version: RBS_MIN_VERSION,
+          cube: {
+            label: stem,
+            icon_url: null,
+            action_type: 'plugin_action',
+            action_payload: { plugin_uuid: '', action_id: 'unreadable', payload: {} },
+            metadata: { source: 'streamdeck-import', read_error: e.message },
+          },
+        };
+        const z = new JSZip();
+        z.file('manifest.json', JSON.stringify(placeholder, null, 2));
+        const bytes = await z.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
+        await writeFile(join(folderPath, `${folderName}01.cubeone`), bytes);
+        totalCubeoneFiles++;
+        totalCubes++;
+        summary.push({
+          plugin: stem,
+          folder: folderName,
+          cubes: 1,
+          mapped: 0,
+          placeholder: 1,
+          read_error: e.message,
+        });
+        iconStats['unreadable'] = (iconStats['unreadable'] ?? 0) + 1;
+        console.log(`  ⚠ ${stem}: 변환 실패 (${e.message}) — placeholder 1개 → ${folderName}\\${folderName}01.cubeone`);
+      } catch (e2) {
+        console.error(`  ✗ ${name}: 폴더 생성도 실패: ${e2.message}`);
+      }
     }
   }
 
