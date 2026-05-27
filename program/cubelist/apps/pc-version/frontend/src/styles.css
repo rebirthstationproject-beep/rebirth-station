@@ -406,15 +406,17 @@ html, body, #root {
 
 .cube-grid {
   display: grid;
-  gap: 8px;
-  max-width: 760px;
+  gap: 12px;
+  justify-content: start;
 }
 
 .cube-cell {
   aspect-ratio: 1;
+  width: 100%;
+  max-width: 112px;
   background: var(--bg-surface);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   display: flex;
   flex-direction: column;
@@ -425,6 +427,7 @@ html, body, #root {
   font-size: 11px;
   padding: 6px;
   transition: background 0.1s, border-color 0.1s;
+  position: relative;
 }
 .cube-cell:hover { background: var(--bg-hover); border-color: var(--accent); }
 .cube-cell.is-selected { background: var(--bg-selected); border-color: var(--accent); }

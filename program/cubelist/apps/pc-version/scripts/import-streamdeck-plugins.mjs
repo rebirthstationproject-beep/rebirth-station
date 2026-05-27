@@ -63,32 +63,71 @@ async function readPluginManifest(zip) {
 /**
  * StreamDeck 안 이미지 → data URL.
  *
- * 우선순위: .svg (벡터) → @2x.png (HiDPI) → .png → 확장자 없는 원본
- * 1MB 까지 허용 (vendor PNG 대부분 < 50KB · cubepack 전체 5~10MB 안전)
+ * 우선순위 (선명도 순):
+ *   .svg (벡터) → @3x.png → @2x.png (HiDPI) → .png (1.5KB 이상) → 원본 (확장자 없음)
+ *
+ * 작은 1x.png (< 1500 byte) 는 placeholder 인 경우가 많아 우선 건너뜀.
+ * 다른 candidate 가 전혀 없을 때만 1x.png 어떤 크기든 허용.
  */
 async function loadIconAsDataUrl(zip, pluginDir, iconRef) {
-  if (!iconRef) return null;
-  const candidates = [
-    `${iconRef}.svg`,
-    `${iconRef}@2x.png`,
-    `${iconRef}.png`,
-    iconRef,
+  if (!iconRef) return { dataUrl: null, source: null };
+  const MAX_BYTES = 1024 * 1024;
+  const PNG_MIN_BYTES = 1500; // placeholder PNG (32x32 단색) 회피
+  // 1차: 선명한 후보
+  const sharp = [
+    { suffix: '.svg', mime: 'image/svg+xml' },
+    { suffix: '@3x.png', mime: 'image/png' },
+    { suffix: '@2x.png', mime: 'image/png' },
   ];
-  const MAX_BYTES = 1024 * 1024; // 1 MB raw
-  for (const c of candidates) {
-    const full = `${pluginDir}${c}`;
+  for (const { suffix, mime } of sharp) {
+    const full = `${pluginDir}${iconRef}${suffix}`;
     const entry = zip.file(full);
     if (!entry) continue;
     const buf = await entry.async('uint8array');
-    if (buf.byteLength > MAX_BYTES) continue;
-    const ext = c.split('.').pop().toLowerCase();
-    const mime = ext === 'svg'
-      ? 'image/svg+xml'
-      : `image/${ext === 'jpg' ? 'jpeg' : ext === 'jpeg' ? 'jpeg' : ext === 'gif' ? 'gif' : 'png'}`;
-    const b64 = Buffer.from(buf).toString('base64');
-    return `data:${mime};base64,${b64}`;
+    if (buf.byteLength === 0 || buf.byteLength > MAX_BYTES) continue;
+    return { dataUrl: makeDataUrl(buf, mime), source: suffix };
   }
-  return null;
+  // 2차: 1x.png — placeholder 회피 (작으면 skip)
+  const oneX = `${pluginDir}${iconRef}.png`;
+  const oneXEntry = zip.file(oneX);
+  if (oneXEntry) {
+    const buf = await oneXEntry.async('uint8array');
+    if (buf.byteLength >= PNG_MIN_BYTES && buf.byteLength <= MAX_BYTES) {
+      return { dataUrl: makeDataUrl(buf, 'image/png'), source: '.png' };
+    }
+  }
+  // 3차: 원본 (확장자 없음) — manifest 에 확장자 명시 케이스
+  const raw = `${pluginDir}${iconRef}`;
+  const rawEntry = zip.file(raw);
+  if (rawEntry) {
+    const buf = await rawEntry.async('uint8array');
+    if (buf.byteLength >= 200 && buf.byteLength <= MAX_BYTES) {
+      const mime = sniffMime(buf);
+      return { dataUrl: makeDataUrl(buf, mime), source: 'raw' };
+    }
+  }
+  // 4차: 마지막 폴백 — 1x.png 가 작더라도 사용 (placeholder 라도 안 보이는 것보다 낫다)
+  if (oneXEntry) {
+    const buf = await oneXEntry.async('uint8array');
+    if (buf.byteLength > 0 && buf.byteLength <= MAX_BYTES) {
+      return { dataUrl: makeDataUrl(buf, 'image/png'), source: '.png(small)' };
+    }
+  }
+  return { dataUrl: null, source: null };
+}
+
+function makeDataUrl(buf, mime) {
+  return `data:${mime};base64,${Buffer.from(buf).toString('base64')}`;
+}
+
+/** PNG/JPEG/GIF/SVG 시그니처 sniff */
+function sniffMime(buf) {
+  if (buf.length >= 8 && buf[0] === 0x89 && buf[1] === 0x50 && buf[2] === 0x4e && buf[3] === 0x47) return 'image/png';
+  if (buf.length >= 3 && buf[0] === 0xff && buf[1] === 0xd8 && buf[2] === 0xff) return 'image/jpeg';
+  if (buf.length >= 6 && buf[0] === 0x47 && buf[1] === 0x49 && buf[2] === 0x46) return 'image/gif';
+  // SVG = 텍스트 시작
+  if (buf.length >= 5 && buf[0] === 0x3c) return 'image/svg+xml'; // '<'
+  return 'image/png';
 }
 
 function mapActionType(uuid) {
@@ -113,16 +152,27 @@ function buildActionPayload(uuid, mappedType, action) {
   }
 }
 
-async function buildCubeOneZip(zip, pluginDir, action, defaultIconUrl) {
+async function buildCubeOneZip(zip, pluginDir, action, defaultIconUrl, iconStats) {
   const id = safeId(action.UUID ?? action.Name ?? 'action');
   const label = action.Name ?? id;
   const mappedType = mapActionType(action.UUID);
   // 우선순위: 액션 별 States[0].Image (고유 시각) → Action.Icon (plugin 카탈로그용) → plugin Icon
   const stateImage = Array.isArray(action.States) && action.States[0]?.Image;
-  const icon_url =
-    (stateImage && await loadIconAsDataUrl(zip, pluginDir, stateImage)) ??
-    (action.Icon && await loadIconAsDataUrl(zip, pluginDir, action.Icon)) ??
-    defaultIconUrl;
+  let icon_url = null;
+  let iconSource = 'none';
+  if (stateImage) {
+    const r = await loadIconAsDataUrl(zip, pluginDir, stateImage);
+    if (r.dataUrl) { icon_url = r.dataUrl; iconSource = `state${r.source}`; }
+  }
+  if (!icon_url && action.Icon) {
+    const r = await loadIconAsDataUrl(zip, pluginDir, action.Icon);
+    if (r.dataUrl) { icon_url = r.dataUrl; iconSource = `action_icon${r.source}`; }
+  }
+  if (!icon_url) {
+    icon_url = defaultIconUrl;
+    iconSource = defaultIconUrl ? 'plugin_icon_fallback' : 'none';
+  }
+  if (iconStats) iconStats[iconSource] = (iconStats[iconSource] ?? 0) + 1;
 
   const cube = {
     label,
@@ -152,14 +202,15 @@ async function buildCubeOneZip(zip, pluginDir, action, defaultIconUrl) {
   return { id, label, mappedType, manifestObj: manifest, zip: out };
 }
 
-async function buildCubelistFromPlugin(pluginZipPath) {
+async function buildCubelistFromPlugin(pluginZipPath, globalIconStats) {
   const buf = await readFile(pluginZipPath);
   const zip = await JSZip.loadAsync(buf);
   const { manifest: pluginManifest, pluginDir } = await readPluginManifest(zip);
 
   const pluginName = pluginManifest.Name ?? basename(pluginZipPath, '.streamDeckPlugin');
   const pluginAuthor = pluginManifest.Author ?? 'StreamDeck Vendor';
-  const pluginIconUrl = await loadIconAsDataUrl(zip, pluginDir, pluginManifest.Icon);
+  const pluginIconResult = await loadIconAsDataUrl(zip, pluginDir, pluginManifest.Icon);
+  const pluginIconUrl = pluginIconResult.dataUrl;
 
   const actions = Array.isArray(pluginManifest.Actions) ? pluginManifest.Actions : [];
 
@@ -171,7 +222,7 @@ async function buildCubelistFromPlugin(pluginZipPath) {
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i];
     try {
-      const built = await buildCubeOneZip(zip, pluginDir, action, pluginIconUrl);
+      const built = await buildCubeOneZip(zip, pluginDir, action, pluginIconUrl, globalIconStats);
       const cubeBlob = await built.zip.generateAsync({
         type: 'uint8array',
         compression: 'DEFLATE',
@@ -230,13 +281,14 @@ async function main() {
   let totalBuiltin = 0;
   let totalPluginAction = 0;
   let totalCubeoneFiles = 0;
+  const iconStats = {}; // 매칭 소스 통계
 
   for (let i = 0; i < pluginFiles.length; i++) {
     const file = pluginFiles[i];
     const name = basename(file);
     try {
       // buildCubelistFromPlugin 의 결과 cubelist (ZIP) 안에서 cubes/* 를 꺼내 폴더로 풀기
-      const built = await buildCubelistFromPlugin(file);
+      const built = await buildCubelistFromPlugin(file, iconStats);
       const folderName = safeFolderName(built.pluginName);
       const folderPath = join(OUTPUT_ROOT, folderName);
       await mkdir(folderPath, { recursive: true });
@@ -281,6 +333,7 @@ async function main() {
     total_cubeone_files: totalCubeoneFiles,
     builtin_mapped: totalBuiltin,
     plugin_action_placeholder: totalPluginAction,
+    icon_source_stats: iconStats,
     items: summary,
     note: 'plugin_action 큐브는 PC 헬퍼에 .cubeplugin SDK 가 구현되어야 실행됩니다. 현재는 아이콘+라벨만 표시.',
     library_structure: 'CUBE/<폴더(=큐브리스트)>/<폴더명>NN.cubeone',
@@ -291,6 +344,10 @@ async function main() {
   console.log(`총 .cubeone 파일: ${totalCubeoneFiles}`);
   console.log(`  빌트인 매핑: ${totalBuiltin}`);
   console.log(`  plugin_action placeholder: ${totalPluginAction}`);
+  console.log(`아이콘 매칭 소스:`);
+  for (const [source, count] of Object.entries(iconStats).sort((a, b) => b[1] - a[1])) {
+    console.log(`  ${source}: ${count}`);
+  }
   console.log(`산출:`);
   console.log(`  ${OUTPUT_ROOT}\\<폴더(=큐브리스트)>\\<폴더명>NN.cubeone × ${totalCubeoneFiles}`);
   console.log(`  ${join(OUTPUT_ROOT, 'report.json')}`);

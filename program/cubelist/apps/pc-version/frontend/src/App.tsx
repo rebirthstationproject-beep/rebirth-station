@@ -841,7 +841,7 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
           className="cube-grid"
           role="grid"
           aria-label="큐브 그리드"
-          style={{ gridTemplateColumns: `repeat(${cols}, 1fr)` }}
+          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))` }}
         >
           {slotIds.map((id, idx) => {
             const globalSlot = startSlot + idx;
