@@ -58,6 +58,10 @@ interface PluginManifest {
   Description?: string;
   Icon?: string;
   Actions?: ManifestAction[];
+  /** M4 Step 3.5: Native plugin entrypoint (cross-platform 또는 OS 별) */
+  CodePath?: string;
+  CodePathWin?: string;
+  CodePathMac?: string;
 }
 
 interface IconLookup {
@@ -284,6 +288,12 @@ function buildActionPayload(uuid: string | undefined, mappedType: string): Recor
   }
 }
 
+function detectCodeKind(codePath: string): 'html' | 'native' {
+  const lower = codePath.toLowerCase();
+  if (lower.endsWith('.html') || lower.endsWith('.htm') || lower === '') return 'html';
+  return 'native';
+}
+
 async function buildCubeOneZipBytes(
   zip: JSZip,
   pluginDir: string,
@@ -291,6 +301,8 @@ async function buildCubeOneZipBytes(
   defaultIconUrl: string | null,
   iconStats: Record<string, number>,
   pluginId: string,
+  codePath: string,
+  codeKind: 'html' | 'native',
 ): Promise<Uint8Array> {
   const id = safeId(action.UUID ?? action.Name ?? 'action');
   const label = action.Name ?? id;
@@ -321,6 +333,8 @@ async function buildCubeOneZipBytes(
           action_id: 'default',
           plugin_id: pluginId, // _plugins/<pluginId>/ 안에 자산 있음
           plugin_dir: pluginDir, // ZIP 안 sdPlugin 경로 prefix
+          code_path: codePath, // M4 Step 3.5: HTML('.html') 또는 Native('.exe' 등)
+          code_kind: codeKind, // 'html' | 'native'
           settings: {}, // PropertyInspector 옵션
           payload: {},
         }
@@ -417,6 +431,11 @@ export async function convertPlugin(
   const pluginIconUrl = pluginIconResult.dataUrl;
   const actions = Array.isArray(manifest.Actions) ? manifest.Actions : [];
 
+  // M4 Step 3.5: CodePath 추출 (Windows 1차, cross-platform 폴백)
+  const codePath: string =
+    manifest.CodePathWin ?? manifest.CodePath ?? manifest.CodePathMac ?? 'index.html';
+  const codeKind = detectCodeKind(codePath);
+
   const cubes: ConvertedCubeFile[] = [];
   for (let i = 0; i < actions.length; i++) {
     const action = actions[i];
@@ -428,6 +447,8 @@ export async function convertPlugin(
         pluginIconUrl,
         iconStats,
         pluginId,
+        codePath,
+        codeKind,
       );
       cubes.push({ filename: `${folderName}${pad2(i + 1)}.cubeone`, bytes });
     } catch (e) {

@@ -24,6 +24,31 @@
 다음: <다음 sub-step>
 ```
 
+### 2026-05-28 cron #4 — Step 3.2~3.5 (Rust spawn 명령 + frontend codePath/codeKind)
+변경:
+- src/commands.rs:
+  · spawn_plugin_process — child .exe spawn (SDK 표준 4 인자: -port -pluginUUID -registerEvent -info)
+  · Windows CREATE_NO_WINDOW (0x08000000) — console 안 띄움
+  · 보안: plugin_id /\..\ 차단, exe_path 존재 확인
+  · send_to_plugin — frontend → plugin 라우팅 (Rust PluginServer.send_to_plugin)
+  · drop_plugin_context — 큐브 unmount 시 connection 정리
+- src/lib.rs: invoke_handler 3종 추가
+- frontend/src/lib/plugin-converter.ts:
+  · PluginManifest 에 CodePath / CodePathWin / CodePathMac 추가
+  · detectCodeKind() — '.html' = html, 그 외 = native
+  · cube.action_payload 에 code_path + code_kind 추가
+사용자 보고 (cron 도중): "File does not exist at path: common/common.js, action/js/clockfaces.js..."
+원인 분석:
+- Tauri asset:// 가 iframe 안 상대 경로 (<script src="action/...">) base URL 자동 추론 못 함
+- WebView2 의 custom URI scheme + base URL 처리 한계
+- cubelist-plugin:// 도 동일 가능성 (HTML <base href> 없으면)
+다음 cron 작업 (Step 3.5+):
+- Rust handler 가 index.html 응답 시 <base href="cubelist-plugin://<id>/<dir>/"> 자동 inject
+- 모든 상대 경로 cubelist-plugin:// 으로 resolve
+검증: cargo check 2s, cargo tauri build 56s, exe v25
+결과: ✅ Step 3.2~3.5 코드 완료. 다음 cron = base href inject (asset 에러 즉시 해결)
+다음: Step 3.5+ HTML base href inject + Step 3.6 process lifecycle
+
 ### 2026-05-28 cron #3 — Step 3.1 (WebSocket 서버 골격)
 변경:
 - Cargo.toml: futures-util 0.3 의존성 추가 (stream split)

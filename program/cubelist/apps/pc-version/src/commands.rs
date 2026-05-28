@@ -116,6 +116,103 @@ pub fn write_library_file(
     Ok(file_path.to_string_lossy().to_string())
 }
 
+/// M4 Step 3.2: Native plugin .exe 를 child process 로 spawn.
+///
+/// SDK 표준 인자 (StreamDeck Plugin SDK):
+///   -port <PORT>           — WebSocket 서버 포트
+///   -pluginUUID <UUID>     — context UUID
+///   -registerEvent <NAME>  — "registerPlugin"
+///   -info <JSON>           — application/plugin/devices 정보
+#[cfg_attr(feature = "gui", tauri::command)]
+pub async fn spawn_plugin_process(
+    library_dir: String,
+    plugin_id: String,
+    plugin_dir: String,
+    exe_relative: String,
+    context_uuid: String,
+    info_json: String,
+    state: tauri::State<'_, crate::PluginServerState>,
+) -> Result<u32, String> {
+    let port = {
+        let guard = state.0.lock().await;
+        match guard.as_ref() {
+            Some(s) => s.port,
+            None => return Err("plugin_server 미시작".into()),
+        }
+    };
+    if plugin_id.contains('/') || plugin_id.contains('\\') || plugin_id.contains("..") {
+        return Err(format!("잘못된 plugin_id: {plugin_id}"));
+    }
+    if exe_relative.contains("..") {
+        return Err(format!("잘못된 exe_relative: {exe_relative}"));
+    }
+    let root = std::path::PathBuf::from(&library_dir);
+    let exe_path = root
+        .join("_plugins")
+        .join(&plugin_id)
+        .join(&plugin_dir)
+        .join(&exe_relative);
+    if !exe_path.exists() {
+        return Err(format!("exe 파일 없음: {}", exe_path.display()));
+    }
+    let cwd = exe_path
+        .parent()
+        .ok_or_else(|| "exe parent 없음".to_string())?
+        .to_path_buf();
+    let mut cmd = std::process::Command::new(&exe_path);
+    cmd.arg("-port")
+        .arg(port.to_string())
+        .arg("-pluginUUID")
+        .arg(&context_uuid)
+        .arg("-registerEvent")
+        .arg("registerPlugin")
+        .arg("-info")
+        .arg(&info_json)
+        .current_dir(&cwd);
+    #[cfg(target_os = "windows")]
+    {
+        use std::os::windows::process::CommandExt;
+        cmd.creation_flags(0x08000000); // CREATE_NO_WINDOW
+    }
+    match cmd.spawn() {
+        Ok(child) => {
+            let pid = child.id();
+            tracing::info!(pid, ?exe_path, "plugin process spawn");
+            std::mem::forget(child);
+            Ok(pid)
+        }
+        Err(e) => Err(format!("spawn 실패: {e}")),
+    }
+}
+
+/// M4 Step 3.4: frontend → plugin 메시지 전달
+#[cfg_attr(feature = "gui", tauri::command)]
+pub async fn send_to_plugin(
+    context_uuid: String,
+    message: String,
+    state: tauri::State<'_, crate::PluginServerState>,
+) -> Result<(), String> {
+    let guard = state.0.lock().await;
+    let server = guard.as_ref().ok_or("plugin_server 미시작")?;
+    server
+        .send_to_plugin(&context_uuid, message)
+        .await
+        .map_err(|e| e.to_string())
+}
+
+/// M4 Step 3.6: plugin context drop (큐브 unmount 시 connection 정리)
+#[cfg_attr(feature = "gui", tauri::command)]
+pub async fn drop_plugin_context(
+    context_uuid: String,
+    state: tauri::State<'_, crate::PluginServerState>,
+) -> Result<(), String> {
+    let guard = state.0.lock().await;
+    if let Some(server) = guard.as_ref() {
+        server.drop_context(&context_uuid).await;
+    }
+    Ok(())
+}
+
 /// M4 Step 2.2: frontend 가 라이브러리 폴더 경로를 Rust state 에 등록 (custom URI scheme handler 가 사용)
 #[cfg_attr(feature = "gui", tauri::command)]
 pub fn set_library_dir_state(
