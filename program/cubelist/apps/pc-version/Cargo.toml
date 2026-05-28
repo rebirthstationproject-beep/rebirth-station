@@ -69,6 +69,9 @@ zip                            = { version = "2", default-features = false, feat
 # --- M4 Step 2: URL 디코딩 (cubelist-plugin:// 핸들러 경로 처리) ----------
 urlencoding                    = "2"
 
+# --- M4 Step 3: Native plugin WebSocket 서버 stream split ----------
+futures-util                   = "0.3"
+
 # --- Windows 전용 (focus_window 액션) -------------------------------------
 [target.'cfg(target_os = "windows")'.dependencies]
 windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging"] }

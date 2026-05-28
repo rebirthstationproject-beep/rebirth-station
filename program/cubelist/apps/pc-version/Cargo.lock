@@ -886,6 +886,7 @@ dependencies = [
  "axum",
  "dirs 5.0.1",
  "enigo",
+ "futures-util",
  "hmac",
  "keyring",
  "rand",

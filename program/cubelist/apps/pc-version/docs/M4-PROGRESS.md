@@ -24,6 +24,25 @@
 다음: <다음 sub-step>
 ```
 
+### 2026-05-28 cron #3 — Step 3.1 (WebSocket 서버 골격)
+변경:
+- Cargo.toml: futures-util 0.3 의존성 추가 (stream split)
+- src/plugin_server.rs 신규 (~180 줄):
+  · PluginServer 구조체 (port, connections HashMap, emit_callback)
+  · TcpListener 동적 포트 (127.0.0.1:0 = OS 할당)
+  · accept loop → 연결마다 tokio::spawn(handle_connection)
+  · handle_connection: WebSocket handshake → 첫 메시지 = registerPlugin → context UUID 매핑
+  · plugin → frontend: emit_callback (Tauri AppHandle.emit) 호출
+  · frontend → plugin: ConnectionMap 에서 sender 찾아 ws.send
+  · send_to_plugin / drop_context 메서드
+- src/lib.rs:
+  · plugin_server 모듈 등록
+  · PluginServerState (Arc<Mutex<Option<PluginServer>>>) 추가
+  · setup() 에서 PluginServer::start() 비동기 시작 + emit_callback 등록
+검증: cargo check 통과 (35s), cargo tauri build 1m, exe v24
+결과: ✅ Step 3.1 완료 — WebSocket 서버 동적 포트로 백그라운드 작동
+다음: Step 3.2 spawn_plugin_process Tauri 명령 + 3.3 표준 SDK 인자
+
 ### 2026-05-27 21:52 cron #2 — Step 2.1 + 2.2 + 2.3 + 2.4
 변경:
 - Cargo.toml: urlencoding "2" 의존성 추가

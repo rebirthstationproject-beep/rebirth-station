@@ -7,6 +7,7 @@ pub mod actions;
 pub mod auth;
 pub mod commands;
 pub mod hotkeys;
+pub mod plugin_server;
 pub mod plugins;
 pub mod protocol;
 pub mod ws_server;
@@ -28,6 +29,9 @@ use tauri::{Emitter, Manager};
 /// M4 Step 2: 라이브러리 폴더 경로 (custom URI scheme handler 가 사용)
 pub struct LibraryDirState(pub std::sync::Mutex<Option<String>>);
 
+/// M4 Step 3: Native plugin WebSocket 서버 (포트 + connections)
+pub struct PluginServerState(pub std::sync::Arc<tokio::sync::Mutex<Option<plugin_server::PluginServer>>>);
+
 pub fn run_tauri() -> tauri::Result<()> {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -37,6 +41,7 @@ pub fn run_tauri() -> tauri::Result<()> {
         ))
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .manage(LibraryDirState(std::sync::Mutex::new(None)))
+        .manage(PluginServerState(std::sync::Arc::new(tokio::sync::Mutex::new(None))))
         .register_uri_scheme_protocol("cubelist-plugin", |ctx, request| {
             // URL: cubelist-plugin://<plugin_id>/<rest_of_path>
             // 응답: 라이브러리 폴더 안 _plugins/<plugin_id>/<rest_of_path> 의 파일
@@ -71,6 +76,26 @@ pub fn run_tauri() -> tauri::Result<()> {
                 if let Err(e) = ws_server::run("127.0.0.1:23456".parse().unwrap()).await {
                     tracing::error!(error = ?e, "WS 서버 종료");
                     let _ = handle.emit("ws_server_error", e.to_string());
+                }
+            });
+
+            // M4 Step 3: Native plugin WebSocket 서버 시작 (동적 포트)
+            let plugin_state = app.state::<PluginServerState>().0.clone();
+            let plugin_handle = app.handle().clone();
+            tauri::async_runtime::spawn(async move {
+                match plugin_server::PluginServer::start().await {
+                    Ok(server) => {
+                        tracing::info!(port = server.port, "plugin server 시작");
+                        let emit_handle = plugin_handle.clone();
+                        server.set_emit_callback(move |ctx, msg| {
+                            let _ = emit_handle.emit("plugin_native_message", (ctx, msg));
+                        });
+                        let mut guard = plugin_state.lock().await;
+                        *guard = Some(server);
+                    }
+                    Err(e) => {
+                        tracing::error!(error = ?e, "plugin server 시작 실패");
+                    }
                 }
             });
 
