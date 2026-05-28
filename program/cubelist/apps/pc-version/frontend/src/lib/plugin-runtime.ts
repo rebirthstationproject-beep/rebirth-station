@@ -327,6 +327,23 @@ export class PluginRuntime {
         }
         this.options.onLog?.(`[PluginRuntime] iframe loaded · src=${iframe.src}`);
 
+        // M4 Step 5.3: plugin JS 예외 자동 복구 — iframe.contentWindow 의 error 리스닝
+        try {
+          win.addEventListener('error', (ev) => {
+            const ee = ev as ErrorEvent;
+            this.options.onLog?.(
+              `[plugin js error] ${ee.message ?? '?'} @ ${ee.filename ?? '?'}:${ee.lineno ?? 0}`,
+              'error',
+            );
+          });
+          win.addEventListener('unhandledrejection', (ev) => {
+            const pe = ev as PromiseRejectionEvent;
+            this.options.onLog?.(`[plugin promise rej] ${String(pe.reason)}`, 'error');
+          });
+        } catch {
+          /* cross-origin 으로 listener add 실패 — 무시 */
+        }
+
         // 1. plugin 안에 MockWebSocket 을 window.WebSocket 으로 주입
         // plugin 의 new WebSocket(...) 호출 = 우리 mock 인스턴스 반환
         // 이미 mock 만들었으므로 plugin 이 WebSocket() 부르면 그 mock 으로 갈 수 있게 patch

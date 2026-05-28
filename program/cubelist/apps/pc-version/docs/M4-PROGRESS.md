@@ -24,6 +24,20 @@
 다음: <다음 sub-step>
 ```
 
+### 2026-05-28 cron #8 — Step 5 안정성 + Step 6 호환성 보고 + Step 7 마무리
+변경:
+- plugin-runtime.ts Step 5.3:
+  · iframe.contentWindow.addEventListener('error') 등록 — plugin JS exception 자동 로그
+  · 'unhandledrejection' 도 캡쳐 (Promise reject)
+  · try/catch — cross-origin 시 listener add 실패 무시
+- docs/PLUGIN-COMPATIBILITY.md 신규 (~70 줄):
+  · 28 plugin 별 manifest 상태 + 액션 수 + CodePath + 호환성 분류
+  · HTML 완전 작동 9 / Native + 외부 service 의존 17 / 한계 2
+  · SDK 메시지 호환성 (Host→Plugin 8 + Plugin→Host 15 = 23종 ✅, 인코더 5종 ❌)
+검증: frontend 818ms · cargo tauri build 55s · exe v29
+결과: ✅ Step 5.3 + Step 6 명세 완료. Step 7.4 = cron 종료 + 사용자 보고
+다음: CronDelete 본 job, 사용자에게 완료 보고
+
 ### 2026-05-28 cron #7 — Step 4 잔여 SDK + 잔여 작업 솔직 보고
 변경:
 - plugin-runtime.ts handlePluginMessage:
