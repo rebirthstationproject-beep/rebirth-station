@@ -36,6 +36,15 @@
 
 import { convertFileSrc } from '@tauri-apps/api/core';
 
+/** M4 Step 2: custom URI scheme — cubelist-plugin://<plugin_id>/<rest>
+ *  Rust register_uri_scheme_protocol 가 처리. HTTP response 헤더 우리가 제어.
+ *  asset:// 가 WebView2 frame 차단 시 우회용. */
+function buildPluginUrl(pluginId: string, pluginDir: string, htmlRelative: string): string {
+  // pluginDir = "<vendor>.<name>.sdPlugin/" (trailing slash 포함)
+  const path = `${pluginDir}${htmlRelative}`;
+  return `cubelist-plugin://${pluginId}/${path}`;
+}
+
 /** unique context UUID — 각 cube instance 마다 다름 */
 export function generateContextUuid(): string {
   return (crypto as Crypto & { randomUUID?: () => string }).randomUUID?.() ??
@@ -197,10 +206,20 @@ export class PluginRuntime {
     iframe.allow = 'autoplay; clipboard-read; clipboard-write';
     iframe.referrerPolicy = 'no-referrer';
 
-    // src = Tauri asset:// 경로 (라이브러리 폴더 안 plugin html)
+    // src — cubelist-plugin:// 우선 (M4 Step 2 custom protocol, HTTP 헤더 제어 가능)
+    // fallback = asset:// (Tauri 기본)
+    const customUrl = buildPluginUrl(
+      this.options.pluginId,
+      this.options.pluginDir,
+      htmlRelativePath,
+    );
     const filePath = `${this.options.libraryDir}/_plugins/${this.options.pluginId}/${this.options.pluginDir}${htmlRelativePath}`;
     const assetUrl = convertFileSrc(filePath.replace(/\\/g, '/'));
-    iframe.src = assetUrl;
+    // 1차 = cubelist-plugin://, error 시 scheduleRetry 가 asset:// fallback 시도
+    iframe.src = this.retryCount === 0 ? customUrl : assetUrl;
+    this.options.onLog?.(
+      `[PluginRuntime] iframe.src = ${iframe.src} (retry=${this.retryCount})`,
+    );
 
     // iframe 안 plugin 의 send 받기 위해 MockWebSocket 주입
     const onPluginSend = (msg: string): void => this.handlePluginMessage(msg);

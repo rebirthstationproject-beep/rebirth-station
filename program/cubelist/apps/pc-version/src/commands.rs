@@ -116,6 +116,125 @@ pub fn write_library_file(
     Ok(file_path.to_string_lossy().to_string())
 }
 
+/// M4 Step 2.2: frontend 가 라이브러리 폴더 경로를 Rust state 에 등록 (custom URI scheme handler 가 사용)
+#[cfg_attr(feature = "gui", tauri::command)]
+pub fn set_library_dir_state(
+    library_dir: String,
+    state: tauri::State<'_, crate::LibraryDirState>,
+) -> Result<(), String> {
+    let mut guard = state.0.lock().map_err(|e| e.to_string())?;
+    *guard = Some(library_dir);
+    Ok(())
+}
+
+/// M4 Step 2.1/2.3: cubelist-plugin:// URI scheme handler
+///
+/// URL 형식: cubelist-plugin://<plugin_id>/<rest_of_path>
+/// 파일: <library_dir>/_plugins/<plugin_id>/<rest_of_path>
+///
+/// HTTP response 헤더:
+///   - X-Frame-Options 제거 (iframe 안에서 로드 가능)
+///   - Access-Control-Allow-Origin: * (cross-origin OK)
+///   - Content-Type: 확장자 기반 sniff
+pub fn cubelist_plugin_protocol_handler(
+    library_dir: Option<String>,
+    url: &tauri::http::Uri,
+) -> tauri::http::Response<std::borrow::Cow<'static, [u8]>> {
+    fn error_response(
+        status: u16,
+        body: &str,
+    ) -> tauri::http::Response<std::borrow::Cow<'static, [u8]>> {
+        tauri::http::Response::builder()
+            .status(status)
+            .header("Content-Type", "text/plain; charset=utf-8")
+            .header("Access-Control-Allow-Origin", "*")
+            .body(std::borrow::Cow::Owned(body.as_bytes().to_vec()))
+            .expect("error response build")
+    }
+
+    let Some(library_dir) = library_dir else {
+        return error_response(503, "library_dir 미설정 (set_library_dir_state 호출 안 됨)");
+    };
+
+    // URL host = plugin_id, path = rest
+    let host = url.host().unwrap_or("");
+    let path = url.path().trim_start_matches('/');
+    if host.is_empty() {
+        return error_response(400, "plugin_id (host) 누락");
+    }
+    if host.contains("..") || path.contains("..") {
+        return error_response(403, "트래버설 차단");
+    }
+
+    let root = std::path::PathBuf::from(&library_dir);
+    let file_path = root.join("_plugins").join(host).join(path);
+
+    // URL decode (한글/공백 등)
+    let decoded_path = match urlencoding::decode(&file_path.to_string_lossy()) {
+        Ok(s) => std::path::PathBuf::from(s.into_owned()),
+        Err(_) => file_path.clone(),
+    };
+
+    // 보안 — canonicalize 후 library_dir 안 확인
+    let canon_root = match root.canonicalize() {
+        Ok(p) => p,
+        Err(_) => return error_response(503, "라이브러리 폴더 canonicalize 실패"),
+    };
+    let canon_file = match decoded_path.canonicalize() {
+        Ok(p) => p,
+        Err(_) => {
+            return error_response(404, &format!("파일 없음: {}", decoded_path.display()));
+        }
+    };
+    if !canon_file.starts_with(&canon_root) {
+        return error_response(403, "트래버설 차단 (라이브러리 외부)");
+    }
+
+    let bytes = match std::fs::read(&canon_file) {
+        Ok(b) => b,
+        Err(e) => return error_response(500, &format!("read 실패: {e}")),
+    };
+
+    let mime = guess_mime(&canon_file);
+
+    tauri::http::Response::builder()
+        .status(200)
+        .header("Content-Type", mime)
+        .header("Access-Control-Allow-Origin", "*")
+        .header("Cache-Control", "no-cache")
+        .body(std::borrow::Cow::Owned(bytes))
+        .expect("response build")
+}
+
+fn guess_mime(path: &std::path::Path) -> &'static str {
+    let ext = path
+        .extension()
+        .and_then(|e| e.to_str())
+        .map(|s| s.to_ascii_lowercase())
+        .unwrap_or_default();
+    match ext.as_str() {
+        "html" | "htm" => "text/html; charset=utf-8",
+        "js" | "mjs" => "application/javascript; charset=utf-8",
+        "css" => "text/css; charset=utf-8",
+        "json" => "application/json; charset=utf-8",
+        "png" => "image/png",
+        "jpg" | "jpeg" => "image/jpeg",
+        "gif" => "image/gif",
+        "svg" => "image/svg+xml",
+        "webp" => "image/webp",
+        "mp3" => "audio/mpeg",
+        "wav" => "audio/wav",
+        "ogg" => "audio/ogg",
+        "mp4" => "video/mp4",
+        "webm" => "video/webm",
+        "ttf" => "font/ttf",
+        "woff" => "font/woff",
+        "woff2" => "font/woff2",
+        "txt" => "text/plain; charset=utf-8",
+        _ => "application/octet-stream",
+    }
+}
+
 /// Plugin .streamDeckPlugin ZIP 통째 라이브러리 폴더 안 _plugins/<plugin_id>/ 에 풀기.
 ///
 /// 보안: library_dir 안 경로만 허용 (트래버설 차단), plugin_id 검증.

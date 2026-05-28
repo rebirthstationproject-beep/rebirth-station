@@ -96,6 +96,13 @@ export function App() {
       }
       if (libDir && isTauri()) {
         try {
+          // M4 Step 2.2: Rust state 에 library_dir 등록 (cubelist-plugin:// 핸들러 사용)
+          try {
+            const { invoke } = await import('@tauri-apps/api/core');
+            await invoke('set_library_dir_state', { libraryDir: libDir });
+          } catch (e) {
+            console.warn('[boot] set_library_dir_state 실패', e);
+          }
           const libPack = await loadLibraryFromDir(libDir);
           // 성공 시 자동 등록 (사용자 명시 등록과 동일하게 영구 저장)
           window.localStorage.setItem(LIBRARY_DIR_KEY, libDir);
@@ -648,6 +655,13 @@ function TopBar() {
       return;
     }
     try {
+      // M4: Rust state 등록
+      try {
+        const { invoke } = await import('@tauri-apps/api/core');
+        await invoke('set_library_dir_state', { libraryDir: trimmed });
+      } catch (e) {
+        console.warn('[handleSetLibraryDir] set_library_dir_state 실패', e);
+      }
       const libPack = await loadLibraryFromDir(trimmed);
       window.localStorage.setItem(LIBRARY_DIR_KEY, trimmed);
       loadPack(libPack);

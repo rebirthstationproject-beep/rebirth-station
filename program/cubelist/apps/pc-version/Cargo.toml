@@ -55,7 +55,7 @@ tracing             = "0.1"
 tracing-subscriber  = { version = "0.3", features = ["env-filter"] }
 
 # --- Tauri (런처/트레이/창) ------------------------------------------------
-tauri                          = { version = "2", features = ["tray-icon"], optional = true }
+tauri                          = { version = "2", features = ["protocol-asset", "tray-icon"], optional = true }
 tauri-plugin-autostart         = { version = "2", optional = true }
 tauri-plugin-shell             = { version = "2", optional = true }
 tauri-plugin-global-shortcut   = { version = "2", optional = true }
@@ -65,6 +65,9 @@ dirs                           = "5"
 
 # --- ZIP 컨테이너 (.cubeplugin / .cubepack 로드) ---------------------------
 zip                            = { version = "2", default-features = false, features = ["deflate"] }
+
+# --- M4 Step 2: URL 디코딩 (cubelist-plugin:// 핸들러 경로 처리) ----------
+urlencoding                    = "2"
 
 # --- Windows 전용 (focus_window 액션) -------------------------------------
 [target.'cfg(target_os = "windows")'.dependencies]
@@ -80,7 +83,7 @@ tauri-build               = { version = "2", optional = true , features = [] }
 [features]
 # 사용자 결정 2026-05-23 (영구·비협상): 데스크톱 앱 기본 = GUI 모드 (Tauri 활성).
 #   - 사용자 시나리오 99% = 트레이/윈도우 진입. CLI 모드는 헤드리스 서버 fallback 전용.
-#   - 사전 시도 default=[] 시 cargo tauri dev가 빌드는 통과하나 윈도우 미표시 + 트레이 미등록 (gui feature 비활성)
+#   - 사전 시도 default= [] 시 cargo tauri dev가 빌드는 통과하나 윈도우 미표시 + 트레이 미등록 (gui feature 비활성)
 #   - 변경 시: docs/desktop-app-setup.md "feature 분기" + apps/pc-helper/README.md "Feature 분기" 동시 갱신 필수
 # CLI 전용 빌드: `cargo build --no-default-features`
 default = ["gui"]

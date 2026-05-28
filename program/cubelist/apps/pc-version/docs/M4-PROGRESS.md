@@ -24,6 +24,24 @@
 다음: <다음 sub-step>
 ```
 
+### 2026-05-27 21:52 cron #2 — Step 2.1 + 2.2 + 2.3 + 2.4
+변경:
+- Cargo.toml: urlencoding "2" 의존성 추가
+- src/lib.rs: LibraryDirState (Mutex<Option<String>>) 추가, register_uri_scheme_protocol("cubelist-plugin", ...) 등록
+- src/commands.rs: cubelist_plugin_protocol_handler 신규 (URL → 파일 read + HTTP response)
+  · URL: cubelist-plugin://<plugin_id>/<rest_of_path>
+  · 보안 가드: canonicalize → library_dir 안 확인, .. 차단
+  · MIME sniff 확장자 별 (html/js/css/png/svg/mp3/wav/mp4 등 17종)
+  · 헤더: Content-Type + Access-Control-Allow-Origin: * + Cache-Control: no-cache
+  · X-Frame-Options 미설정 → iframe 안 로드 가능 (WebView2 "콘텐츠 차단" 우회 백업)
+- src/commands.rs: set_library_dir_state 신규 Tauri 명령 (frontend → Rust state 등록)
+- frontend/src/lib/plugin-runtime.ts: buildPluginUrl() 신규 → iframe.src 1차 = cubelist-plugin://, 재시도 시 asset:// fallback
+- frontend/src/App.tsx: library_dir 등록 시 invoke('set_library_dir_state') 자동 호출
+- tauri.conf.json CSP: cubelist-plugin: 모든 directive 추가 (frame-src, connect-src, img-src, script-src 등)
+검증: Cargo 빌드 통과 (urlencoding 다운로드), frontend build 1.04s, exe v23 시각 검증
+결과: ✅ Step 2.1~2.4 완료. asset:// 1차 차단 시 cubelist-plugin:// 자동 대체 작동 기반 마련
+다음: Step 2.5 — asset:// 폴백 유지 (이미 retryCount>0 시 asset 시도) + Step 3.1 (Rust WebSocket 서버 시작)
+
 ### 2026-05-27 21:37 cron #1 — Step 1.1 + 1.2 + 1.3 + 1.4
 변경:
 - plugin-runtime.ts: retryCount + connectTimer + doMount() 분리 → 5초 안 connected 안 되면 자동 재시도 (최대 3회, 1s/2s/3s 백오프)

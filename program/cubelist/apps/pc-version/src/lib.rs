@@ -25,6 +25,9 @@ use tauri::{Emitter, Manager};
 /// - autostart 플러그인 (사용자 토글)
 /// - 창 close → hide (종료가 아닌 트레이로)
 #[cfg(feature = "gui")]
+/// M4 Step 2: 라이브러리 폴더 경로 (custom URI scheme handler 가 사용)
+pub struct LibraryDirState(pub std::sync::Mutex<Option<String>>);
+
 pub fn run_tauri() -> tauri::Result<()> {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -33,6 +36,15 @@ pub fn run_tauri() -> tauri::Result<()> {
             Some(vec!["--minimized".into()]),
         ))
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
+        .manage(LibraryDirState(std::sync::Mutex::new(None)))
+        .register_uri_scheme_protocol("cubelist-plugin", |ctx, request| {
+            // URL: cubelist-plugin://<plugin_id>/<rest_of_path>
+            // 응답: 라이브러리 폴더 안 _plugins/<plugin_id>/<rest_of_path> 의 파일
+            let state = ctx.app_handle().state::<LibraryDirState>();
+            let library_dir = state.0.lock().ok().and_then(|g| g.clone());
+            let url = request.uri();
+            commands::cubelist_plugin_protocol_handler(library_dir, url)
+        })
         .invoke_handler(tauri::generate_handler![
             commands::ws_server_status,
             commands::open_external_url,
@@ -44,6 +56,7 @@ pub fn run_tauri() -> tauri::Result<()> {
             commands::read_library_files,
             commands::write_library_file,
             commands::write_plugin_zip,
+            commands::set_library_dir_state,
         ])
         .setup(|app| {
             // 시스템 트레이 메뉴
