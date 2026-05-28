@@ -19,6 +19,8 @@ interface PluginActionPayload {
   plugin_id?: string;
   plugin_dir?: string;
   settings?: Record<string, unknown>;
+  code_path?: string;
+  code_kind?: 'html' | 'native';
 }
 
 function extractPluginMeta(cube: Cube): {
@@ -26,6 +28,8 @@ function extractPluginMeta(cube: Cube): {
   pluginDir: string;
   actionUuid: string;
   settings: Record<string, unknown>;
+  codePath: string;
+  codeKind: 'html' | 'native';
 } | null {
   if (cube.action_type !== 'plugin_action') return null;
   const p = cube.action_payload as PluginActionPayload;
@@ -35,6 +39,8 @@ function extractPluginMeta(cube: Cube): {
     pluginDir: p.plugin_dir,
     actionUuid: p.plugin_uuid,
     settings: p.settings ?? {},
+    codePath: p.code_path ?? 'index.html',
+    codeKind: p.code_kind ?? 'html',
   };
 }
 
@@ -76,6 +82,8 @@ export function PluginActionRunner({ cube }: { cube: Cube }) {
       contextUuid: contextRef.current,
       libraryDir,
       settings: meta.settings,
+      codePath: meta.codePath,
+      codeKind: meta.codeKind,
       kind: 'action',
       onSetImage: (base64) => updateCubeIcon(cube.id, base64),
       onSetTitle: () => {
@@ -98,7 +106,9 @@ export function PluginActionRunner({ cube }: { cube: Cube }) {
     });
     runtimeRef.current = runtime;
 
-    void runtime.mount(wrap, 'index.html');
+    // codeKind 가 native 면 codePath (.exe), html 이면 'index.html'
+    const entry = meta.codeKind === 'native' ? meta.codePath : 'index.html';
+    void runtime.mount(wrap, entry);
     cubeRuntimeMap.set(cube.id, runtime);
 
     return () => {

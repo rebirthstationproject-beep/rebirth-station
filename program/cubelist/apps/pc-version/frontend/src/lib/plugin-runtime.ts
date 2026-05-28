@@ -64,6 +64,10 @@ export interface PluginRuntimeOptions {
   libraryDir: string;
   /** PropertyInspector 옵션 (사용자가 설정한 값) */
   settings: Record<string, unknown>;
+  /** plugin entry path (HTML: "index.html", Native: "cpu.exe") */
+  codePath?: string;
+  /** 'html' = iframe runtime, 'native' = child process + WS 서버 */
+  codeKind?: 'html' | 'native';
   /** plugin → host 콜백 */
   onSetImage?: (base64DataUrl: string, state?: number) => void;
   onSetTitle?: (title: string, state?: number) => void;
@@ -184,14 +188,99 @@ export class PluginRuntime {
     this.currentSettings = { ...options.settings };
   }
 
-  /** iframe 마운트 + plugin html 로드 + connectElgatoStreamDeckSocket 호출 */
+  /** 마운트 — kind 에 따라 iframe(html) 또는 child process(native) */
   async mount(container: HTMLElement, htmlRelativePath: string): Promise<void> {
     if (this.mounted) return;
     this.mounted = true;
     this.container = container;
     this.htmlRelativePath = htmlRelativePath;
-    this.doMount();
+    if (this.options.codeKind === 'native') {
+      void this.doMountNative();
+    } else {
+      this.doMount();
+    }
   }
+
+  /** M4 Step 3: Native (.exe) plugin runtime — Rust spawn + Tauri event listen */
+  private async doMountNative(): Promise<void> {
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      const { listen } = await import('@tauri-apps/api/event');
+      const info = JSON.stringify({
+        application: { language: 'en', platform: 'windows', platformVersion: '10', version: '6.5.0' },
+        plugin: { uuid: this.options.pluginId, version: '1.0' },
+        devicePixelRatio: window.devicePixelRatio || 1,
+        devices: [
+          {
+            id: 'cubelist-virtual',
+            name: '큐브 리스트 가상 키패드',
+            size: { columns: 4, rows: 7 },
+            type: 7,
+          },
+        ],
+      });
+      // 1) Tauri event 리스너 등록 (plugin → host)
+      this.nativeUnlisten = await listen<[string, string]>('plugin_native_message', (event) => {
+        const [ctx, msg] = event.payload;
+        if (ctx !== this.options.contextUuid) return;
+        this.handlePluginMessage(msg);
+      });
+      // 2) child process spawn
+      const exeRelative = this.options.codePath ?? 'plugin.exe';
+      const pid = await invoke<number>('spawn_plugin_process', {
+        libraryDir: this.options.libraryDir,
+        pluginId: this.options.pluginId,
+        pluginDir: this.options.pluginDir,
+        exeRelative,
+        contextUuid: this.options.contextUuid,
+        infoJson: info,
+      });
+      this.connected = true;
+      this.options.onLog?.(`[PluginRuntime native] spawn OK pid=${pid} · ${this.options.actionUuid}`);
+      // 3) registerPlugin 이후 willAppear / didReceiveSettings 발송
+      setTimeout(() => this.dispatchNative('willAppear'), 100);
+      setTimeout(() => this.sendDidReceiveSettingsNative(), 150);
+    } catch (e) {
+      this.lastError = `native spawn 실패: ${(e as Error).message ?? e}`;
+      this.options.onLog?.(`[PluginRuntime native] ${this.lastError}`, 'error');
+    }
+  }
+
+  /** native plugin 에 메시지 전송 */
+  private async sendNative(json: string): Promise<void> {
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      await invoke('send_to_plugin', {
+        contextUuid: this.options.contextUuid,
+        message: json,
+      });
+    } catch (e) {
+      this.options.onLog?.(`[PluginRuntime native] send 실패: ${(e as Error).message}`, 'warn');
+    }
+  }
+
+  private dispatchNative(event: string, extra?: Record<string, unknown>): void {
+    const msg = {
+      event,
+      action: this.options.actionUuid,
+      context: this.options.contextUuid,
+      device: 'cubelist-virtual',
+      payload: {
+        settings: this.currentSettings,
+        coordinates: { column: 0, row: 0 },
+        state: 0,
+        isInMultiAction: false,
+        ...extra,
+      },
+    };
+    void this.sendNative(JSON.stringify(msg));
+  }
+
+  private sendDidReceiveSettingsNative(): void {
+    this.dispatchNative('didReceiveSettings', { settings: this.currentSettings });
+  }
+
+  private nativeUnlisten: (() => void) | null = null;
 
   private doMount(): void {
     const container = this.container;
@@ -360,6 +449,11 @@ export class PluginRuntime {
 
   /** 큐브 클릭 시 keyDown → 100ms 후 keyUp */
   fireKey(): void {
+    if (this.options.codeKind === 'native') {
+      this.dispatchNative('keyDown');
+      setTimeout(() => this.dispatchNative('keyUp'), 80);
+      return;
+    }
     this.dispatch('keyDown');
     setTimeout(() => this.dispatch('keyUp'), 80);
   }
@@ -379,7 +473,11 @@ export class PluginRuntime {
     if (!this.mounted) return;
     this.mounted = false;
     try {
-      this.dispatch('willDisappear');
+      if (this.options.codeKind === 'native') {
+        this.dispatchNative('willDisappear');
+      } else {
+        this.dispatch('willDisappear');
+      }
     } catch {
       /* ignore */
     }
@@ -391,6 +489,21 @@ export class PluginRuntime {
       this.iframe.parentNode.removeChild(this.iframe);
     }
     this.iframe = null;
+    // M4 Step 3.6: native runtime cleanup
+    if (this.options.codeKind === 'native') {
+      if (this.nativeUnlisten) {
+        this.nativeUnlisten();
+        this.nativeUnlisten = null;
+      }
+      void (async () => {
+        try {
+          const { invoke } = await import('@tauri-apps/api/core');
+          await invoke('drop_plugin_context', { contextUuid: this.options.contextUuid });
+        } catch (e) {
+          this.options.onLog?.(`[PluginRuntime native] drop 실패: ${(e as Error).message}`, 'warn');
+        }
+      })();
+    }
   }
 
   /** plugin 의 send(JSON) 메시지 처리 */

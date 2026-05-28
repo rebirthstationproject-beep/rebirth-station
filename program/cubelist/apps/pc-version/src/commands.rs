@@ -116,13 +116,7 @@ pub fn write_library_file(
     Ok(file_path.to_string_lossy().to_string())
 }
 
-/// M4 Step 3.2: Native plugin .exe 를 child process 로 spawn.
-///
-/// SDK 표준 인자 (StreamDeck Plugin SDK):
-///   -port <PORT>           — WebSocket 서버 포트
-///   -pluginUUID <UUID>     — context UUID
-///   -registerEvent <NAME>  — "registerPlugin"
-///   -info <JSON>           — application/plugin/devices 정보
+/// M4 Step 3.2 + 3.6 + 3.7: Native plugin .exe child process spawn + process pool 등록
 #[cfg_attr(feature = "gui", tauri::command)]
 pub async fn spawn_plugin_process(
     library_dir: String,
@@ -131,10 +125,11 @@ pub async fn spawn_plugin_process(
     exe_relative: String,
     context_uuid: String,
     info_json: String,
-    state: tauri::State<'_, crate::PluginServerState>,
+    server_state: tauri::State<'_, crate::PluginServerState>,
+    process_state: tauri::State<'_, crate::PluginProcessState>,
 ) -> Result<u32, String> {
     let port = {
-        let guard = state.0.lock().await;
+        let guard = server_state.0.lock().await;
         match guard.as_ref() {
             Some(s) => s.port,
             None => return Err("plugin_server 미시작".into()),
@@ -177,8 +172,15 @@ pub async fn spawn_plugin_process(
     match cmd.spawn() {
         Ok(child) => {
             let pid = child.id();
-            tracing::info!(pid, ?exe_path, "plugin process spawn");
-            std::mem::forget(child);
+            // Step 3.6/3.7: process pool 등록 — context_uuid 충돌 시 이전 process kill
+            {
+                let mut guard = process_state.0.lock().map_err(|e| e.to_string())?;
+                if let Some(mut prev) = guard.remove(&context_uuid) {
+                    let _ = prev.kill();
+                }
+                guard.insert(context_uuid.clone(), child);
+            }
+            tracing::info!(pid, ?exe_path, ctx = ?context_uuid, "plugin process spawn + pool register");
             Ok(pid)
         }
         Err(e) => Err(format!("spawn 실패: {e}")),
@@ -200,17 +202,38 @@ pub async fn send_to_plugin(
         .map_err(|e| e.to_string())
 }
 
-/// M4 Step 3.6: plugin context drop (큐브 unmount 시 connection 정리)
+/// M4 Step 3.6: plugin context drop (큐브 unmount 시 connection + process 정리)
 #[cfg_attr(feature = "gui", tauri::command)]
 pub async fn drop_plugin_context(
     context_uuid: String,
-    state: tauri::State<'_, crate::PluginServerState>,
+    server_state: tauri::State<'_, crate::PluginServerState>,
+    process_state: tauri::State<'_, crate::PluginProcessState>,
 ) -> Result<(), String> {
-    let guard = state.0.lock().await;
-    if let Some(server) = guard.as_ref() {
-        server.drop_context(&context_uuid).await;
+    // 1) WebSocket connection drop
+    {
+        let guard = server_state.0.lock().await;
+        if let Some(server) = guard.as_ref() {
+            server.drop_context(&context_uuid).await;
+        }
+    }
+    // 2) child process kill (Step 3.6)
+    {
+        let mut guard = process_state.0.lock().map_err(|e| e.to_string())?;
+        if let Some(mut child) = guard.remove(&context_uuid) {
+            let _ = child.kill();
+            tracing::info!(ctx = ?context_uuid, "plugin process killed");
+        }
     }
     Ok(())
+}
+
+/// M4 Step 3.7: 현재 살아있는 native plugin process 목록 조회 (디버그)
+#[cfg_attr(feature = "gui", tauri::command)]
+pub fn list_plugin_processes(
+    process_state: tauri::State<'_, crate::PluginProcessState>,
+) -> Result<Vec<(String, u32)>, String> {
+    let guard = process_state.0.lock().map_err(|e| e.to_string())?;
+    Ok(guard.iter().map(|(ctx, child)| (ctx.clone(), child.id())).collect())
 }
 
 /// M4 Step 2.2: frontend 가 라이브러리 폴더 경로를 Rust state 에 등록 (custom URI scheme handler 가 사용)

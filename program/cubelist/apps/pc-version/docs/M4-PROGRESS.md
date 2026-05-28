@@ -24,6 +24,27 @@
 다음: <다음 sub-step>
 ```
 
+### 2026-05-28 cron #6 — Step 3.6 + 3.7 + frontend native runtime
+변경:
+- src/lib.rs: PluginProcessState (HashMap<context_uuid, Child>) 추가 + manage
+- src/commands.rs:
+  · spawn_plugin_process 가 PluginProcessState 받음 → child 등록 + 충돌 시 이전 kill
+  · drop_plugin_context — connection drop + child.kill() 둘 다 (Step 3.6)
+  · list_plugin_processes — 디버그용 (현재 살아있는 process)
+- frontend/src/lib/plugin-runtime.ts (큰 변경):
+  · PluginRuntimeOptions 에 codePath + codeKind 추가
+  · mount() codeKind 분기 — 'native' = doMountNative(), 'html' = doMount()
+  · doMountNative() — listen('plugin_native_message') 등록 + invoke('spawn_plugin_process')
+  · dispatchNative / sendNative — child process 와 메시지 양방향
+  · fireKey() codeKind 분기
+  · unmount() — native 시 invoke('drop_plugin_context') + listener cleanup
+- frontend/src/components/PluginRunnerHost.tsx:
+  · extractPluginMeta 에 codePath + codeKind 추가
+  · PluginActionRunner — codeKind 가 native 면 entry = codePath (.exe)
+검증: cargo check 1.73s · frontend 850ms · cargo tauri build 56s · exe v27
+결과: ✅ Step 3.6 + 3.7 완료. native plugin (CPU, OBS Tools 등) 자동 분기 가능
+다음: Step 3.8 (CPU plugin 검증) + Step 4 (잔여 SDK 메시지) — 사용자 환경 확인 필요
+
 ### 2026-05-28 cron #5 — HTML <base href> auto-inject (asset 에러 fix)
 변경:
 - src/commands.rs cubelist_plugin_protocol_handler:

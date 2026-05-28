@@ -32,6 +32,11 @@ pub struct LibraryDirState(pub std::sync::Mutex<Option<String>>);
 /// M4 Step 3: Native plugin WebSocket 서버 (포트 + connections)
 pub struct PluginServerState(pub std::sync::Arc<tokio::sync::Mutex<Option<plugin_server::PluginServer>>>);
 
+/// M4 Step 3.6: Native plugin child process handles — context_uuid → Child (kill 용)
+pub struct PluginProcessState(
+    pub std::sync::Arc<std::sync::Mutex<std::collections::HashMap<String, std::process::Child>>>,
+);
+
 pub fn run_tauri() -> tauri::Result<()> {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
@@ -42,6 +47,7 @@ pub fn run_tauri() -> tauri::Result<()> {
         .plugin(tauri_plugin_global_shortcut::Builder::new().build())
         .manage(LibraryDirState(std::sync::Mutex::new(None)))
         .manage(PluginServerState(std::sync::Arc::new(tokio::sync::Mutex::new(None))))
+        .manage(PluginProcessState(std::sync::Arc::new(std::sync::Mutex::new(std::collections::HashMap::new()))))
         .register_uri_scheme_protocol("cubelist-plugin", |ctx, request| {
             // URL: cubelist-plugin://<plugin_id>/<rest_of_path>
             // 응답: 라이브러리 폴더 안 _plugins/<plugin_id>/<rest_of_path> 의 파일
@@ -65,6 +71,7 @@ pub fn run_tauri() -> tauri::Result<()> {
             commands::spawn_plugin_process,
             commands::send_to_plugin,
             commands::drop_plugin_context,
+            commands::list_plugin_processes,
         ])
         .setup(|app| {
             // 시스템 트레이 메뉴
