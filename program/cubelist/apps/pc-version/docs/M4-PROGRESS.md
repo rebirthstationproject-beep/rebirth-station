@@ -24,6 +24,25 @@
 다음: <다음 sub-step>
 ```
 
+### 2026-05-28 cron #5 — HTML <base href> auto-inject (asset 에러 fix)
+변경:
+- src/commands.rs cubelist_plugin_protocol_handler:
+  · text/html 응답 시 inject_base_href() 호출
+  · inject_base_href() — <head>/<head ...>/<html> 자동 탐색 후 <base href="cubelist-plugin://<host>/<dir>/"> 삽입
+  · case-insensitive 검색 (HTML 변형 대응)
+  · charset utf-8 meta 도 함께 inject
+- frontend/src/lib/plugin-runtime.ts:
+  · asset:// fallback 완전 제거 — cubelist-plugin:// 만 사용
+  · convertFileSrc import 제거
+원인 (사용자 보고 directly): "File does not exist at path: common/common.js, action/js/clockfaces.js..."
+해결 검증 가설:
+- 모든 상대 경로 (action/js/clock.js 등) 가 cubelist-plugin:// 기반으로 resolve
+- WebView2 의 base URL 추론 한계 우회
+- 다음 cron 에서 사용자 환경 확인
+검증: frontend 831ms · cargo tauri build 56s · exe v26
+결과: ✅ 코드 완료. 사용자 환경 실 작동 = 다음 cron #6 확인
+다음: Step 3.6 process lifecycle (spawn → unmount 시 kill) + 3.7 process pool
+
 ### 2026-05-28 cron #4 — Step 3.2~3.5 (Rust spawn 명령 + frontend codePath/codeKind)
 변경:
 - src/commands.rs:

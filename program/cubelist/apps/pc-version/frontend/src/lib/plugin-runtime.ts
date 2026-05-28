@@ -34,7 +34,7 @@
  *   5. unmount() → iframe 제거 + 리소스 정리
  */
 
-import { convertFileSrc } from '@tauri-apps/api/core';
+// M4: asset:// 제거 (cubelist-plugin:// 만 사용). convertFileSrc 더 이상 필요 X.
 
 /** M4 Step 2: custom URI scheme — cubelist-plugin://<plugin_id>/<rest>
  *  Rust register_uri_scheme_protocol 가 처리. HTTP response 헤더 우리가 제어.
@@ -206,17 +206,15 @@ export class PluginRuntime {
     iframe.allow = 'autoplay; clipboard-read; clipboard-write';
     iframe.referrerPolicy = 'no-referrer';
 
-    // src — cubelist-plugin:// 우선 (M4 Step 2 custom protocol, HTTP 헤더 제어 가능)
-    // fallback = asset:// (Tauri 기본)
+    // M4 Step 3.5+: cubelist-plugin:// 만 사용 (asset:// fallback 제거)
+    // 이유: asset:// 는 상대 경로 base URL 추론 못 함 ("File does not exist at path: action/js/clock.js")
+    // cubelist-plugin:// 는 Rust handler 가 HTML <base href> 자동 inject → 모든 상대 src resolve
     const customUrl = buildPluginUrl(
       this.options.pluginId,
       this.options.pluginDir,
       htmlRelativePath,
     );
-    const filePath = `${this.options.libraryDir}/_plugins/${this.options.pluginId}/${this.options.pluginDir}${htmlRelativePath}`;
-    const assetUrl = convertFileSrc(filePath.replace(/\\/g, '/'));
-    // 1차 = cubelist-plugin://, error 시 scheduleRetry 가 asset:// fallback 시도
-    iframe.src = this.retryCount === 0 ? customUrl : assetUrl;
+    iframe.src = customUrl;
     this.options.onLog?.(
       `[PluginRuntime] iframe.src = ${iframe.src} (retry=${this.retryCount})`,
     );

@@ -287,12 +287,18 @@ pub fn cubelist_plugin_protocol_handler(
         return error_response(403, "트래버설 차단 (라이브러리 외부)");
     }
 
-    let bytes = match std::fs::read(&canon_file) {
+    let mut bytes = match std::fs::read(&canon_file) {
         Ok(b) => b,
         Err(e) => return error_response(500, &format!("read 실패: {e}")),
     };
 
     let mime = guess_mime(&canon_file);
+
+    // M4 Step 3.5+: HTML 응답 시 <base href> 자동 inject
+    // → iframe 안 상대 경로 (<script src="action/...">) 가 cubelist-plugin:// 기반으로 resolve
+    if mime.starts_with("text/html") {
+        bytes = inject_base_href(&bytes, host, path);
+    }
 
     tauri::http::Response::builder()
         .status(200)
@@ -301,6 +307,63 @@ pub fn cubelist_plugin_protocol_handler(
         .header("Cache-Control", "no-cache")
         .body(std::borrow::Cow::Owned(bytes))
         .expect("response build")
+}
+
+/// HTML 응답에 <base href="cubelist-plugin://<host>/<dir_path>/"> 자동 inject.
+/// WebView2 의 base URL 추론을 보강 — 상대 경로 src/href 가 정확히 resolve.
+fn inject_base_href(html_bytes: &[u8], host: &str, path: &str) -> Vec<u8> {
+    let html = match std::str::from_utf8(html_bytes) {
+        Ok(s) => s,
+        Err(_) => return html_bytes.to_vec(), // utf8 아니면 원본 그대로
+    };
+    // dir_path = 마지막 / 까지 (파일명 제외)
+    let dir_path = match path.rfind('/') {
+        Some(idx) => &path[..idx + 1],
+        None => "",
+    };
+    let base_tag = format!(
+        r#"<base href="cubelist-plugin://{}/{}"><meta charset="utf-8">"#,
+        host, dir_path,
+    );
+    // <head> case-insensitive 검색
+    let lower = html.to_ascii_lowercase();
+    if let Some(idx) = lower.find("<head>") {
+        let mut out = String::with_capacity(html.len() + base_tag.len());
+        out.push_str(&html[..idx + 6]);
+        out.push_str(&base_tag);
+        out.push_str(&html[idx + 6..]);
+        return out.into_bytes();
+    }
+    // <head ...> 변형
+    if let Some(start) = lower.find("<head") {
+        if let Some(rel_end) = lower[start..].find('>') {
+            let end = start + rel_end + 1;
+            let mut out = String::with_capacity(html.len() + base_tag.len());
+            out.push_str(&html[..end]);
+            out.push_str(&base_tag);
+            out.push_str(&html[end..]);
+            return out.into_bytes();
+        }
+    }
+    // <html> 직후
+    if let Some(idx) = lower.find("<html") {
+        if let Some(rel_end) = lower[idx..].find('>') {
+            let end = idx + rel_end + 1;
+            let inject = format!("<head>{base_tag}</head>");
+            let mut out = String::with_capacity(html.len() + inject.len());
+            out.push_str(&html[..end]);
+            out.push_str(&inject);
+            out.push_str(&html[end..]);
+            return out.into_bytes();
+        }
+    }
+    // 아예 없으면 prepend
+    let mut out = String::with_capacity(html.len() + base_tag.len());
+    out.push_str("<head>");
+    out.push_str(&base_tag);
+    out.push_str("</head>");
+    out.push_str(html);
+    out.into_bytes()
 }
 
 fn guess_mime(path: &std::path::Path) -> &'static str {
