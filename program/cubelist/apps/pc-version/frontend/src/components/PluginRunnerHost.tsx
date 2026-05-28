@@ -21,6 +21,8 @@ interface PluginActionPayload {
   settings?: Record<string, unknown>;
   code_path?: string;
   code_kind?: 'html' | 'native';
+  pi_path?: string;
+  sidecar_exes?: string[];
 }
 
 function extractPluginMeta(cube: Cube): {
@@ -30,6 +32,8 @@ function extractPluginMeta(cube: Cube): {
   settings: Record<string, unknown>;
   codePath: string;
   codeKind: 'html' | 'native';
+  piPath: string;
+  sidecarExes: string[];
 } | null {
   if (cube.action_type !== 'plugin_action') return null;
   const p = cube.action_payload as PluginActionPayload;
@@ -41,6 +45,8 @@ function extractPluginMeta(cube: Cube): {
     settings: p.settings ?? {},
     codePath: p.code_path ?? 'index.html',
     codeKind: p.code_kind ?? 'html',
+    piPath: p.pi_path ?? 'propertyinspector/index.html',
+    sidecarExes: p.sidecar_exes ?? [],
   };
 }
 
@@ -109,6 +115,29 @@ export function PluginActionRunner({ cube }: { cube: Cube }) {
     // codeKind 가 native 면 codePath (.exe), html 이면 'index.html'
     const entry = meta.codeKind === 'native' ? meta.codePath : 'index.html';
     void runtime.mount(wrap, entry);
+
+    // M4 B: Sidecar .exe 자동 spawn (bin/*.exe 등)
+    if (meta.sidecarExes.length > 0) {
+      void (async () => {
+        const { invoke } = await import('@tauri-apps/api/core');
+        for (const sidecarPath of meta.sidecarExes) {
+          const sidecarCtx = `${contextRef.current}-sidecar-${sidecarPath}`;
+          try {
+            await invoke('spawn_plugin_process', {
+              libraryDir,
+              pluginId: meta.pluginId,
+              pluginDir: meta.pluginDir,
+              exeRelative: sidecarPath,
+              contextUuid: sidecarCtx,
+              infoJson: JSON.stringify({ sidecar: true, parent: contextRef.current }),
+            });
+            console.log(`[sidecar spawn] ${sidecarPath}`);
+          } catch (e) {
+            console.warn(`[sidecar spawn 실패] ${sidecarPath}`, e);
+          }
+        }
+      })();
+    }
     cubeRuntimeMap.set(cube.id, runtime);
 
     return () => {
@@ -129,6 +158,22 @@ export function fireCubeKey(cubeId: string): boolean {
   const r = cubeRuntimeMap.get(cubeId);
   if (!r) return false;
   r.fireKey();
+  return true;
+}
+
+/** M4 D: 큐브에 dialRotate 발송 (마우스 휠 매핑) */
+export function fireCubeDialRotate(cubeId: string, ticks: number): boolean {
+  const r = cubeRuntimeMap.get(cubeId);
+  if (!r) return false;
+  r.fireDialRotate(ticks);
+  return true;
+}
+
+/** M4 D: 큐브에 touchTap 발송 (큐브 상단 영역 더블 클릭 등) */
+export function fireCubeTouchTap(cubeId: string): boolean {
+  const r = cubeRuntimeMap.get(cubeId);
+  if (!r) return false;
+  r.fireTouchTap();
   return true;
 }
 
@@ -240,9 +285,8 @@ export function PluginPropertyInspector({ cube }: { cube: Cube }) {
     });
     piRuntimeRef.current = piRuntime;
 
-    // PropertyInspector 경로 = manifest.Actions[].PropertyInspectorPath 또는 default
-    // 일단 propertyinspector/index.html 시도
-    const piPath = `propertyinspector/index.html`;
+    // M4 A: action 별 PropertyInspectorPath 사용 (변환 시 추출됨)
+    const piPath = meta.piPath || 'propertyinspector/index.html';
     void piRuntime.mount(container, piPath);
 
     return () => {

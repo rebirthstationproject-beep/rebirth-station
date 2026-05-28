@@ -479,6 +479,39 @@ export class PluginRuntime {
     setTimeout(() => this.dispatch('keyUp'), 80);
   }
 
+  /** M4 D: StreamDeck+ 인코더 dialDown/dialUp — 큐브 셀 마우스 휠 클릭 등에 매핑 가능 */
+  fireDial(): void {
+    const ev = this.options.codeKind === 'native' ? 'dispatchNative' : 'dispatch';
+    (this as unknown as Record<string, (e: string, p?: Record<string, unknown>) => void>)[ev](
+      'dialDown',
+    );
+    setTimeout(() => {
+      (this as unknown as Record<string, (e: string, p?: Record<string, unknown>) => void>)[ev](
+        'dialUp',
+      );
+    }, 80);
+  }
+
+  /** M4 D: dialRotate — 마우스 휠 등에 매핑 (ticks = 회전 수) */
+  fireDialRotate(ticks: number): void {
+    const payload = { ticks, pressed: false };
+    if (this.options.codeKind === 'native') {
+      this.dispatchNative('dialRotate', payload);
+    } else {
+      this.dispatch('dialRotate', payload);
+    }
+  }
+
+  /** M4 D: touchTap — 큐브 셀 더블 탭 등에 매핑 */
+  fireTouchTap(): void {
+    const payload = { hold: false, tapPos: [0, 0] };
+    if (this.options.codeKind === 'native') {
+      this.dispatchNative('touchTap', payload);
+    } else {
+      this.dispatch('touchTap', payload);
+    }
+  }
+
   /** PropertyInspector 에서 sendToPlugin 받았을 때 plugin 에게 전달 */
   forwardToPlugin(payload: Record<string, unknown>): void {
     this.dispatch('sendToPlugin', payload);

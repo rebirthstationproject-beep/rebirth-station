@@ -83,6 +83,25 @@ export function App() {
     if (draftList) setMainTab('list-maker');
   }, [draftList?.id]);
 
+  // M4 E: 윈도우 focus 시 라이브러리 자동 reload (plugin 추가/삭제 감지)
+  useEffect(() => {
+    if (!isTauri()) return;
+    function onFocus(): void {
+      const libDir = window.localStorage.getItem(LIBRARY_DIR_KEY);
+      if (!libDir) return;
+      void (async () => {
+        try {
+          const refreshed = await loadLibraryFromDir(libDir);
+          useEditor.getState().loadPack(refreshed);
+        } catch {
+          /* focus 마다 silent — 첫 부팅 시 이미 로드됨 */
+        }
+      })();
+    }
+    window.addEventListener('focus', onFocus);
+    return () => window.removeEventListener('focus', onFocus);
+  }, []);
+
   // 부팅 시 우선순위: 라이브러리 폴더 → localStorage cubepack → 데모
   useEffect(() => {
     if (pack) return;
@@ -1334,6 +1353,16 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
         // plugin_action 큐브 더블클릭 = key 실행
         if (cube.action_type === 'plugin_action') {
           fireCubeKey(cube.id);
+        }
+      }}
+      onWheel={(e) => {
+        // M4 D: plugin_action 큐브에 마우스 휠 = StreamDeck+ dialRotate 매핑
+        if (cube.action_type === 'plugin_action') {
+          e.preventDefault();
+          const ticks = e.deltaY > 0 ? 1 : -1;
+          import('./components/PluginRunnerHost').then(({ fireCubeDialRotate }) => {
+            fireCubeDialRotate(cube.id, ticks);
+          });
         }
       }}
       aria-pressed={selected}

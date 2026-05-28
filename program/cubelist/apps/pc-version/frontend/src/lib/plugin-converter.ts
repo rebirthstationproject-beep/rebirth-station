@@ -50,6 +50,8 @@ interface ManifestAction {
   Tooltip?: string;
   Icon?: string;
   States?: { Image?: string }[];
+  /** M4 A: action 별 PropertyInspectorPath (없으면 manifest.PropertyInspectorPath 폴백) */
+  PropertyInspectorPath?: string;
 }
 
 interface PluginManifest {
@@ -62,6 +64,8 @@ interface PluginManifest {
   CodePath?: string;
   CodePathWin?: string;
   CodePathMac?: string;
+  /** M4 A: 전체 plugin 의 default PI 경로 */
+  PropertyInspectorPath?: string;
 }
 
 interface IconLookup {
@@ -152,7 +156,10 @@ async function buildFallbackManifest(
   pluginDir: string,
   zipFilename?: string,
 ): Promise<{ manifest: PluginManifest; pluginDir: string; fallback: true }> {
+  // M4 C: 한국어 우선, en 폴백
+  const koEntry = zip.file(`${pluginDir}ko.json`);
   const enEntry = zip.file(`${pluginDir}en.json`);
+  const i18nEntry = koEntry ?? enEntry;
   const fileStem = zipFilename ? pluginStemFromFilename(zipFilename) : null;
   const imageFiles = Object.keys(zip.files).filter(
     (f) => /\.(svg|png|jpg|jpeg|gif)$/i.test(f) && f.startsWith(pluginDir),
@@ -175,9 +182,9 @@ async function buildFallbackManifest(
   let authorFromEn: string | null = null;
   let descFromEn: string | null = null;
   let en: Record<string, unknown> | null = null;
-  if (enEntry) {
+  if (i18nEntry) {
     try {
-      en = JSON.parse(await enEntry.async('text'));
+      en = JSON.parse(await i18nEntry.async('text'));
       if (typeof en?.Name === 'string' && en.Name.length > 0) pluginNameFromEn = en.Name;
       if (typeof en?.Author === 'string') authorFromEn = en.Author;
       if (typeof en?.Description === 'string') descFromEn = en.Description;
@@ -303,6 +310,8 @@ async function buildCubeOneZipBytes(
   pluginId: string,
   codePath: string,
   codeKind: 'html' | 'native',
+  pluginPiPath: string,
+  sidecarExes: string[],
 ): Promise<Uint8Array> {
   const id = safeId(action.UUID ?? action.Name ?? 'action');
   const label = action.Name ?? id;
@@ -326,6 +335,8 @@ async function buildCubeOneZipBytes(
 
   const now = new Date().toISOString();
   // M4 plugin_action 큐브는 plugin runtime 정보 포함
+  // M4 A: action 별 PI Path > plugin 전체 PI Path > default 'propertyinspector/index.html'
+  const piPath = action.PropertyInspectorPath || pluginPiPath || 'propertyinspector/index.html';
   const payload: Record<string, unknown> =
     mappedType === 'plugin_action'
       ? {
@@ -335,6 +346,8 @@ async function buildCubeOneZipBytes(
           plugin_dir: pluginDir, // ZIP 안 sdPlugin 경로 prefix
           code_path: codePath, // M4 Step 3.5: HTML('.html') 또는 Native('.exe' 등)
           code_kind: codeKind, // 'html' | 'native'
+          pi_path: piPath, // M4 A: action 별 PropertyInspector 경로
+          sidecar_exes: sidecarExes, // M4 B: 동시 spawn 할 sidecar process 들
           settings: {}, // PropertyInspector 옵션
           payload: {},
         }
@@ -435,6 +448,18 @@ export async function convertPlugin(
   const codePath: string =
     manifest.CodePathWin ?? manifest.CodePath ?? manifest.CodePathMac ?? 'index.html';
   const codeKind = detectCodeKind(codePath);
+  const pluginPiPath: string = manifest.PropertyInspectorPath || 'propertyinspector/index.html';
+
+  // M4 B: Sidecar .exe 자동 탐색 — bin/, scripts/, plugin 루트 등에서 .exe 모두 추출
+  // CodePath 자체 제외 (이미 메인 spawn 대상)
+  const sidecarExes: string[] = [];
+  for (const entry of Object.keys(zip.files)) {
+    if (!entry.startsWith(pluginDir)) continue;
+    if (!/\.exe$/i.test(entry)) continue;
+    const rel = entry.substring(pluginDir.length);
+    if (rel === codePath) continue; // CodePath 는 메인 spawn
+    sidecarExes.push(rel);
+  }
 
   const cubes: ConvertedCubeFile[] = [];
   for (let i = 0; i < actions.length; i++) {
@@ -449,6 +474,8 @@ export async function convertPlugin(
         pluginId,
         codePath,
         codeKind,
+        pluginPiPath,
+        sidecarExes,
       );
       cubes.push({ filename: `${folderName}${pad2(i + 1)}.cubeone`, bytes });
     } catch (e) {
