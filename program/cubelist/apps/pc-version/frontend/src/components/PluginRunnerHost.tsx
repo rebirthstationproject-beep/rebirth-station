@@ -127,10 +127,18 @@ export function getCubeRuntimeStatus(cubeId: string): {
   mounted: boolean;
   connected: boolean;
   lastError: string | null;
+  imageCallCount: number;
+  lastImageAgeMs: number;
 } | null {
   const r = cubeRuntimeMap.get(cubeId);
   if (!r) return null;
-  return { mounted: true, connected: r.connected, lastError: r.lastError };
+  return {
+    mounted: true,
+    connected: r.connected,
+    lastError: r.lastError,
+    imageCallCount: r.imageCallCount,
+    lastImageAgeMs: r.lastImageAt > 0 ? Date.now() - r.lastImageAt : -1,
+  };
 }
 
 /**

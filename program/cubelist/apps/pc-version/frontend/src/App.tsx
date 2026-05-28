@@ -1465,6 +1465,12 @@ function Inspector() {
                 : status?.lastError
                   ? `⚠ ${status.lastError}`
                   : `⏳ 마운트 중 또는 SDK 미초기화...`}
+              {status && (
+                <div className="muted small" style={{ marginTop: 4 }}>
+                  setImage 호출 {status.imageCallCount}회
+                  {status.lastImageAgeMs >= 0 && ` · 마지막 ${status.lastImageAgeMs}ms 전`}
+                </div>
+              )}
               <div className="muted small" style={{ marginTop: 4 }}>
                 _plugins/{p.plugin_id}/{p.plugin_dir}index.html
               </div>

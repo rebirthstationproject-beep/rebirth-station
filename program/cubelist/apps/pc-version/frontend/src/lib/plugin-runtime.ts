@@ -161,6 +161,15 @@ export class PluginRuntime {
   connected = false;
   /** 진단용 — 마지막 에러 메시지 */
   lastError: string | null = null;
+  /** 진단용 — setImage 콜 카운트 (실시간 갱신 작동 검증) */
+  imageCallCount = 0;
+  /** 진단용 — 마지막 setImage 시각 (ms) */
+  lastImageAt = 0;
+  /** 자동 재시도 카운트 (최대 3회) */
+  private retryCount = 0;
+  private container: HTMLElement | null = null;
+  private htmlRelativePath = '';
+  private connectTimer: number | null = null;
 
   constructor(public readonly options: PluginRuntimeOptions) {
     this.currentSettings = { ...options.settings };
@@ -170,6 +179,15 @@ export class PluginRuntime {
   async mount(container: HTMLElement, htmlRelativePath: string): Promise<void> {
     if (this.mounted) return;
     this.mounted = true;
+    this.container = container;
+    this.htmlRelativePath = htmlRelativePath;
+    this.doMount();
+  }
+
+  private doMount(): void {
+    const container = this.container;
+    if (!container) return;
+    const htmlRelativePath = this.htmlRelativePath;
 
     const iframe = document.createElement('iframe');
     iframe.className = 'plugin-iframe';
@@ -278,10 +296,49 @@ export class PluginRuntime {
     iframe.addEventListener('error', () => {
       this.lastError = 'iframe load 에러';
       this.options.onLog?.('[PluginRuntime] iframe load 에러', 'error');
+      this.scheduleRetry();
     });
 
     container.appendChild(iframe);
     this.iframe = iframe;
+
+    // 5초 안에 connected 안 되면 재시도 (asset:// 차단 또는 connectElgatoStreamDeckSocket 미정의)
+    if (this.connectTimer) window.clearTimeout(this.connectTimer);
+    this.connectTimer = window.setTimeout(() => {
+      if (!this.connected) {
+        this.lastError = this.lastError ?? 'SDK 초기화 타임아웃 (5s) — connectElgatoStreamDeckSocket 미호출';
+        this.options.onLog?.(
+          `[PluginRuntime] ${this.lastError} · retry ${this.retryCount}/3`,
+          'warn',
+        );
+        this.scheduleRetry();
+      }
+    }, 5000);
+  }
+
+  /** 자동 재시도 — 최대 3회. iframe 제거 후 다시 마운트 */
+  private scheduleRetry(): void {
+    if (this.retryCount >= 3) {
+      this.options.onLog?.('[PluginRuntime] 재시도 한계 도달 (3회)', 'error');
+      return;
+    }
+    this.retryCount += 1;
+    window.setTimeout(() => {
+      if (!this.mounted) return; // unmount 됐으면 중단
+      this.options.onLog?.(`[PluginRuntime] 재시도 #${this.retryCount}`, 'warn');
+      if (this.iframe && this.iframe.parentNode) {
+        this.iframe.parentNode.removeChild(this.iframe);
+      }
+      this.iframe = null;
+      if (this.mockSocket) {
+        this.mockSocket.close();
+        this.mockSocket = null;
+      }
+      this.mounted = false;
+      this.connected = false;
+      this.lastError = null;
+      this.mount(this.container!, this.htmlRelativePath);
+    }, 1000 * this.retryCount);
   }
 
   /** 큐브 클릭 시 keyDown → 100ms 후 keyUp */
@@ -333,7 +390,11 @@ export class PluginRuntime {
       case 'setImage': {
         const image = msg.payload?.image as string | undefined;
         const state = msg.payload?.state as number | undefined;
-        if (image) this.options.onSetImage?.(image, state);
+        if (image) {
+          this.imageCallCount += 1;
+          this.lastImageAt = Date.now();
+          this.options.onSetImage?.(image, state);
+        }
         break;
       }
       case 'setTitle': {
