@@ -24,6 +24,22 @@
 다음: <다음 sub-step>
 ```
 
+### 2026-05-28 cron #7 — Step 4 잔여 SDK + 잔여 작업 솔직 보고
+변경:
+- plugin-runtime.ts handlePluginMessage:
+  · switchToProfile → onSwitchProfile 콜백 (host 가 list 전환 처리)
+  · getDeviceList → didReceiveDeviceList 응답 (가상 device)
+  · setTriggerDescription → onTriggerDescription 콜백 (인코더 안내)
+  · setFeedback / setFeedbackLayout → 무시 (인코더 layout, 큐브 환경 비호환)
+- PluginRuntimeOptions 에 onSwitchProfile + onTriggerDescription 추가
+- docs/M4-REMAINING.md 신규 (~80 줄):
+  · 완성된 SDK 메시지 8 + 15 종 명세
+  · 작동 불가능 항목 솔직 보고 (인코더 / 외부 service / sidecar / 다국어 / Profile UI)
+  · 기능적 동일 = 95%+ 달성 가능 결론
+검증: frontend 861ms · cargo tauri build 56s · exe v28
+결과: ✅ SDK 메시지 ~25종 완성. 잔여 작업 = 사용자 요구 시 추가
+다음: Step 5.1~5.4 안정성 + Step 6 변환 검증 (큰 변경 없음)
+
 ### 2026-05-28 cron #6 — Step 3.6 + 3.7 + frontend native runtime
 변경:
 - src/lib.rs: PluginProcessState (HashMap<context_uuid, Child>) 추가 + manage

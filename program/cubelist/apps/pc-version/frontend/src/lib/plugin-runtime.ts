@@ -79,6 +79,10 @@ export interface PluginRuntimeOptions {
   onShowOk?: () => void;
   onOpenUrl?: (url: string) => void;
   onLog?: (message: string, level?: 'info' | 'warn' | 'error') => void;
+  /** M4 Step 4.1: switchToProfile → host 가 list 전환 처리 */
+  onSwitchProfile?: (profile: string) => void;
+  /** M4 Step 4.5: setTriggerDescription (인코더 안내, 큐브 리스트 환경 = 표시만) */
+  onTriggerDescription?: (desc: Record<string, unknown>) => void;
   /** 어떤 종류의 host iframe — 'action' = key 액션, 'pi' = PropertyInspector */
   kind?: 'action' | 'pi';
 }
@@ -585,10 +589,42 @@ export class PluginRuntime {
         if (message) this.options.onLog?.(message, 'info');
         break;
       }
-      case 'switchToProfile':
-      case 'getDeviceList':
-        // stub — 큐브 리스트에서는 무시
+      case 'switchToProfile': {
+        // M4 Step 4.1: 큐브 list 전환에 매핑 (큐브 리스트의 list 와 StreamDeck profile 등가)
+        const profile = msg.payload?.profile as string | undefined;
+        this.options.onLog?.(`[plugin] switchToProfile → ${profile ?? '(empty)'}`, 'info');
+        // store 의 selectList 호출 옵션 — host 가 직접 처리
+        if (profile && this.options.onSwitchProfile) {
+          this.options.onSwitchProfile(profile);
+        }
         break;
+      }
+      case 'getDeviceList': {
+        // M4 Step 4.2: 가상 device 응답
+        this.dispatch('didReceiveDeviceList', {
+          devices: [
+            {
+              id: 'cubelist-virtual',
+              name: '큐브 리스트 가상 키패드',
+              size: { columns: 4, rows: 7 },
+              type: 7,
+            },
+          ],
+        });
+        break;
+      }
+      case 'setTriggerDescription': {
+        // M4 Step 4.5: 인코더 안내 텍스트 (큐브 리스트 환경에선 표시만)
+        const desc = msg.payload as Record<string, unknown>;
+        this.options.onTriggerDescription?.(desc);
+        break;
+      }
+      case 'setFeedback':
+      case 'setFeedbackLayout': {
+        // M4 Step 4.3: StreamDeck+ 인코더 layout — 큐브 리스트는 키 액션만 = 무시
+        this.options.onLog?.(`[plugin] ${msg.event} (인코더 미지원 — 무시)`, 'info');
+        break;
+      }
       default:
         this.options.onLog?.(`[Plugin send] 알 수 없는 event: ${msg.event}`, 'warn');
     }
