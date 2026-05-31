@@ -47,9 +47,20 @@ export function PackDetail({ packId, onBack }: PackDetailProps) {
     pack.meta.payment_type === 'subscription_yearly';
 
   function handleInstall(): void {
-    window.alert(
-      `v0.1.4 에서 활성 — 현재는 mock.\n\n${isFree ? '설치' : `${formatPrice(pack!.meta.price_cents)} 결제 (PayPal / Binance Pay)`} 후 라이브러리에 추가됩니다.`,
-    );
+    if (isFree) {
+      window.alert(t('mp.install_free'));
+      return;
+    }
+    // 유료 — 라이센스 키 prompt (v0.1.4 ed25519 검증)
+    window.alert(t('mp.install_paid'));
+    const key = window.prompt(t('mp.license_prompt'), '');
+    if (key === null) return; // cancel
+    // v0.1.3: 모든 키 무효 처리 (서버 검증 v0.1.4 활성)
+    if (!key.startsWith('CL-') || key.length < 16) {
+      window.alert(t('mp.license_invalid'));
+      return;
+    }
+    window.alert(t('mp.license_invalid'));
   }
 
   return (

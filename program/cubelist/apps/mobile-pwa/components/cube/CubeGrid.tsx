@@ -151,6 +151,16 @@ export function CubeGrid({
             가독성을 위해 리스트 분할을 고려하세요.
           </div>
         )}
+        {/* v0.1.3: PC selection 의 page_index 가 0 보다 크면 PC가 다른 페이지 표시 중 안내 */}
+        {liveSync.selection && liveSync.selection.page_index > 0 && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="mx-4 mt-2 mb-1 px-3 py-2 rounded-lg bg-amber-100 border border-amber-300 text-xs text-amber-900 dark:bg-amber-900/20 dark:border-amber-700 dark:text-amber-200"
+          >
+            🖥 PC에서 페이지 {liveSync.selection.page_index + 1} 표시 중 — 모바일은 전체 큐브를 한 화면에 보여줍니다.
+          </div>
+        )}
         <div
           ref={gridRef}
           role="grid"

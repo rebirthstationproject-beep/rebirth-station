@@ -11,14 +11,32 @@
 ### Planned
 
 - 마켓플레이스 서버 API + PayPal/Binance Pay 결제 통합
-- 라이센스 키 발급 (Ed25519 서명) + 검증
+- 라이센스 키 발급 (Ed25519 서명) + 실 검증
 - 큐브팩 게시 워크플로우 (인스펙터 → 서버 검증 → 카탈로그)
 - LiveSync 양방향 (모바일 → PC RequestExecute 활용 강화)
 - 모바일 PWA selection_change UI 시각 강화 (PC 측 페이지/폴더 미러)
 - Tauri WebDriver E2E 통합 (Rust 액션 실 검증)
-- 인스펙터 닫을 때 큐브팩 cover 자동 캡처 + 즉시 적용
-- 큐브 셀 우클릭에서 "이 큐브를 cover로 사용" 옵션
-- 큐브 셀 우클릭 컨텍스트 메뉴 모바일 PWA 동기
+- 모바일 PWA 큐브 우클릭 컨텍스트 메뉴 (PC 5 액션 동기)
+- 모바일 PWA 자체 page state 도입 (PC page_index 동기 표시)
+
+---
+
+## [0.1.3] — 2026-05-31 (계속, commits c8bee1b → 본 turn)
+
+### Added (이번 turn)
+
+**i18n + UX 보강**
+- CubeContextMenu 5 액션 i18n 키 추가 (ko/en/ja 동기)
+  - `cube_ctx.edit` / `cube_ctx.duplicate` / `cube_ctx.change_image` / `cube_ctx.use_as_cover` / `cube_ctx.delete`
+  - alert / confirm 메시지 3건도 t() 적용 (delete_confirm / image_too_large / no_icon / cover_set)
+  - 큐브 라벨 (copy) suffix 한글 → 영문 (다국어 안전)
+- PackDetail handleInstall 분기 (무료 / 유료)
+  - 무료: `mp.install_free` mock 안내
+  - 유료: `mp.install_paid` 안내 → `mp.license_prompt` 라이센스 키 입력 prompt
+  - v0.1.3 모든 키 무효 처리 (`CL-` prefix + 16자 이상 형식 체크만, 서버 검증은 v0.1.4)
+- 모바일 PWA CubeGrid — PC selection page_index 안내 ribbon
+  - PC가 page_index > 0 일 때 amber ribbon 표시 ("🖥 PC에서 페이지 N 표시 중")
+  - 모바일은 page state 없이 전체 큐브 한 화면 표시 안내
 
 ---
 

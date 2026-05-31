@@ -133,6 +133,23 @@ const MESSAGES_KO = {
   'mp.device_xl': 'XL (8×4)',
   'mp.device_plus': 'Plus (4×2)',
   'mp.device_unlimited': '무제한',
+
+  // CubeContextMenu (v0.1.3+)
+  'cube_ctx.edit': '✏️ 편집',
+  'cube_ctx.duplicate': '📋 복제',
+  'cube_ctx.change_image': '🖼 이미지 변경',
+  'cube_ctx.use_as_cover': '🏪 큐브팩 cover로 사용',
+  'cube_ctx.delete': '🗑 삭제',
+  'cube_ctx.delete_confirm': '이 큐브를 삭제할까요?',
+  'cube_ctx.image_too_large': '이미지는 1MB 이하만 가능합니다.',
+  'cube_ctx.no_icon': '이 큐브에 이미지가 없습니다.',
+  'cube_ctx.cover_set': '큐브 이미지가 큐브팩 cover 로 설정되었습니다.',
+
+  // PackDetail install (v0.1.3+)
+  'mp.install_free': 'v0.1.4 에서 활성 — 현재는 mock.\n\n무료 설치 후 라이브러리에 추가됩니다.',
+  'mp.install_paid': 'v0.1.4 에서 활성 — 현재는 mock.\n\n결제 (PayPal / Binance Pay) 후 라이센스 키가 발급됩니다.',
+  'mp.license_prompt': '라이센스 키를 입력하세요 (v0.1.4 발급):',
+  'mp.license_invalid': '라이센스 키 형식 무효 — Ed25519 서명 확인 실패 (v0.1.4 활성)',
 } as const;
 
 export type MessageKey = keyof typeof MESSAGES_KO;
@@ -248,6 +265,21 @@ const MESSAGES_EN: Record<MessageKey, string> = {
   'mp.device_xl': 'XL (8×4)',
   'mp.device_plus': 'Plus (4×2)',
   'mp.device_unlimited': 'Unlimited',
+
+  'cube_ctx.edit': '✏️ Edit',
+  'cube_ctx.duplicate': '📋 Duplicate',
+  'cube_ctx.change_image': '🖼 Change Image',
+  'cube_ctx.use_as_cover': '🏪 Use as Pack Cover',
+  'cube_ctx.delete': '🗑 Delete',
+  'cube_ctx.delete_confirm': 'Delete this cube?',
+  'cube_ctx.image_too_large': 'Image must be 1MB or less.',
+  'cube_ctx.no_icon': 'This cube has no image.',
+  'cube_ctx.cover_set': 'Cube image set as pack cover.',
+
+  'mp.install_free': 'Activated at v0.1.4 — currently mock.\n\nFree install adds to library.',
+  'mp.install_paid': 'Activated at v0.1.4 — currently mock.\n\nPayment (PayPal / Binance Pay) issues a license key.',
+  'mp.license_prompt': 'Enter license key (v0.1.4 issued):',
+  'mp.license_invalid': 'Invalid license — Ed25519 signature check failed (v0.1.4 active)',
 };
 
 const MESSAGES_JA: Record<MessageKey, string> = {
@@ -361,6 +393,21 @@ const MESSAGES_JA: Record<MessageKey, string> = {
   'mp.device_xl': 'XL (8×4)',
   'mp.device_plus': 'Plus (4×2)',
   'mp.device_unlimited': '無制限',
+
+  'cube_ctx.edit': '✏️ 編集',
+  'cube_ctx.duplicate': '📋 複製',
+  'cube_ctx.change_image': '🖼 画像変更',
+  'cube_ctx.use_as_cover': '🏪 パックカバーに使用',
+  'cube_ctx.delete': '🗑 削除',
+  'cube_ctx.delete_confirm': 'このキューブを削除しますか？',
+  'cube_ctx.image_too_large': '画像は 1MB 以下のみ可能です。',
+  'cube_ctx.no_icon': 'このキューブに画像がありません。',
+  'cube_ctx.cover_set': 'キューブ画像がパックカバーに設定されました。',
+
+  'mp.install_free': 'v0.1.4 で有効化 — 現在はモック。\n\n無料インストール後ライブラリに追加。',
+  'mp.install_paid': 'v0.1.4 で有効化 — 現在はモック。\n\n決済（PayPal / Binance Pay）後ライセンスキー発行。',
+  'mp.license_prompt': 'ライセンスキー入力（v0.1.4 発行）:',
+  'mp.license_invalid': 'ライセンスキー無効 — Ed25519 署名検証失敗（v0.1.4 有効）',
 };
 
 export const MESSAGES: Record<Locale, Record<MessageKey, string>> = {

@@ -15,6 +15,7 @@
 
 import { useEffect, useRef } from 'react';
 import { useEditor } from '../store/editor';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 interface CubeContextMenuProps {
   readonly x: number;
@@ -29,6 +30,7 @@ const MENU_HEIGHT_PER_ITEM = 32;
 const MENU_ITEMS = 5;
 
 export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMenuProps) {
+  const { t } = useTranslation();
   const ref = useRef<HTMLDivElement>(null);
   const selectCube = useEditor((s) => s.selectCube);
   const removeCube = useEditor((s) => s.removeCube);
@@ -81,7 +83,7 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
     upsertCube(listId, {
       ...found.cube,
       id: newId,
-      label: `${found.cube.label} (복제)`,
+      label: `${found.cube.label} (copy)`,
       sort_order: found.cube.sort_order + 0.5,
     });
     selectCube(newId);
@@ -96,7 +98,7 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
       const file = input.files?.[0];
       if (!file) return;
       if (file.size > 1024 * 1024) {
-        window.alert('이미지는 1MB 이하만 가능합니다.');
+        window.alert(t('cube_ctx.image_too_large'));
         return;
       }
       const reader = new FileReader();
@@ -118,7 +120,7 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
       onClose();
       return;
     }
-    if (!window.confirm('이 큐브를 삭제할까요?')) {
+    if (!window.confirm(t('cube_ctx.delete_confirm'))) {
       onClose();
       return;
     }
@@ -133,7 +135,7 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
       return;
     }
     if (!found.cube.icon_url) {
-      window.alert('이 큐브에 이미지가 없습니다.');
+      window.alert(t('cube_ctx.no_icon'));
       onClose();
       return;
     }
@@ -150,7 +152,7 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
     void import('../store/editor').then(({ useEditor }) => {
       useEditor.getState().loadPack(next);
     });
-    window.alert('큐브 이미지가 큐브팩 cover 로 설정되었습니다.');
+    window.alert(t('cube_ctx.cover_set'));
     onClose();
   }
 
@@ -168,10 +170,10 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
       role="menu"
     >
       <button type="button" className="cube-context-item" onClick={handleEdit} role="menuitem">
-        ✏️ 편집
+        {t('cube_ctx.edit')}
       </button>
       <button type="button" className="cube-context-item" onClick={handleDuplicate} role="menuitem">
-        📋 복제
+        {t('cube_ctx.duplicate')}
       </button>
       <button
         type="button"
@@ -179,7 +181,7 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
         onClick={handleImageChange}
         role="menuitem"
       >
-        🖼 이미지 변경
+        {t('cube_ctx.change_image')}
       </button>
       <button
         type="button"
@@ -187,7 +189,7 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
         onClick={handleUseAsCover}
         role="menuitem"
       >
-        🏪 큐브팩 cover로 사용
+        {t('cube_ctx.use_as_cover')}
       </button>
       <button
         type="button"
@@ -195,7 +197,7 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
         onClick={handleDelete}
         role="menuitem"
       >
-        🗑 삭제
+        {t('cube_ctx.delete')}
       </button>
     </div>
   );
