@@ -44,6 +44,8 @@ import { DropZone } from './components/DropZone';
 import { CubePreview } from './components/CubePreview';
 import { CubeStatesEditor } from './components/CubeStatesEditor';
 import { MarketplaceMetaEditor } from './components/MarketplaceMetaEditor';
+import { MarketplaceCatalog } from './components/MarketplaceCatalog';
+import { GlobalSearch } from './components/GlobalSearch';
 import {
   PluginActionsBackground,
   PluginPropertyInspector,
@@ -72,7 +74,7 @@ import {
 } from './lib/plugin-registry';
 import type { Cube, CubeList } from './types/cube';
 
-type MainTab = 'cube-maker' | 'list-maker';
+type MainTab = 'cube-maker' | 'list-maker' | 'marketplace';
 
 const PACK_STORAGE_KEY = 'cubelist:last_pack';
 const LIBRARY_DIR_KEY = 'cubelist:library_dir';
@@ -85,8 +87,24 @@ export function App() {
   const draftList = useEditor((s) => s.draft_list);
   const refreshPlugins = usePluginRegistry((s) => s.refresh);
   const [mainTab, setMainTab] = useState<MainTab>('cube-maker');
-  // v0.1.3 사전: 마켓플레이스 메타 편집 모달
+  // v0.1.3 사전: 마켓플레이스 메타 편집 모달 + 전역 검색
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
+  const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
+
+  // v0.1.3: Ctrl+F / Cmd+F 전역 검색
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent): void {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        const target = e.target as HTMLElement | null;
+        // input/textarea 포커스 시 무시 (브라우저 기본 검색 또는 입력 필드 동작)
+        if (target && ['INPUT', 'TEXTAREA'].includes(target.tagName)) return;
+        e.preventDefault();
+        setGlobalSearchOpen(true);
+      }
+    }
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
 
   // draft 가 새로 생성되면 큐브 리스트 만들기 탭으로 자동 전환 (워크플로우 자동화)
   useEffect(() => {
@@ -307,7 +325,13 @@ export function App() {
         <Sidebar />
         <main className="center-area">
           <MainTabBar activeTab={mainTab} onChange={setMainTab} />
-          {mainTab === 'list-maker' ? <ListMakerCenter /> : <CubeMakerCenter />}
+          {mainTab === 'list-maker' ? (
+            <ListMakerCenter />
+          ) : mainTab === 'marketplace' ? (
+            <MarketplaceCatalog onPackClick={(id) => console.info('[marketplace] pack clicked', id)} />
+          ) : (
+            <CubeMakerCenter />
+          )}
         </main>
         <Inspector />
       </div>
@@ -320,6 +344,8 @@ export function App() {
       />
       {/* v0.1.3 사전: 마켓플레이스 메타 편집 모달 */}
       {marketplaceOpen && <MarketplaceMetaEditor onClose={() => setMarketplaceOpen(false)} />}
+      {/* v0.1.3: Ctrl+F 전역 검색 */}
+      {globalSearchOpen && <GlobalSearch onClose={() => setGlobalSearchOpen(false)} />}
     </div>
   );
 }
@@ -416,6 +442,15 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t:
         aria-pressed={activeTab === 'list-maker'}
       >
         큐브 리스트 만들기
+      </button>
+      <button
+        type="button"
+        className={`main-tab ${activeTab === 'marketplace' ? 'is-active' : ''}`}
+        onClick={() => onChange('marketplace')}
+        aria-pressed={activeTab === 'marketplace'}
+        title="마켓플레이스 (v0.1.3 사전 mockup)"
+      >
+        🏪 마켓플레이스
       </button>
       <div className="main-tab-spacer" />
       {activeTab === 'cube-maker' && !listMakerActive && (

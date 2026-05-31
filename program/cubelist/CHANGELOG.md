@@ -8,7 +8,78 @@
 
 ## [Unreleased]
 
-(v0.1.3 이상 예정 — 모바일 PWA 동기화 wire 강화, 마켓플레이스 결제 도입, E2E 자동화)
+(v0.1.4 이상 예정 — 모바일 PWA 동기화 wire 강화, 마켓플레이스 서버 API + PayPal/Binance Pay, E2E 자동화)
+
+---
+
+## [0.1.3] — 2026-05-31 (베타)
+
+오늘 세션 commits 4347db7 → (현재). 마켓플레이스 mockup + 전역 검색 + 키보드 네비게이션.
+
+### Added (신규)
+
+**마켓플레이스 (v0.1.3 사전 mockup)**
+- `types/marketplace.ts`:
+  - 16 Platform enum (figma/obs/vscode/photoshop/illustrator/premiere/after_effects/davinci/blender/unity/unreal/twitch/discord/spotify/youtube/other)
+  - PaymentType (one_time / monthly / yearly)
+  - MarketplaceAuthor + MarketplaceRating
+  - emptyMarketplaceMeta / formatPrice (cents → USD) / validateMarketplaceMeta
+- `components/MarketplaceMetaEditor.tsx` — CubePack 메타 편집 모달
+  - 작성자 이름 + 이메일 + 플랫폼 + 가격 + 결제 방식 + 버전 + 태그 + 긴 설명 + 변경 이력 + 데모 영상 URL
+  - 검증 오류 인라인 표시 (작성자 필수, 가격 0~$1000, 설명 10K자 한도, 태그 20개, 스크린샷 10개)
+  - localStorage 자동 영속 (CubePack.extensions.marketplace, P0 영구 lock 활용)
+  - Esc + overlay 클릭 닫기
+- `components/MarketplaceCatalog.tsx` — 카탈로그 mockup
+  - 6 mock 큐브팩 카드 (OBS / VS Code / Figma / Discord / Photoshop / Twitch)
+  - 카테고리 필터 (16 플랫폼 + 전체)
+  - 가격 필터 (전체 / 무료 / 유료)
+  - 정렬 (인기 / 평점 / 가격 낮은/높은 순 / 최신)
+  - 검색 (이름 + 작성자 + 태그 + 설명)
+  - 큐브팩 카드 (커버 + 이름 + 작성자 + 가격 + 평점 + 큐브 수 + 태그)
+- TopBar 🏪 팩 정보 버튼 (pack 있을 때만 활성)
+- MainTab 'marketplace' 추가 (큐브 만들기 / 큐브 리스트 만들기 / 🏪 마켓플레이스)
+
+**전역 검색 (Ctrl+F / Cmd+F)**
+- `components/GlobalSearch.tsx` — 전역 검색 모달
+  - 검색 대상: 큐브 라벨 + 액션 타입 + metadata + 리스트명
+  - 활성 pack 내 모든 큐브 + 라이브러리 풀
+  - 최대 200건 (필터링)
+  - 결과 클릭 → selectList + selectCube
+  - input/textarea 포커스 시 Ctrl+F 무시 (브라우저 기본 동작 보존)
+
+**키보드 네비게이션 (CubeGrid)**
+- ←/→ 큐브 인접 선택
+- ↑/↓ cols 단위 행 이동
+- Enter 선택 큐브 실행 (executeCube)
+- Ctrl+E 큐브팩 export
+- Ctrl+F 전역 검색
+- Esc 모달/메뉴 닫기
+
+**큐브 셀 invalid 표시**
+- useMemo validatePayload 실시간
+- `.cube-cell.is-invalid::after` 빨간 ! dot (우상단, 14×14)
+- title attr 검증 오류 인라인 (hover 표시)
+
+**마켓플레이스 spec 문서**
+- `docs/specs/marketplace-preview-v1.md`
+  - MarketplaceMeta TypeScript 인터페이스
+  - 라우트 구조 + 게시 워크플로우
+  - 결제 사전 검토 (PayPal + Binance Pay 영구)
+  - 라이센스 키 (Ed25519 + offline 그레이스 7일)
+  - 보안 정책 + 진행 단계 12~18일
+
+### Changed (변경)
+
+- React import: useEffect, useMemo, useRef, useState
+- styles.css: 마켓플레이스 카탈로그 / 모달 / 전역 검색 / btn-primary 추가
+
+### 다음 (v0.1.4+)
+
+- 모바일 PWA ↔ PC live_clock/timer/states 동기화
+- 마켓플레이스 서버 API + PayPal/Binance Pay 통합
+- E2E 자동화 (Playwright + Tauri WebDriver)
+- 큐브팩 미리보기 자동 캡처 (canvas → PNG)
+- 라이센스 키 발급 + 검증
 
 ---
 
