@@ -255,10 +255,24 @@ export const useEditor = create<EditorState>((set, get) => ({
       folder_stack: [],
       current_page: 0,
     });
+    // v0.1.4 사전: 모바일 PWA 등 외부 구독자에 selection_change 송신
+    void import('../lib/LiveSyncBridge').then(({ liveSync }) => {
+      liveSync.emitSelectionChange({ list_id: listId, cube_id: null, page_index: 0 });
+    });
   },
 
   selectCube(cubeId: string | null): void {
     set({ cube_id: cubeId });
+    // v0.1.4 사전: 모바일 PWA 등 외부 구독자에 selection_change 송신
+    void import('../lib/LiveSyncBridge').then(({ liveSync }) => {
+      const { list_id, current_folder_id, current_page } = get();
+      liveSync.emitSelectionChange({
+        list_id,
+        cube_id: cubeId,
+        page_index: current_page,
+        current_folder_id: current_folder_id ?? undefined,
+      });
+    });
   },
 
   upsertCube(listId: string, cube: Cube): void {

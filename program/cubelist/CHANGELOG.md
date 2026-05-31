@@ -73,13 +73,48 @@
 - React import: useEffect, useMemo, useRef, useState
 - styles.css: 마켓플레이스 카탈로그 / 모달 / 전역 검색 / btn-primary 추가
 
+### Added (v0.1.3 추가, commits 44c41b4 → 1a7ff18)
+
+**PackDetail 큐브팩 상세 페이지**
+- `lib/marketplace-mock.ts`: MOCK_PACKS 6 (카탈로그 + 상세 공유) + MockPackPreviewCube + deviceGrid 매핑
+- `components/PackDetail.tsx`: Hero 섹션 + 디바이스 미리보기 + 설명/변경이력/안내
+  - 가격 표시 무료/단순/구독 (월/년)
+  - 디바이스별 그리드 자동 (Mini 3×2 / Std 5×3 / XL 8×4 / Plus 4×2 / Neo 4×2)
+  - 빈 슬롯 dashed 표시
+  - 구매 버튼 mock alert (v0.1.4 활성)
+- App.tsx `selectedPackId` state — 카탈로그 ↔ 상세 전환
+
+**E2E Playwright 셋업**
+- `e2e/playwright.config.ts`: Vite dev 자동 기동 + chromium + trace/screenshot/video
+- `e2e/tests/smoke.spec.ts`: 8 핵심 시나리오
+  - 앱 렌더링 + 데모 큐브팩 자동 로드
+  - TopBar 핵심 액션 + MainTab 3개
+  - 마켓플레이스 카탈로그 6 카드 + 카드 클릭 → 상세
+  - 검색 'OBS' → 1건 필터링
+  - Ctrl+F 전역 검색 + Esc 닫기
+  - 큐브 셀 클릭 → 인스펙터 + CubePreview
+- `e2e/package.json` + README
+- `.github/workflows/cubelist-pc-e2e.yml`: PR + push 자동, Playwright browser cache, HTML report + traces 업로드
+
+**큐브팩 커버 자동 캡처**
+- `lib/pack-thumbnail.ts`: captureCubeListThumbnail
+  - canvas 1280×720 (16:9) + LCD 톤 그라데이션
+  - 첫 16큐브 4×4 그리드 (110×110 + gap 14)
+  - icon_url 시도 → contain 모드 / 단색 fallback 8색 팔레트 + 첫 글자
+  - 둥근 사각형 (radius 14) + inset white outline
+  - 하단 큐브팩 이름 (36px bold) + subtitle
+  - 5초 타임아웃
+- MarketplaceMetaEditor `📷 첫 리스트 자동 캡처` 버튼 + 미리보기 + 제거
+- 결과 PNG data URL → CubePack.extensions.marketplace.cover_url 영속
+
 ### 다음 (v0.1.4+)
 
-- 모바일 PWA ↔ PC live_clock/timer/states 동기화
+- 모바일 PWA ↔ PC live_clock/timer/states 동기화 (LiveSyncBridge)
 - 마켓플레이스 서버 API + PayPal/Binance Pay 통합
-- E2E 자동화 (Playwright + Tauri WebDriver)
-- 큐브팩 미리보기 자동 캡처 (canvas → PNG)
-- 라이센스 키 발급 + 검증
+- 라이센스 키 발급 + Ed25519 검증
+- i18n 마켓플레이스/PackDetail 다국어 (en/ja)
+- 큐브 셀 동의 prompt 정제 (1회/영구 옵션)
+- Tauri WebDriver E2E 통합
 
 ---
 

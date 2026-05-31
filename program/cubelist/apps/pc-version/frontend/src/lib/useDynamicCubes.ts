@@ -12,6 +12,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import type { Cube } from '../types/cube';
 import { createDynamicCubeRegistry, getDynamicTick, type DynamicCubeUpdate } from './dynamic-cube';
+import { liveSync } from './LiveSyncBridge';
 
 const DEFAULT_INTERVAL_MS = 1000;
 
@@ -46,6 +47,8 @@ export function useDynamicCubes(cubes: readonly Cube[]): Map<string, DynamicUpda
       const map = new Map<string, DynamicUpdate>();
       for (const item of u) {
         map.set(item.id, { label: item.label, icon_url: item.icon_url });
+        // v0.1.4 사전: 모바일 PWA 등 외부 구독자에 cube_update 송신 (delta)
+        liveSync.emitCubeUpdate(item.id, { label: item.label, icon_url: item.icon_url });
       }
       setUpdates(map);
     }

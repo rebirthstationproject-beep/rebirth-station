@@ -44,7 +44,7 @@ export function getCurrentStateIndex(cubeId: string): number {
   return map[cubeId] ?? 0;
 }
 
-/** 다음 state index 로 전환 후 새 index 반환. UI 자동 갱신을 위해 이벤트 발생. */
+/** 다음 state index 로 전환 후 새 index 반환. UI 자동 갱신 + 모바일 동기화 이벤트 발생. */
 export function advanceStateIndex(cube: Cube): number {
   if (!cube.states || cube.states.length <= 1) return 0;
   const map = loadStateMap();
@@ -54,6 +54,15 @@ export function advanceStateIndex(cube: Cube): number {
   saveStateMap(map);
   // UI 가 watch 하는 이벤트 발생 (큐브 셀 라벨/이미지 즉시 갱신)
   setTimeout(() => notifyStateChange(cube.id), 0);
+  // v0.1.4 사전: 모바일 PWA 등 외부 구독자에 state_index 변경 송신
+  void import('./LiveSyncBridge').then(({ liveSync }) => {
+    const newState = cube.states![next];
+    liveSync.emitCubeUpdate(cube.id, {
+      label: newState?.label ?? cube.label,
+      icon_url: newState?.image ?? cube.icon_url,
+      state_index: next,
+    });
+  });
   return next;
 }
 
