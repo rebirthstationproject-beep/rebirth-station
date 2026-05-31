@@ -406,12 +406,18 @@ html, body, #root {
 
 .cube-grid {
   display: grid;
-  gap: 12px;
+  gap: 14px;
   justify-content: start;
-  padding: 16px;
+  padding: 20px;
   overflow-y: auto;
   flex: 1;
   align-content: start;
+  /* StreamDeck 베젤 톤: 어두운 매트 블랙 + 약한 inset */
+  background: #0a0a0a;
+  border-radius: 12px;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    inset 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
 .cube-cell {
@@ -435,7 +441,14 @@ html, body, #root {
   overflow: hidden;
 }
 .cube-cell:hover { transform: translateY(-1px); }
-.cube-cell.is-selected .cube-icon-bg { outline: 2px solid var(--accent); }
+.cube-cell.is-selected .cube-icon-bg {
+  /* StreamDeck LED 활성 글로우 모방 */
+  outline: 2px solid var(--accent);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.2),
+    0 0 12px rgba(255, 196, 0, 0.4),
+    0 2px 6px rgba(0, 0, 0, 0.7);
+}
 .cube-cell.is-dragging { z-index: 2; box-shadow: 0 8px 16px rgba(0,0,0,0.35); }
 .cube-cell.is-folder {
   background: linear-gradient(135deg, var(--bg-surface), var(--bg-surface-2));
