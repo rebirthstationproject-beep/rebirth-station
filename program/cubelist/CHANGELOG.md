@@ -214,13 +214,58 @@
 
 - ws_server handle_socket: while let → loop + tokio::select! (broadcast 통합)
 
+### Added (v0.1.3 추가, commits 463bdcb → adff2b8 → (현재))
+
+**e2e 5 신규 smoke 테스트 (총 13개)**
+- ⚙ 설정 패널 표시 + 4 섹션 + 완료 닫기
+- PackDetail 디바이스 토글 5 버튼 + is-active class
+- Ctrl+E 큐브팩 export 단축키 (dialog dismiss)
+- 마켓플레이스 가격 필터 'free' → 2건 (OBS + Discord)
+- 인스펙터 큐브 전환 시 미리보기 갱신
+
+**모바일 PWA WebSocket handler (v0.1.4 본 작업)**
+- `types/protocol.ts ServerEvent` 확장:
+  - `cube_update` (cube_id + label?/icon_url?/state_index?/timestamp_ms)
+  - `selection_change` (list_id?/cube_id?/page_index?/current_folder_id?/timestamp_ms)
+- `ws-client.ts handleServerEvent`:
+  - cube_update / selection_change case 추가
+  - 모든 이벤트 'message' 리스너 통합 위임
+- `lib/hooks/useLiveSync.ts` (신규):
+  - `useLiveSync(client)` → `{ cubeUpdates: Map<id, update>, selection }`
+  - out-of-order 메시지 보호 (timestamp_ms 비교)
+  - undefined vs null icon_url 구분
+  - getCubeLiveDisplay helper
+- `useHelperConnection` client reactive 노출:
+  - useState client 추가 (외부 hook 이 reactive 접근)
+  - 마운트/언마운트 시 setClient
+- `components/cube/Cube.tsx liveOverride prop`:
+  - PC LiveSyncBridge 업데이트 우선 적용
+  - rawItem → item shadowing (기존 코드 변경 최소)
+- `components/cube/CubeGrid.tsx`:
+  - useHelperConnection().client + useLiveSync hook 통합
+  - liveSync.cubeUpdates.get(item.id) lookup
+  - SortableCube liveOverride prop 전달
+
+**Tauri + Vite dev 동시 기동 스크립트**
+- `scripts/dev-all.ps1`:
+  - Vite dev 서버 background job 시작 (포트 3002)
+  - 최대 30초 ready 대기 (http://127.0.0.1:3002 200)
+  - Tauri dev --features keys 시작
+  - finally 절에서 Vite job 정리
+
+### Changed (변경)
+
+- useHelperConnection: clientRef → useState 변경 (reactive client 노출)
+- CubeGrid items.map → ({ ... return (...); }) 변환
+
 ### 다음 (v0.1.4+)
 
-- 모바일 PWA WebSocket handler (cube_update / selection_change 수신 → UI 반영)
 - 마켓플레이스 서버 API + PayPal/Binance Pay 통합
 - 라이센스 키 발급 + Ed25519 검증
 - Tauri WebDriver E2E 통합
 - 큐브팩 미리보기 자동 캡처 → cover 즉시 적용
+- 모바일 PWA selection_change UI 반영 (PC 측 선택 큐브 모바일 미러)
+- LiveSync 양방향 (모바일 → PC selection 송신)
 
 ---
 

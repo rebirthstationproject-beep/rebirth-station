@@ -7,6 +7,8 @@ import type { ActionPayload, PressKind } from '@/types/protocol';
 interface UseHelperConnectionResult {
   status: ConnectionStatus;
   sendPressItem: (boardId: string, itemId: string, kind: PressKind, action: ActionPayload) => void;
+  /** v0.1.3: 외부 hook (useLiveSync 등) 이 ServerEvent 구독에 사용 */
+  client: HelperClient | null;
 }
 
 /**
@@ -16,18 +18,22 @@ interface UseHelperConnectionResult {
 export function useHelperConnection(): UseHelperConnectionResult {
   const clientRef = useRef<HelperClient | null>(null);
   const [status, setStatus] = useState<ConnectionStatus>('disconnected');
+  // v0.1.3: 외부 hook 이 클라이언트 인스턴스에 reactive 하게 접근하도록 state 추가
+  const [client, setClient] = useState<HelperClient | null>(null);
 
   useEffect(() => {
-    const client = createHelperClient();
-    clientRef.current = client;
+    const instance = createHelperClient();
+    clientRef.current = instance;
+    setClient(instance);
 
-    setStatus(client.status());
-    const off = client.on('status', (s) => setStatus(s as ConnectionStatus));
+    setStatus(instance.status());
+    const off = instance.on('status', (s) => setStatus(s as ConnectionStatus));
 
     return () => {
       off();
-      client.disconnect();
+      instance.disconnect();
       clientRef.current = null;
+      setClient(null);
     };
   }, []);
 
@@ -36,5 +42,6 @@ export function useHelperConnection(): UseHelperConnectionResult {
     sendPressItem: (boardId, itemId, kind, action) => {
       clientRef.current?.pressItem(boardId, itemId, kind, action);
     },
+    client,
   };
 }

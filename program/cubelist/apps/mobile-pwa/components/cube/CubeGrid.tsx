@@ -20,6 +20,8 @@ import {
 import { CSS } from '@dnd-kit/utilities';
 import { Cube } from './Cube';
 import type { CubeItem } from '@/lib/types/cube';
+import { useHelperConnection } from '@/lib/hooks/useHelperConnection';
+import { useLiveSync } from '@/lib/hooks/useLiveSync';
 
 interface CubeGridProps {
   /** 현재 보드의 큐브 목록. sort_order 오름차순 정렬은 호출자가 보장 */
@@ -70,6 +72,10 @@ export function CubeGrid({
   onContextMenuCube,
   onFocusChange,
 }: CubeGridProps) {
+  // v0.1.3: PC LiveSyncBridge 의 실시간 라벨/이미지/상태 변경 반영
+  const { client: helperClient } = useHelperConnection();
+  const liveSync = useLiveSync(helperClient);
+
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -154,7 +160,13 @@ export function CubeGrid({
             gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
           }}
         >
-          {items.map((item) => (
+          {items.map((item) => {
+            // v0.1.3: 이 큐브에 대한 PC LiveSyncBridge 업데이트 lookup
+            const live = liveSync.cubeUpdates.get(item.id);
+            const liveOverride = live
+              ? { label: live.label, icon_url: live.icon_url }
+              : undefined;
+            return (
             <div key={item.id} role="gridcell" className="relative">
               <div className={editMode ? 'cubelist-jiggle' : ''}>
                 <SortableCube
@@ -164,6 +176,7 @@ export function CubeGrid({
                   onLongPress={onLongPress}
                   onContextMenu={onContextMenuCube}
                   highlighted={highlightedItemId === item.id}
+                  liveOverride={liveOverride}
                 />
               </div>
               {editMode && onDeleteCube && (
@@ -181,7 +194,8 @@ export function CubeGrid({
                 </button>
               )}
             </div>
-          ))}
+            );
+          })}
           {editMode && onAddCube && (
             <div role="gridcell">
               <AddCubeButton onAdd={onAddCube} />
@@ -278,9 +292,10 @@ interface SortableCubeProps {
   onLongPress?: (item: CubeItem) => void;
   onContextMenu?: (item: CubeItem, x: number, y: number) => void;
   highlighted?: boolean;
+  liveOverride?: { label?: string; icon_url?: string | null };
 }
 
-function SortableCube({ item, editMode, onPress, onLongPress, onContextMenu, highlighted }: SortableCubeProps) {
+function SortableCube({ item, editMode, onPress, onLongPress, onContextMenu, highlighted, liveOverride }: SortableCubeProps) {
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: item.id,
   });
@@ -297,7 +312,14 @@ function SortableCube({ item, editMode, onPress, onLongPress, onContextMenu, hig
       {...attributes}
       {...(editMode ? listeners : {})}
     >
-      <Cube item={item} editMode={editMode} onPress={onPress} onLongPress={onLongPress} onContextMenu={onContextMenu} />
+      <Cube
+        item={item}
+        editMode={editMode}
+        onPress={onPress}
+        onLongPress={onLongPress}
+        onContextMenu={onContextMenu}
+        liveOverride={liveOverride}
+      />
     </div>
   );
 }

@@ -25,6 +25,8 @@ interface CubeProps {
   onLongPress?: (item: CubeItem) => void;
   /** 우클릭 시 컨텍스트 메뉴 오픈 (TUS, 2026-05-23) — pageX/Y 좌표 + item 전달 */
   onContextMenu?: (item: CubeItem, x: number, y: number) => void;
+  /** v0.1.3: LiveSyncBridge — PC 측 동적 큐브 라벨/이미지 override */
+  liveOverride?: { label?: string; icon_url?: string | null };
 }
 
 /**
@@ -33,7 +35,16 @@ interface CubeProps {
  * 보기 모드:  탭 → onPress, 길게 → onLongPress(편집 시트 또는 컨텍스트)
  * 편집 모드: 드래그 가능 (부모가 DnD 컨텍스트로 감싸야 함)
  */
-function CubeImpl({ item, editMode, onPress, onLongPress, onContextMenu }: CubeProps) {
+function CubeImpl({ item: rawItem, editMode, onPress, onLongPress, onContextMenu, liveOverride }: CubeProps) {
+  // v0.1.3: PC LiveSyncBridge 의 라이브 업데이트 우선 적용 (rawItem → item 으로 변환)
+  const item: CubeItem = liveOverride
+    ? {
+        ...rawItem,
+        label: liveOverride.label ?? rawItem.label,
+        icon_url:
+          liveOverride.icon_url !== undefined ? liveOverride.icon_url : rawItem.icon_url,
+      }
+    : rawItem;
   const pressTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const pressStartRef = useRef(0);
   const { locale } = useTranslation();
