@@ -37,6 +37,7 @@ import {
   importCubepack,
 } from './lib/cubepack-io';
 import { loadLibraryFromDir } from './lib/library-loader';
+import { useDynamicCubes } from './lib/useDynamicCubes';
 import {
   PluginActionsBackground,
   PluginPropertyInspector,
@@ -1226,6 +1227,8 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
   const moveCubeToSlot = useEditor((s) => s.moveCubeToSlot);
   const currentPage = useEditor((s) => s.current_page);
   const pageSize = useEditor((s) => s.pageSize());
+  // 동적 큐브 (live_clock/timer/gauge/battery) 1초 tick
+  const dynamicUpdates = useDynamicCubes(visibleCubes);
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -1277,7 +1280,13 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
           {slotIds.map((id, idx) => {
             const globalSlot = startSlot + idx;
             const cube = cubeBySlot.get(globalSlot);
-            if (cube) return <SortableCubeCell key={id} cube={cube} />;
+            if (cube) {
+              const dyn = dynamicUpdates.get(cube.id);
+              const displayCube = dyn
+                ? { ...cube, label: dyn.label ?? cube.label, icon_url: dyn.icon_url ?? cube.icon_url }
+                : cube;
+              return <SortableCubeCell key={id} cube={displayCube} />;
+            }
             return (
               <EmptySlot
                 key={id}

@@ -18,6 +18,7 @@ import { focusWindowAction } from './focus_window';
 import { mouseClickAction } from './mouse_click';
 import { pluginAction } from './plugin_action';
 import { P1_ACTIONS } from './p1_actions';
+import { P2_ACTIONS } from './p2_actions';
 
 export type { ActionSpec, ActionCategory, FieldSchema } from './types';
 export { ACTION_CATEGORIES } from './types';
@@ -34,6 +35,7 @@ export const ACTIONS: ReadonlyArray<ActionSpec> = [
   mouseClickAction,
   pluginAction,
   ...P1_ACTIONS,
+  ...P2_ACTIONS,
 ];
 
 const ACTION_INDEX: ReadonlyMap<CubeActionType, ActionSpec> = new Map(
