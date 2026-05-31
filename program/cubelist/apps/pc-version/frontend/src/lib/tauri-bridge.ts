@@ -62,9 +62,10 @@ function saveConsents(consents: TierConsents): void {
 
 /**
  * Tier 2/3 액션은 사용자 동의 prompt 후 실행.
+ * v0.1.4 사전: ConsentDialog (이번만/영구/거부 3옵션).
  * 영구 허용 선택 시 localStorage 저장 → 이후 자동 통과.
  */
-function requireConsent(actionType: Cube['action_type']): boolean {
+async function requireConsent(actionType: Cube['action_type']): Promise<boolean> {
   const tier2 = new Set([
     'window_close',
     'app_launch',
@@ -80,16 +81,14 @@ function requireConsent(actionType: Cube['action_type']): boolean {
   if (consents[actionType] === true) return true;
 
   const tier = tier3.has(actionType) ? 3 : 2;
-  const msg =
-    `이 액션은 Tier ${tier} 권한이 필요합니다.\n\n` +
-    `액션: ${actionType}\n\n` +
-    `한 번 동의하면 이후 자동 실행됩니다. 진행하시겠습니까?`;
-  const ok = window.confirm(msg);
-  if (ok) {
+  const { showConsentDialog } = await import('../components/ConsentDialog');
+  const result = await showConsentDialog(actionType, tier);
+  if (result === 'allow_always') {
     consents[actionType] = true;
     saveConsents(consents);
+    return true;
   }
-  return ok;
+  return result === 'allow_once';
 }
 
 export async function executeCube(cube: Cube): Promise<ExecuteResult> {
@@ -114,8 +113,9 @@ export async function executeCube(cube: Cube): Promise<ExecuteResult> {
     };
   }
 
-  // Tier 2/3 사용자 동의 확인
-  if (!requireConsent(cube.action_type)) {
+  // Tier 2/3 사용자 동의 확인 (v0.1.4 사전: ConsentDialog)
+  const granted = await requireConsent(cube.action_type);
+  if (!granted) {
     return { elapsed_ms: 0 };
   }
 

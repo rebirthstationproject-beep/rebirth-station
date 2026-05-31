@@ -107,13 +107,61 @@
 - MarketplaceMetaEditor `📷 첫 리스트 자동 캡처` 버튼 + 미리보기 + 제거
 - 결과 PNG data URL → CubePack.extensions.marketplace.cover_url 영속
 
+### Added (v0.1.3 추가, commits 1a7ff18 → (현재))
+
+**GitHub Actions CI E2E 자동화**
+- `.github/workflows/cubelist-pc-e2e.yml`: PR + main push 자동 트리거
+  - paths 필터: program/cubelist/apps/pc-version/** 변경 감지
+  - Ubuntu Node 20 + frontend npm ci + build
+  - Playwright browsers cache (key by package.json hash, cache hit 시 OS deps만 설치)
+  - chromium 전용 (CI 자원 최적화)
+  - HTML report + traces 자동 업로드 (실패 시, 14일 보존)
+
+**LiveSyncBridge 모바일 PWA 동기화 wire (v0.1.4 사전)**
+- `docs/specs/live-sync-wire-v1.md`:
+  - cube_update (label/icon_url/state_index delta, PC → 모바일)
+  - selection_change (list_id/cube_id/page_index/current_folder_id)
+  - request_execute (모바일 → PC, HMAC 인증)
+  - subscribe (모바일 → PC, cube_ids 또는 all_in_active_list)
+  - 보안: 기존 HMAC + nonce + ±30s + Origin, Tier 동의 prompt 유지
+  - 진행 단계 4~5일 (v0.1.4)
+- `lib/LiveSyncBridge.ts` singleton:
+  - subscribe / emitCubeUpdate (delta) / emitSelectionChange / resetCache
+  - window.__cubelistLiveSync dev 콘솔 노출
+- 통합:
+  - useDynamicCubes applyTick → liveSync.emitCubeUpdate
+  - cube-states.ts advanceStateIndex → liveSync.emitCubeUpdate (label + icon + state_index)
+  - store/editor.ts selectList / selectCube → liveSync.emitSelectionChange
+
+**i18n 다국어 확장 (ko/en/ja)**
+- 신규 키 47개 (마켓플레이스 + PackDetail + ConsentDialog + GlobalSearch + Inspector states + MainTab)
+- MarketplaceCatalog t() 적용 — 타이틀/검색/필터/정렬/카운트/empty
+- 모든 메시지 ko/en/ja 동기 (예: '큐브팩' / 'pack(s)' / 'パック')
+
+**ConsentDialog (1회/영구 옵션)**
+- `components/ConsentDialog.tsx` 신규 — window.confirm 대체
+  - Tier 2/3 시각 차별화 (border-color, badge color: 노란 vs 빨강)
+  - 3 옵션: 거부 / 이번만 허용 / 영구 허용
+  - Esc + overlay 클릭 = 거부
+  - showConsentDialog(actionType, tier) Promise → 'allow_once' | 'allow_always' | 'deny'
+  - 중복 prompt 방지 (promptOpen flag)
+  - lazy chunk 분리 (2.15KB)
+- tauri-bridge.ts requireConsent → async + showConsentDialog 통합
+  - 'allow_always' 시 localStorage 영속 (기존 동작)
+  - 'allow_once' 시 일회성 통과
+
+### Changed (변경)
+
+- tauri-bridge.ts executeCube → await requireConsent (async)
+- i18n MessageKey union 확장 (47 신규 키)
+
 ### 다음 (v0.1.4+)
 
-- 모바일 PWA ↔ PC live_clock/timer/states 동기화 (LiveSyncBridge)
+- Rust 측 LiveSyncBridge WebSocket 서버 통합 (Tauri ↔ 모바일 PWA)
+- 모바일 PWA 측 wire 수신 핸들러 (cube_update / selection_change 반영)
 - 마켓플레이스 서버 API + PayPal/Binance Pay 통합
 - 라이센스 키 발급 + Ed25519 검증
-- i18n 마켓플레이스/PackDetail 다국어 (en/ja)
-- 큐브 셀 동의 prompt 정제 (1회/영구 옵션)
+- 추가 컴포넌트 i18n (PackDetail / CubeStatesEditor / GlobalSearch 전체)
 - Tauri WebDriver E2E 통합
 
 ---

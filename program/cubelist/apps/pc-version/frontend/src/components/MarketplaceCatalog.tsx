@@ -8,6 +8,7 @@
 import { useMemo, useState } from 'react';
 import { PLATFORMS, formatPrice, type Platform } from '../types/marketplace';
 import { MOCK_PACKS } from '../lib/marketplace-mock';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 type SortBy = 'popular' | 'newest' | 'rating' | 'price_low' | 'price_high';
 
@@ -16,6 +17,7 @@ interface MarketplaceCatalogProps {
 }
 
 export function MarketplaceCatalog({ onPackClick }: MarketplaceCatalogProps) {
+  const { t } = useTranslation();
   const [platformFilter, setPlatformFilter] = useState<Platform | 'all'>('all');
   const [priceFilter, setPriceFilter] = useState<'all' | 'free' | 'paid'>('all');
   const [sortBy, setSortBy] = useState<SortBy>('popular');
@@ -60,13 +62,13 @@ export function MarketplaceCatalog({ onPackClick }: MarketplaceCatalogProps) {
     <div className="marketplace-catalog">
       <div className="mp-catalog-header">
         <div className="mp-catalog-title">
-          <h2>🏪 큐브팩 마켓플레이스</h2>
-          <span className="muted small">v0.1.4 진입 시 실 서버 활성 (현재 mock 데이터)</span>
+          <h2>{t('mp.title')}</h2>
+          <span className="muted small">{t('mp.subtitle')}</span>
         </div>
         <input
           type="search"
           className="mp-catalog-search"
-          placeholder="🔍 큐브팩·작성자·태그 검색"
+          placeholder={t('mp.search_placeholder')}
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
         />
@@ -74,12 +76,12 @@ export function MarketplaceCatalog({ onPackClick }: MarketplaceCatalogProps) {
 
       <div className="mp-catalog-filters">
         <div className="mp-filter-group">
-          <label>플랫폼:</label>
+          <label>{t('mp.filter_platform')}</label>
           <select
             value={platformFilter}
             onChange={(e) => setPlatformFilter(e.target.value as Platform | 'all')}
           >
-            <option value="all">전체</option>
+            <option value="all">{t('mp.all')}</option>
             {PLATFORMS.map((p) => (
               <option key={p.value} value={p.value}>
                 {p.label}
@@ -88,32 +90,32 @@ export function MarketplaceCatalog({ onPackClick }: MarketplaceCatalogProps) {
           </select>
         </div>
         <div className="mp-filter-group">
-          <label>가격:</label>
+          <label>{t('mp.filter_price')}</label>
           <select
             value={priceFilter}
             onChange={(e) => setPriceFilter(e.target.value as 'all' | 'free' | 'paid')}
           >
-            <option value="all">전체</option>
-            <option value="free">무료만</option>
-            <option value="paid">유료만</option>
+            <option value="all">{t('mp.all')}</option>
+            <option value="free">{t('mp.free_only')}</option>
+            <option value="paid">{t('mp.paid_only')}</option>
           </select>
         </div>
         <div className="mp-filter-group">
-          <label>정렬:</label>
+          <label>{t('mp.filter_sort')}</label>
           <select value={sortBy} onChange={(e) => setSortBy(e.target.value as SortBy)}>
-            <option value="popular">인기 (리뷰 수)</option>
-            <option value="rating">평점 높은 순</option>
-            <option value="price_low">가격 낮은 순</option>
-            <option value="price_high">가격 높은 순</option>
-            <option value="newest">최신</option>
+            <option value="popular">{t('mp.sort_popular')}</option>
+            <option value="rating">{t('mp.sort_rating')}</option>
+            <option value="price_low">{t('mp.sort_price_low')}</option>
+            <option value="price_high">{t('mp.sort_price_high')}</option>
+            <option value="newest">{t('mp.sort_newest')}</option>
           </select>
         </div>
-        <div className="mp-filter-count">{filtered.length} 큐브팩</div>
+        <div className="mp-filter-count">{filtered.length} {t('mp.count_suffix')}</div>
       </div>
 
       <div className="mp-pack-grid">
         {filtered.length === 0 ? (
-          <div className="mp-empty">검색 결과 없음</div>
+          <div className="mp-empty">{t('mp.empty')}</div>
         ) : (
           filtered.map((pack) => (
             <button
