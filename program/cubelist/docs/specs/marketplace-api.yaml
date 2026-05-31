@@ -1,0 +1,398 @@
+openapi: 3.1.0
+info:
+  title: Cube List Marketplace API
+  version: 0.1.4-spec
+  description: |
+    v0.1.4 마켓플레이스 서버 API.
+
+    PC 앱 (`apps/pc-version/`) + 모바일 PWA (`apps/mobile-pwa/`) 가 호출.
+    인프라: Cloudflare Workers + R2 (asset) + D1 (metadata) — Phase 19 참고.
+
+    인증: 라이센스 키 또는 익명 (catalog / pack 조회).
+  contact:
+    name: Rebirth Station Project
+    email: rebirthstationproject@gmail.com
+
+servers:
+  - url: https://api.rebirthstation.com/v1
+    description: Production
+  - url: https://api-staging.rebirthstation.com/v1
+    description: Staging
+  - url: http://127.0.0.1:8787/v1
+    description: Local (wrangler dev)
+
+tags:
+  - name: catalog
+    description: 큐브팩 카탈로그 (공개)
+  - name: pack
+    description: 큐브팩 상세 + 다운로드
+  - name: install
+    description: 무료 install 등록
+  - name: payment
+    description: PayPal / Binance Pay 결제
+  - name: license
+    description: 라이센스 키 발급 / 검증
+  - name: publish
+    description: 큐브팩 게시 (작성자)
+
+paths:
+  /catalog:
+    get:
+      tags: [catalog]
+      summary: 큐브팩 카탈로그 조회
+      parameters:
+        - name: platform
+          in: query
+          schema: { $ref: '#/components/schemas/Platform' }
+        - name: price_filter
+          in: query
+          schema: { type: string, enum: [all, free, paid] }
+        - name: sort
+          in: query
+          schema: { type: string, enum: [popular, rating, price_asc, price_desc, latest] }
+        - name: q
+          in: query
+          description: 이름/작성자/태그/설명 검색
+          schema: { type: string }
+        - name: page
+          in: query
+          schema: { type: integer, minimum: 1, default: 1 }
+        - name: per_page
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 100, default: 20 }
+      responses:
+        '200':
+          description: 큐브팩 리스트
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [items, total, page, per_page]
+                properties:
+                  items:
+                    type: array
+                    items: { $ref: '#/components/schemas/PackCard' }
+                  total: { type: integer }
+                  page: { type: integer }
+                  per_page: { type: integer }
+
+  /pack/{pack_id}:
+    get:
+      tags: [pack]
+      summary: 큐브팩 상세 조회
+      parameters:
+        - name: pack_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: 큐브팩 상세
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/PackDetail' }
+        '404':
+          description: 큐브팩 없음
+
+  /pack/{pack_id}/download:
+    get:
+      tags: [pack]
+      summary: 큐브팩 다운로드 (라이센스 검증)
+      security:
+        - LicenseKey: []
+      parameters:
+        - name: pack_id
+          in: path
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: .cubepack 바이너리
+          content:
+            application/zip:
+              schema: { type: string, format: binary }
+        '402':
+          description: 결제 필요 (유료 + 라이센스 없음)
+        '403':
+          description: 라이센스 만료 / 무효
+
+  /install:
+    post:
+      tags: [install]
+      summary: 무료 install 등록 (anonymously, telemetry)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pack_id]
+              properties:
+                pack_id: { type: string }
+                client_id: { type: string, description: 익명 클라이언트 ID }
+                version: { type: string }
+      responses:
+        '201':
+          description: 등록 완료
+        '404':
+          description: 큐브팩 없음
+
+  /payment/init:
+    post:
+      tags: [payment]
+      summary: 결제 세션 초기화
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pack_id, payment_method]
+              properties:
+                pack_id: { type: string }
+                payment_method:
+                  type: string
+                  enum: [paypal, binance_pay]
+                buyer_email: { type: string, format: email }
+                return_url: { type: string, format: uri }
+                cancel_url: { type: string, format: uri }
+      responses:
+        '200':
+          description: 결제 세션 URL
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [session_id, redirect_url]
+                properties:
+                  session_id: { type: string }
+                  redirect_url: { type: string, format: uri }
+                  expires_at: { type: string, format: date-time }
+
+  /payment/webhook/paypal:
+    post:
+      tags: [payment]
+      summary: PayPal Webhook (IPN)
+      description: |
+        PayPal 결제 완료 시 호출. 본 endpoint 가 라이센스 발급 트리거.
+        Webhook 서명 검증 필수 (`PAYPAL-AUTH-ALGO` + `PAYPAL-TRANSMISSION-SIG`).
+      responses:
+        '200': { description: 처리 완료 }
+        '400': { description: 서명 검증 실패 }
+
+  /payment/webhook/binance:
+    post:
+      tags: [payment]
+      summary: Binance Pay Webhook
+      description: |
+        Binance Pay 결제 완료 시 호출. HMAC 서명 검증 필수.
+      responses:
+        '200': { description: 처리 완료 }
+        '400': { description: 서명 검증 실패 }
+
+  /license/issue:
+    post:
+      tags: [license]
+      summary: 라이센스 키 발급 (서버 내부 — Webhook 콜백 후)
+      description: |
+        결제 Webhook 처리 시 호출되는 내부 endpoint.
+        Ed25519 서명된 라이센스 키 발급 → 구매자 이메일 발송.
+      security:
+        - ServerSecret: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [pack_id, buyer_email, payment_session_id]
+              properties:
+                pack_id: { type: string }
+                buyer_email: { type: string, format: email }
+                payment_session_id: { type: string }
+                scope: { type: string, enum: [perpetual, monthly, yearly], default: perpetual }
+      responses:
+        '201':
+          description: 라이센스 키 발급 완료
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [license_key, expires_at]
+                properties:
+                  license_key:
+                    type: string
+                    description: 'CL-<base64url-payload>-<base64url-sig> (v0.1.4 포맷)'
+                    example: 'CL-eyJwYWNrX2lkIjoiYWJjIn0-MEUCIQDx...'
+                  expires_at: { type: string, format: date-time, nullable: true }
+
+  /license/verify:
+    post:
+      tags: [license]
+      summary: 라이센스 키 검증
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [license_key, pack_id]
+              properties:
+                license_key: { type: string }
+                pack_id: { type: string }
+      responses:
+        '200':
+          description: 검증 결과
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [valid]
+                properties:
+                  valid: { type: boolean }
+                  reason: { type: string, nullable: true, description: invalid 시 사유 }
+                  scope: { type: string, enum: [perpetual, monthly, yearly], nullable: true }
+                  expires_at: { type: string, format: date-time, nullable: true }
+
+  /publish/upload:
+    post:
+      tags: [publish]
+      summary: 큐브팩 게시 업로드 (작성자)
+      security:
+        - PublishToken: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [pack_file, metadata]
+              properties:
+                pack_file:
+                  type: string
+                  format: binary
+                  description: .cubepack 파일
+                metadata:
+                  $ref: '#/components/schemas/MarketplaceMeta'
+      responses:
+        '201':
+          description: 검토 대기 등록
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pack_id: { type: string }
+                  status: { type: string, enum: [pending_review] }
+
+components:
+  securitySchemes:
+    LicenseKey:
+      type: apiKey
+      in: header
+      name: X-License-Key
+    PublishToken:
+      type: http
+      scheme: bearer
+    ServerSecret:
+      type: apiKey
+      in: header
+      name: X-Server-Secret
+
+  schemas:
+    Platform:
+      type: string
+      enum:
+        - figma
+        - obs
+        - vscode
+        - photoshop
+        - illustrator
+        - premiere
+        - after_effects
+        - davinci
+        - blender
+        - unity
+        - unreal
+        - twitch
+        - discord
+        - spotify
+        - youtube
+        - other
+
+    PaymentType:
+      type: string
+      enum: [one_time, subscription_monthly, subscription_yearly]
+
+    PackCard:
+      type: object
+      required: [id, name, author, platform, price_cents]
+      properties:
+        id: { type: string }
+        name: { type: string }
+        author:
+          type: object
+          properties:
+            name: { type: string }
+            email: { type: string, format: email, nullable: true }
+        platform: { $ref: '#/components/schemas/Platform' }
+        price_cents: { type: integer, minimum: 0 }
+        payment_type: { $ref: '#/components/schemas/PaymentType' }
+        cover_url: { type: string, format: uri, nullable: true }
+        rating:
+          type: object
+          nullable: true
+          properties:
+            avg: { type: number, minimum: 0, maximum: 5 }
+            count: { type: integer, minimum: 0 }
+        cube_count: { type: integer }
+        list_count: { type: integer }
+        tags:
+          type: array
+          items: { type: string }
+        version: { type: string, nullable: true }
+
+    PackDetail:
+      allOf:
+        - $ref: '#/components/schemas/PackCard'
+        - type: object
+          properties:
+            long_description: { type: string, maxLength: 10000 }
+            changelog: { type: string }
+            demo_video_url: { type: string, format: uri, nullable: true }
+            screenshots:
+              type: array
+              maxItems: 10
+              items: { type: string, format: uri }
+            preview_cubes:
+              type: array
+              items:
+                type: object
+                properties:
+                  label: { type: string }
+                  icon_color: { type: string }
+                  action_label: { type: string }
+            device_hint: { type: string }
+
+    MarketplaceMeta:
+      type: object
+      required: [author, platform, price_cents]
+      properties:
+        author:
+          type: object
+          required: [name]
+          properties:
+            name: { type: string }
+            email: { type: string, format: email, nullable: true }
+        platform: { $ref: '#/components/schemas/Platform' }
+        price_cents: { type: integer, minimum: 0, maximum: 100000 }
+        payment_type: { $ref: '#/components/schemas/PaymentType' }
+        version: { type: string, nullable: true }
+        tags:
+          type: array
+          maxItems: 20
+          items: { type: string }
+        long_description: { type: string, maxLength: 10000 }
+        changelog: { type: string }
+        demo_video_url: { type: string, format: uri, nullable: true }
+        cover_url: { type: string, format: uri, nullable: true }
