@@ -71,6 +71,8 @@ interface PluginManifest {
 interface IconLookup {
   dataUrl: string | null;
   source: string | null;
+  /** 원본 이미지 size (PNG bytes 또는 SVG 텍스트 길이). placeholder 판정용. */
+  sizeBytes: number;
 }
 
 function safeFolderName(s: string): string {
@@ -166,7 +168,7 @@ function normalizeSvgVisibility(svgText: string): string {
 }
 
 async function loadIconAsDataUrl(zip: JSZip, pluginDir: string, iconRef: string | null | undefined): Promise<IconLookup> {
-  if (!iconRef) return { dataUrl: null, source: null };
+  if (!iconRef) return { dataUrl: null, source: null, sizeBytes: 0 };
   // v2: PNG_TINY (< 800 byte) 는 placeholder 가능성 — 일단 후보로 모아두고 SVG 가 있으면 SVG 우선
   const PNG_QUALITY_MIN = 800;
   const candidates: { suffix: string; mime: string; buf: Uint8Array }[] = [];
@@ -192,31 +194,31 @@ async function loadIconAsDataUrl(zip: JSZip, pluginDir: string, iconRef: string 
       const text = new TextDecoder('utf-8').decode(chosen.buf);
       const normalized = normalizeSvgVisibility(text);
       const normalizedBuf = new TextEncoder().encode(normalized);
-      return { dataUrl: makeDataUrl(normalizedBuf, chosen.mime), source: chosen.suffix };
+      return { dataUrl: makeDataUrl(normalizedBuf, chosen.mime), source: chosen.suffix, sizeBytes: chosen.buf.byteLength };
     }
-    return { dataUrl: makeDataUrl(chosen.buf, chosen.mime), source: chosen.suffix };
+    return { dataUrl: makeDataUrl(chosen.buf, chosen.mime), source: chosen.suffix, sizeBytes: chosen.buf.byteLength };
   }
   const oneX = zip.file(`${pluginDir}${iconRef}.png`);
   if (oneX) {
     const buf = await oneX.async('uint8array');
     if (buf.byteLength >= PNG_MIN_BYTES && buf.byteLength <= MAX_IMAGE_BYTES) {
-      return { dataUrl: makeDataUrl(buf, 'image/png'), source: '.png' };
+      return { dataUrl: makeDataUrl(buf, 'image/png'), source: '.png', sizeBytes: buf.byteLength };
     }
   }
   const raw = zip.file(`${pluginDir}${iconRef}`);
   if (raw) {
     const buf = await raw.async('uint8array');
     if (buf.byteLength >= 200 && buf.byteLength <= MAX_IMAGE_BYTES) {
-      return { dataUrl: makeDataUrl(buf, sniffMime(buf)), source: 'raw' };
+      return { dataUrl: makeDataUrl(buf, sniffMime(buf)), source: 'raw', sizeBytes: buf.byteLength };
     }
   }
   if (oneX) {
     const buf = await oneX.async('uint8array');
     if (buf.byteLength > 0 && buf.byteLength <= MAX_IMAGE_BYTES) {
-      return { dataUrl: makeDataUrl(buf, 'image/png'), source: '.png(small)' };
+      return { dataUrl: makeDataUrl(buf, 'image/png'), source: '.png(small)', sizeBytes: buf.byteLength };
     }
   }
-  return { dataUrl: null, source: null };
+  return { dataUrl: null, source: null, sizeBytes: 0 };
 }
 
 async function buildFallbackManifest(
@@ -408,17 +410,19 @@ async function buildCubeOneZipBytes(
   const stateImage = Array.isArray(action.States) ? action.States[0]?.Image : null;
   let iconUrl: string | null = null;
   let iconSource = 'none';
+  let iconSizeBytes = 0;
   if (stateImage) {
     const r = await loadIconAsDataUrl(zip, pluginDir, stateImage);
-    if (r.dataUrl) { iconUrl = r.dataUrl; iconSource = `state${r.source}`; }
+    if (r.dataUrl) { iconUrl = r.dataUrl; iconSource = `state${r.source}`; iconSizeBytes = r.sizeBytes; }
   }
   if (!iconUrl && action.Icon) {
     const r = await loadIconAsDataUrl(zip, pluginDir, action.Icon);
-    if (r.dataUrl) { iconUrl = r.dataUrl; iconSource = `action_icon${r.source}`; }
+    if (r.dataUrl) { iconUrl = r.dataUrl; iconSource = `action_icon${r.source}`; iconSizeBytes = r.sizeBytes; }
   }
   if (!iconUrl) {
     iconUrl = defaultIconUrl;
     iconSource = defaultIconUrl ? 'plugin_icon_fallback' : 'none';
+    // plugin icon fallback 도 size 모름 → 0 으로 두고 frontend 에서 fallback class 적용
   }
   iconStats[iconSource] = (iconStats[iconSource] ?? 0) + 1;
 
@@ -451,6 +455,11 @@ async function buildCubeOneZipBytes(
       source: 'streamdeck-import',
       sd_uuid: action.UUID,
       sd_tooltip: action.Tooltip,
+      // 가시화 판정용 (frontend cube-cell class 분기)
+      icon_source: iconSource,                     // 'state@2x.png' / 'state.svg' / 'plugin_icon_fallback' / 'none'
+      icon_size_bytes: iconSizeBytes,              // 0 = placeholder/fallback, < 800 = tiny PNG, ≥ 800 = OK
+      icon_is_tiny: iconSizeBytes > 0 && iconSizeBytes < 800,
+      icon_is_placeholder: iconSource === 'none' || iconSource === 'plugin_icon_fallback',
     },
   };
   const manifest = {
@@ -604,7 +613,14 @@ async function buildPlaceholderCubeOne(folderName: string, reason: string): Prom
       icon_url: null,
       action_type: 'plugin_action',
       action_payload: { plugin_uuid: '', action_id: 'placeholder', payload: {} },
-      metadata: { source: 'streamdeck-import', placeholder_reason: reason },
+      metadata: {
+        source: 'streamdeck-import',
+        placeholder_reason: reason,
+        icon_source: 'none',
+        icon_size_bytes: 0,
+        icon_is_tiny: false,
+        icon_is_placeholder: true,
+      },
     },
   };
   const z = new JSZip();

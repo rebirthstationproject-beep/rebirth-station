@@ -259,7 +259,7 @@ function normalizeSvgVisibility(svgText) {
 }
 
 async function loadIconAsDataUrl(zip, pluginDir, iconRef) {
-  if (!iconRef) return { dataUrl: null, source: null };
+  if (!iconRef) return { dataUrl: null, source: null, sizeBytes: 0 };
   const MAX_BYTES = 1024 * 1024;
   const PNG_MIN_BYTES = 1500; // placeholder PNG (32x32 단색) 회피
   // v2: PNG_TINY (< 800 byte) 는 placeholder 가능성 — 후보로 수집 후 큰 PNG > SVG > 작은 PNG 순
@@ -287,9 +287,9 @@ async function loadIconAsDataUrl(zip, pluginDir, iconRef) {
       const text = new TextDecoder('utf-8').decode(chosen.buf);
       const normalized = normalizeSvgVisibility(text);
       const normalizedBuf = new TextEncoder().encode(normalized);
-      return { dataUrl: makeDataUrl(normalizedBuf, chosen.mime), source: chosen.suffix };
+      return { dataUrl: makeDataUrl(normalizedBuf, chosen.mime), source: chosen.suffix, sizeBytes: chosen.buf.byteLength };
     }
-    return { dataUrl: makeDataUrl(chosen.buf, chosen.mime), source: chosen.suffix };
+    return { dataUrl: makeDataUrl(chosen.buf, chosen.mime), source: chosen.suffix, sizeBytes: chosen.buf.byteLength };
   }
   // 2차: 1x.png — placeholder 회피 (작으면 skip)
   const oneX = `${pluginDir}${iconRef}.png`;
@@ -297,27 +297,24 @@ async function loadIconAsDataUrl(zip, pluginDir, iconRef) {
   if (oneXEntry) {
     const buf = await oneXEntry.async('uint8array');
     if (buf.byteLength >= PNG_MIN_BYTES && buf.byteLength <= MAX_BYTES) {
-      return { dataUrl: makeDataUrl(buf, 'image/png'), source: '.png' };
+      return { dataUrl: makeDataUrl(buf, 'image/png'), source: '.png', sizeBytes: buf.byteLength };
     }
   }
-  // 3차: 원본 (확장자 없음) — manifest 에 확장자 명시 케이스
   const raw = `${pluginDir}${iconRef}`;
   const rawEntry = zip.file(raw);
   if (rawEntry) {
     const buf = await rawEntry.async('uint8array');
     if (buf.byteLength >= 200 && buf.byteLength <= MAX_BYTES) {
-      const mime = sniffMime(buf);
-      return { dataUrl: makeDataUrl(buf, mime), source: 'raw' };
+      return { dataUrl: makeDataUrl(buf, sniffMime(buf)), source: 'raw', sizeBytes: buf.byteLength };
     }
   }
-  // 4차: 마지막 폴백 — 1x.png 가 작더라도 사용 (placeholder 라도 안 보이는 것보다 낫다)
   if (oneXEntry) {
     const buf = await oneXEntry.async('uint8array');
     if (buf.byteLength > 0 && buf.byteLength <= MAX_BYTES) {
-      return { dataUrl: makeDataUrl(buf, 'image/png'), source: '.png(small)' };
+      return { dataUrl: makeDataUrl(buf, 'image/png'), source: '.png(small)', sizeBytes: buf.byteLength };
     }
   }
-  return { dataUrl: null, source: null };
+  return { dataUrl: null, source: null, sizeBytes: 0 };
 }
 
 function makeDataUrl(buf, mime) {
@@ -364,13 +361,14 @@ async function buildCubeOneZip(zip, pluginDir, action, defaultIconUrl, iconStats
   const stateImage = Array.isArray(action.States) && action.States[0]?.Image;
   let icon_url = null;
   let iconSource = 'none';
+  let iconSizeBytes = 0;
   if (stateImage) {
     const r = await loadIconAsDataUrl(zip, pluginDir, stateImage);
-    if (r.dataUrl) { icon_url = r.dataUrl; iconSource = `state${r.source}`; }
+    if (r.dataUrl) { icon_url = r.dataUrl; iconSource = `state${r.source}`; iconSizeBytes = r.sizeBytes; }
   }
   if (!icon_url && action.Icon) {
     const r = await loadIconAsDataUrl(zip, pluginDir, action.Icon);
-    if (r.dataUrl) { icon_url = r.dataUrl; iconSource = `action_icon${r.source}`; }
+    if (r.dataUrl) { icon_url = r.dataUrl; iconSource = `action_icon${r.source}`; iconSizeBytes = r.sizeBytes; }
   }
   if (!icon_url) {
     icon_url = defaultIconUrl;
@@ -387,6 +385,10 @@ async function buildCubeOneZip(zip, pluginDir, action, defaultIconUrl, iconStats
       source: 'streamdeck-import',
       sd_uuid: action.UUID,
       sd_tooltip: action.Tooltip,
+      icon_source: iconSource,
+      icon_size_bytes: iconSizeBytes,
+      icon_is_tiny: iconSizeBytes > 0 && iconSizeBytes < 800,
+      icon_is_placeholder: iconSource === 'none' || iconSource === 'plugin_icon_fallback',
     },
   };
 
@@ -527,7 +529,14 @@ async function main() {
             icon_url: null,
             action_type: 'plugin_action',
             action_payload: { plugin_uuid: '', action_id: 'placeholder', payload: {} },
-            metadata: { source: 'streamdeck-import', encrypted_manifest: true },
+            metadata: {
+              source: 'streamdeck-import',
+              encrypted_manifest: true,
+              icon_source: 'none',
+              icon_size_bytes: 0,
+              icon_is_tiny: false,
+              icon_is_placeholder: true,
+            },
           },
         };
         const z = new JSZip();
@@ -571,7 +580,14 @@ async function main() {
             icon_url: null,
             action_type: 'plugin_action',
             action_payload: { plugin_uuid: '', action_id: 'unreadable', payload: {} },
-            metadata: { source: 'streamdeck-import', read_error: e.message },
+            metadata: {
+              source: 'streamdeck-import',
+              read_error: e.message,
+              icon_source: 'none',
+              icon_size_bytes: 0,
+              icon_is_tiny: false,
+              icon_is_placeholder: true,
+            },
           },
         };
         const z = new JSZip();

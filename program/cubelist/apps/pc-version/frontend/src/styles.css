@@ -932,7 +932,7 @@ html, body, #root {
   margin-top: 4px;
 }
 
-/* === 큐브 셀 아이콘 배경 === */
+/* === 큐브 셀 아이콘 배경 (StreamDeck LCD 톤) === */
 .cube-cell { position: relative; overflow: hidden; }
 .cube-icon-bg {
   width: 84px;
@@ -941,9 +941,39 @@ html, body, #root {
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
-  background-color: var(--bg-surface, #2a2a2a);
+  /* StreamDeck LCD = pure black, 우리 PC UI 동일 톤 */
+  background-color: #000000;
   flex-shrink: 0;
   margin-top: 0;
+  /* SD 패널 깊이감: 약한 inner shadow + outer ring */
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 1px 2px rgba(0, 0, 0, 0.5);
+  transition: transform 0.1s, box-shadow 0.15s;
+}
+.cube-cell:hover .cube-icon-bg {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.7);
+}
+/* PNG_TINY (단색 placeholder PNG, < 800 byte) — invert + brightness 로 가시화 */
+.cube-cell.icon-tiny .cube-icon-bg {
+  filter: invert(1) brightness(1.4) contrast(0.95);
+}
+/* plugin_icon_fallback / NO_ICON — 라벨 큰 글씨 중앙 표시 */
+.cube-cell.icon-placeholder .cube-icon-bg {
+  background-image: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.cube-cell.icon-placeholder .cube-icon-bg::before {
+  content: attr(data-placeholder-letter);
 }
 .cube-cell.has-icon .cube-label { color: var(--text); }
 .cube-cell .cube-action-badge {

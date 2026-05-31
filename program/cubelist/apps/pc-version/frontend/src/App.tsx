@@ -525,18 +525,28 @@ function CubeMakerCenter() {
             const isSelected = librarySelectedId === cube.id;
             const inSelection = selectionIdx !== -1;
             const hasIcon = !!cube.icon_url;
+            const iconMeta = (cube.metadata ?? {}) as Record<string, unknown>;
+            const isTinyIcon = iconMeta.icon_is_tiny === true;
+            const isPlaceholderIcon = !hasIcon || iconMeta.icon_is_placeholder === true;
+            const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
             return (
               <button
                 key={cube.id}
                 type="button"
-                className={`cube-cell ${hasIcon ? 'has-icon' : ''} ${isSelected ? 'is-selected' : ''} ${inSelection ? 'is-in-selection' : ''}`}
+                className={`cube-cell ${hasIcon ? 'has-icon' : ''} ${isSelected ? 'is-selected' : ''} ${inSelection ? 'is-in-selection' : ''} ${isTinyIcon ? 'icon-tiny' : ''} ${isPlaceholderIcon ? 'icon-placeholder' : ''}`}
                 onClick={() => handleClickCube(cube.id)}
                 title={`${cube.label} (${cube.action_type})`}
               >
-                {hasIcon && (
+                {hasIcon && !isPlaceholderIcon ? (
                   <div
                     className="cube-icon-bg"
                     style={{ backgroundImage: `url("${cube.icon_url}")` }}
+                    aria-hidden
+                  />
+                ) : (
+                  <div
+                    className="cube-icon-bg"
+                    data-placeholder-letter={placeholderLetter}
                     aria-hidden
                   />
                 )}
@@ -1318,6 +1328,11 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
   const enterFolder = useEditor((s) => s.enterFolder);
   const selected = cube_id === cube.id;
   const isFolder = cube.action_type === 'folder';
+  // StreamDeck 아이콘 가시화 분기
+  const iconMeta = (cube.metadata ?? {}) as Record<string, unknown>;
+  const isTinyIcon = iconMeta.icon_is_tiny === true;
+  const isPlaceholderIcon = !cube.icon_url || iconMeta.icon_is_placeholder === true;
+  const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: cube.id,
@@ -1340,7 +1355,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       style={style}
       type="button"
       role="gridcell"
-      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''} ${cube.icon_url ? 'has-icon' : ''}`}
+      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''} ${cube.icon_url ? 'has-icon' : ''} ${isTinyIcon ? 'icon-tiny' : ''} ${isPlaceholderIcon ? 'icon-placeholder' : ''}`}
       onClick={() => {
         // M4: plugin_action 큐브 더블클릭 → fireCubeKey, 단일클릭 → select
         selectCube(selected ? null : cube.id);
@@ -1370,13 +1385,19 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       {...restAttrs}
       {...listeners}
     >
-      {cube.icon_url && (
+      {cube.icon_url && !isPlaceholderIcon ? (
         <div
           className="cube-icon-bg"
           style={{ backgroundImage: `url("${cube.icon_url}")` }}
           aria-hidden
         />
-      )}
+      ) : !isFolder ? (
+        <div
+          className="cube-icon-bg"
+          data-placeholder-letter={placeholderLetter}
+          aria-hidden
+        />
+      ) : null}
       <span className="cube-label">
         {isFolder ? '📁 ' : ''}{cube.label}
       </span>
