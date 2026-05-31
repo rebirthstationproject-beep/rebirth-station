@@ -26,7 +26,7 @@ interface CubeContextMenuProps {
 
 const MENU_WIDTH = 180;
 const MENU_HEIGHT_PER_ITEM = 32;
-const MENU_ITEMS = 4;
+const MENU_ITEMS = 5;
 
 export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMenuProps) {
   const ref = useRef<HTMLDivElement>(null);
@@ -126,6 +126,34 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
     onClose();
   }
 
+  function handleUseAsCover(): void {
+    const found = findCube();
+    if (!found || !pack) {
+      onClose();
+      return;
+    }
+    if (!found.cube.icon_url) {
+      window.alert('이 큐브에 이미지가 없습니다.');
+      onClose();
+      return;
+    }
+    // CubePack.extensions.marketplace.cover_url 갱신
+    const ext = (pack.extensions ?? {}) as { marketplace?: Record<string, unknown> };
+    const marketplace = (ext.marketplace ?? {}) as Record<string, unknown>;
+    const next = {
+      ...pack,
+      extensions: {
+        ...(pack.extensions ?? {}),
+        marketplace: { ...marketplace, cover_url: found.cube.icon_url },
+      },
+    };
+    void import('../store/editor').then(({ useEditor }) => {
+      useEditor.getState().loadPack(next);
+    });
+    window.alert('큐브 이미지가 큐브팩 cover 로 설정되었습니다.');
+    onClose();
+  }
+
   return (
     <div
       ref={ref}
@@ -152,6 +180,14 @@ export function CubeContextMenu({ x, y, cubeId, listId, onClose }: CubeContextMe
         role="menuitem"
       >
         🖼 이미지 변경
+      </button>
+      <button
+        type="button"
+        className="cube-context-item"
+        onClick={handleUseAsCover}
+        role="menuitem"
+      >
+        🏪 큐브팩 cover로 사용
       </button>
       <button
         type="button"

@@ -224,7 +224,23 @@
 
 - ws_server handle_socket: while let → loop + tokio::select! (broadcast 통합)
 
-### Added (v0.1.3 추가, commits 463bdcb → adff2b8 → (현재))
+### Added (v0.1.3 추가, commits abf2ce1 → (현재))
+
+**큐브 우클릭 "큐브팩 cover로 사용"**
+- `CubeContextMenu` 5번째 아이템: 🏪 큐브팩 cover로 사용
+- 클릭 시 cube.icon_url → CubePack.extensions.marketplace.cover_url 갱신
+- 이미지 없는 큐브 선택 시 alert
+- MENU_ITEMS 4 → 5 (높이 조정)
+
+**큐브팩 export 시 자동 cover 캡처**
+- TopBar 📤 내보내기 핸들러 (handleExport):
+  - cover_url 없고 lists 있으면 captureCubeListThumbnail 자동 시도
+  - 캡처 성공 시 packToExport.extensions.marketplace.cover_url 임시 주입
+  - 캡처 실패해도 export 계속 (silent fail)
+- 사용자 명시 동의 prompt 없음 — export 산출물에만 임시 포함 (영구 저장 X)
+- MarketplaceMetaEditor 의 명시 캡처와 별개 동작
+
+### Added (v0.1.3 추가, commits 463bdcb → adff2b8 → abf2ce1)
 
 **e2e 5 신규 smoke 테스트 (총 13개)**
 - ⚙ 설정 패널 표시 + 4 섹션 + 완료 닫기

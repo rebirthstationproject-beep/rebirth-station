@@ -831,7 +831,30 @@ function TopBar({
   async function handleExport(): Promise<void> {
     if (!pack) return;
     try {
-      const blob = await exportCubepack(pack);
+      // v0.1.3: cover_url 없고 lists 있으면 자동 캡처해서 메타에 포함
+      let packToExport = pack;
+      const ext = (pack.extensions ?? {}) as { marketplace?: { cover_url?: string } };
+      const hasCover = !!ext.marketplace?.cover_url;
+      if (!hasCover && pack.lists.length > 0) {
+        try {
+          const { captureCubeListThumbnail } = await import('./lib/pack-thumbnail');
+          const dataUrl = await captureCubeListThumbnail(pack.lists[0], {
+            packName: pack.name,
+          });
+          if (dataUrl) {
+            packToExport = {
+              ...pack,
+              extensions: {
+                ...(pack.extensions ?? {}),
+                marketplace: { ...(ext.marketplace ?? {}), cover_url: dataUrl },
+              },
+            };
+          }
+        } catch {
+          /* 캡처 실패해도 export 는 계속 */
+        }
+      }
+      const blob = await exportCubepack(packToExport);
       downloadCubepack(blob, pack.name || pack.id);
     } catch (e) {
       const msg = e instanceof CubepackFormatError ? e.message : '내보내기 실패';
