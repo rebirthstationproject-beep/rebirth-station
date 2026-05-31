@@ -43,6 +43,7 @@ import { CubeContextMenu } from './components/CubeContextMenu';
 import { DropZone } from './components/DropZone';
 import { CubePreview } from './components/CubePreview';
 import { CubeStatesEditor } from './components/CubeStatesEditor';
+import { MarketplaceMetaEditor } from './components/MarketplaceMetaEditor';
 import {
   PluginActionsBackground,
   PluginPropertyInspector,
@@ -84,6 +85,8 @@ export function App() {
   const draftList = useEditor((s) => s.draft_list);
   const refreshPlugins = usePluginRegistry((s) => s.refresh);
   const [mainTab, setMainTab] = useState<MainTab>('cube-maker');
+  // v0.1.3 사전: 마켓플레이스 메타 편집 모달
+  const [marketplaceOpen, setMarketplaceOpen] = useState(false);
 
   // draft 가 새로 생성되면 큐브 리스트 만들기 탭으로 자동 전환 (워크플로우 자동화)
   useEffect(() => {
@@ -299,7 +302,7 @@ export function App() {
 
   return (
     <div className="app">
-      <TopBar />
+      <TopBar onOpenMarketplace={() => setMarketplaceOpen(true)} />
       <div className="workspace">
         <Sidebar />
         <main className="center-area">
@@ -315,6 +318,8 @@ export function App() {
         onPluginsDropped={handlePluginsDropped}
         onCubeFilesDropped={handleCubeFilesDropped}
       />
+      {/* v0.1.3 사전: 마켓플레이스 메타 편집 모달 */}
+      {marketplaceOpen && <MarketplaceMetaEditor onClose={() => setMarketplaceOpen(false)} />}
     </div>
   );
 }
@@ -761,7 +766,7 @@ function PageTabs() {
   );
 }
 
-function TopBar() {
+function TopBar({ onOpenMarketplace }: { onOpenMarketplace?: () => void }) {
   const { t } = useTranslation();
   const pack = useEditor((s) => s.pack);
   const loadPack = useEditor((s) => s.loadPack);
@@ -984,6 +989,17 @@ function TopBar() {
         >
           📁 폴더
         </button>
+        {onOpenMarketplace && (
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={onOpenMarketplace}
+            title="마켓플레이스 메타 편집 (v0.1.3 사전)"
+            disabled={!pack}
+          >
+            🏪 팩 정보
+          </button>
+        )}
         <LocaleSwitcher />
         <button className="icon-btn" title={t('app.settings')} aria-label={t('app.settings')}>⚙</button>
       </div>
@@ -1400,10 +1416,47 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
   const moveCubeToSlot = useEditor((s) => s.moveCubeToSlot);
   const currentPage = useEditor((s) => s.current_page);
   const pageSize = useEditor((s) => s.pageSize());
+  const selectCube = useEditor((s) => s.selectCube);
+  const cube_id = useEditor((s) => s.cube_id);
   // 동적 큐브 (live_clock/timer/gauge/battery) 1초 tick
   const dynamicUpdates = useDynamicCubes(visibleCubes);
   // v0.1.2: states 있는 큐브 (hotkey_toggle 등) 상태 반영
   const stateUpdates = useCubeStates(visibleCubes);
+  // v0.1.3 사전: 방향키 네비게이션 + Enter 실행
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent): void {
+      const target = e.target as HTMLElement | null;
+      if (target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return;
+      if (!cube_id) return;
+      const cols = list.cols ?? 4;
+      const idx = visibleCubes.findIndex((c) => c.id === cube_id);
+      if (idx < 0) return;
+      let nextIdx: number = idx;
+      switch (e.key) {
+        case 'ArrowRight': nextIdx = Math.min(idx + 1, visibleCubes.length - 1); break;
+        case 'ArrowLeft': nextIdx = Math.max(idx - 1, 0); break;
+        case 'ArrowDown': nextIdx = Math.min(idx + cols, visibleCubes.length - 1); break;
+        case 'ArrowUp': nextIdx = Math.max(idx - cols, 0); break;
+        case 'Enter': {
+          const cube = visibleCubes[idx];
+          if (cube) {
+            e.preventDefault();
+            import('./lib/tauri-bridge').then(({ executeCube }) => {
+              executeCube(cube).catch((err) => console.warn('[keyboard exec]', err));
+            });
+          }
+          return;
+        }
+        default: return;
+      }
+      if (nextIdx !== idx && visibleCubes[nextIdx]) {
+        e.preventDefault();
+        selectCube(visibleCubes[nextIdx].id);
+      }
+    }
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [cube_id, visibleCubes, list.cols, selectCube]);
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
