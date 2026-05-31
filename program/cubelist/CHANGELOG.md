@@ -38,6 +38,11 @@
   - PC가 page_index > 0 일 때 amber ribbon 표시 ("🖥 PC에서 페이지 N 표시 중")
   - 모바일은 page state 없이 전체 큐브 한 화면 표시 안내
 
+**Phase 5 (2026-06-01 야간 루프)** — Inspector 검증 인라인 에러 UI
+- 큐브 라벨 빈 값일 때 인라인 alert + 빨간 border (aria-invalid=true)
+- i18n `inspector.label_required` (ko/en/ja)
+- ActionPayloadForm 의 payload errors 와 일관된 표시 스타일
+
 **Phase 4 (2026-06-01 야간 루프)** — MarketplaceMetaEditor silent 자동 캡처
 - 첫 열림 시 confirm prompt 제거 → silent 자동 캡처 (handleExport 와 동일 정책)
 - 사용자는 ✕ 제거 버튼으로 명시 거부 가능

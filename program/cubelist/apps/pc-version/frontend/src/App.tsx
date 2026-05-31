@@ -1836,7 +1836,22 @@ function Inspector() {
             value={cube.label}
             placeholder={t('inspector.label')}
             onChange={(e) => patch({ label: e.target.value })}
+            aria-invalid={!cube.label.trim()}
+            style={
+              !cube.label.trim()
+                ? { borderColor: '#dc2626', outlineColor: '#dc2626' }
+                : undefined
+            }
           />
+          {!cube.label.trim() && (
+            <div
+              className="field-hint"
+              role="alert"
+              style={{ color: '#dc2626', marginTop: 4, fontSize: 11 }}
+            >
+              ⚠ {t('inspector.label_required')}
+            </div>
+          )}
         </dd>
         <dt>{t('inspector.action_type')}</dt>
         <dd>
