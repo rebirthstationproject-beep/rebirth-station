@@ -123,9 +123,14 @@ export function createHelperClient(url: string = DEFAULT_HELPER_URL): HelperClie
       case 'item_executed':
       case 'macro_progress':
       case 'notice':
+      // v0.1.3 추가 (2026-05-31): LiveSyncBridge 메시지 — listener('message') 에 위임
+      case 'cube_update':
+      case 'selection_change':
         // listener에 위임
         break;
     }
+    // 모든 이벤트 'message' 리스너에 통합 전달
+    listeners.message.forEach((h) => h(event));
   }
 
   function send(event: ClientEvent) {

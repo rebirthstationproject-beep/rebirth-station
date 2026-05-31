@@ -190,14 +190,37 @@
 - Tauri 환경 감지 (window.__TAURI_INTERNALS__)
 - invoke 실패 silent — frontend subscribers 은 이미 동작
 
+### Added (v0.1.3 추가, commits 8ecde54 → (현재))
+
+**Rust WebSocket broadcast 실 구현**
+- `protocol/messages.rs ServerEvent` 확장:
+  - `CubeUpdate { cube_id, label?, icon_url?, state_index?, timestamp_ms }`
+  - `SelectionChange { list_id?, cube_id?, page_index?, current_folder_id?, timestamp_ms }`
+  - 모든 Option 필드 `#[serde(skip_serializing_if = 'Option::is_none')]` (변경된 필드만 wire)
+- `ws_server.rs broadcast 인프라`:
+  - `static BROADCAST_TX: OnceLock<broadcast::Sender<ServerEvent>>`
+  - `live_sync_sender()` 외부 노출 함수
+  - channel capacity 128 (slow consumer 보호)
+- `handle_socket tokio::select!`:
+  - biased — broadcast 우선
+  - sync_rx.recv() / socket.recv() 동시 대기
+  - Lagged 시 warn + skip / Closed 시 break
+- `commands.rs broadcast 함수 실 구현`:
+  - timestamp_ms 자동 (SystemTime)
+  - ServerEvent 생성 → `live_sync_sender().send(event)`
+  - 0 구독자 SendError 무시
+
+### Changed (변경)
+
+- ws_server handle_socket: while let → loop + tokio::select! (broadcast 통합)
+
 ### 다음 (v0.1.4+)
 
-- Rust WebSocket broadcast 실 구현 (axum subscribers → 메시지 송신)
-- 모바일 PWA 측 wire 수신 핸들러 (cube_update / selection_change 반영)
+- 모바일 PWA WebSocket handler (cube_update / selection_change 수신 → UI 반영)
 - 마켓플레이스 서버 API + PayPal/Binance Pay 통합
 - 라이센스 키 발급 + Ed25519 검증
-- Tauri WebDriver E2E 통합 (Rust 액션 실 검증)
-- 큐브팩 미리보기 자동 캡처 → cover 즉시 적용 (캡처 후 자동 저장)
+- Tauri WebDriver E2E 통합
+- 큐브팩 미리보기 자동 캡처 → cover 즉시 적용
 
 ---
 

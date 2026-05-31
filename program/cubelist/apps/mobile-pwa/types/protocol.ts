@@ -105,6 +105,24 @@ export type ServerEvent =
       event: 'notice';
       level: NoticeLevel;
       message: string;
+    }
+  // v0.1.3 추가 (2026-05-31): LiveSyncBridge — PC frontend 의 동적 큐브 라벨/이미지/상태 변경
+  | {
+      event: 'cube_update';
+      cube_id: string;
+      label?: string;
+      icon_url?: string | null;
+      state_index?: number;
+      timestamp_ms: number;
+    }
+  // v0.1.3 추가 (2026-05-31): LiveSyncBridge — PC 측 선택 변경 (모바일 미러)
+  | {
+      event: 'selection_change';
+      list_id?: string | null;
+      cube_id?: string | null;
+      page_index?: number;
+      current_folder_id?: string;
+      timestamp_ms: number;
     };
 
 // ===========================================================================
