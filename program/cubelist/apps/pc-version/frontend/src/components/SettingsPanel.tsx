@@ -15,6 +15,22 @@ import { clearAllTierConsents } from '../lib/tauri-bridge';
 const CONSENT_STORAGE_KEY = 'cubelist:tier_consents';
 const LIBRARY_DIR_KEY = 'cubelist:library_dir';
 
+// Phase 8 (2026-06-01): 단축키 viewer — 편집은 v0.1.4
+interface ShortcutEntry {
+  readonly action: string;
+  readonly keys: string;
+  readonly labelKey: string;
+}
+
+const DEFAULT_SHORTCUTS: readonly ShortcutEntry[] = [
+  { action: 'global_search', keys: 'Ctrl+F / Cmd+F', labelKey: 'shortcuts.global_search' },
+  { action: 'export_pack', keys: 'Ctrl+E / Cmd+E', labelKey: 'shortcuts.export_pack' },
+  { action: 'close_modal', keys: 'Esc', labelKey: 'shortcuts.close_modal' },
+  { action: 'arrow_nav', keys: '← ↑ ↓ →', labelKey: 'shortcuts.arrow_nav' },
+  { action: 'delete_cube', keys: 'Delete / Backspace', labelKey: 'shortcuts.delete_cube' },
+  { action: 'context_menu', keys: 'ContextMenu / Shift+F10', labelKey: 'shortcuts.context_menu' },
+] as const;
+
 interface SettingsPanelProps {
   readonly onClose: () => void;
 }
@@ -168,6 +184,34 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
             <h3 className="settings-section-title">{t('settings.section_sync')}</h3>
             <div className="settings-current-value">
               <span className="muted small">{t('settings.sync_info')}</span>
+            </div>
+          </section>
+
+          {/* Phase 8 (2026-06-01): 단축키 viewer (편집은 v0.1.4) */}
+          <section className="settings-section">
+            <h3 className="settings-section-title">{t('settings.section_shortcuts')}</h3>
+            <ul className="shortcuts-list" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+              {DEFAULT_SHORTCUTS.map((s) => (
+                <li
+                  key={s.action}
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '6px 0',
+                    borderBottom: '1px solid var(--color-border)',
+                    fontSize: 12,
+                  }}
+                >
+                  <span>{t(s.labelKey as Parameters<typeof t>[0])}</span>
+                  <kbd style={{ fontFamily: 'monospace', fontSize: 11, opacity: 0.8 }}>
+                    {s.keys}
+                  </kbd>
+                </li>
+              ))}
+            </ul>
+            <div className="settings-hint" style={{ marginTop: 8 }}>
+              {t('settings.shortcuts_edit_planned')}
             </div>
           </section>
         </div>

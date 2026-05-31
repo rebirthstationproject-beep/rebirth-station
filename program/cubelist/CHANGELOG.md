@@ -38,6 +38,17 @@
   - PC가 page_index > 0 일 때 amber ribbon 표시 ("🖥 PC에서 페이지 N 표시 중")
   - 모바일은 page state 없이 전체 큐브 한 화면 표시 안내
 
+**Phase 8 (2026-06-01 야간 루프)** — SettingsPanel 단축키 viewer
+- 5번째 섹션 추가: ⌨ 단축키 (6 항목)
+  - 전역 검색 (Ctrl+F / Cmd+F)
+  - 큐브팩 내보내기 (Ctrl+E / Cmd+E)
+  - 모달 닫기 (Esc)
+  - 큐브 그리드 네비 (← ↑ ↓ →)
+  - 선택 큐브 삭제 (Delete / Backspace)
+  - 큐브 컨텍스트 메뉴 (ContextMenu / Shift+F10)
+- 편집/커스터마이즈는 v0.1.4 진입 시 활성화 (settings.shortcuts_edit_planned hint)
+- i18n 8 키 (ko/en/ja)
+
 **Phase 7 (2026-06-01 야간 루프)** — ExecutionStatus 보강
 - Rust `protocol::messages::ExecutionStatus` — 3 신규 variant
   - `ActionNotFound { action_type }`
