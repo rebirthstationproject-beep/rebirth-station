@@ -227,6 +227,52 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
                 />
               </div>
 
+              <div className="mp-field">
+                <label>커버 이미지 (자동 캡처)</label>
+                {meta.cover_url ? (
+                  <div className="mp-cover-preview">
+                    <img src={meta.cover_url} alt="커버 미리보기" />
+                  </div>
+                ) : null}
+                <div className="mp-cover-actions">
+                  <button
+                    type="button"
+                    className="btn-ghost"
+                    onClick={async () => {
+                      if (!pack || pack.lists.length === 0) {
+                        window.alert('큐브 리스트가 없습니다.');
+                        return;
+                      }
+                      const { captureCubeListThumbnail } = await import('../lib/pack-thumbnail');
+                      const dataUrl = await captureCubeListThumbnail(pack.lists[0], {
+                        packName: pack.name,
+                        subtitle: meta.author.name || undefined,
+                      });
+                      if (dataUrl) {
+                        patch({ cover_url: dataUrl });
+                      } else {
+                        window.alert('캡처 실패 — 큐브 리스트가 비어있거나 브라우저 미지원');
+                      }
+                    }}
+                    disabled={!pack || pack.lists.length === 0}
+                  >
+                    📷 첫 리스트 자동 캡처
+                  </button>
+                  {meta.cover_url && (
+                    <button
+                      type="button"
+                      className="btn-ghost"
+                      onClick={() => patch({ cover_url: undefined })}
+                    >
+                      ✕ 제거
+                    </button>
+                  )}
+                </div>
+                <div className="mp-field-hint">
+                  큐브 리스트의 첫 16개 큐브 (4×4) 를 1280×720 PNG 로 캡처합니다.
+                </div>
+              </div>
+
               {errors.length > 0 && (
                 <ul className="payload-errors" aria-live="polite">
                   {errors.map((e, i) => (

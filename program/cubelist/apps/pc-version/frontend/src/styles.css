@@ -877,6 +877,26 @@ html, body, #root {
   font-size: 10px;
   color: var(--text-muted);
 }
+.mp-cover-preview {
+  background: var(--bg-surface-2);
+  border-radius: 6px;
+  overflow: hidden;
+  margin-bottom: 6px;
+  border: 1px solid var(--border);
+}
+.mp-cover-preview img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16/9;
+  object-fit: cover;
+}
+.mp-cover-actions {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
 .mp-publish-info {
   background: rgba(217, 194, 112, 0.08);
   border: 1px solid rgba(217, 194, 112, 0.3);
