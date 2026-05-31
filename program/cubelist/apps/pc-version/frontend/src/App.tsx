@@ -38,6 +38,8 @@ import {
 } from './lib/cubepack-io';
 import { loadLibraryFromDir } from './lib/library-loader';
 import { useDynamicCubes } from './lib/useDynamicCubes';
+import { CubeContextMenu } from './components/CubeContextMenu';
+import { DropZone } from './components/DropZone';
 import {
   PluginActionsBackground,
   PluginPropertyInspector,
@@ -171,6 +173,78 @@ export function App() {
     void refreshPlugins();
   }, [refreshPlugins]);
 
+  // v0.1.2: 드래그드롭 zone — plugin/profile/cubeone/cubelist/cubepack 자동 분류
+  async function handlePluginsDropped(files: File[]): Promise<void> {
+    if (!isTauri()) {
+      window.alert('드래그드롭 플러그인 변환은 Tauri 환경에서만 가능합니다.');
+      return;
+    }
+    const { convertPlugin } = await import('./lib/plugin-converter');
+    const { invoke } = await import('@tauri-apps/api/core');
+    const libraryDir = window.localStorage.getItem(LIBRARY_DIR_KEY) ?? '';
+    if (!libraryDir) {
+      window.alert('라이브러리 폴더를 먼저 등록하세요 (우상단 📁).');
+      return;
+    }
+    for (const file of files) {
+      try {
+        const buf = await file.arrayBuffer();
+        const result = await convertPlugin(buf, file.name);
+        for (const cube of result.cubes) {
+          await invoke('write_library_file', {
+            libraryDir,
+            folder: result.folderName,
+            filename: cube.filename,
+            bytes: Array.from(cube.bytes),
+          });
+        }
+        try {
+          await invoke('write_plugin_zip', {
+            libraryDir,
+            pluginId: result.pluginId,
+            zipBytes: Array.from(new Uint8Array(buf)),
+          });
+        } catch {
+          /* 자산 풀기 실패 — 메타만 등록 */
+        }
+      } catch (err) {
+        console.error(`[drop] ${file.name} 변환 실패:`, err);
+      }
+    }
+    window.location.reload();
+  }
+
+  async function handleCubeFilesDropped(files: File[]): Promise<void> {
+    const { importCubepack, readCubeZip } = await import('./lib/cubepack-io');
+    for (const file of files) {
+      try {
+        const buf = new Uint8Array(await file.arrayBuffer());
+        const lower = file.name.toLowerCase();
+        if (lower.endsWith('.cubepack')) {
+          const pack = await importCubepack(buf);
+          useEditor.getState().loadPack(pack);
+        } else if (lower.endsWith('.cubeone')) {
+          // 라이브러리 풀에 단일 큐브 추가 (현재 활성 list 가 있으면 거기 끝에)
+          const cube = await readCubeZip(buf, 0);
+          const state = useEditor.getState();
+          if (state.list_id && state.pack) {
+            const targetList = state.pack.lists.find((l) => l.id === state.list_id);
+            if (targetList) {
+              state.upsertCube(state.list_id, {
+                ...cube,
+                id: crypto.randomUUID(),
+                sort_order: targetList.cubes.length + 1,
+              });
+            }
+          }
+        }
+        // .cubelist 는 별도 importer 필요 — v0.1.3 예정
+      } catch (err) {
+        console.error(`[drop] ${file.name} 가져오기 실패:`, err);
+      }
+    }
+  }
+
   return (
     <div className="app">
       <TopBar />
@@ -184,6 +258,11 @@ export function App() {
       </div>
       {/* M4: plugin_action 큐브들 백그라운드 runtime (보이지 않는 iframe + JS 실행) */}
       <PluginActionsBackground />
+      {/* v0.1.2: App 루트 드래그드롭 zone */}
+      <DropZone
+        onPluginsDropped={handlePluginsDropped}
+        onCubeFilesDropped={handleCubeFilesDropped}
+      />
     </div>
   );
 }
@@ -1377,6 +1456,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
   const cube_id = useEditor((s) => s.cube_id);
   const selectCube = useEditor((s) => s.selectCube);
   const enterFolder = useEditor((s) => s.enterFolder);
+  const activeListId = useEditor((s) => s.list_id);
   const selected = cube_id === cube.id;
   const isFolder = cube.action_type === 'folder';
   // StreamDeck 아이콘 가시화 분기
@@ -1384,6 +1464,8 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
   const isTinyIcon = iconMeta.icon_is_tiny === true;
   const isPlaceholderIcon = !cube.icon_url || iconMeta.icon_is_placeholder === true;
   const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
+  // v0.1.2: 우클릭 컨텍스트 메뉴
+  const [menuPos, setMenuPos] = useState<{ x: number; y: number } | null>(null);
 
   const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
     id: cube.id,
@@ -1401,6 +1483,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
   };
 
   return (
+    <>
     <button
       ref={setNodeRef}
       style={style}
@@ -1433,6 +1516,10 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       }}
       aria-pressed={selected}
       title={`${cube.label} (${cube.action_type})${isFolder ? '\n더블클릭 → 진입' : ''}`}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setMenuPos({ x: e.clientX, y: e.clientY });
+      }}
       {...restAttrs}
       {...listeners}
     >
@@ -1454,6 +1541,16 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       </span>
       <span className="cube-action-badge">{cube.action_type}</span>
     </button>
+      {menuPos && (
+        <CubeContextMenu
+          x={menuPos.x}
+          y={menuPos.y}
+          cubeId={cube.id}
+          listId={activeListId}
+          onClose={() => setMenuPos(null)}
+        />
+      )}
+    </>
   );
 }
 
