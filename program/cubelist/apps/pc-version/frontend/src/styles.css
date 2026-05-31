@@ -404,6 +404,129 @@ html, body, #root {
 }
 .btn-ghost:hover { color: var(--text); border-color: var(--accent); }
 
+/* === Inspector 큐브 미리보기 카드 (v0.1.2) === */
+.cube-preview-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px;
+  background: var(--bg-surface-2, #1a1a1a);
+  border-radius: 10px;
+  border: 1px solid var(--border, #333);
+  margin-bottom: 12px;
+}
+.cube-preview-label-top {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+.cube-preview-cell { pointer-events: none; }
+.cube-preview-state-info {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* === States editor (v0.1.2) === */
+.states-editor {
+  margin-top: 16px;
+  padding: 12px;
+  background: var(--bg-surface-2, #1a1a1a);
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.states-editor-empty {
+  text-align: center;
+  padding: 16px 12px;
+}
+.state-row {
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px;
+  margin-bottom: 6px;
+  background: var(--bg-surface, #2a2a2a);
+  transition: border-color 0.15s;
+}
+.state-row.is-active {
+  border-color: var(--accent, #d9c270);
+  box-shadow: 0 0 8px rgba(217, 194, 112, 0.25);
+}
+.state-row-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.state-toggle-dot {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--text-muted);
+  color: var(--text-muted);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+  padding: 0;
+}
+.state-toggle-dot.is-active {
+  background: var(--accent, #d9c270);
+  border-color: var(--accent);
+  color: #000;
+}
+.state-label-input {
+  flex: 1;
+  background: var(--bg-surface-2, #1a1a1a);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  color: var(--text);
+  font-size: 12px;
+  outline: none;
+}
+.state-label-input:focus { border-color: var(--accent); }
+.state-remove-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 0;
+}
+.state-remove-btn:hover:not(:disabled) {
+  background: rgba(255, 107, 107, 0.12);
+  color: var(--status-danger, #ff6b6b);
+}
+.state-remove-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.state-row-keys {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+  font-size: 11px;
+}
+.state-keys-label { color: var(--text-muted); white-space: nowrap; }
+.state-keys-input {
+  flex: 1;
+  background: var(--bg-surface-2, #1a1a1a);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px 6px;
+  color: var(--text);
+  font-size: 11px;
+  font-family: monospace;
+  outline: none;
+}
+.state-keys-input:focus { border-color: var(--accent); }
+.states-add-btn { width: 100%; margin-top: 4px; font-size: 12px; padding: 6px; }
+
 /* === 드래그드롭 zone overlay (v0.1.2) === */
 .drop-zone-overlay {
   position: fixed;

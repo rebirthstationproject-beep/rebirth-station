@@ -41,6 +41,8 @@ import { useDynamicCubes } from './lib/useDynamicCubes';
 import { useCubeStates } from './lib/useCubeStates';
 import { CubeContextMenu } from './components/CubeContextMenu';
 import { DropZone } from './components/DropZone';
+import { CubePreview } from './components/CubePreview';
+import { CubeStatesEditor } from './components/CubeStatesEditor';
 import {
   PluginActionsBackground,
   PluginPropertyInspector,
@@ -1666,6 +1668,7 @@ function Inspector() {
 
   return (
     <aside className="inspector" aria-label="큐브 인스펙터">
+      <CubePreview cube={cube} />
       <CubeIconUpload
         iconUrl={cube.icon_url}
         label={cube.label}
@@ -1712,6 +1715,14 @@ function Inspector() {
         value={cube.action_payload}
         onChange={(next) => patch({ action_payload: next })}
       />
+      {/* v0.1.2: hotkey_toggle 등 toggle 성 액션 → states 편집 UI */}
+      {(cube.action_type === 'hotkey_toggle' ||
+        (cube.states && cube.states.length > 0)) && (
+        <CubeStatesEditor
+          cube={cube}
+          onStatesChange={(states) => patch({ states })}
+        />
+      )}
       {/* M4: plugin_action 큐브 시 runtime 상태 + PropertyInspector iframe 임베드 */}
       {cube.action_type === 'plugin_action' && (() => {
         const p = cube.action_payload as { plugin_id?: string; plugin_dir?: string; plugin_uuid?: string };
@@ -1822,8 +1833,16 @@ function handleActionTypeChange(
   }
   // 빌트인 액션 타입
   const builtin = selected as Cube['action_type'];
-  patch({
+  const next: Partial<Cube> = {
     action_type: builtin,
     action_payload: defaultPayloadFor(builtin),
-  });
+  };
+  // v0.1.2: hotkey_toggle 자동 states 초기화 (ON/OFF 2개 기본)
+  if (builtin === 'hotkey_toggle') {
+    next.states = [
+      { label: 'ON', action_payload: { keys: [] } },
+      { label: 'OFF', action_payload: { keys: [] } },
+    ];
+  }
+  patch(next);
 }
