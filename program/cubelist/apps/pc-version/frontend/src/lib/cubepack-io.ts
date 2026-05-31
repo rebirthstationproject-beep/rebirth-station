@@ -269,6 +269,23 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
   };
 }
 
+/**
+ * .cubelist (단일 파일) → CubeList 디코딩 (v0.1.2 신규).
+ *
+ * 사용: 사용자가 .cubelist 단일 파일을 드래그드롭 시 호출.
+ */
+export async function importCubelist(input: Blob | ArrayBuffer | Uint8Array): Promise<CubeList> {
+  let bytes: Uint8Array;
+  if (input instanceof Uint8Array) {
+    bytes = input;
+  } else if (input instanceof ArrayBuffer) {
+    bytes = new Uint8Array(input);
+  } else {
+    bytes = new Uint8Array(await input.arrayBuffer());
+  }
+  return readListZip(bytes, 0);
+}
+
 async function readListZip(buf: Uint8Array, sortOrder: number): Promise<CubeList> {
   const zip = await JSZip.loadAsync(buf);
   const manifestFile = zip.file('manifest.json');

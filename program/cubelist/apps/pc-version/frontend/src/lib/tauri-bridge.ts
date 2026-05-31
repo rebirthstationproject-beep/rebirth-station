@@ -93,10 +93,26 @@ function requireConsent(actionType: Cube['action_type']): boolean {
 }
 
 export async function executeCube(cube: Cube): Promise<ExecuteResult> {
-  const action = {
-    action_type: cube.action_type,
-    ...cube.action_payload,
-  };
+  // v0.1.2: hotkey_toggle 등 multi-state 큐브는 states[current_index] 의 payload 사용 후 advance
+  const { resolveActionForExecution } = await import('./cube-states');
+  const { payload: resolvedPayload } = resolveActionForExecution(cube);
+
+  // hotkey_toggle 은 state 의 keys 를 shortcut 으로 변환해서 송신 (Rust 측은 shortcut 만 처리)
+  let action: { action_type: string } & Record<string, unknown>;
+  if (cube.action_type === 'hotkey_toggle') {
+    const keys = Array.isArray((resolvedPayload as { keys?: unknown }).keys)
+      ? ((resolvedPayload as { keys: string[] }).keys)
+      : [];
+    if (keys.length === 0) {
+      return { elapsed_ms: 0 };
+    }
+    action = { action_type: 'shortcut', keys };
+  } else {
+    action = {
+      action_type: cube.action_type,
+      ...resolvedPayload,
+    };
+  }
 
   // Tier 2/3 사용자 동의 확인
   if (!requireConsent(cube.action_type)) {

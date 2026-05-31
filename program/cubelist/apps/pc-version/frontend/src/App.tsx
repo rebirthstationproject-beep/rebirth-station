@@ -38,6 +38,7 @@ import {
 } from './lib/cubepack-io';
 import { loadLibraryFromDir } from './lib/library-loader';
 import { useDynamicCubes } from './lib/useDynamicCubes';
+import { useCubeStates } from './lib/useCubeStates';
 import { CubeContextMenu } from './components/CubeContextMenu';
 import { DropZone } from './components/DropZone';
 import {
@@ -215,7 +216,7 @@ export function App() {
   }
 
   async function handleCubeFilesDropped(files: File[]): Promise<void> {
-    const { importCubepack, readCubeZip } = await import('./lib/cubepack-io');
+    const { importCubepack, importCubelist, readCubeZip } = await import('./lib/cubepack-io');
     for (const file of files) {
       try {
         const buf = new Uint8Array(await file.arrayBuffer());
@@ -223,6 +224,32 @@ export function App() {
         if (lower.endsWith('.cubepack')) {
           const pack = await importCubepack(buf);
           useEditor.getState().loadPack(pack);
+        } else if (lower.endsWith('.cubelist') || lower.endsWith('.cubedeck')) {
+          // .cubelist → 활성 cubepack 에 추가 (또는 신규 pack 생성)
+          const list = await importCubelist(buf);
+          const state = useEditor.getState();
+          if (state.pack) {
+            // 기존 pack 에 추가
+            const newList = {
+              ...list,
+              id: crypto.randomUUID() as string,
+              sort_order: state.pack.lists.length + 1,
+            };
+            state.loadPack({
+              ...state.pack,
+              lists: [...state.pack.lists, newList],
+            });
+            state.selectList(newList.id);
+          } else {
+            // 신규 pack 생성
+            state.loadPack({
+              id: crypto.randomUUID() as string,
+              name: file.name.replace(/\.cube(list|deck)$/i, ''),
+              cubes: [],
+              lists: [list],
+            });
+            state.selectList(list.id);
+          }
         } else if (lower.endsWith('.cubeone')) {
           // 라이브러리 풀에 단일 큐브 추가 (현재 활성 list 가 있으면 거기 끝에)
           const cube = await readCubeZip(buf, 0);
@@ -238,12 +265,34 @@ export function App() {
             }
           }
         }
-        // .cubelist 는 별도 importer 필요 — v0.1.3 예정
       } catch (err) {
         console.error(`[drop] ${file.name} 가져오기 실패:`, err);
       }
     }
   }
+
+  // v0.1.2: Ctrl+E (또는 Cmd+E) → 활성 cubepack export
+  useEffect(() => {
+    function handleKey(e: KeyboardEvent): void {
+      if ((e.ctrlKey || e.metaKey) && e.key === 'e') {
+        const target = e.target as HTMLElement | null;
+        // input/textarea 포커스 시 무시 (일반 단축키 충돌 방지)
+        if (target && ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName)) return;
+        const state = useEditor.getState();
+        if (!state.pack) {
+          window.alert('Export 할 큐브팩이 없습니다.');
+          return;
+        }
+        e.preventDefault();
+        import('./lib/cubepack-io').then(async ({ exportCubepack, downloadCubepack }) => {
+          const blob = await exportCubepack(state.pack!);
+          downloadCubepack(blob, state.pack!.name || state.pack!.id);
+        });
+      }
+    }
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
 
   return (
     <div className="app">
@@ -1350,6 +1399,8 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
   const pageSize = useEditor((s) => s.pageSize());
   // 동적 큐브 (live_clock/timer/gauge/battery) 1초 tick
   const dynamicUpdates = useDynamicCubes(visibleCubes);
+  // v0.1.2: states 있는 큐브 (hotkey_toggle 등) 상태 반영
+  const stateUpdates = useCubeStates(visibleCubes);
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
@@ -1402,10 +1453,17 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
             const globalSlot = startSlot + idx;
             const cube = cubeBySlot.get(globalSlot);
             if (cube) {
+              // 우선순위: states (hotkey_toggle 등) > dynamic (live_*)
+              const stateOverride = stateUpdates.get(cube.id);
               const dyn = dynamicUpdates.get(cube.id);
-              const displayCube = dyn
-                ? { ...cube, label: dyn.label ?? cube.label, icon_url: dyn.icon_url ?? cube.icon_url }
-                : cube;
+              let displayCube = stateOverride ?? cube;
+              if (dyn) {
+                displayCube = {
+                  ...displayCube,
+                  label: dyn.label ?? displayCube.label,
+                  icon_url: dyn.icon_url ?? displayCube.icon_url,
+                };
+              }
               return <SortableCubeCell key={id} cube={displayCube} />;
             }
             return (

@@ -121,8 +121,9 @@ pub async fn execute(payload: &ActionPayload) -> Result<ExecutionResult, ActionE
         ActionPayload::SystemSleep => execute_system_sleep()?,
         ActionPayload::SystemActionbarToggle => execute_actionbar_toggle()?,
         ActionPayload::AudioPlay { audio_url, .. } => execute_audio_play(audio_url)?,
-        // hotkey_toggle: states 시스템 의존 (frontend store + Cube.states) — 현재 stub
-        ActionPayload::HotkeyToggle { .. } => return Err(ActionError::PermissionRequired(2)),
+        // hotkey_toggle: frontend 가 states[current_index] 의 keys 를 shortcut 으로 변환해서 송신.
+        // Rust 측에 hotkey_toggle 이 직접 도착하는 경우 = frontend 가 미처리 → on_keys 우선 실행.
+        ActionPayload::HotkeyToggle { on_keys, .. } => execute_shortcut(on_keys)?,
         // === P2 4 동적 큐브 — frontend tick 처리 = Rust no-op ===
         ActionPayload::LiveClock { .. }
         | ActionPayload::LiveTimer { .. }
