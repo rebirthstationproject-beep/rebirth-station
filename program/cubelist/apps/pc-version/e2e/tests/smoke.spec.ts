@@ -142,6 +142,92 @@ test.describe('큐브 리스트 PC 앱 — Smoke', () => {
     await expect(page.locator('.mp-pack-card')).toHaveCount(2);
   });
 
+  // === v0.1.3 Phase 6 추가 (2026-06-01) — install + 라이센스 sentinel ===
+
+  test('PackDetail 무료 큐브팩 → 설치 버튼 → mp.install_free alert', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('.main-tab').filter({ hasText: '마켓플레이스' }).click();
+    // 가격 필터 무료
+    const priceSelect = page.locator('.mp-filter-group').filter({ hasText: /가격|Price|価格/ }).locator('select');
+    await priceSelect.selectOption('free');
+    // 무료 큐브팩 첫 카드 클릭
+    await page.locator('.mp-pack-card').first().click();
+    await expect(page.locator('.pack-detail')).toBeVisible();
+
+    let alertMessage = '';
+    page.once('dialog', async (d) => {
+      alertMessage = d.message();
+      await d.accept();
+    });
+    await page.locator('.pack-detail-install-btn').click();
+    // mp.install_free 문구 일부 매칭 — "mock" / "library"
+    expect(alertMessage.toLowerCase()).toMatch(/mock|library|라이브러리/);
+  });
+
+  test('PackDetail 유료 큐브팩 → 구매 버튼 → mp.install_paid + 라이센스 prompt cancel', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('.main-tab').filter({ hasText: '마켓플레이스' }).click();
+    // 가격 필터 유료
+    const priceSelect = page.locator('.mp-filter-group').filter({ hasText: /가격|Price|価格/ }).locator('select');
+    await priceSelect.selectOption('paid');
+    // 유료 큐브팩 첫 카드 클릭
+    await page.locator('.mp-pack-card').first().click();
+    await expect(page.locator('.pack-detail')).toBeVisible();
+
+    const dialogs: string[] = [];
+    page.on('dialog', async (d) => {
+      dialogs.push(`[${d.type()}] ${d.message()}`);
+      // 1st = alert (install_paid), 2nd = prompt (license_prompt) — 둘 다 cancel/accept
+      if (d.type() === 'prompt') {
+        await d.dismiss();
+      } else {
+        await d.accept();
+      }
+    });
+    await page.locator('.pack-detail-install-btn').click();
+    // alert + prompt 2 dialogs 발생 확인
+    await page.waitForTimeout(300);
+    expect(dialogs.length).toBeGreaterThanOrEqual(2);
+  });
+
+  test('PackDetail 유료 → 라이센스 키 형식 invalid → invalid alert', async ({ page }) => {
+    await page.goto('/');
+    await page.locator('.main-tab').filter({ hasText: '마켓플레이스' }).click();
+    const priceSelect = page.locator('.mp-filter-group').filter({ hasText: /가격|Price|価格/ }).locator('select');
+    await priceSelect.selectOption('paid');
+    await page.locator('.mp-pack-card').first().click();
+
+    const dialogs: string[] = [];
+    page.on('dialog', async (d) => {
+      dialogs.push(`[${d.type()}] ${d.message()}`);
+      if (d.type() === 'prompt') {
+        // 짧은 형식 (invalid)
+        await d.accept('CL-short');
+      } else {
+        await d.accept();
+      }
+    });
+    await page.locator('.pack-detail-install-btn').click();
+    await page.waitForTimeout(300);
+    // install_paid alert + license prompt + license_invalid alert = 3 dialog
+    expect(dialogs.length).toBeGreaterThanOrEqual(3);
+    // 마지막 alert 가 invalid 메시지인지
+    const last = dialogs[dialogs.length - 1] ?? '';
+    expect(last.toLowerCase()).toMatch(/invalid|무효|無効/);
+  });
+
+  test('인스펙터 라벨 빈 값 → 인라인 검증 alert 노출 (Phase 5)', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForSelector('.cube-cell.has-icon', { timeout: 10_000 });
+    await page.locator('.cube-cell.has-icon').first().click();
+    await expect(page.locator('.inspector')).toBeVisible();
+    // 라벨 input 비우기
+    const labelInput = page.locator('.inspector input[type="text"]').first();
+    await labelInput.fill('');
+    // role=alert 인라인 메시지 노출
+    await expect(page.locator('.inspector [role="alert"]')).toBeVisible({ timeout: 2_000 });
+  });
+
   test('인스펙터 닫기 → 큐브 셀 다시 클릭 시 미리보기 갱신', async ({ page }) => {
     await page.goto('/');
     await page.waitForSelector('.cube-cell.has-icon', { timeout: 10_000 });

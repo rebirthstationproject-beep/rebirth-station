@@ -38,6 +38,12 @@
   - PC가 page_index > 0 일 때 amber ribbon 표시 ("🖥 PC에서 페이지 N 표시 중")
   - 모바일은 page state 없이 전체 큐브 한 화면 표시 안내
 
+**Phase 6 (2026-06-01 야간 루프)** — e2e smoke 마켓플레이스 시나리오
+- 무료 큐브팩 → 설치 버튼 → mp.install_free alert
+- 유료 큐브팩 → 구매 버튼 → mp.install_paid alert + 라이센스 prompt (cancel)
+- 유료 → 라이센스 키 invalid 형식 → license_invalid alert
+- 인스펙터 라벨 빈 값 → role=alert 인라인 메시지 (Phase 5 검증)
+
 **Phase 5 (2026-06-01 야간 루프)** — Inspector 검증 인라인 에러 UI
 - 큐브 라벨 빈 값일 때 인라인 alert + 빨간 border (aria-invalid=true)
 - i18n `inspector.label_required` (ko/en/ja)
