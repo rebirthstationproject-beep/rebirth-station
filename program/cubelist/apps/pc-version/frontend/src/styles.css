@@ -792,6 +792,40 @@ html, body, #root {
 .pack-detail-info-box p { margin: 4px 0; line-height: 1.5; }
 .pack-detail-info-box strong { color: var(--accent); }
 
+.pack-device-toggle {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+.pack-device-toggle-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-right: 4px;
+}
+.pack-device-toggle-btn {
+  background: var(--bg-surface-2, #2a2a2a);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 10px;
+  color: var(--text-muted);
+  font-size: 11px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.pack-device-toggle-btn:hover {
+  border-color: var(--accent);
+  color: var(--text);
+}
+.pack-device-toggle-btn.is-active {
+  background: var(--accent, #d9c270);
+  color: #000;
+  border-color: var(--accent);
+}
+
 .device-preview {
   display: grid;
   gap: 10px;

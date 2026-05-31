@@ -44,8 +44,7 @@ function saveConsents(consents: Record<string, boolean>): void {
 }
 
 export function SettingsPanel({ onClose }: SettingsPanelProps) {
-  const _t = useTranslation();
-  void _t; // i18n 키 추가 시 활성 — 현재는 한글 본문 직접 사용
+  const { t } = useTranslation();
   const [consents, setConsents] = useState<ConsentEntry[]>([]);
   const [libDir, setLibDir] = useState<string>(
     () => window.localStorage.getItem(LIBRARY_DIR_KEY) ?? '',
@@ -77,16 +76,13 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
   }
 
   function clearAll(): void {
-    if (!window.confirm('모든 영구 동의를 초기화할까요?')) return;
+    if (!window.confirm(t('settings.consents_clear_confirm'))) return;
     clearAllTierConsents();
     setConsents([]);
   }
 
   function changeLibDir(): void {
-    const next = window.prompt(
-      '라이브러리 폴더 경로 입력 (예: C:\\Users\\PC\\Downloads\\플러그인\\CUBE):',
-      libDir,
-    );
+    const next = window.prompt(t('settings.library_prompt'), libDir);
     if (next === null) return;
     const trimmed = next.trim();
     if (trimmed.length === 0) {
@@ -96,7 +92,7 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
       window.localStorage.setItem(LIBRARY_DIR_KEY, trimmed);
       setLibDir(trimmed);
     }
-    window.alert('라이브러리 폴더가 변경됩니다. 다음 부팅 시 자동 로드됩니다.');
+    window.alert(t('settings.library_changed'));
   }
 
   return (
@@ -108,8 +104,8 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
     >
       <div className="settings-panel" role="dialog" aria-labelledby="settings-title">
         <header className="modal-header">
-          <h2 id="settings-title">⚙ 설정</h2>
-          <button type="button" className="modal-close-btn" onClick={onClose} aria-label="닫기">
+          <h2 id="settings-title">{t('settings.title')}</h2>
+          <button type="button" className="modal-close-btn" onClick={onClose} aria-label="×">
             ×
           </button>
         </header>
@@ -117,26 +113,26 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
         <div className="modal-body">
           {/* 언어 */}
           <section className="settings-section">
-            <h3 className="settings-section-title">언어 / Language / 言語</h3>
+            <h3 className="settings-section-title">{t('settings.section_lang')}</h3>
             <LocaleSwitcher />
           </section>
 
           {/* 라이브러리 폴더 */}
           <section className="settings-section">
-            <h3 className="settings-section-title">📁 라이브러리 폴더</h3>
+            <h3 className="settings-section-title">{t('settings.section_library')}</h3>
             <div className="settings-current-value">
-              {libDir.length > 0 ? <code>{libDir}</code> : <span className="muted">미등록</span>}
+              {libDir.length > 0 ? <code>{libDir}</code> : <span className="muted">{t('settings.library_unset')}</span>}
             </div>
             <button type="button" className="btn-ghost" onClick={changeLibDir}>
-              경로 변경
+              {t('settings.library_change')}
             </button>
           </section>
 
           {/* 영구 동의 */}
           <section className="settings-section">
-            <h3 className="settings-section-title">🔒 영구 동의 ({consents.length})</h3>
+            <h3 className="settings-section-title">{t('settings.section_consents')} ({consents.length})</h3>
             {consents.length === 0 ? (
-              <div className="muted small">영구 허용한 액션이 없습니다.</div>
+              <div className="muted small">{t('settings.consents_empty')}</div>
             ) : (
               <>
                 <ul className="consents-list">
@@ -147,10 +143,10 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
                         type="button"
                         className="consents-remove"
                         onClick={() => removeConsent(entry.actionType)}
-                        aria-label={`${entry.actionType} 동의 제거`}
-                        title="이 동의 제거"
+                        aria-label={`${entry.actionType} ${t('settings.consents_remove')}`}
+                        title={t('settings.consents_remove_one')}
                       >
-                        제거
+                        {t('settings.consents_remove')}
                       </button>
                     </li>
                   ))}
@@ -160,32 +156,25 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
                   className="btn-ghost settings-danger-btn"
                   onClick={clearAll}
                 >
-                  🗑 모두 초기화
+                  {t('settings.consents_clear_all')}
                 </button>
               </>
             )}
-            <div className="settings-hint">
-              영구 동의한 액션은 다음 실행 시 prompt 없이 즉시 실행됩니다.
-              여기서 제거하면 다음 실행 시 다시 prompt 됩니다.
-            </div>
+            <div className="settings-hint">{t('settings.consents_hint')}</div>
           </section>
 
           {/* 동기화 정보 */}
           <section className="settings-section">
-            <h3 className="settings-section-title">🔄 동기화 (v0.1.4 사전)</h3>
+            <h3 className="settings-section-title">{t('settings.section_sync')}</h3>
             <div className="settings-current-value">
-              <span className="muted small">
-                LiveSyncBridge 활성 — 동적 큐브/상태/선택 변경이 외부 구독자에게 전파됩니다.
-                <br />
-                모바일 PWA 연결은 v0.1.4 진입 시 활성화됩니다.
-              </span>
+              <span className="muted small">{t('settings.sync_info')}</span>
             </div>
           </section>
         </div>
 
         <footer className="modal-footer">
           <button type="button" className="btn-primary" onClick={onClose}>
-            완료
+            {t('settings.done')}
           </button>
         </footer>
       </div>

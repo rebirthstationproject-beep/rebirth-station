@@ -155,14 +155,49 @@
 - tauri-bridge.ts executeCube → await requireConsent (async)
 - i18n MessageKey union 확장 (47 신규 키)
 
+### Added (v0.1.3 추가, commits dd700f9 → (현재))
+
+**i18n 완성 (총 96 키 ko/en/ja 동기)**
+- MainTab / GlobalSearch / PackDetail / CubeStatesEditor / CubePreview t() 적용
+- SettingsPanel 본문 17 신규 키 (settings.*) 추가
+- PackDetail 디바이스 토글 5 신규 키 (mp.device_*)
+
+**SettingsPanel 신규 컴포넌트**
+- TopBar ⚙ 클릭 → 4 섹션 모달
+  - 언어 / Language / 言語 (LocaleSwitcher)
+  - 📁 라이브러리 폴더 (현재 경로 + prompt 변경)
+  - 🔒 영구 동의 (loadConsents 목록 + 개별/일괄 제거)
+  - 🔄 동기화 (LiveSyncBridge 활성 안내)
+- localStorage cubelist:tier_consents 직접 관리
+- clearAllTierConsents 일괄 초기화
+- Esc + overlay 클릭 닫기
+
+**PackDetail 디바이스 사이즈 토글**
+- 5 디바이스 옵션 (Mini 3×2 / Standard 5×3 / XL 8×4 / Plus 4×2 / Unlimited)
+- DeviceToggleButton 컴포넌트
+- 클릭 시 deviceOverride state → DevicePreview 그리드 즉시 변경
+- 같은 버튼 재클릭 시 원래 device_hint 복귀
+- accent 컬러 활성 표시
+
+**Rust broadcast Tauri command (v0.1.4 사전)**
+- `commands::broadcast_cube_update(cube_id, label, icon_url, state_index)`
+- `commands::broadcast_selection_change(list_id, cube_id, page_index, current_folder_id)`
+- tracing::debug 로그 (v0.1.4 진입 시 WebSocket subscribers broadcast)
+- `lib.rs` invoke_handler 등록 (12 → 14 commands)
+
+**LiveSyncBridge → Tauri invoke 자동 통합**
+- broadcast() 시 forwardToRust() 호출
+- Tauri 환경 감지 (window.__TAURI_INTERNALS__)
+- invoke 실패 silent — frontend subscribers 은 이미 동작
+
 ### 다음 (v0.1.4+)
 
-- Rust 측 LiveSyncBridge WebSocket 서버 통합 (Tauri ↔ 모바일 PWA)
+- Rust WebSocket broadcast 실 구현 (axum subscribers → 메시지 송신)
 - 모바일 PWA 측 wire 수신 핸들러 (cube_update / selection_change 반영)
 - 마켓플레이스 서버 API + PayPal/Binance Pay 통합
 - 라이센스 키 발급 + Ed25519 검증
-- 추가 컴포넌트 i18n (PackDetail / CubeStatesEditor / GlobalSearch 전체)
-- Tauri WebDriver E2E 통합
+- Tauri WebDriver E2E 통합 (Rust 액션 실 검증)
+- 큐브팩 미리보기 자동 캡처 → cover 즉시 적용 (캡처 후 자동 저장)
 
 ---
 

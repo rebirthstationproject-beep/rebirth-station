@@ -106,6 +106,33 @@ const MESSAGES_KO = {
   'search.hint': '팁: 라벨·액션 타입·태그·리스트명 모두 검색됩니다 (최대 200건)',
   'search.empty': '검색 결과 없음',
   'search.count_suffix': '건 발견',
+
+  // Settings panel
+  'settings.title': '⚙ 설정',
+  'settings.done': '완료',
+  'settings.section_lang': '언어 / Language / 言語',
+  'settings.section_library': '📁 라이브러리 폴더',
+  'settings.section_consents': '🔒 영구 동의',
+  'settings.section_sync': '🔄 동기화 (v0.1.4 사전)',
+  'settings.library_unset': '미등록',
+  'settings.library_change': '경로 변경',
+  'settings.library_prompt': '라이브러리 폴더 경로 입력 (예: C:\\Users\\PC\\Downloads\\플러그인\\CUBE):',
+  'settings.library_changed': '라이브러리 폴더가 변경됩니다. 다음 부팅 시 자동 로드됩니다.',
+  'settings.consents_empty': '영구 허용한 액션이 없습니다.',
+  'settings.consents_remove': '제거',
+  'settings.consents_remove_one': '이 동의 제거',
+  'settings.consents_clear_all': '🗑 모두 초기화',
+  'settings.consents_clear_confirm': '모든 영구 동의를 초기화할까요?',
+  'settings.consents_hint': '영구 동의한 액션은 다음 실행 시 prompt 없이 즉시 실행됩니다. 여기서 제거하면 다음 실행 시 다시 prompt 됩니다.',
+  'settings.sync_info': 'LiveSyncBridge 활성 — 동적 큐브/상태/선택 변경이 외부 구독자에게 전파됩니다. 모바일 PWA 연결은 v0.1.4 진입 시 활성화됩니다.',
+
+  // PackDetail device toggle (v0.1.3+)
+  'mp.device_toggle': '디바이스:',
+  'mp.device_mini': 'Mini (3×2)',
+  'mp.device_standard': 'Standard (5×3)',
+  'mp.device_xl': 'XL (8×4)',
+  'mp.device_plus': 'Plus (4×2)',
+  'mp.device_unlimited': '무제한',
 } as const;
 
 export type MessageKey = keyof typeof MESSAGES_KO;
@@ -196,6 +223,31 @@ const MESSAGES_EN: Record<MessageKey, string> = {
   'search.hint': 'Tip: labels, action types, tags, list names all searched (max 200)',
   'search.empty': 'No results',
   'search.count_suffix': 'found',
+
+  'settings.title': '⚙ Settings',
+  'settings.done': 'Done',
+  'settings.section_lang': 'Language',
+  'settings.section_library': '📁 Library Folder',
+  'settings.section_consents': '🔒 Permanent Consents',
+  'settings.section_sync': '🔄 Sync (v0.1.4 Preview)',
+  'settings.library_unset': 'Not set',
+  'settings.library_change': 'Change Path',
+  'settings.library_prompt': 'Enter library folder path:',
+  'settings.library_changed': 'Library folder updated. Auto-loaded on next launch.',
+  'settings.consents_empty': 'No permanent consents granted.',
+  'settings.consents_remove': 'Remove',
+  'settings.consents_remove_one': 'Remove this consent',
+  'settings.consents_clear_all': '🗑 Clear All',
+  'settings.consents_clear_confirm': 'Clear all permanent consents?',
+  'settings.consents_hint': 'Permanently consented actions run immediately without prompt. Remove here to prompt again on next execution.',
+  'settings.sync_info': 'LiveSyncBridge active — dynamic cubes/states/selection changes are forwarded to external subscribers. Mobile PWA connection activates at v0.1.4.',
+
+  'mp.device_toggle': 'Device:',
+  'mp.device_mini': 'Mini (3×2)',
+  'mp.device_standard': 'Standard (5×3)',
+  'mp.device_xl': 'XL (8×4)',
+  'mp.device_plus': 'Plus (4×2)',
+  'mp.device_unlimited': 'Unlimited',
 };
 
 const MESSAGES_JA: Record<MessageKey, string> = {
@@ -284,6 +336,31 @@ const MESSAGES_JA: Record<MessageKey, string> = {
   'search.hint': 'ヒント：ラベル・アクションタイプ・タグ・リスト名すべて検索（最大 200 件）',
   'search.empty': '検索結果なし',
   'search.count_suffix': '件見つかりました',
+
+  'settings.title': '⚙ 設定',
+  'settings.done': '完了',
+  'settings.section_lang': '言語 / Language / 언어',
+  'settings.section_library': '📁 ライブラリフォルダ',
+  'settings.section_consents': '🔒 永続的な同意',
+  'settings.section_sync': '🔄 同期（v0.1.4 プレビュー）',
+  'settings.library_unset': '未登録',
+  'settings.library_change': 'パス変更',
+  'settings.library_prompt': 'ライブラリフォルダのパスを入力:',
+  'settings.library_changed': 'ライブラリフォルダ更新。次回起動時に自動ロード。',
+  'settings.consents_empty': '永続的に許可されたアクションなし。',
+  'settings.consents_remove': '削除',
+  'settings.consents_remove_one': 'この同意を削除',
+  'settings.consents_clear_all': '🗑 すべて初期化',
+  'settings.consents_clear_confirm': 'すべての永続的同意を初期化しますか？',
+  'settings.consents_hint': '永続的に許可したアクションは次回実行時に prompt なしで即実行されます。ここで削除すると次回実行時に再 prompt されます。',
+  'settings.sync_info': 'LiveSyncBridge アクティブ — 動的キューブ/状態/選択変更が外部購読者に転送されます。モバイル PWA 接続は v0.1.4 で有効化。',
+
+  'mp.device_toggle': 'デバイス:',
+  'mp.device_mini': 'Mini (3×2)',
+  'mp.device_standard': 'Standard (5×3)',
+  'mp.device_xl': 'XL (8×4)',
+  'mp.device_plus': 'Plus (4×2)',
+  'mp.device_unlimited': '無制限',
 };
 
 export const MESSAGES: Record<Locale, Record<MessageKey, string>> = {

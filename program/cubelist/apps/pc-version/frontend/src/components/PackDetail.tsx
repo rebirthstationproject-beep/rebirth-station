@@ -8,8 +8,10 @@
  * - 카탈로그로 돌아가기
  */
 
+import { useState } from 'react';
 import { PLATFORMS, formatPrice } from '../types/marketplace';
 import { MOCK_PACKS, deviceGrid, type MockPackPreviewCube } from '../lib/marketplace-mock';
+import type { DeviceHint } from '../types/cube';
 import { useTranslation } from '../lib/i18n/useTranslation';
 
 interface PackDetailProps {
@@ -20,6 +22,8 @@ interface PackDetailProps {
 export function PackDetail({ packId, onBack }: PackDetailProps) {
   const { t } = useTranslation();
   const pack = MOCK_PACKS.find((p) => p.id === packId);
+  // v0.1.3: 디바이스 사이즈 토글 (Mini/Std/XL/Plus/Unlimited)
+  const [deviceOverride, setDeviceOverride] = useState<DeviceHint | undefined>(undefined);
 
   if (!pack) {
     return (
@@ -34,7 +38,8 @@ export function PackDetail({ packId, onBack }: PackDetailProps) {
     );
   }
 
-  const grid = deviceGrid(pack.device_hint);
+  const effectiveHint = deviceOverride ?? pack.device_hint;
+  const grid = deviceGrid(effectiveHint);
   const platformLabel = PLATFORMS.find((p) => p.value === pack.meta.platform)?.label ?? pack.meta.platform;
   const isFree = pack.meta.price_cents === 0;
   const isSubscription =
@@ -106,6 +111,39 @@ export function PackDetail({ packId, onBack }: PackDetailProps) {
 
       <section className="pack-detail-section">
         <h2 className="pack-detail-section-title">{t('mp.device_preview')}</h2>
+        <div className="pack-device-toggle">
+          <span className="pack-device-toggle-label">{t('mp.device_toggle')}</span>
+          <DeviceToggleButton
+            hint="streamdeck_mini"
+            label={t('mp.device_mini')}
+            current={effectiveHint}
+            onSelect={setDeviceOverride}
+          />
+          <DeviceToggleButton
+            hint="streamdeck_standard"
+            label={t('mp.device_standard')}
+            current={effectiveHint}
+            onSelect={setDeviceOverride}
+          />
+          <DeviceToggleButton
+            hint="streamdeck_xl"
+            label={t('mp.device_xl')}
+            current={effectiveHint}
+            onSelect={setDeviceOverride}
+          />
+          <DeviceToggleButton
+            hint="streamdeck_plus"
+            label={t('mp.device_plus')}
+            current={effectiveHint}
+            onSelect={setDeviceOverride}
+          />
+          <DeviceToggleButton
+            hint="cubelist_unlimited"
+            label={t('mp.device_unlimited')}
+            current={effectiveHint}
+            onSelect={setDeviceOverride}
+          />
+        </div>
         <DevicePreview grid={grid} cubes={pack.preview_cubes} />
       </section>
 
@@ -135,6 +173,27 @@ export function PackDetail({ packId, onBack }: PackDetailProps) {
         </div>
       </section>
     </div>
+  );
+}
+
+interface DeviceToggleButtonProps {
+  readonly hint: DeviceHint;
+  readonly label: string;
+  readonly current: DeviceHint | undefined;
+  readonly onSelect: (hint: DeviceHint | undefined) => void;
+}
+
+function DeviceToggleButton({ hint, label, current, onSelect }: DeviceToggleButtonProps) {
+  const isActive = current === hint;
+  return (
+    <button
+      type="button"
+      className={`pack-device-toggle-btn ${isActive ? 'is-active' : ''}`}
+      onClick={() => onSelect(isActive ? undefined : hint)}
+      aria-pressed={isActive}
+    >
+      {label}
+    </button>
   );
 }
 
