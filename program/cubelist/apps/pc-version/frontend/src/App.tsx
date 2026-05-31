@@ -900,11 +900,46 @@ function Sidebar() {
     .filter((l): l is NonNullable<typeof l> => l != null)
     .slice(0, 6);
 
+  // 라이브러리 검색 필터 (v0.1.1 신규)
+  const [filterText, setFilterText] = useState('');
+  const filterLower = filterText.trim().toLowerCase();
+  const filteredLists = filterLower.length === 0
+    ? lists
+    : lists.filter((list) =>
+        list.name.toLowerCase().includes(filterLower) ||
+        list.cubes.some((c) => c.label.toLowerCase().includes(filterLower))
+      );
+  // 검색 시 자동 펼치기 (큐브 매칭 결과 보이게)
+  const autoExpand = filterLower.length > 0
+    ? new Set(filteredLists.map((l) => l.id))
+    : expanded;
+
   return (
     <aside className="sidebar sidebar-tree" aria-label="라이브러리 트리">
       <div className="sidebar-path" title={libDir}>
         <span className="path-icon">📁</span>
         <span className="path-text">{libDirShort}</span>
+      </div>
+      <div className="sidebar-filter">
+        <input
+          type="search"
+          className="sidebar-filter-input"
+          placeholder="🔍 큐브 리스트·큐브 검색"
+          value={filterText}
+          onChange={(e) => setFilterText(e.target.value)}
+          aria-label="라이브러리 검색"
+        />
+        {filterText.length > 0 && (
+          <button
+            type="button"
+            className="sidebar-filter-clear"
+            onClick={() => setFilterText('')}
+            aria-label="검색 초기화"
+            title="초기화"
+          >
+            ×
+          </button>
+        )}
       </div>
       {/* 상단: 폴더 트리 */}
       <div className="sidebar-tree-body sidebar-section-top">
@@ -917,8 +952,8 @@ function Sidebar() {
           <span className="tree-label">전체</span>
           <span className="tree-count">({lists.length})</span>
         </button>
-        {lists.map((list) => {
-          const isExpanded = expanded.has(list.id);
+        {filteredLists.map((list) => {
+          const isExpanded = autoExpand.has(list.id);
           return (
             <div key={list.id} className="tree-folder-group">
               <button
@@ -940,22 +975,29 @@ function Sidebar() {
               </button>
               {isExpanded && (
                 <ul className="tree-cube-list">
-                  {list.cubes.map((cube) => (
-                    <li key={cube.id}>
-                      <button
-                        type="button"
-                        className={`tree-cube ${selectedCubeId === cube.id ? 'is-active' : ''}`}
-                        onClick={() => {
-                          selectList(list.id);
-                          selectCubeFn(cube.id);
-                        }}
-                        title={`${cube.label} (${cube.action_type})`}
-                      >
-                        <span className="tree-icon-cube">▫</span>
-                        <span className="tree-label">{cube.label}</span>
-                      </button>
-                    </li>
-                  ))}
+                  {list.cubes
+                    .filter((c) =>
+                      filterLower.length === 0
+                        ? true
+                        : c.label.toLowerCase().includes(filterLower) ||
+                          list.name.toLowerCase().includes(filterLower)
+                    )
+                    .map((cube) => (
+                      <li key={cube.id}>
+                        <button
+                          type="button"
+                          className={`tree-cube ${selectedCubeId === cube.id ? 'is-active' : ''}`}
+                          onClick={() => {
+                            selectList(list.id);
+                            selectCubeFn(cube.id);
+                          }}
+                          title={`${cube.label} (${cube.action_type})`}
+                        >
+                          <span className="tree-icon-cube">▫</span>
+                          <span className="tree-label">{cube.label}</span>
+                        </button>
+                      </li>
+                    ))}
                 </ul>
               )}
             </div>
