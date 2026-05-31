@@ -11,7 +11,7 @@
 //! W1 스코프: 서버 골격 + Hello 검증 + Ping/Pong만. PressItem 실행은 W1-2.
 
 use std::net::SocketAddr;
-use std::sync::Arc;
+use std::sync::{Arc, OnceLock};
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use axum::{
@@ -24,8 +24,23 @@ use axum::{
     routing::get,
     Router,
 };
-use tokio::sync::RwLock;
+use tokio::sync::{broadcast, RwLock};
 use tracing::{debug, info, warn};
+
+/// LiveSyncBridge broadcast 채널 (v0.1.4 사전).
+/// commands::broadcast_* 가 send, handle_socket 가 subscribe.
+/// 채널 capacity 128 — slow consumer 보호 (Lagged 시 skip).
+static BROADCAST_TX: OnceLock<broadcast::Sender<ServerEvent>> = OnceLock::new();
+
+/// commands::broadcast_* 에서 호출.
+pub fn live_sync_sender() -> broadcast::Sender<ServerEvent> {
+    BROADCAST_TX
+        .get_or_init(|| {
+            let (tx, _rx) = broadcast::channel(128);
+            tx
+        })
+        .clone()
+}
 
 use crate::actions::{self, ActionError};
 use crate::auth::{
@@ -123,16 +138,44 @@ async fn handle_socket(mut socket: WebSocket, state: ServerState, addr: SocketAd
         return;
     }
 
+    // v0.1.4: LiveSyncBridge broadcast receiver 구독
+    let mut sync_rx = live_sync_sender().subscribe();
+
     // 메시지 루프 (W1 스코프: Ping/Pong만 처리, 나머지는 추후)
-    while let Some(Ok(msg)) = socket.recv().await {
-        let raw = match msg {
-            Message::Text(t) => t,
-            Message::Close(_) => break,
-            Message::Ping(p) => {
-                let _ = socket.send(Message::Pong(p)).await;
-                continue;
+    // v0.1.4 추가: broadcast receiver 도 동시 select.
+    loop {
+        let raw = tokio::select! {
+            biased;
+            sync_msg = sync_rx.recv() => {
+                match sync_msg {
+                    Ok(event) => {
+                        if send_event(&mut socket, event).await.is_err() {
+                            break;
+                        }
+                        continue;
+                    }
+                    Err(broadcast::error::RecvError::Lagged(n)) => {
+                        warn!(?addr, "broadcast lagged by {n} messages — skipping");
+                        continue;
+                    }
+                    Err(broadcast::error::RecvError::Closed) => break,
+                }
             }
-            _ => continue,
+            ws_msg = socket.recv() => {
+                let msg = match ws_msg {
+                    Some(Ok(m)) => m,
+                    _ => break,
+                };
+                match msg {
+                    Message::Text(t) => t,
+                    Message::Close(_) => break,
+                    Message::Ping(p) => {
+                        let _ = socket.send(Message::Pong(p)).await;
+                        continue;
+                    }
+                    _ => continue,
+                }
+            }
         };
 
         match dispatch(&raw) {

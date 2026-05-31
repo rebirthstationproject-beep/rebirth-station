@@ -116,6 +116,31 @@ pub enum ServerEvent {
         level: NoticeLevel,
         message: String,
     },
+
+    /// LiveSyncBridge — 큐브 라벨/이미지/상태 변경 (v0.1.4, 2026-05-31)
+    CubeUpdate {
+        cube_id: String,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        label: Option<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        icon_url: Option<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        state_index: Option<u32>,
+        timestamp_ms: u64,
+    },
+
+    /// LiveSyncBridge — 선택 변경 (list/cube/page/folder)
+    SelectionChange {
+        #[serde(skip_serializing_if = "Option::is_none")]
+        list_id: Option<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        cube_id: Option<String>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        page_index: Option<u32>,
+        #[serde(skip_serializing_if = "Option::is_none")]
+        current_folder_id: Option<String>,
+        timestamp_ms: u64,
+    },
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

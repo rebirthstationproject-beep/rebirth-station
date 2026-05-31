@@ -686,7 +686,19 @@ pub fn broadcast_cube_update(
         ?state_index,
         "broadcast_cube_update"
     );
-    // v0.1.4: WebSocket subscribers 에게 cube_update event 전송
+    let timestamp_ms = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_millis() as u64)
+        .unwrap_or(0);
+    let event = crate::protocol::ServerEvent::CubeUpdate {
+        cube_id,
+        label,
+        icon_url,
+        state_index,
+        timestamp_ms,
+    };
+    // 구독자 없으면 send 가 SendError 반환 — 무시 (broadcast 의미상 0 구독자 OK).
+    let _ = crate::ws_server::live_sync_sender().send(event);
     Ok(())
 }
 
@@ -705,7 +717,18 @@ pub fn broadcast_selection_change(
         ?current_folder_id,
         "broadcast_selection_change"
     );
-    // v0.1.4: WebSocket subscribers 에게 selection_change event 전송
+    let timestamp_ms = std::time::SystemTime::now()
+        .duration_since(std::time::UNIX_EPOCH)
+        .map(|d| d.as_millis() as u64)
+        .unwrap_or(0);
+    let event = crate::protocol::ServerEvent::SelectionChange {
+        list_id,
+        cube_id,
+        page_index,
+        current_folder_id,
+        timestamp_ms,
+    };
+    let _ = crate::ws_server::live_sync_sender().send(event);
     Ok(())
 }
 
