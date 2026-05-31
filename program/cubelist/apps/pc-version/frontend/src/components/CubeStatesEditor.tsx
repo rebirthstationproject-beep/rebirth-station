@@ -14,6 +14,7 @@ import {
   setStateIndex,
   notifyStateChange,
 } from '../lib/cube-states';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 interface CubeStatesEditorProps {
   readonly cube: Cube;
@@ -21,6 +22,7 @@ interface CubeStatesEditorProps {
 }
 
 export function CubeStatesEditor({ cube, onStatesChange }: CubeStatesEditorProps) {
+  const { t } = useTranslation();
   const states = cube.states ?? [];
   const [, setRefresh] = useState(0);
   const currentIndex = getCurrentStateIndex(cube.id);
@@ -60,9 +62,9 @@ export function CubeStatesEditor({ cube, onStatesChange }: CubeStatesEditorProps
   if (states.length === 0) {
     return (
       <div className="states-editor states-editor-empty">
-        <div className="muted small">states 없음 (단일 상태)</div>
+        <div className="muted small">{t('inspector.states_edit')}</div>
         <button type="button" className="btn-ghost states-add-btn" onClick={addState}>
-          + 첫 상태 추가
+          {t('inspector.state_add')}
         </button>
       </div>
     );
@@ -70,9 +72,9 @@ export function CubeStatesEditor({ cube, onStatesChange }: CubeStatesEditorProps
 
   return (
     <div className="states-editor">
-      <h4 className="inspector-subtitle">상태 편집 ({states.length})</h4>
+      <h4 className="inspector-subtitle">{t('inspector.states_edit')} ({states.length})</h4>
       <div className="muted small" style={{ marginBottom: 8 }}>
-        실행 시 현재 상태의 payload 사용 → 자동으로 다음 상태로 전환
+        {t('inspector.states_hint')}
       </div>
       {states.map((state, index) => {
         const isActive = index === currentIndex;
@@ -85,15 +87,15 @@ export function CubeStatesEditor({ cube, onStatesChange }: CubeStatesEditorProps
                 type="button"
                 className={`state-toggle-dot ${isActive ? 'is-active' : ''}`}
                 onClick={() => activateState(index)}
-                title={isActive ? '현재 활성 상태' : '클릭해서 이 상태로 설정'}
-                aria-label={`상태 ${index + 1} ${isActive ? '활성' : '활성화'}`}
+                title={isActive ? t('inspector.current_state') : t('inspector.state_add')}
+                aria-label={`state ${index + 1}`}
               >
                 ●
               </button>
               <input
                 type="text"
                 value={state.label ?? ''}
-                placeholder={`state ${index + 1} 라벨`}
+                placeholder={`state ${index + 1}`}
                 onChange={(e) => updateState(index, { label: e.target.value })}
                 className="state-label-input"
               />
@@ -102,15 +104,15 @@ export function CubeStatesEditor({ cube, onStatesChange }: CubeStatesEditorProps
                 className="state-remove-btn"
                 onClick={() => removeState(index)}
                 disabled={states.length <= 1}
-                title="상태 삭제"
-                aria-label="상태 삭제"
+                title={t('inspector.state_remove')}
+                aria-label={t('inspector.state_remove')}
               >
                 ✕
               </button>
             </div>
             {cube.action_type === 'hotkey_toggle' && (
               <div className="state-row-keys">
-                <span className="state-keys-label">키 조합:</span>
+                <span className="state-keys-label">{t('inspector.state_keys')}</span>
                 <input
                   type="text"
                   value={keysArr.join('+')}
@@ -132,7 +134,7 @@ export function CubeStatesEditor({ cube, onStatesChange }: CubeStatesEditorProps
         );
       })}
       <button type="button" className="btn-ghost states-add-btn" onClick={addState}>
-        + 상태 추가
+        {t('inspector.state_add')}
       </button>
     </div>
   );

@@ -72,6 +72,8 @@ pub fn run_tauri() -> tauri::Result<()> {
             commands::send_to_plugin,
             commands::drop_plugin_context,
             commands::list_plugin_processes,
+            commands::broadcast_cube_update,
+            commands::broadcast_selection_change,
         ])
         .setup(|app| {
             // 시스템 트레이 메뉴

@@ -11,12 +11,14 @@ import { useEffect, useState } from 'react';
 import type { Cube } from '../types/cube';
 import { getDynamicTick, recommendedTickInterval } from '../lib/dynamic-cube';
 import { applyCurrentState, listenStateChange } from '../lib/cube-states';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 interface CubePreviewProps {
   readonly cube: Cube;
 }
 
 export function CubePreview({ cube }: CubePreviewProps) {
+  const { t } = useTranslation();
   // states 적용
   const [stateTick, setStateTick] = useState(0);
   useEffect(() => {
@@ -55,7 +57,7 @@ export function CubePreview({ cube }: CubePreviewProps) {
 
   return (
     <div className="cube-preview-card">
-      <div className="cube-preview-label-top">미리보기</div>
+      <div className="cube-preview-label-top">{t('inspector.preview')}</div>
       <div
         className={`cube-cell cube-preview-cell ${isPlaceholder ? 'icon-placeholder' : 'has-icon'} ${isTinyIcon ? 'icon-tiny' : ''}`}
       >
@@ -72,7 +74,7 @@ export function CubePreview({ cube }: CubePreviewProps) {
       </div>
       {cube.states && cube.states.length > 1 && (
         <div className="cube-preview-state-info">
-          현재 상태: {applyCurrentState(cube).label || `state ${0}`}
+          {t('inspector.current_state')}: {applyCurrentState(cube).label || `state 0`}
         </div>
       )}
     </div>

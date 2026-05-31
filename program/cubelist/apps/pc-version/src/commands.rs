@@ -663,6 +663,52 @@ fn execute_error_to_dto(e: &ActionError) -> ExecuteErrorDto {
     }
 }
 
+// ===========================================================================
+// LiveSyncBridge — v0.1.4 사전 (2026-05-31)
+//
+// frontend LiveSyncBridge 에서 호출.
+// 향후 WebSocket subscribers 에게 broadcast.
+// 현재는 tracing 로그만 — 모바일 PWA 수신 핸들러 (v0.1.4) 도입 시 활성.
+// ===========================================================================
+
+/// Cube 라벨/아이콘/상태 변경 broadcast.
+#[cfg_attr(feature = "gui", tauri::command)]
+pub fn broadcast_cube_update(
+    cube_id: String,
+    label: Option<String>,
+    icon_url: Option<String>,
+    state_index: Option<u32>,
+) -> Result<(), String> {
+    tracing::debug!(
+        cube_id = %cube_id,
+        ?label,
+        has_icon = icon_url.is_some(),
+        ?state_index,
+        "broadcast_cube_update"
+    );
+    // v0.1.4: WebSocket subscribers 에게 cube_update event 전송
+    Ok(())
+}
+
+/// 선택(리스트/큐브/페이지/폴더) 변경 broadcast.
+#[cfg_attr(feature = "gui", tauri::command)]
+pub fn broadcast_selection_change(
+    list_id: Option<String>,
+    cube_id: Option<String>,
+    page_index: Option<u32>,
+    current_folder_id: Option<String>,
+) -> Result<(), String> {
+    tracing::debug!(
+        ?list_id,
+        ?cube_id,
+        ?page_index,
+        ?current_folder_id,
+        "broadcast_selection_change"
+    );
+    // v0.1.4: WebSocket subscribers 에게 selection_change event 전송
+    Ok(())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

@@ -103,6 +103,33 @@ class LiveSyncBridge {
         // 단일 구독자 오류는 다른 구독자에 영향 X
       }
     }
+    // v0.1.4 사전: Tauri 환경이면 Rust 측 broadcast 함수도 호출 (모바일 PWA 전달용)
+    void this.forwardToRust(msg);
+  }
+
+  private async forwardToRust(msg: WireMessage): Promise<void> {
+    if (typeof window === 'undefined') return;
+    if (!('__TAURI_INTERNALS__' in window)) return;
+    try {
+      const { invoke } = await import('@tauri-apps/api/core');
+      if (msg.event === 'cube_update') {
+        await invoke('broadcast_cube_update', {
+          cubeId: msg.cube_id,
+          label: msg.label ?? null,
+          iconUrl: msg.icon_url ?? null,
+          stateIndex: msg.state_index ?? null,
+        });
+      } else if (msg.event === 'selection_change') {
+        await invoke('broadcast_selection_change', {
+          listId: msg.list_id ?? null,
+          cubeId: msg.cube_id ?? null,
+          pageIndex: msg.page_index ?? null,
+          currentFolderId: msg.current_folder_id ?? null,
+        });
+      }
+    } catch {
+      // Tauri invoke 실패는 silent — frontend subscribers 는 이미 동작
+    }
   }
 }
 
