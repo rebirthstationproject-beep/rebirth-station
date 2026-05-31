@@ -45,6 +45,7 @@ import { CubePreview } from './components/CubePreview';
 import { CubeStatesEditor } from './components/CubeStatesEditor';
 import { MarketplaceMetaEditor } from './components/MarketplaceMetaEditor';
 import { MarketplaceCatalog } from './components/MarketplaceCatalog';
+import { PackDetail } from './components/PackDetail';
 import { GlobalSearch } from './components/GlobalSearch';
 import {
   PluginActionsBackground,
@@ -87,9 +88,10 @@ export function App() {
   const draftList = useEditor((s) => s.draft_list);
   const refreshPlugins = usePluginRegistry((s) => s.refresh);
   const [mainTab, setMainTab] = useState<MainTab>('cube-maker');
-  // v0.1.3 사전: 마켓플레이스 메타 편집 모달 + 전역 검색
+  // v0.1.3 사전: 마켓플레이스 메타 편집 모달 + 전역 검색 + 마켓플레이스 상세 라우팅
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
+  const [selectedPackId, setSelectedPackId] = useState<string | null>(null);
 
   // v0.1.3: Ctrl+F / Cmd+F 전역 검색
   useEffect(() => {
@@ -328,7 +330,11 @@ export function App() {
           {mainTab === 'list-maker' ? (
             <ListMakerCenter />
           ) : mainTab === 'marketplace' ? (
-            <MarketplaceCatalog onPackClick={(id) => console.info('[marketplace] pack clicked', id)} />
+            selectedPackId ? (
+              <PackDetail packId={selectedPackId} onBack={() => setSelectedPackId(null)} />
+            ) : (
+              <MarketplaceCatalog onPackClick={(id) => setSelectedPackId(id)} />
+            )
           ) : (
             <CubeMakerCenter />
           )}

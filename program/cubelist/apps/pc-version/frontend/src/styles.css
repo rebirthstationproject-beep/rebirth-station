@@ -545,6 +545,167 @@ html, body, #root {
   color: var(--text-muted);
 }
 
+/* === 큐브팩 상세 페이지 (v0.1.3) === */
+.pack-detail {
+  padding: 20px 28px;
+  overflow-y: auto;
+  height: 100%;
+  background: var(--bg-deep, #0a0a0a);
+}
+.pack-back-btn { margin-bottom: 16px; }
+.pack-detail-hero {
+  display: flex;
+  gap: 24px;
+  margin-bottom: 28px;
+  padding: 20px;
+  background: var(--bg-surface, #1a1a1a);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.pack-detail-cover {
+  width: 200px;
+  height: 200px;
+  border-radius: 10px;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--bg-surface-2);
+  flex-shrink: 0;
+}
+.pack-detail-cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 96px;
+  font-weight: 700;
+  color: var(--accent);
+  background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+}
+.pack-detail-info { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+.pack-detail-platform {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.pack-detail-name { margin: 0; font-size: 24px; color: var(--text); line-height: 1.2; }
+.pack-detail-author { font-size: 13px; color: var(--text); }
+.pack-detail-author .muted { color: var(--text-muted); margin-left: 4px; }
+.pack-detail-rating { font-size: 13px; color: var(--text); margin-top: 2px; }
+.pack-detail-stats-row { display: flex; gap: 12px; margin-top: 6px; }
+.pack-detail-stat {
+  font-size: 11px;
+  background: var(--bg-surface-2);
+  padding: 3px 8px;
+  border-radius: 4px;
+  color: var(--text-muted);
+}
+.pack-detail-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+.pack-detail-cta {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.pack-detail-price { display: flex; align-items: baseline; gap: 2px; }
+.pack-detail-price-free,
+.pack-detail-price-num {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent, #d9c270);
+}
+.pack-detail-price-period { font-size: 12px; color: var(--text-muted); }
+.pack-detail-install-btn { padding: 10px 22px; font-size: 14px; }
+
+.pack-detail-section { margin-bottom: 24px; }
+.pack-detail-section-title {
+  font-size: 13px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 10px 0;
+}
+.pack-detail-description {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text);
+  line-height: 1.6;
+  background: var(--bg-surface, #1a1a1a);
+  padding: 14px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+}
+.pack-detail-changelog {
+  background: var(--bg-surface, #1a1a1a);
+  padding: 14px 16px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text);
+  font-family: monospace;
+  white-space: pre-wrap;
+  margin: 0;
+}
+.pack-detail-info-box {
+  background: rgba(217, 194, 112, 0.08);
+  border: 1px solid rgba(217, 194, 112, 0.3);
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 12px;
+  color: var(--text);
+}
+.pack-detail-info-box p { margin: 4px 0; line-height: 1.5; }
+.pack-detail-info-box strong { color: var(--accent); }
+
+.device-preview {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  background: #000;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  justify-content: center;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    inset 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+.device-preview-slot {
+  width: 88px;
+  height: 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  position: relative;
+}
+.device-preview-slot-empty {
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.02);
+}
+.device-preview-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: 700;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.15),
+    0 2px 6px rgba(0, 0, 0, 0.5);
+}
+.device-preview-label {
+  font-size: 9px;
+  color: rgba(255, 255, 255, 0.7);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 84px;
+}
+
 /* === 전역 검색 모달 (v0.1.3) === */
 .global-search-modal {
   background: var(--bg-surface, #1a1a1a);

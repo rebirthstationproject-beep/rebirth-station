@@ -1,131 +1,13 @@
 /**
  * 마켓플레이스 카탈로그 mockup (v0.1.3 사전, 2026-05-31).
  *
- * 실 서버 API 는 v0.1.3 진입 시 활성. 현재 mock 큐브팩 카드 + 필터 + 정렬.
- * 큐브팩 카드 클릭 → PackDetail 로 전환.
+ * 실 서버 API 는 v0.1.4 진입 시 활성. 현재 lib/marketplace-mock.ts 데이터 사용.
+ * 큐브팩 카드 클릭 → PackDetail 로 전환 (onPackClick 콜백).
  */
 
 import { useMemo, useState } from 'react';
-import {
-  PLATFORMS,
-  formatPrice,
-  type MarketplaceMeta,
-  type Platform,
-} from '../types/marketplace';
-import type { DeviceHint } from '../types/cube';
-
-interface MockPack {
-  readonly id: string;
-  readonly name: string;
-  readonly meta: MarketplaceMeta;
-  readonly cube_count: number;
-  readonly list_count: number;
-  readonly device_hint?: DeviceHint;
-}
-
-// v0.1.3 진입 시 실 서버 fetch. 현재 mock.
-const MOCK_PACKS: ReadonlyArray<MockPack> = [
-  {
-    id: 'pack-obs-streamer',
-    name: 'OBS Streamer Essentials',
-    meta: {
-      platform: 'obs',
-      price_cents: 0,
-      author: { name: 'Rebirth Station' },
-      version: '1.0.0',
-      tags: ['streaming', 'obs', 'productivity'],
-      rating: { avg: 4.8, count: 142 },
-      long_description: 'OBS Studio 스트리밍 필수 큐브 32개.',
-    },
-    cube_count: 32,
-    list_count: 4,
-    device_hint: 'streamdeck_xl',
-  },
-  {
-    id: 'pack-vscode-dev',
-    name: 'VS Code Power Dev',
-    meta: {
-      platform: 'vscode',
-      price_cents: 999,
-      author: { name: 'DevTools Inc.' },
-      version: '0.3.2',
-      tags: ['development', 'shortcuts', 'git'],
-      rating: { avg: 4.6, count: 89 },
-      payment_type: 'one_time',
-      long_description: 'VS Code 단축키 + Git 명령 60+ 큐브.',
-    },
-    cube_count: 62,
-    list_count: 6,
-    device_hint: 'streamdeck_xl',
-  },
-  {
-    id: 'pack-figma-design',
-    name: 'Figma Designer Kit',
-    meta: {
-      platform: 'figma',
-      price_cents: 1499,
-      author: { name: 'DesignFlow' },
-      version: '2.1.0',
-      tags: ['design', 'figma', 'ui-ux'],
-      rating: { avg: 4.9, count: 256 },
-      payment_type: 'one_time',
-      long_description: 'Figma 작업 가속화 큐브팩.',
-    },
-    cube_count: 48,
-    list_count: 5,
-    device_hint: 'streamdeck_plus',
-  },
-  {
-    id: 'pack-discord-mod',
-    name: 'Discord Moderator',
-    meta: {
-      platform: 'discord',
-      price_cents: 0,
-      author: { name: 'Community Mods' },
-      version: '1.2.0',
-      tags: ['discord', 'moderation', 'community'],
-      rating: { avg: 4.4, count: 67 },
-      long_description: 'Discord 서버 운영 단축키 모음.',
-    },
-    cube_count: 24,
-    list_count: 3,
-    device_hint: 'streamdeck_standard',
-  },
-  {
-    id: 'pack-photoshop-retouch',
-    name: 'Photoshop Retoucher Pro',
-    meta: {
-      platform: 'photoshop',
-      price_cents: 2499,
-      author: { name: 'RetouchMaster' },
-      version: '3.0.1',
-      tags: ['photoshop', 'retouch', 'adobe'],
-      rating: { avg: 4.7, count: 178 },
-      payment_type: 'one_time',
-      long_description: '리터칭 전문가용 단축키 + 액션 큐브.',
-    },
-    cube_count: 80,
-    list_count: 8,
-    device_hint: 'streamdeck_xl',
-  },
-  {
-    id: 'pack-twitch-streamer',
-    name: 'Twitch Streamer All-in-One',
-    meta: {
-      platform: 'twitch',
-      price_cents: 499,
-      author: { name: 'StreamPro' },
-      version: '1.5.0',
-      tags: ['twitch', 'streaming', 'live'],
-      rating: { avg: 4.5, count: 113 },
-      payment_type: 'subscription_monthly',
-      long_description: '트위치 스트리밍 통합 큐브팩 (월간 구독).',
-    },
-    cube_count: 56,
-    list_count: 7,
-    device_hint: 'streamdeck_plus',
-  },
-];
+import { PLATFORMS, formatPrice, type Platform } from '../types/marketplace';
+import { MOCK_PACKS } from '../lib/marketplace-mock';
 
 type SortBy = 'popular' | 'newest' | 'rating' | 'price_low' | 'price_high';
 
@@ -179,7 +61,7 @@ export function MarketplaceCatalog({ onPackClick }: MarketplaceCatalogProps) {
       <div className="mp-catalog-header">
         <div className="mp-catalog-title">
           <h2>🏪 큐브팩 마켓플레이스</h2>
-          <span className="muted small">v0.1.3 진입 시 활성 (현재 mock 데이터)</span>
+          <span className="muted small">v0.1.4 진입 시 실 서버 활성 (현재 mock 데이터)</span>
         </div>
         <input
           type="search"
