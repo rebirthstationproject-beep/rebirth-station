@@ -47,6 +47,7 @@ import { MarketplaceMetaEditor } from './components/MarketplaceMetaEditor';
 import { MarketplaceCatalog } from './components/MarketplaceCatalog';
 import { PackDetail } from './components/PackDetail';
 import { GlobalSearch } from './components/GlobalSearch';
+import { SettingsPanel } from './components/SettingsPanel';
 import {
   PluginActionsBackground,
   PluginPropertyInspector,
@@ -88,9 +89,10 @@ export function App() {
   const draftList = useEditor((s) => s.draft_list);
   const refreshPlugins = usePluginRegistry((s) => s.refresh);
   const [mainTab, setMainTab] = useState<MainTab>('cube-maker');
-  // v0.1.3 사전: 마켓플레이스 메타 편집 모달 + 전역 검색 + 마켓플레이스 상세 라우팅
+  // v0.1.3 사전: 마켓플레이스 메타 편집 모달 + 전역 검색 + 마켓플레이스 상세 라우팅 + 설정 패널
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [selectedPackId, setSelectedPackId] = useState<string | null>(null);
 
   // v0.1.3: Ctrl+F / Cmd+F 전역 검색
@@ -322,7 +324,10 @@ export function App() {
 
   return (
     <div className="app">
-      <TopBar onOpenMarketplace={() => setMarketplaceOpen(true)} />
+      <TopBar
+        onOpenMarketplace={() => setMarketplaceOpen(true)}
+        onOpenSettings={() => setSettingsOpen(true)}
+      />
       <div className="workspace">
         <Sidebar />
         <main className="center-area">
@@ -352,11 +357,14 @@ export function App() {
       {marketplaceOpen && <MarketplaceMetaEditor onClose={() => setMarketplaceOpen(false)} />}
       {/* v0.1.3: Ctrl+F 전역 검색 */}
       {globalSearchOpen && <GlobalSearch onClose={() => setGlobalSearchOpen(false)} />}
+      {/* v0.1.3: 설정 패널 (TopBar ⚙) */}
+      {settingsOpen && <SettingsPanel onClose={() => setSettingsOpen(false)} />}
     </div>
   );
 }
 
-function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t: MainTab) => void }) {
+function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (tab: MainTab) => void }) {
+  const { t } = useTranslation();
   const activeList = useEditor(useShallow((s) => s.activeList()));
   const startListMaker = useEditor((s) => s.startListMaker);
   const cancelListMaker = useEditor((s) => s.cancelListMaker);
@@ -439,7 +447,7 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t:
         onClick={() => onChange('cube-maker')}
         aria-pressed={activeTab === 'cube-maker'}
       >
-        큐브 만들기
+        {t('maintab.cube_maker')}
       </button>
       <button
         type="button"
@@ -447,7 +455,7 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t:
         onClick={() => onChange('list-maker')}
         aria-pressed={activeTab === 'list-maker'}
       >
-        큐브 리스트 만들기
+        {t('maintab.list_maker')}
       </button>
       <button
         type="button"
@@ -456,7 +464,7 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (t:
         aria-pressed={activeTab === 'marketplace'}
         title="마켓플레이스 (v0.1.3 사전 mockup)"
       >
-        🏪 마켓플레이스
+        {t('maintab.marketplace')}
       </button>
       <div className="main-tab-spacer" />
       {activeTab === 'cube-maker' && !listMakerActive && (
@@ -807,7 +815,13 @@ function PageTabs() {
   );
 }
 
-function TopBar({ onOpenMarketplace }: { onOpenMarketplace?: () => void }) {
+function TopBar({
+  onOpenMarketplace,
+  onOpenSettings,
+}: {
+  onOpenMarketplace?: () => void;
+  onOpenSettings?: () => void;
+}) {
   const { t } = useTranslation();
   const pack = useEditor((s) => s.pack);
   const loadPack = useEditor((s) => s.loadPack);
@@ -1042,7 +1056,14 @@ function TopBar({ onOpenMarketplace }: { onOpenMarketplace?: () => void }) {
           </button>
         )}
         <LocaleSwitcher />
-        <button className="icon-btn" title={t('app.settings')} aria-label={t('app.settings')}>⚙</button>
+        <button
+          className="icon-btn"
+          onClick={onOpenSettings}
+          title={t('app.settings')}
+          aria-label={t('app.settings')}
+        >
+          ⚙
+        </button>
       </div>
     </header>
   );

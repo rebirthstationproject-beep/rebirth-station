@@ -11,6 +11,7 @@
 
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useEditor } from '../store/editor';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 interface SearchResult {
   readonly cubeId: string;
@@ -26,6 +27,7 @@ interface GlobalSearchProps {
 }
 
 export function GlobalSearch({ onClose }: GlobalSearchProps) {
+  const { t } = useTranslation();
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const pack = useEditor((s) => s.pack);
@@ -113,20 +115,18 @@ export function GlobalSearch({ onClose }: GlobalSearchProps) {
           ref={inputRef}
           type="search"
           className="global-search-input"
-          placeholder="큐브·리스트·액션 검색 (Esc 닫기)"
+          placeholder={t('search.placeholder')}
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
         <div className="global-search-results">
           {query.trim().length === 0 ? (
-            <div className="global-search-hint">
-              팁: 라벨·액션 타입·태그·리스트명 모두 검색됩니다 (최대 200건)
-            </div>
+            <div className="global-search-hint">{t('search.hint')}</div>
           ) : results.length === 0 ? (
-            <div className="global-search-empty">검색 결과 없음</div>
+            <div className="global-search-empty">{t('search.empty')}</div>
           ) : (
             <>
-              <div className="global-search-count">{results.length}건 발견</div>
+              <div className="global-search-count">{results.length} {t('search.count_suffix')}</div>
               {results.map((r) => (
                 <button
                   key={`${r.listId ?? 'lib'}-${r.cubeId}`}

@@ -10,6 +10,7 @@
 
 import { PLATFORMS, formatPrice } from '../types/marketplace';
 import { MOCK_PACKS, deviceGrid, type MockPackPreviewCube } from '../lib/marketplace-mock';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 interface PackDetailProps {
   readonly packId: string;
@@ -17,16 +18,17 @@ interface PackDetailProps {
 }
 
 export function PackDetail({ packId, onBack }: PackDetailProps) {
+  const { t } = useTranslation();
   const pack = MOCK_PACKS.find((p) => p.id === packId);
 
   if (!pack) {
     return (
       <div className="pack-detail">
         <button type="button" className="btn-ghost pack-back-btn" onClick={onBack}>
-          ← 카탈로그로
+          {t('mp.back_to_catalog')}
         </button>
         <div className="muted" style={{ marginTop: 30, textAlign: 'center' }}>
-          큐브팩을 찾을 수 없습니다.
+          {t('mp.empty')}
         </div>
       </div>
     );
@@ -48,7 +50,7 @@ export function PackDetail({ packId, onBack }: PackDetailProps) {
   return (
     <div className="pack-detail">
       <button type="button" className="btn-ghost pack-back-btn" onClick={onBack}>
-        ← 카탈로그로
+        {t('mp.back_to_catalog')}
       </button>
 
       <div className="pack-detail-hero">
@@ -65,12 +67,12 @@ export function PackDetail({ packId, onBack }: PackDetailProps) {
           {pack.meta.rating && (
             <div className="pack-detail-rating">
               ★ {pack.meta.rating.avg.toFixed(1)}{' '}
-              <span className="muted">({pack.meta.rating.count} 리뷰)</span>
+              <span className="muted">({pack.meta.rating.count} {t('mp.reviews_suffix')})</span>
             </div>
           )}
           <div className="pack-detail-stats-row">
-            <span className="pack-detail-stat">{pack.cube_count} 큐브</span>
-            <span className="pack-detail-stat">{pack.list_count} 리스트</span>
+            <span className="pack-detail-stat">{pack.cube_count} {t('mp.cubes_suffix')}</span>
+            <span className="pack-detail-stat">{pack.list_count} {t('mp.lists_suffix')}</span>
             <span className="pack-detail-stat">{grid.label}</span>
           </div>
           {pack.meta.tags && pack.meta.tags.length > 0 && (
@@ -83,46 +85,46 @@ export function PackDetail({ packId, onBack }: PackDetailProps) {
           <div className="pack-detail-cta">
             <div className="pack-detail-price">
               {isFree ? (
-                <span className="pack-detail-price-free">무료</span>
+                <span className="pack-detail-price-free">{t('mp.free')}</span>
               ) : (
                 <>
                   <span className="pack-detail-price-num">{formatPrice(pack.meta.price_cents)}</span>
                   {isSubscription && (
                     <span className="pack-detail-price-period">
-                      {pack.meta.payment_type === 'subscription_monthly' ? ' / 월' : ' / 년'}
+                      {pack.meta.payment_type === 'subscription_monthly' ? t('mp.per_month') : t('mp.per_year')}
                     </span>
                   )}
                 </>
               )}
             </div>
             <button type="button" className="btn-primary pack-detail-install-btn" onClick={handleInstall}>
-              {isFree ? '⬇ 설치' : `💳 ${formatPrice(pack.meta.price_cents)} 구매`}
+              {isFree ? t('mp.install') : `${t('mp.buy')} ${formatPrice(pack.meta.price_cents)}`}
             </button>
           </div>
         </div>
       </div>
 
       <section className="pack-detail-section">
-        <h2 className="pack-detail-section-title">📱 디바이스 미리보기</h2>
+        <h2 className="pack-detail-section-title">{t('mp.device_preview')}</h2>
         <DevicePreview grid={grid} cubes={pack.preview_cubes} />
       </section>
 
       {pack.meta.long_description && (
         <section className="pack-detail-section">
-          <h2 className="pack-detail-section-title">📄 설명</h2>
+          <h2 className="pack-detail-section-title">{t('mp.description')}</h2>
           <p className="pack-detail-description">{pack.meta.long_description}</p>
         </section>
       )}
 
       {pack.meta.changelog && (
         <section className="pack-detail-section">
-          <h2 className="pack-detail-section-title">📋 변경 이력</h2>
+          <h2 className="pack-detail-section-title">{t('mp.changelog')}</h2>
           <pre className="pack-detail-changelog">{pack.meta.changelog}</pre>
         </section>
       )}
 
       <section className="pack-detail-section">
-        <h2 className="pack-detail-section-title">⚠ v0.1.3 사전 안내</h2>
+        <h2 className="pack-detail-section-title">{t('mp.notice_title')}</h2>
         <div className="pack-detail-info-box">
           <p>
             <strong>현재는 mock 데이터입니다.</strong> v0.1.4 진입 시 실제 마켓플레이스 서버 + PayPal/Binance Pay 결제가 활성화됩니다.
