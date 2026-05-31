@@ -117,13 +117,12 @@ pub async fn execute(payload: &ActionPayload) -> Result<ExecutionResult, ActionE
         | ActionPayload::ProfileRotate { .. } => {
             // frontend store 변경 = Rust no-op
         }
-        // Tier 3 위험 액션 — 현재 stub (사용자 확정 후 활성)
-        ActionPayload::SystemSleep => return Err(ActionError::PermissionRequired(3)),
-        ActionPayload::SystemActionbarToggle
-        | ActionPayload::HotkeyToggle { .. }
-        | ActionPayload::AudioPlay { .. } => {
-            return Err(ActionError::PermissionRequired(2));
-        }
+        // Tier 3 위험 액션 — 즉시 실행 (frontend 측 동의 dialog 가 호출 직전 confirm)
+        ActionPayload::SystemSleep => execute_system_sleep()?,
+        ActionPayload::SystemActionbarToggle => execute_actionbar_toggle()?,
+        ActionPayload::AudioPlay { audio_url, .. } => execute_audio_play(audio_url)?,
+        // hotkey_toggle: states 시스템 의존 (frontend store + Cube.states) — 현재 stub
+        ActionPayload::HotkeyToggle { .. } => return Err(ActionError::PermissionRequired(2)),
         // === P2 4 동적 큐브 — frontend tick 처리 = Rust no-op ===
         ActionPayload::LiveClock { .. }
         | ActionPayload::LiveTimer { .. }
@@ -182,6 +181,89 @@ fn execute_window_close() -> Result<(), ActionError> {
 #[cfg(not(feature = "keys"))]
 fn execute_window_close() -> Result<(), ActionError> {
     Err(ActionError::FeatureDisabled("window_close"))
+}
+
+// ===== Tier 3 system_sleep (Windows SetSuspendState) =====
+#[cfg(target_os = "windows")]
+fn execute_system_sleep() -> Result<(), ActionError> {
+    // SAFETY: SetSuspendState 는 시스템 콜로 Windows API 가 안전성 보장.
+    //         호출 전 frontend 측 사용자 동의 확인 필수 (Tier 3 영구 토글).
+    //         hibernate=false (sleep), force=true (강제 즉시), wakeup_events_disabled=false
+    let result = unsafe { windows_sys::Win32::System::Power::SetSuspendState(0, 1, 0) };
+    if result == 0 {
+        Err(ActionError::OsCommand(
+            "SetSuspendState 실패 (관리자 권한 또는 절전 정책 확인)".into(),
+        ))
+    } else {
+        Ok(())
+    }
+}
+
+#[cfg(not(target_os = "windows"))]
+fn execute_system_sleep() -> Result<(), ActionError> {
+    Err(ActionError::FeatureDisabled("system_sleep"))
+}
+
+// ===== Tier 2 system_actionbar_toggle (Shell_TrayWnd ShowWindow) =====
+#[cfg(target_os = "windows")]
+fn execute_actionbar_toggle() -> Result<(), ActionError> {
+    use windows_sys::Win32::UI::WindowsAndMessaging::{
+        FindWindowA, IsWindowVisible, ShowWindow, SW_HIDE, SW_SHOW,
+    };
+    // 작업 표시줄 클래스명
+    let class_name = b"Shell_TrayWnd\0".as_ptr();
+    // SAFETY: FindWindowA 는 null-terminated 문자열 받음. 위 배열 확인.
+    let tray_hwnd = unsafe { FindWindowA(class_name, std::ptr::null()) };
+    if tray_hwnd.is_null() {
+        return Err(ActionError::OsCommand(
+            "작업 표시줄 (Shell_TrayWnd) 미발견".into(),
+        ));
+    }
+    // SAFETY: tray_hwnd 는 유효 HWND. ShowWindow 는 안전.
+    let visible = unsafe { IsWindowVisible(tray_hwnd) };
+    let cmd = if visible != 0 { SW_HIDE } else { SW_SHOW };
+    unsafe { ShowWindow(tray_hwnd, cmd) };
+    Ok(())
+}
+
+#[cfg(not(target_os = "windows"))]
+fn execute_actionbar_toggle() -> Result<(), ActionError> {
+    Err(ActionError::FeatureDisabled("system_actionbar_toggle"))
+}
+
+// ===== Tier 1 audio_play (std::process::Command 으로 기본 미디어 플레이어 실행) =====
+fn execute_audio_play(audio_url: &str) -> Result<(), ActionError> {
+    use std::process::Command;
+    if audio_url.is_empty() {
+        return Err(ActionError::OsCommand("audio_url 빈 값".into()));
+    }
+    // 위험 path 방어 (cmd.exe, powershell 등)
+    let lower = audio_url.to_lowercase();
+    let dangerous = [
+        "cmd.exe", "powershell", "wscript", "cscript", "regsvr32", "mshta",
+        "/bin/sh", "/bin/bash",
+    ];
+    if dangerous.iter().any(|d| lower.contains(d)) {
+        return Err(ActionError::OsCommand(format!(
+            "위험 경로 차단: {audio_url}"
+        )));
+    }
+    // Windows: rundll32 url.dll,FileProtocolHandler — 기본 연결 프로그램으로 열기
+    #[cfg(target_os = "windows")]
+    {
+        Command::new("rundll32")
+            .args(["url.dll,FileProtocolHandler", audio_url])
+            .spawn()
+            .map_err(|e| ActionError::OsCommand(format!("audio_play spawn 실패: {e}")))?;
+    }
+    #[cfg(not(target_os = "windows"))]
+    {
+        Command::new("xdg-open")
+            .arg(audio_url)
+            .spawn()
+            .map_err(|e| ActionError::OsCommand(format!("audio_play spawn 실패: {e}")))?;
+    }
+    Ok(())
 }
 
 // ---------------------------------------------------------------------------
