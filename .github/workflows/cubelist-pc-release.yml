@@ -1,0 +1,149 @@
+name: Cube List PC — Release
+
+# v0.1.1+ 베타 출시 자동화 (2026-05-31).
+# 트리거: tag push (v*) → cargo tauri build → GitHub Release 자동 생성 + 자산 업로드.
+#
+# 사용:
+#   git tag -a v0.1.1 -m "v0.1.1 베타"
+#   git push origin v0.1.1
+#
+# 산출:
+#   - target/release/cubelist-pc-helper.exe
+#   - target/release/bundle/msi/cubelist-pc-helper_<ver>_x64_en-US.msi
+#   - target/release/bundle/nsis/cubelist-pc-helper_<ver>_x64-setup.exe
+#   - latest.json (Tauri Updater 매니페스트, D-06 결정 후 활성)
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: '버전 (예: 0.1.1)'
+        required: true
+        default: '0.1.1'
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Build Windows x64
+    runs-on: windows-latest
+    timeout-minutes: 60
+
+    defaults:
+      run:
+        working-directory: program/cubelist/apps/pc-version
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: program/cubelist/apps/pc-version/frontend/package-lock.json
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Rust cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: program/cubelist/apps/pc-version -> target
+          cache-on-failure: true
+
+      - name: Install Tauri CLI
+        run: cargo install tauri-cli --version "^2" --locked
+
+      - name: Install frontend dependencies
+        working-directory: program/cubelist/apps/pc-version/frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: program/cubelist/apps/pc-version/frontend
+        run: npm run build
+
+      - name: Build Tauri (release + keys feature)
+        env:
+          # D-06/D-07 결정 후 secrets 추가
+          # TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+          # TAURI_KEY_PASSWORD: ${{ secrets.TAURI_KEY_PASSWORD }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: cargo tauri build --features keys
+
+      - name: Upload artifacts (job)
+        uses: actions/upload-artifact@v4
+        with:
+          name: cubelist-pc-windows-x64
+          path: |
+            program/cubelist/apps/pc-version/target/release/bundle/msi/*.msi
+            program/cubelist/apps/pc-version/target/release/bundle/nsis/*-setup.exe
+            program/cubelist/apps/pc-version/target/release/cubelist-pc-helper.exe
+          retention-days: 30
+
+  release:
+    name: Create GitHub Release
+    needs: build-windows
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: cubelist-pc-windows-x64
+          path: artifacts
+
+      - name: Extract version from tag
+        id: version
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}
+          name: 큐브 리스트 v${{ steps.version.outputs.version }} 베타
+          prerelease: true
+          generate_release_notes: true
+          body: |
+            ## 큐브 리스트 PC v${{ steps.version.outputs.version }} 베타
+
+            ### 다운로드
+            - **설치 패키지 (MSI)**: `cubelist-pc-helper_${{ steps.version.outputs.version }}_x64_en-US.msi`
+            - **설치 패키지 (NSIS)**: `cubelist-pc-helper_${{ steps.version.outputs.version }}_x64-setup.exe`
+            - **실행 파일**: `cubelist-pc-helper.exe`
+
+            ### 변경 사항
+            CHANGELOG: `program/cubelist/CHANGELOG.md` 참조.
+
+            ### 사용자 가이드
+            `program/cubelist/docs/USER_GUIDE.md`
+
+            ### 베타 안내
+            - Windows SmartScreen 경고 시 "추가 정보" → "실행"
+            - 첫 출시 평판 누적 단계 (D-07 EV 사이닝 = Q2 진입 후 예정)
+            - 버그 신고: GitHub Issues
+
+            ### StreamDeck 호환
+            - 28+ plugin 자동 변환 (`.streamDeckPlugin → .cubelist`)
+            - 13 디바이스 프로필 변환 (`.streamDeckProfile → .cubepack`)
+            - 큐브 무제한 (영구 차별점)
+          files: |
+            artifacts/bundle/msi/*.msi
+            artifacts/bundle/nsis/*-setup.exe
+            artifacts/cubelist-pc-helper.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

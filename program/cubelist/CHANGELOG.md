@@ -8,7 +8,118 @@
 
 ## [Unreleased]
 
-(다음 릴리즈 예정 변경 — D-06 (Updater 엔드포인트) + D-07 (EV 사이닝) 결정 후 v0.1.0 → v0.1.1)
+(v0.1.2 이상 예정 — Tier 2/3 동의 시스템 활성, 모바일 PWA 페어링 강화, 마켓플레이스 도입)
+
+---
+
+## [0.1.1] — 2026-05-31 (베타)
+
+오늘 세션 commits b675151 → 69bdcb7. Phase 1 ~ 5 P2 + Rust OS impl + 사용자 가이드 + UX 개선.
+
+### Added (신규)
+
+**파일 spec 영구 lock (P0)**
+- `.cubeone` v3 / `.cubelist` v3 / `.cubepack` v3 영구 lock — 이후 변경 0 보장
+- Cube에 영구 옵셔널 필드 추가: `states` (멀티 상태), `title_style` (Font/Color/Alignment), `controller_type` (main/dial/touchpad)
+- forward-compat 필드: `extensions` / `streamdeck_meta` / `streamdeck_source` — schema validate 무관 자유 형식
+- DeviceHint enum (13 StreamDeck 디바이스 + `cubelist_unlimited` 영구 차별점)
+- 4 명세 문서:
+  - `docs/specs/cubeone-v3.md`
+  - `docs/specs/cubelist-v3.md`
+  - `docs/specs/cubepack-v3.md`
+  - `docs/specs/streamdeck-compat.md`
+
+**P1 11 신규 액션 (Phase 3, StreamDeck 100% 호환)**
+- `media_key` (multimedia: play/pause/next/prev/stop/volume±/mute)
+- `page_navigate` / `page_jump` (system.pagination + page)
+- `folder_up` / `folder_open` (profile.backtoparent + openchild)
+- `window_close` (system.close — Alt+F4)
+- `system_sleep` (system.sleep — Tier 3 stub)
+- `system_actionbar_toggle` (system.actionbar — Tier 2 stub)
+- `hotkey_toggle` (system.hotkeyswitch — states 의존, Tier 2 stub)
+- `audio_play` (soundboard — Tier 1 stub, OS impl 추가 예정)
+- `profile_rotate` (큐브 리스트 회전)
+- frontend specs + Rust ActionPayload variant + guard + dispatch 모두 추가
+- 즉시 OS impl: `media_key` (enigo Key::Media*), `window_close` (Alt+F4)
+- frontend 처리 (Rust no-op): `page_navigate`, `page_jump`, `folder_up`, `folder_open`, `profile_rotate`
+
+**P2 동적 큐브 시스템 (Phase 5)**
+- `lib/dynamic-cube.ts` DynamicCubeRegistry + 4 tick 구현
+  - `liveClockTick` (HH:MM:SS / HH:MM / h:MM AM/PM)
+  - `liveTimerTick` (target_ms 카운트다운)
+  - `liveGaugeTick` (SVG bar, hue 0~120, value/min/max + unit)
+  - `liveBatteryTick` (SVG 배터리 모양, 색상 단계, navigator.getBattery 자동)
+- `lib/useDynamicCubes.ts` React hook
+  - CubeGrid 레벨 watch, 정적 큐브 영향 0
+  - tick interval: 1s (clock SS) / 30s (clock HH:MM) / 5s (gauge/battery)
+  - cleanup 시 clearInterval
+- `lib/actions/p2_actions.ts` 4 액션 spec
+- CubeGrid 통합 — dynamicUpdates Map<cubeId, DynamicUpdate>로 라벨/이미지 override
+
+**`.streamDeckProfile` → `.cubepack` 변환기**
+- `scripts/import-streamdeck-profile.mjs` 신규
+- ZIP 내부 Profiles/* 자동 스캔 (외부 Pages.Pages 는 디스플레이 순서일 뿐 확인)
+- Profile.Device.Model → device_hint (13 디바이스 + cubelist_unlimited 폴백)
+- Page.Controllers[].Actions{col,row} → cubes[].sort_order (row × cols + col)
+- States[] → Cube.states / Title 메타 → Cube.title_style (P0 영구 lock 필드 실 활용)
+- streamdeck_meta + streamdeck_source 원본 보존 (forward-compat)
+- 13 DefaultProfile 변환 검증: 13 .cubepack / 742 큐브
+
+**시각 강화 (StreamDeck LCD 톤 모방)**
+- 큐브 셀 배경 = pure black (#000000) + inset white outline + drop shadow = LCD 패널 깊이감
+- hover 시 outline + shadow 증가 (키 누름 직전 느낌)
+- 선택 시 LED 글로우 (`outline: 2px solid var(--accent)` + `box-shadow: 0 0 12px rgba(255, 196, 0, 0.4)`)
+- 그리드 베젤 = #0a0a0a + inset shadow (StreamDeck 본체 매트 톤)
+- PNG_TINY (< 800 byte) → `filter: invert(1) brightness(1.4)` 자동 가시화 (23 cube)
+- NO_ICON placeholder → 라벨 첫 글자 28px 중앙 표시 (4 cube)
+
+**이미지 변환 호환 v1·v2 (30% → 11% 미렌더링)**
+- SVG `fill="#ddd"` 단색 → `#ffffff` 일괄 정규화 (3자 + 6자 hex + RGB 컴포넌트 회색조 판정)
+- 우선순위 변경: @3x/@2x PNG (컬러풀세트) > SVG (단색 가능성, 정규화 후)
+- bestImageForAction 3단계 fallback (actionSlug + UUID segment + camelCase 분해)
+- PNG_TINY 회피 강화 (size < 800 byte 시 SVG 우선)
+- 결과: plugin_icon_fallback 49 → 0, @2x.png 매칭 118 → 169 (+51건)
+
+**사용자 가이드**
+- `docs/USER_GUIDE.md` (13 섹션 + FAQ)
+- `docs/release/beta-v0.1.1-guide.md` (D-06/D-07 결정 보조 + cargo tauri build 절차)
+
+**라이브러리 UX**
+- 사이드바 검색 input (🔍 큐브 리스트·큐브 동시 매칭)
+- 검색 시 자동 펼치기 (autoExpand)
+- 클리어 버튼 (×)
+
+**메타데이터 보강 (placeholder 가시화)**
+- cube.metadata에 `icon_source` / `icon_size_bytes` / `icon_is_tiny` / `icon_is_placeholder` 추가
+- frontend className 자동 분기 (`icon-tiny` / `icon-placeholder`)
+
+### Changed (변경)
+
+- `FieldSchema.number` 에 `min` / `max` / `step` / `required` 추가
+- `FieldSchema.select` 에 `required` 추가
+- `CubeActionType` enum: 10 → 25 (P1 11 + P2 4)
+- `ACTION_TYPES` Set (cubepack-io.ts) 동기
+
+### Security
+
+- `validate_media_key` 7 키 화이트리스트만 허용
+- `validate_direction` next/prev 만 허용
+- AudioPlay URL 길이 / volume 범위 검증
+- LiveGauge min < max 검증
+- HotkeyToggle on/off_keys 비공 검증
+
+### Known Limitations
+
+- Tier 2 OS impl: system_actionbar_toggle / hotkey_toggle / audio_play — PermissionRequired(2) stub
+- Tier 3 OS impl: system_sleep — PermissionRequired(3) stub
+- 모바일 PWA ↔ PC live_clock/timer 동기화 = M5+ 후속
+- live_battery navigator.getBattery 미지원 브라우저 → manual 폴백 필요
+- 동의 시스템 (consent dialog + 영속화) = v0.1.2 예정
+
+### Pending Decisions
+
+- D-06 Updater 엔드포인트 — GitHub Releases (권장) / Vercel / S3
+- D-07 EV 코드 사이닝 — 베타 무서명 (권장) / OV / EV
 
 ---
 

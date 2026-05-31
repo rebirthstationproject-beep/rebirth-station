@@ -4,8 +4,8 @@
 
 **이 파일은 단일 진입점.** 새 세션은 여기부터 읽고 → `STATE.md` 로 진행.
 
-**현재 진척률 (2026-05-24, cron #24 시점): ≈ 90%** — M0~M8 핵심 완료, M9 베타 출시 준비 단계.
-릴리즈 체크리스트: `docs/07-release-checklist.md`.
+**현재 진척률 (2026-05-31): ≈ 99%** — Phase 1~5 P2 + Rust OS impl + 사용자 가이드 + UX 개선 완료. v0.1.1 베타 출시 준비 완료.
+릴리즈 가이드: `docs/release/beta-v0.1.1-guide.md`. 사용자 가이드: `docs/USER_GUIDE.md`.
 
 ---
 
