@@ -52,6 +52,19 @@ export function CubeStatesEditor({ cube, onStatesChange }: CubeStatesEditorProps
     setRefresh((r) => r + 1);
   }
 
+  // Phase 3 (2026-06-01): 빠른 사이클 — wrap-around (←/→)
+  function cyclePrev(): void {
+    if (states.length === 0) return;
+    const next = currentIndex <= 0 ? states.length - 1 : currentIndex - 1;
+    activateState(next);
+  }
+
+  function cycleNext(): void {
+    if (states.length === 0) return;
+    const next = (currentIndex + 1) % states.length;
+    activateState(next);
+  }
+
   function updateStateKeys(index: number, keys: string[]): void {
     const state = states[index];
     if (!state) return;
@@ -76,6 +89,37 @@ export function CubeStatesEditor({ cube, onStatesChange }: CubeStatesEditorProps
       <div className="muted small" style={{ marginBottom: 8 }}>
         {t('inspector.states_hint')}
       </div>
+      {/* Phase 3 빠른 사이클 (state 2개 이상일 때만) */}
+      {states.length >= 2 && (
+        <div className="state-cycle-row" style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: 10 }}>
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={cyclePrev}
+            title="이전 state"
+            aria-label="이전 state"
+            style={{ minWidth: 36 }}
+          >
+            ←
+          </button>
+          <div className="muted small" style={{ flex: 1, textAlign: 'center' }}>
+            {currentIndex + 1} / {states.length}
+            {states[currentIndex]?.label && (
+              <span style={{ marginLeft: 6 }}>· {states[currentIndex].label}</span>
+            )}
+          </div>
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={cycleNext}
+            title="다음 state"
+            aria-label="다음 state"
+            style={{ minWidth: 36 }}
+          >
+            →
+          </button>
+        </div>
+      )}
       {states.map((state, index) => {
         const isActive = index === currentIndex;
         const payload = (state.action_payload ?? {}) as Record<string, unknown>;

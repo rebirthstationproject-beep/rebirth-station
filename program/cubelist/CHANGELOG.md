@@ -38,6 +38,12 @@
   - PC가 page_index > 0 일 때 amber ribbon 표시 ("🖥 PC에서 페이지 N 표시 중")
   - 모바일은 page state 없이 전체 큐브 한 화면 표시 안내
 
+**Phase 3 (2026-06-01 야간 루프)** — Inspector state_index 빠른 사이클 UI
+- CubeStatesEditor — states 2개 이상일 때 ← / → 사이클 버튼 + N/total 카운트
+- wrap-around (0 ↔ length-1)
+- 클릭 시 `setStateIndex` + `notifyStateChange` (Rust broadcast 트리거)
+- 현재 state 라벨 인라인 표시
+
 **Phase 2 (2026-06-01 야간 루프)** — 모바일 PWA 큐브 컨텍스트 메뉴 PC 일관성
 - 모바일 CubeContextMenu — "이미지 변경" 액션 신규 (PC와 동일 file picker + 1MB 한도)
 - 이미지 변경 핸들러 CubeListView 에 연결 (`handleContextChangeImage`)
