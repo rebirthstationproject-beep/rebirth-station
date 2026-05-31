@@ -38,6 +38,13 @@
   - PC가 page_index > 0 일 때 amber ribbon 표시 ("🖥 PC에서 페이지 N 표시 중")
   - 모바일은 page state 없이 전체 큐브 한 화면 표시 안내
 
+**Phase 2 (2026-06-01 야간 루프)** — 모바일 PWA 큐브 컨텍스트 메뉴 PC 일관성
+- 모바일 CubeContextMenu — "이미지 변경" 액션 신규 (PC와 동일 file picker + 1MB 한도)
+- 이미지 변경 핸들러 CubeListView 에 연결 (`handleContextChangeImage`)
+- localStore.updateItem 으로 icon_url dataUrl 저장 + loadBoards 갱신
+- i18n 키 `change_image` / `image_too_large` 추가 (ko/en/ja)
+- cover 액션은 모바일 미적용 — 모바일에는 큐브팩 cover 개념 없음 (board 단위 관리)
+
 ---
 
 ## [0.1.3] — 2026-05-31 (베타)

@@ -658,6 +658,21 @@ export function CubeListView({ editMode, onRequestEdit, onOpenLibrary, onSelectC
     [],
   );
 
+  // 컨텍스트 메뉴 이미지 변경 (Phase 2, 2026-06-01) — PC 큐브 메뉴와 일관성
+  const handleContextChangeImage = useCallback(
+    (item: CubeItem, dataUrl: string): void => {
+      if (!isLocalMode()) {
+        showToast({ level: 'warning', message: 'LOCAL_MODE에서만 동작' });
+        return;
+      }
+      localStore.updateItem(item.id, { icon_url: dataUrl });
+      void loadBoards();
+      showToast({ level: 'success', message: '이미지 변경됨', duration: 1_200 });
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
+  );
+
   const { showToast } = useToast();
 
   const handleAddCube = useCallback(
@@ -1105,6 +1120,7 @@ export function CubeListView({ editMode, onRequestEdit, onOpenLibrary, onSelectC
         onClose={() => setContextMenu(null)}
         onEdit={(item) => setEditingItem(item)}
         onDuplicate={handleDuplicateCube}
+        onChangeImage={handleContextChangeImage}
         onColorChange={handleContextColorChange}
         onDelete={(item) => void handleDeleteCube(item)}
       />

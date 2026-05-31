@@ -32,18 +32,24 @@ const MENU_COPY = {
   ko: {
     edit: '편집',
     duplicate: '복제',
+    change_image: '이미지 변경',
+    image_too_large: '이미지는 1MB 이하만 가능합니다.',
     color: '색상',
     delete: '삭제',
   },
   en: {
     edit: 'Edit',
     duplicate: 'Duplicate',
+    change_image: 'Change Image',
+    image_too_large: 'Image must be 1MB or less.',
     color: 'Color',
     delete: 'Delete',
   },
   ja: {
     edit: '編集',
     duplicate: '複製',
+    change_image: '画像変更',
+    image_too_large: '画像は 1MB 以下のみ可能です。',
     color: '色',
     delete: '削除',
   },
@@ -61,6 +67,7 @@ interface CubeContextMenuProps {
   onClose: () => void;
   onEdit?: (item: CubeItem) => void;
   onDuplicate?: (item: CubeItem) => void;
+  onChangeImage?: (item: CubeItem, dataUrl: string) => void;
   onColorChange?: (item: CubeItem, preset: CubeBgPreset) => void;
   onDelete?: (item: CubeItem) => void;
 }
@@ -72,6 +79,7 @@ export function CubeContextMenu({
   onClose,
   onEdit,
   onDuplicate,
+  onChangeImage,
   onColorChange,
   onDelete,
 }: CubeContextMenuProps) {
@@ -187,6 +195,36 @@ export function CubeContextMenu({
         icon="⎘"
         shortcut="Ctrl+D"
         onClick={() => withClose(onDuplicate)(item)}
+      />
+      <MenuItem
+        label={t.change_image}
+        icon="🖼"
+        onClick={() => {
+          if (!onChangeImage) {
+            onClose();
+            return;
+          }
+          const input = document.createElement('input');
+          input.type = 'file';
+          input.accept = 'image/png,image/jpeg,image/gif,image/svg+xml,image/webp';
+          input.onchange = () => {
+            const file = input.files?.[0];
+            if (!file) return;
+            if (file.size > 1024 * 1024) {
+              window.alert(t.image_too_large);
+              return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+              const dataUrl = reader.result;
+              if (typeof dataUrl !== 'string') return;
+              onChangeImage(item, dataUrl);
+            };
+            reader.readAsDataURL(file);
+          };
+          input.click();
+          onClose();
+        }}
       />
       <div className="px-3 py-1.5 text-[10px] text-ink-muted">{t.color}</div>
       <div className="px-3 pb-1.5 grid grid-cols-5 gap-1">
