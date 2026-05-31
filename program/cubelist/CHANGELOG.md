@@ -6,9 +6,19 @@
 
 ---
 
-## [Unreleased]
+## [Unreleased] (v0.1.4 작업 중)
 
-(v0.1.4 이상 예정 — 모바일 PWA 동기화 wire 강화, 마켓플레이스 서버 API + PayPal/Binance Pay, E2E 자동화)
+### Planned
+
+- 마켓플레이스 서버 API + PayPal/Binance Pay 결제 통합
+- 라이센스 키 발급 (Ed25519 서명) + 검증
+- 큐브팩 게시 워크플로우 (인스펙터 → 서버 검증 → 카탈로그)
+- LiveSync 양방향 (모바일 → PC RequestExecute 활용 강화)
+- 모바일 PWA selection_change UI 시각 강화 (PC 측 페이지/폴더 미러)
+- Tauri WebDriver E2E 통합 (Rust 액션 실 검증)
+- 인스펙터 닫을 때 큐브팩 cover 자동 캡처 + 즉시 적용
+- 큐브 셀 우클릭에서 "이 큐브를 cover로 사용" 옵션
+- 큐브 셀 우클릭 컨텍스트 메뉴 모바일 PWA 동기
 
 ---
 

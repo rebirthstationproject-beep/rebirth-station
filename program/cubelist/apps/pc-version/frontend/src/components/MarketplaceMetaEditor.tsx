@@ -31,6 +31,7 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
 
   const [meta, setMeta] = useState<MarketplaceMeta>(initialMeta);
   const [tagsInput, setTagsInput] = useState((meta.tags ?? []).join(', '));
+  const [autoCaptureBusy, setAutoCaptureBusy] = useState(false);
   const errors = validateMarketplaceMeta(meta);
 
   // Esc 키 닫기
@@ -41,6 +42,31 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
     document.addEventListener('keydown', handleKey);
     return () => document.removeEventListener('keydown', handleKey);
   }, [onClose]);
+
+  // v0.1.3: 첫 열림 시 cover 없고 pack 에 lists 있으면 자동 캡처 시도 (사용자 명시 확인)
+  useEffect(() => {
+    if (meta.cover_url) return;
+    if (!pack || pack.lists.length === 0) return;
+    if (autoCaptureBusy) return;
+    // 자동 캡처는 명시 동의 후만 — confirm prompt 한 번
+    const auto = window.confirm(
+      '커버 이미지가 없습니다. 첫 큐브 리스트로 자동 캡처할까요?\n\n(직접 등록하려면 취소)',
+    );
+    if (!auto) return;
+    setAutoCaptureBusy(true);
+    void import('../lib/pack-thumbnail').then(async ({ captureCubeListThumbnail }) => {
+      const dataUrl = await captureCubeListThumbnail(pack.lists[0], {
+        packName: pack.name,
+        subtitle: meta.author.name || undefined,
+      });
+      if (dataUrl) {
+        setMeta((prev) => ({ ...prev, cover_url: dataUrl }));
+      }
+      setAutoCaptureBusy(false);
+    });
+    // 한 번만 prompt — meta.cover_url / pack.id 변경 시 재실행 X 위해 deps 제한
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   function save(): void {
     if (!pack) return;

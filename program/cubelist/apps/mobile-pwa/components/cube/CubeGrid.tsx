@@ -75,6 +75,8 @@ export function CubeGrid({
   // v0.1.3: PC LiveSyncBridge 의 실시간 라벨/이미지/상태 변경 반영
   const { client: helperClient } = useHelperConnection();
   const liveSync = useLiveSync(helperClient);
+  // v0.1.3: PC 측 선택 큐브 강조 — props highlightedItemId 우선, 없으면 PC selection fallback
+  const effectiveHighlight = highlightedItemId ?? liveSync.selection?.cube_id ?? undefined;
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 8 } }),
@@ -175,7 +177,7 @@ export function CubeGrid({
                   onPress={onPress}
                   onLongPress={onLongPress}
                   onContextMenu={onContextMenuCube}
-                  highlighted={highlightedItemId === item.id}
+                  highlighted={effectiveHighlight === item.id}
                   liveOverride={liveOverride}
                 />
               </div>
