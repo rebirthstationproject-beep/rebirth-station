@@ -6,18 +6,53 @@
 
 ---
 
-## [Unreleased] (v0.1.4 작업 중)
+## [Unreleased] (v0.1.4 마일스톤 — 2026-06-01 선언)
+
+### 마일스톤 목표
+
+v0.1.4 = **마켓플레이스 서버 인프라 + 결제 + 라이센스 검증 활성화 + 모바일 PWA selection 강화**.
+v0.1.3 베타 mockup을 실 서비스로 전환하는 단계.
 
 ### Planned
 
-- 마켓플레이스 서버 API + PayPal/Binance Pay 결제 통합
-- 라이센스 키 발급 (Ed25519 서명) + 실 검증
-- 큐브팩 게시 워크플로우 (인스펙터 → 서버 검증 → 카탈로그)
-- LiveSync 양방향 (모바일 → PC RequestExecute 활용 강화)
-- 모바일 PWA selection_change UI 시각 강화 (PC 측 페이지/폴더 미러)
-- Tauri WebDriver E2E 통합 (Rust 액션 실 검증)
-- 모바일 PWA 큐브 우클릭 컨텍스트 메뉴 (PC 5 액션 동기)
+- 마켓플레이스 서버 API (OpenAPI 3.1 spec → 구현)
+- PayPal + Binance Pay 결제 통합 (Webhook + IPN 처리)
+- 라이센스 키 Ed25519 발급 + 검증 (`CL-<payload>-<sig>` 포맷)
+- 큐브팩 게시 워크플로우 (인스펙터 → 서버 업로드 → 검토 → 카탈로그)
+- LiveSync 모바일 → PC RequestExecute 강화 (ack/nack + 재시도)
 - 모바일 PWA 자체 page state 도입 (PC page_index 동기 표시)
+- 모바일 PWA selection_change UI 강화 (페이지 dot + 폴더 breadcrumb)
+- 모바일 PWA 큐브 우클릭 컨텍스트 메뉴 (PC 5 액션 동기)
+- Tauri WebDriver E2E CI 통합
+- SettingsPanel 단축키 편집/커스터마이즈
+- 서버 인프라 (Cloudflare Workers + R2 + D1)
+- 자동 업데이트 채널 (`tauri-plugin-updater` + Ed25519 서명)
+
+### v0.1.4 사전 spec 작업 (Phase 11~20, 2026-06-01 야간 루프)
+
+| Phase | 산출물 | 위치 |
+|---|---|---|
+| 11 | 마일스톤 선언 + Planned 정리 | `CHANGELOG.md` (본 항목) |
+| 12 | 마켓플레이스 서버 API OpenAPI 3.1 spec | `docs/specs/marketplace-api.yaml` |
+| 13 | 라이센스 키 spec (Ed25519) | `docs/specs/license-key.md` |
+| 14 | PayPal/Binance Pay 결제 콜백 spec | `docs/specs/payment-callback.md` |
+| 15 | 큐브팩 게시 워크플로우 spec | `docs/specs/pack-publish-flow.md` |
+| 16 | LiveSync RequestExecute 강화 spec | `docs/specs/livesync-request-execute.md` |
+| 17 | 모바일 PWA 자체 page state spec | `docs/specs/mobile-page-state.md` |
+| 18 | 모바일 PWA selection_change UI spec | `docs/specs/mobile-selection-ui.md` |
+| 19 | 서버 인프라 (Cloudflare) spec | `docs/specs/server-infra.md` |
+| 20 | v0.1.4 마일스톤 보고서 + 인덱스 | `docs/release/v0.1.4-milestone.md` |
+
+### v0.1.4 작업 일정 (가이드)
+
+- **T-0** (2026-06-01): v0.1.4 spec 작성 (본 야간 루프)
+- **T+7일**: 서버 인프라 셋업 (Cloudflare Workers + R2 + D1)
+- **T+14일**: 라이센스 키 발급/검증 구현 + 결제 콜백 mock
+- **T+30일**: PayPal/Binance Pay 통합 + 실 결제 테스트 (sandbox)
+- **T+60일**: 큐브팩 게시 워크플로우 + 카탈로그 실 데이터
+- **T+90일**: v0.1.4 정식 릴리스
+
+---
 
 ---
 
