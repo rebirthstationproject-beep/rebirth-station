@@ -24,6 +24,7 @@ const RBS_FORMAT_VERSION = 3 as const;
 const RBS_MIN_VERSION = '0.1.0';
 
 const ACTION_TYPES: ReadonlySet<CubeActionType> = new Set<CubeActionType>([
+  // 10 코어
   'link',
   'shortcut',
   'macro',
@@ -34,6 +35,23 @@ const ACTION_TYPES: ReadonlySet<CubeActionType> = new Set<CubeActionType>([
   'focus_window',
   'mouse_click',
   'plugin_action',
+  // P1 11 신규 (Phase 3)
+  'media_key',
+  'page_navigate',
+  'page_jump',
+  'folder_up',
+  'folder_open',
+  'window_close',
+  'system_sleep',
+  'system_actionbar_toggle',
+  'hotkey_toggle',
+  'audio_play',
+  'profile_rotate',
+  // P2 동적 큐브 (Phase 5)
+  'live_clock',
+  'live_timer',
+  'live_gauge',
+  'live_battery',
 ]);
 
 export class CubepackFormatError extends Error {

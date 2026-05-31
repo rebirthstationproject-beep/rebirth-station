@@ -16,6 +16,7 @@
  * 폴더: folder (서브덱 진입)
  */
 export type CubeActionType =
+  // === 10 코어 (M3 완료) ===
   | 'link'
   | 'shortcut'
   | 'macro'
@@ -25,7 +26,24 @@ export type CubeActionType =
   | 'app_launch'
   | 'focus_window'
   | 'mouse_click'
-  | 'plugin_action';
+  | 'plugin_action'
+  // === P1 11 신규 (Phase 3, 2026-05-31, 스트림덱 100% 호환) ===
+  | 'media_key'                 // multimedia plugin (play/pause/next/prev/vol)
+  | 'page_navigate'             // page 이동 액션 (system.pagination)
+  | 'page_jump'                 // 특정 페이지 점프
+  | 'folder_up'                 // profile.backtoparent
+  | 'folder_open'               // profile.openchild
+  | 'window_close'              // system.close (Alt+F4)
+  | 'system_sleep'              // system.sleep
+  | 'system_actionbar_toggle'   // system.actionbar
+  | 'hotkey_toggle'             // system.hotkeyswitch (states 의존)
+  | 'audio_play'                // soundboard
+  | 'profile_rotate'            // 큐브 리스트 회전 (선택)
+  // === P2 동적 큐브 (Phase 5, 후순위) ===
+  | 'live_clock'                // system.digitaltime
+  | 'live_timer'                // timer
+  | 'live_gauge'                // 자체 확장
+  | 'live_battery';             // 자체 확장
 
 /**
  * 매크로 step (M7 cron #21) — Rust `MacroStepDto` 와 1:1 (tag = "kind").

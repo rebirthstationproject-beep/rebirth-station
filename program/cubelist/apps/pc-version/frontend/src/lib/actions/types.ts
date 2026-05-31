@@ -36,11 +36,22 @@ export const ACTION_CATEGORIES: ReadonlyArray<ActionCategory> = [
 export type FieldSchema =
   | {
       key: string;
-      type: 'text' | 'url' | 'textarea' | 'number';
+      type: 'text' | 'url' | 'textarea';
       label: string;
       placeholder?: string;
       required?: boolean;
       hint?: string;
+    }
+  | {
+      key: string;
+      type: 'number';
+      label: string;
+      placeholder?: string;
+      required?: boolean;
+      hint?: string;
+      min?: number;
+      max?: number;
+      step?: number;
     }
   | {
       key: string;
@@ -52,6 +63,7 @@ export type FieldSchema =
       key: string;
       type: 'select';
       label: string;
+      required?: boolean;
       options: ReadonlyArray<{ value: string; label: string }>;
       hint?: string;
     }
