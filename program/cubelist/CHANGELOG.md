@@ -38,6 +38,12 @@
   - PC가 page_index > 0 일 때 amber ribbon 표시 ("🖥 PC에서 페이지 N 표시 중")
   - 모바일은 page state 없이 전체 큐브 한 화면 표시 안내
 
+**Phase 4 (2026-06-01 야간 루프)** — MarketplaceMetaEditor silent 자동 캡처
+- 첫 열림 시 confirm prompt 제거 → silent 자동 캡처 (handleExport 와 동일 정책)
+- 사용자는 ✕ 제거 버튼으로 명시 거부 가능
+- 캡처 실패 시 silent — 사용자가 수동 캡처 버튼으로 재시도
+- try/finally 로 autoCaptureBusy 정리 보장
+
 **Phase 3 (2026-06-01 야간 루프)** — Inspector state_index 빠른 사이클 UI
 - CubeStatesEditor — states 2개 이상일 때 ← / → 사이클 버튼 + N/total 카운트
 - wrap-around (0 ↔ length-1)
