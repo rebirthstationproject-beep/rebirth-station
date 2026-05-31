@@ -38,6 +38,12 @@
   - PC가 page_index > 0 일 때 amber ribbon 표시 ("🖥 PC에서 페이지 N 표시 중")
   - 모바일은 page state 없이 전체 큐브 한 화면 표시 안내
 
+**Phase 10 (2026-06-01 야간 루프)** — 베타 출시 사용자 액션 체크리스트
+- `docs/release/beta-v0.1.3-user-action.md` 신규
+- D-01 cargo tauri build → D-07 자동 업데이트 7단계 결정 흐름도
+- Smoke 수동 검증 12 시나리오 + 액션 시나리오 3개
+- EV 사이닝 + 자동 업데이트 v0.1.3 베타에서는 미도입 권고
+
 **Phase 9 (2026-06-01 야간 루프)** — USER_GUIDE v0.1.3 보강
 - 제목 v0.1.1 → v0.1.3 베타 갱신
 - 12.1 절 신규 추가 (마켓플레이스, cover 4 경로, 전역 검색, 키보드 네비, 라이센스 prompt, 인스펙터 보강, LiveSyncBridge, 단축키 viewer, i18n)
