@@ -1,4 +1,4 @@
-# 큐브 리스트 PC 사용자 가이드 (v0.1.1)
+# 큐브 리스트 PC 사용자 가이드 (v0.1.3 베타)
 
 > Rebirth Station 큐브 리스트 — StreamDeck 동등 + 자유도 확장 + 큐브 무제한.
 
@@ -250,6 +250,71 @@ node scripts/import-streamdeck-profile.mjs ^
 
 ### Q. 파일 포맷이 미래에 바뀌나요?
 **A.** **영구 lock** (2026-05-31). `rbs_format_version: 3` 영구 유지. 신규 필드는 `extensions` / `streamdeck_meta`로 흡수. StreamDeck SDK 미래 변경도 변환기가 forward-compat로 흡수.
+
+---
+
+---
+
+## 12.1 v0.1.3 베타 신규 기능 (2026-05-31 / 06-01 추가)
+
+### 마켓플레이스 mockup (TopBar 🏪 팩 정보)
+
+- 큐브팩 게시 메타 작성 (작성자/플랫폼/가격/태그/설명/변경 이력)
+- 16 플랫폼 분류 (figma, obs, vscode, photoshop, illustrator, premiere, after_effects, davinci, blender, unity, unreal, twitch, discord, spotify, youtube, other)
+- 결제 방식 3종 (1회 구매, 월간 구독, 연간 구독)
+- 가격 0~$1000 USD
+- 6 mock 큐브팩 카탈로그 + 카드 클릭 → 상세 페이지
+- 디바이스 미리보기 5 토글 (Mini 3×2 / Standard 5×3 / XL 8×4 / Plus 4×2 / 무제한)
+
+> **결제 활성화 시점**: v0.1.4 진입 시 PayPal + Binance Pay 통합. 현재는 install 시 mock alert.
+
+### 큐브팩 cover 자동 캡처 — 4 경로
+
+1. 우클릭 → 🖼 이미지 변경 (file picker)
+2. 우클릭 → 🏪 큐브팩 cover로 사용 (cube.icon_url → cover_url)
+3. TopBar 🏪 팩 정보 → MarketplaceMetaEditor 첫 열림 → silent 자동 캡처
+4. TopBar 📤 내보내기 → cover 없으면 silent 자동 캡처 (export 산출물에만 임시 주입)
+
+### 전역 검색 (Ctrl+F / Cmd+F)
+
+- 큐브 라벨 / 액션 타입 / metadata / 리스트명 검색
+- 활성 pack + 라이브러리 풀 통합
+- 결과 클릭 → 큐브 자동 선택 + 인스펙터 갱신
+
+### 키보드 네비게이션 (큐브 그리드)
+
+- ← ↑ ↓ → — 큐브 간 이동
+- Delete / Backspace — 선택 큐브 삭제
+- ContextMenu / Shift+F10 — 우클릭 컨텍스트 메뉴
+- 편집 모드에서도 활성 (focus 변경 시 인스펙터 자동 갱신)
+
+### 라이센스 키 prompt (유료 큐브팩 install)
+
+- 형식: `CL-<base64url-payload>-<base64url-sig>` (CL = CubeList prefix)
+- v0.1.3 sentinel: `CL-` prefix + 16자 이상 형식 체크만 (서버 검증 X)
+- v0.1.4 활성: Ed25519 서명 검증 + 라이센스 발급 워크플로우
+
+### 인스펙터 보강
+
+- 큐브 라벨 빈 값 → 빨간 border + 인라인 alert
+- ActionPayloadForm 검증 오류 → role=alert 인라인 표시
+- states 2개 이상 시 ← → 빠른 사이클 버튼 + N/total 카운트
+
+### LiveSyncBridge (PC → 모바일 PWA)
+
+- 큐브 라벨/이미지/상태 변경 실시간 전파
+- 선택 변경 (list/cube/page/folder) 모바일 미러
+- PC 페이지 변경 시 모바일에 amber ribbon 안내
+
+### 단축키 viewer (⚙ 설정 → 5번째 섹션)
+
+- 6 단축키 매핑 표시 (전역 검색 / 내보내기 / 모달 닫기 / 그리드 네비 / 큐브 삭제 / 컨텍스트 메뉴)
+- 편집/커스터마이즈는 v0.1.4 진입 시 활성화
+
+### i18n 보강
+
+- 한국어 / English / 日本語 완전 동기
+- 신규 키 50+ (cube_ctx.*, mp.install_*, mp.license_*, inspector.label_required, shortcuts.*, settings.section_shortcuts)
 
 ---
 

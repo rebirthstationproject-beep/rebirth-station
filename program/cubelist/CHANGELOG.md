@@ -38,6 +38,11 @@
   - PC가 page_index > 0 일 때 amber ribbon 표시 ("🖥 PC에서 페이지 N 표시 중")
   - 모바일은 page state 없이 전체 큐브 한 화면 표시 안내
 
+**Phase 9 (2026-06-01 야간 루프)** — USER_GUIDE v0.1.3 보강
+- 제목 v0.1.1 → v0.1.3 베타 갱신
+- 12.1 절 신규 추가 (마켓플레이스, cover 4 경로, 전역 검색, 키보드 네비, 라이센스 prompt, 인스펙터 보강, LiveSyncBridge, 단축키 viewer, i18n)
+- v0.1.4 활성 예정 기능 명시
+
 **Phase 8 (2026-06-01 야간 루프)** — SettingsPanel 단축키 viewer
 - 5번째 섹션 추가: ⌨ 단축키 (6 항목)
   - 전역 검색 (Ctrl+F / Cmd+F)
