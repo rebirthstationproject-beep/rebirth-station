@@ -229,15 +229,32 @@ async function buildFallbackManifest(zip, pluginDir, zipFilename) {
  * 작은 1x.png (< 1500 byte) 는 placeholder 인 경우가 많아 우선 건너뜀.
  * 다른 candidate 가 전혀 없을 때만 1x.png 어떤 크기든 허용.
  */
-/**
- * SVG 가시성 정규화: StreamDeck 단색 회색 fill → 흰색 (어두운 배경 가시성).
- * plugin-converter.ts 의 normalizeSvgVisibility 와 동일 로직.
- */
+/** 단색 회색 hex 판정 (3자 + 6자 hex, RGB 컴포넌트 분석) */
+function isMonoGreyHex(hex) {
+  const h = hex.replace('#', '').toLowerCase();
+  if (h.length === 3) {
+    return /^([cdef])\1\1$|^([abc])\2\2$|^([89])\3\3$|^(eee|fff|ddd|ccc|bbb|aaa|999|888)$/i.test(h);
+  }
+  if (h.length === 6) {
+    const r = parseInt(h.slice(0, 2), 16);
+    const g = parseInt(h.slice(2, 4), 16);
+    const b = parseInt(h.slice(4, 6), 16);
+    if (r < 0x80 || g < 0x80 || b < 0x80) return false;
+    return Math.abs(r - g) <= 24 && Math.abs(g - b) <= 24 && Math.abs(r - b) <= 24;
+  }
+  return false;
+}
+
+/** SVG 가시성 정규화 v2 (3자+6자 hex + stop-color + RGB 컴포넌트 회색조 판정) */
 function normalizeSvgVisibility(svgText) {
-  const monoFills = /(fill|stroke)\s*=\s*"#([cdef][cdef][cdef]|[abc][abc][abc]|[89][89][89]|fff|ddd|ccc|bbb|aaa|999|888|eee)"/gi;
-  let result = svgText.replace(monoFills, '$1="#ffffff"');
-  const styleFills = /(fill|stroke)\s*:\s*#([cdef][cdef][cdef]|[abc][abc][abc]|[89][89][89]|fff|ddd|ccc|bbb|aaa|999|888|eee)/gi;
-  result = result.replace(styleFills, '$1:#ffffff');
+  const attrPattern = /(fill|stroke|stop-color)\s*=\s*"(#[0-9a-fA-F]{3,6})"/gi;
+  let result = svgText.replace(attrPattern, (m, attr, hex) =>
+    isMonoGreyHex(hex) ? `${attr}="#ffffff"` : m
+  );
+  const stylePattern = /(fill|stroke|stop-color)\s*:\s*(#[0-9a-fA-F]{3,6})/gi;
+  result = result.replace(stylePattern, (m, attr, hex) =>
+    isMonoGreyHex(hex) ? `${attr}:#ffffff` : m
+  );
   return result;
 }
 
@@ -245,25 +262,34 @@ async function loadIconAsDataUrl(zip, pluginDir, iconRef) {
   if (!iconRef) return { dataUrl: null, source: null };
   const MAX_BYTES = 1024 * 1024;
   const PNG_MIN_BYTES = 1500; // placeholder PNG (32x32 단색) 회피
-  // 우선순위: PNG (@3x/@2x) 컬러풀세트 > SVG 단색 (정규화 후)
-  const sharp = [
+  // v2: PNG_TINY (< 800 byte) 는 placeholder 가능성 — 후보로 수집 후 큰 PNG > SVG > 작은 PNG 순
+  const PNG_QUALITY_MIN = 800;
+  const probe = [
     { suffix: '@3x.png', mime: 'image/png' },
     { suffix: '@2x.png', mime: 'image/png' },
     { suffix: '.svg', mime: 'image/svg+xml' },
   ];
-  for (const { suffix, mime } of sharp) {
+  const candidates = [];
+  for (const { suffix, mime } of probe) {
     const full = `${pluginDir}${iconRef}${suffix}`;
     const entry = zip.file(full);
     if (!entry) continue;
     const buf = await entry.async('uint8array');
     if (buf.byteLength === 0 || buf.byteLength > MAX_BYTES) continue;
-    if (mime === 'image/svg+xml') {
-      const text = new TextDecoder('utf-8').decode(buf);
+    candidates.push({ suffix, mime, buf });
+  }
+  const big = candidates.find((c) => c.mime === 'image/png' && c.buf.byteLength >= PNG_QUALITY_MIN);
+  const svgCand = candidates.find((c) => c.mime === 'image/svg+xml');
+  const tinyPng = candidates.find((c) => c.mime === 'image/png' && c.buf.byteLength < PNG_QUALITY_MIN);
+  const chosen = big ?? svgCand ?? tinyPng;
+  if (chosen) {
+    if (chosen.mime === 'image/svg+xml') {
+      const text = new TextDecoder('utf-8').decode(chosen.buf);
       const normalized = normalizeSvgVisibility(text);
       const normalizedBuf = new TextEncoder().encode(normalized);
-      return { dataUrl: makeDataUrl(normalizedBuf, mime), source: suffix };
+      return { dataUrl: makeDataUrl(normalizedBuf, chosen.mime), source: chosen.suffix };
     }
-    return { dataUrl: makeDataUrl(buf, mime), source: suffix };
+    return { dataUrl: makeDataUrl(chosen.buf, chosen.mime), source: chosen.suffix };
   }
   // 2차: 1x.png — placeholder 회피 (작으면 skip)
   const oneX = `${pluginDir}${iconRef}.png`;

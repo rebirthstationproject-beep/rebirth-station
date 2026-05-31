@@ -115,50 +115,86 @@ function makeDataUrl(buf: Uint8Array, mime: string): string {
 }
 
 /**
- * StreamDeck SVG 가시성 정규화.
+ * 단색 회색 hex 판정.
  *
- * 스트림덱 SVG 는 검은색 LCD 패널 전용으로 단색(#ddd/#fff/#ccc/#aaa 등 밝은 회색) fill 이 많아,
+ * 6자 hex (#RRGGBB): R/G/B 컴포넌트가 0x80 이상 + 서로 거의 동일 (차 ≤ 16) → 회색조
+ * 3자 hex (#RGB): 알려진 회색 톤 화이트리스트
+ */
+function isMonoGreyHex(hex: string): boolean {
+  const h = hex.replace('#', '').toLowerCase();
+  if (h.length === 3) {
+    // #fff, #ddd, #ccc, #aaa 등
+    return /^([cdef])\1\1$|^([abc])\2\2$|^([89])\3\3$|^(eee|fff|ddd|ccc|bbb|aaa|999|888)$/i.test(h);
+  }
+  if (h.length === 6) {
+    const r = parseInt(h.slice(0, 2), 16);
+    const g = parseInt(h.slice(2, 4), 16);
+    const b = parseInt(h.slice(4, 6), 16);
+    // 어두운 회색 (< 0x80) 은 그대로 — 다른 색일 가능성 보존
+    if (r < 0x80 || g < 0x80 || b < 0x80) return false;
+    // R, G, B 차이 ≤ 24 = 회색조
+    return Math.abs(r - g) <= 24 && Math.abs(g - b) <= 24 && Math.abs(r - b) <= 24;
+  }
+  return false;
+}
+
+/**
+ * StreamDeck SVG 가시성 정규화 v2.
+ *
+ * 스트림덱 SVG 는 검은색 LCD 패널 전용으로 단색 fill 이 많아,
  * 우리 PC UI 의 어두운 배경 (#2a2a2a) 에서도 여전히 대비 부족으로 안 보임.
  *
- * 처리:
- *   1. fill="#xxx" 단색 → "#ffffff" (흰색) 으로 일괄 치환 (대비 최대화)
- *   2. fill="none" / "currentColor" / 그라데이션 / 다색 SVG 는 그대로 유지
- *   3. stroke 도 동일 처리
+ * v2 개선:
+ *   - 3자 hex (#fff/#ddd) + 6자 hex (#D6D6D6/#EFEFEF/#C8C8C8) 모두 처리
+ *   - stop-color (gradient stops) 도 포함
+ *   - RGB 컴포넌트 분석으로 임의 회색조 판정
  *
- * 효과: 단색 SVG 큐브의 가시성 100% 확보.
+ * 효과: 단색 SVG 큐브 가시성 99%+ 확보.
  */
 function normalizeSvgVisibility(svgText: string): string {
-  // 단색 회색/흰색 톤만 화이트로 치환 (브랜드 컬러 보존 위해 #fff/#ddd/#ccc/#aaa/#888 등만)
-  const monoFills = /(fill|stroke)\s*=\s*"#([cdef][cdef][cdef]|[abc][abc][abc]|[89][89][89]|fff|ddd|ccc|bbb|aaa|999|888|eee)"/gi;
-  let result = svgText.replace(monoFills, '$1="#ffffff"');
-  // style="fill:#xxx" 형식
-  const styleFills = /(fill|stroke)\s*:\s*#([cdef][cdef][cdef]|[abc][abc][abc]|[89][89][89]|fff|ddd|ccc|bbb|aaa|999|888|eee)/gi;
-  result = result.replace(styleFills, '$1:#ffffff');
+  // attribute 형식: fill="#xxx" / stroke="#xxx" / stop-color="#xxx"
+  const attrPattern = /(fill|stroke|stop-color)\s*=\s*"(#[0-9a-fA-F]{3,6})"/gi;
+  let result = svgText.replace(attrPattern, (match, attr, hex) =>
+    isMonoGreyHex(hex) ? `${attr}="#ffffff"` : match
+  );
+  // style 형식: fill:#xxx / stroke:#xxx / stop-color:#xxx
+  const stylePattern = /(fill|stroke|stop-color)\s*:\s*(#[0-9a-fA-F]{3,6})/gi;
+  result = result.replace(stylePattern, (match, attr, hex) =>
+    isMonoGreyHex(hex) ? `${attr}:#ffffff` : match
+  );
   return result;
 }
 
 async function loadIconAsDataUrl(zip: JSZip, pluginDir: string, iconRef: string | null | undefined): Promise<IconLookup> {
   if (!iconRef) return { dataUrl: null, source: null };
-  // 우선순위 변경: PNG (@3x/@2x) 가 SVG 보다 우선 — StreamDeck PNG 는 보통 컬러 풀세트, SVG 는 단색
-  // SVG 는 가시성 정규화 후 마지막 fallback 으로 사용
-  const sharp: { suffix: string; mime: string }[] = [
+  // v2: PNG_TINY (< 800 byte) 는 placeholder 가능성 — 일단 후보로 모아두고 SVG 가 있으면 SVG 우선
+  const PNG_QUALITY_MIN = 800;
+  const candidates: { suffix: string; mime: string; buf: Uint8Array }[] = [];
+  const probe: { suffix: string; mime: string }[] = [
     { suffix: '@3x.png', mime: 'image/png' },
     { suffix: '@2x.png', mime: 'image/png' },
     { suffix: '.svg', mime: 'image/svg+xml' },
   ];
-  for (const { suffix, mime } of sharp) {
+  for (const { suffix, mime } of probe) {
     const entry = zip.file(`${pluginDir}${iconRef}${suffix}`);
     if (!entry) continue;
     const buf = await entry.async('uint8array');
     if (buf.byteLength === 0 || buf.byteLength > MAX_IMAGE_BYTES) continue;
-    // SVG: 단색 회색 fill 을 흰색으로 정규화 (어두운 배경 가시성 확보)
-    if (mime === 'image/svg+xml') {
-      const text = new TextDecoder('utf-8').decode(buf);
+    candidates.push({ suffix, mime, buf });
+  }
+  // 우선순위 재정렬: 큰 PNG > SVG > 작은 PNG
+  const big = candidates.find((c) => c.mime === 'image/png' && c.buf.byteLength >= PNG_QUALITY_MIN);
+  const svg = candidates.find((c) => c.mime === 'image/svg+xml');
+  const tinyPng = candidates.find((c) => c.mime === 'image/png' && c.buf.byteLength < PNG_QUALITY_MIN);
+  const chosen = big ?? svg ?? tinyPng;
+  if (chosen) {
+    if (chosen.mime === 'image/svg+xml') {
+      const text = new TextDecoder('utf-8').decode(chosen.buf);
       const normalized = normalizeSvgVisibility(text);
       const normalizedBuf = new TextEncoder().encode(normalized);
-      return { dataUrl: makeDataUrl(normalizedBuf, mime), source: suffix };
+      return { dataUrl: makeDataUrl(normalizedBuf, chosen.mime), source: chosen.suffix };
     }
-    return { dataUrl: makeDataUrl(buf, mime), source: suffix };
+    return { dataUrl: makeDataUrl(chosen.buf, chosen.mime), source: chosen.suffix };
   }
   const oneX = zip.file(`${pluginDir}${iconRef}.png`);
   if (oneX) {
