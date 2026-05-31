@@ -172,6 +172,12 @@ pub enum ExecutionStatus {
     Failed { reason: String },
     /// Tier 2/3 권한 필요. 사용자 prompt 후 재시도
     PermissionRequired { tier: u8 },
+    /// 액션 타입 미등록 (v0.1.3 Phase 7, 2026-06-01)
+    ActionNotFound { action_type: String },
+    /// payload schema 위반 (v0.1.3 Phase 7)
+    InvalidPayload { errors: Vec<String> },
+    /// 타임아웃 (v0.1.3 Phase 7) — 매크로 / 외부 앱 실행
+    Timeout { elapsed_ms: u32 },
 }
 
 #[derive(Debug, Clone, Copy, Serialize, Deserialize)]

@@ -38,6 +38,15 @@
   - PC가 page_index > 0 일 때 amber ribbon 표시 ("🖥 PC에서 페이지 N 표시 중")
   - 모바일은 page state 없이 전체 큐브 한 화면 표시 안내
 
+**Phase 7 (2026-06-01 야간 루프)** — ExecutionStatus 보강
+- Rust `protocol::messages::ExecutionStatus` — 3 신규 variant
+  - `ActionNotFound { action_type }`
+  - `InvalidPayload { errors }`
+  - `Timeout { elapsed_ms }`
+- TypeScript `apps/mobile-pwa/types/protocol.ts` ExecutionStatus union 동기
+- 기존 `Ok` / `Failed` / `PermissionRequired` 유지 (호환성)
+- cargo check 통과
+
 **Phase 6 (2026-06-01 야간 루프)** — e2e smoke 마켓플레이스 시나리오
 - 무료 큐브팩 → 설치 버튼 → mp.install_free alert
 - 유료 큐브팩 → 구매 버튼 → mp.install_paid alert + 라이센스 prompt (cancel)

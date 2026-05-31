@@ -66,7 +66,11 @@ export type AuthRejectionReason =
 export type ExecutionStatus =
   | { kind: 'ok' }
   | { kind: 'failed'; reason: string }
-  | { kind: 'permission_required'; tier: number };
+  | { kind: 'permission_required'; tier: number }
+  // v0.1.3 Phase 7 (2026-06-01) — 보강된 에러 코드
+  | { kind: 'action_not_found'; action_type: string }
+  | { kind: 'invalid_payload'; errors: readonly string[] }
+  | { kind: 'timeout'; elapsed_ms: number };
 
 export type NoticeLevel = 'info' | 'warning' | 'error';
 
