@@ -404,6 +404,26 @@ html, body, #root {
 }
 .btn-ghost:hover { color: var(--text); border-color: var(--accent); }
 
+/* === 큐브 셀 invalid 표시 (v0.1.2) === */
+.cube-cell.is-invalid::after {
+  content: '!';
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--status-danger, #ff6b6b);
+  color: #fff;
+  font-size: 9px;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
 /* === Inspector 큐브 미리보기 카드 (v0.1.2) === */
 .cube-preview-card {
   display: flex;

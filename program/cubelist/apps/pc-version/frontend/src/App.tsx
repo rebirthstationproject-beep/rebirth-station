@@ -9,7 +9,7 @@
  * 상단: 다중 리스트 탭 · 하단: 플러그인 라이브러리 (M4)
  */
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import * as React from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import {
@@ -53,6 +53,7 @@ import {
   ACTIONS,
   ACTION_CATEGORIES,
   defaultPayloadFor,
+  validatePayload,
   type ActionCategory,
   type ActionSpec,
 } from './lib/actions';
@@ -1524,6 +1525,18 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
   const isTinyIcon = iconMeta.icon_is_tiny === true;
   const isPlaceholderIcon = !cube.icon_url || iconMeta.icon_is_placeholder === true;
   const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
+  // v0.1.2: payload validation 상태 (invalid 시 셀에 빨간 ! dot 표시)
+  const validationErrors = useMemo(
+    () => {
+      try {
+        return validatePayload(cube.action_type, cube.action_payload);
+      } catch {
+        return [];
+      }
+    },
+    [cube.action_type, cube.action_payload],
+  );
+  const isInvalid = validationErrors.length > 0;
   // v0.1.2: 우클릭 컨텍스트 메뉴
   const [menuPos, setMenuPos] = useState<{ x: number; y: number } | null>(null);
 
@@ -1549,7 +1562,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       style={style}
       type="button"
       role="gridcell"
-      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''} ${cube.icon_url ? 'has-icon' : ''} ${isTinyIcon ? 'icon-tiny' : ''} ${isPlaceholderIcon ? 'icon-placeholder' : ''}`}
+      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''} ${cube.icon_url ? 'has-icon' : ''} ${isTinyIcon ? 'icon-tiny' : ''} ${isPlaceholderIcon ? 'icon-placeholder' : ''} ${isInvalid ? 'is-invalid' : ''}`}
       onClick={() => {
         // M4: plugin_action 큐브 더블클릭 → fireCubeKey, 단일클릭 → select
         selectCube(selected ? null : cube.id);
@@ -1575,7 +1588,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
         }
       }}
       aria-pressed={selected}
-      title={`${cube.label} (${cube.action_type})${isFolder ? '\n더블클릭 → 진입' : ''}`}
+      title={`${cube.label} (${cube.action_type})${isFolder ? '\n더블클릭 → 진입' : ''}${isInvalid ? `\n⚠ 검증 오류:\n  · ${validationErrors.join('\n  · ')}` : ''}`}
       onContextMenu={(e) => {
         e.preventDefault();
         setMenuPos({ x: e.clientX, y: e.clientY });

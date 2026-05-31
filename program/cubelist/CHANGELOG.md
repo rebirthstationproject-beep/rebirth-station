@@ -8,7 +8,100 @@
 
 ## [Unreleased]
 
-(v0.1.2 이상 예정 — Tier 2/3 동의 시스템 활성, 모바일 PWA 페어링 강화, 마켓플레이스 도입)
+(v0.1.3 이상 예정 — 모바일 PWA 동기화 wire 강화, 마켓플레이스 결제 도입, E2E 자동화)
+
+---
+
+## [0.1.2] — 2026-05-31 (베타)
+
+오늘 세션 commits 049ffac → 919e29d. UX 강화 + states 시스템 + 인스펙터 미리보기.
+
+### Added (신규)
+
+**우클릭 컨텍스트 메뉴**
+- `components/CubeContextMenu.tsx` 4 액션: 편집 / 복제 (sort_order +0.5) / 이미지 변경 (file picker → data URL) / 삭제 (확인)
+- 외부 클릭 + Esc 자동 닫기
+- 화면 밖 침범 방지 (adjustedX/Y)
+- SortableCubeCell + 라이브러리 cell 양쪽 통합 (Fragment 래핑)
+
+**App 루트 드래그드롭 zone**
+- `components/DropZone.tsx` — 5 형식 자동 분류
+  - `.streamDeckPlugin` → plugin-converter 자동
+  - `.streamDeckProfile` → 안내 (PC 앱 변환기 미구현, scripts 사용 안내)
+  - `.cubeone` → 활성 list 끝에 추가
+  - `.cubelist`/`.cubedeck` → 활성 pack 에 추가 또는 신규 pack 생성
+  - `.cubepack` → pack 통째 로드
+- 전체 화면 overlay (dragenter 감지) + fade-in
+- 분류 결과 alert 요약
+
+**큐브팩 export 단축키**
+- Ctrl+E (Cmd+E) → 활성 cubepack 다운로드
+- input/textarea/select 포커스 시 무시
+
+**hotkey_toggle states 시스템 (P0 영구 lock 실 활용)**
+- `lib/cube-states.ts`:
+  - `getCurrentStateIndex` / `advanceStateIndex` / `setStateIndex` / `applyCurrentState`
+  - `resolveActionForExecution` — 실행 시 active state payload 반환 + 자동 advance
+  - `ensureHotkeyToggleStates` — 인스펙터에서 기본 ON/OFF 생성
+  - `notifyStateChange` / `listenStateChange` — CustomEvent
+  - localStorage 영속 (`cubelist:cube_states`)
+- `lib/useCubeStates.ts` hook — listenStateChange + applyCurrentState 자동 갱신
+- `tauri-bridge.ts` executeCube:
+  - resolveActionForExecution 호출
+  - hotkey_toggle → shortcut으로 변환 (Rust 측 keys 송신)
+- CubeGrid 통합: state > dynamic 우선순위
+- Rust `mod.rs HotkeyToggle` stub 해제 — on_keys 우선 execute_shortcut
+
+**인스펙터 강화**
+- `components/CubePreview.tsx` — 인스펙터 상단 큐브 셀 실시간 미리보기
+  - live_* 동적 큐브 1초 tick
+  - states 변경 listen
+  - LCD 톤 그대로
+- `components/CubeStatesEditor.tsx` — states 배열 편집 UI
+  - 활성 state 토글 dot (currentIndex)
+  - 추가 / 삭제 (마지막 1개 보호)
+  - hotkey_toggle: keys 조합 인라인 (Ctrl+Shift+A 형식)
+- `handleActionTypeChange` — hotkey_toggle 선택 시 states 2개 자동 생성
+
+**.cubelist import (드래그드롭)**
+- `cubepack-io.ts importCubelist` — readListZip 재사용
+- 활성 pack 있으면 lists 끝에 추가 + selectList
+- pack 없으면 신규 pack 생성
+
+**라이브러리 트리 검색**
+- 사이드바 상단 검색 input (큐브 리스트·큐브 동시 매칭)
+- 검색 시 자동 펼치기
+- 클리어 버튼
+
+**Tier 2/3 사용자 동의 시스템**
+- `tauri-bridge.ts requireConsent` — 위험 액션 실행 전 prompt
+- localStorage 영속 (`cubelist:tier_consents`)
+- `clearAllTierConsents` 설정 UI 초기화
+
+### Changed (변경)
+
+- Cargo.toml windows-sys features 추가: `Win32_System_Power` (SetSuspendState)
+- FieldSchema number/select 에 required/min/max/step 추가
+
+### Security
+
+- audio_play 위험 경로 차단 (cmd.exe / powershell / wscript / cscript / regsvr32 / mshta / /bin/sh / /bin/bash)
+- 이미지 업로드 (컨텍스트 메뉴) 1MB 제한
+- DropZone Files type 검증 (외부 파일만)
+
+### OS impl 활성 (Tier 2/3)
+
+- `system_sleep` (Tier 3) — windows-sys SetSuspendState
+- `system_actionbar_toggle` (Tier 2) — Shell_TrayWnd ShowWindow
+- `audio_play` (Tier 1) — rundll32 url.dll,FileProtocolHandler
+- `hotkey_toggle` — frontend states → shortcut 변환
+
+### 다음 (v0.1.3+)
+
+- 모바일 PWA ↔ PC live_clock/timer/states 동기화
+- 큐브팩 마켓플레이스 (가격 + 라이선스 + 결제)
+- E2E 자동화 (Playwright + Tauri WebDriver)
+- 인스펙터 validatePayload 에러 인라인 표시 (다음 turn 진행)
 
 ---
 
