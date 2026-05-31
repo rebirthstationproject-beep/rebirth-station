@@ -114,18 +114,50 @@ function makeDataUrl(buf: Uint8Array, mime: string): string {
   return `data:${mime};base64,${bytesToBase64(buf)}`;
 }
 
+/**
+ * StreamDeck SVG 가시성 정규화.
+ *
+ * 스트림덱 SVG 는 검은색 LCD 패널 전용으로 단색(#ddd/#fff/#ccc/#aaa 등 밝은 회색) fill 이 많아,
+ * 우리 PC UI 의 어두운 배경 (#2a2a2a) 에서도 여전히 대비 부족으로 안 보임.
+ *
+ * 처리:
+ *   1. fill="#xxx" 단색 → "#ffffff" (흰색) 으로 일괄 치환 (대비 최대화)
+ *   2. fill="none" / "currentColor" / 그라데이션 / 다색 SVG 는 그대로 유지
+ *   3. stroke 도 동일 처리
+ *
+ * 효과: 단색 SVG 큐브의 가시성 100% 확보.
+ */
+function normalizeSvgVisibility(svgText: string): string {
+  // 단색 회색/흰색 톤만 화이트로 치환 (브랜드 컬러 보존 위해 #fff/#ddd/#ccc/#aaa/#888 등만)
+  const monoFills = /(fill|stroke)\s*=\s*"#([cdef][cdef][cdef]|[abc][abc][abc]|[89][89][89]|fff|ddd|ccc|bbb|aaa|999|888|eee)"/gi;
+  let result = svgText.replace(monoFills, '$1="#ffffff"');
+  // style="fill:#xxx" 형식
+  const styleFills = /(fill|stroke)\s*:\s*#([cdef][cdef][cdef]|[abc][abc][abc]|[89][89][89]|fff|ddd|ccc|bbb|aaa|999|888|eee)/gi;
+  result = result.replace(styleFills, '$1:#ffffff');
+  return result;
+}
+
 async function loadIconAsDataUrl(zip: JSZip, pluginDir: string, iconRef: string | null | undefined): Promise<IconLookup> {
   if (!iconRef) return { dataUrl: null, source: null };
+  // 우선순위 변경: PNG (@3x/@2x) 가 SVG 보다 우선 — StreamDeck PNG 는 보통 컬러 풀세트, SVG 는 단색
+  // SVG 는 가시성 정규화 후 마지막 fallback 으로 사용
   const sharp: { suffix: string; mime: string }[] = [
-    { suffix: '.svg', mime: 'image/svg+xml' },
     { suffix: '@3x.png', mime: 'image/png' },
     { suffix: '@2x.png', mime: 'image/png' },
+    { suffix: '.svg', mime: 'image/svg+xml' },
   ];
   for (const { suffix, mime } of sharp) {
     const entry = zip.file(`${pluginDir}${iconRef}${suffix}`);
     if (!entry) continue;
     const buf = await entry.async('uint8array');
     if (buf.byteLength === 0 || buf.byteLength > MAX_IMAGE_BYTES) continue;
+    // SVG: 단색 회색 fill 을 흰색으로 정규화 (어두운 배경 가시성 확보)
+    if (mime === 'image/svg+xml') {
+      const text = new TextDecoder('utf-8').decode(buf);
+      const normalized = normalizeSvgVisibility(text);
+      const normalizedBuf = new TextEncoder().encode(normalized);
+      return { dataUrl: makeDataUrl(normalizedBuf, mime), source: suffix };
+    }
     return { dataUrl: makeDataUrl(buf, mime), source: suffix };
   }
   const oneX = zip.file(`${pluginDir}${iconRef}.png`);
@@ -165,16 +197,37 @@ async function buildFallbackManifest(
     (f) => /\.(svg|png|jpg|jpeg|gif)$/i.test(f) && f.startsWith(pluginDir),
   );
 
-  function bestImageForAction(actionSlug: string): string | null {
+  function bestImageForAction(actionSlug: string, actionUuid?: string): string | null {
     const lower = actionSlug.toLowerCase();
-    const matches = imageFiles.filter((f) => f.toLowerCase().includes(lower));
+    // 1차: actionSlug 정확 매칭
+    let matches = imageFiles.filter((f) => f.toLowerCase().includes(lower));
+    // 2차: UUID 마지막 2 segment 또는 첫 segment 매칭 (예: com.elgato.spotify.multimedia → 'spotify' 또는 'multimedia')
+    if (matches.length === 0 && actionUuid) {
+      const segs = actionUuid.toLowerCase().split('.');
+      const candidates = [segs[segs.length - 1], segs[segs.length - 2], segs[2]].filter(Boolean);
+      for (const c of candidates) {
+        matches = imageFiles.filter((f) => f.toLowerCase().includes(c));
+        if (matches.length > 0) break;
+      }
+    }
+    // 3차: actionSlug 부분 매칭 (camelCase / snake_case 분해)
+    if (matches.length === 0) {
+      const parts = lower.split(/[_\-\s]/).filter((p) => p.length >= 3);
+      for (const p of parts) {
+        matches = imageFiles.filter((f) => f.toLowerCase().includes(p));
+        if (matches.length > 0) break;
+      }
+    }
     if (matches.length === 0) return null;
+    // PNG 우선 (컬러풀), SVG 마지막 (단색 가능성)
     const at2x = matches.find((f) => /@2x\.png$/i.test(f));
     if (at2x) return at2x;
+    const at3x = matches.find((f) => /@3x\.png$/i.test(f));
+    if (at3x) return at3x;
+    const png = matches.find((f) => /\.png$/i.test(f) && !/@\dx/.test(f));
+    if (png) return png;
     const svg = matches.find((f) => /\.svg$/i.test(f));
     if (svg) return svg;
-    const png = matches.find((f) => /\.png$/i.test(f) && !/@2x/.test(f));
-    if (png) return png;
     return matches[0];
   }
 
@@ -216,7 +269,7 @@ async function buildFallbackManifest(
         if (probe) { iconRef = c; break; }
       }
       if (!iconRef) {
-        const found = bestImageForAction(actionSlug);
+        const found = bestImageForAction(actionSlug, key);
         if (found) {
           iconRef = found.replace(pluginDir, '').replace(/\.(svg|png|jpg|jpeg|gif)$/i, '').replace(/@\dx$/i, '');
         }

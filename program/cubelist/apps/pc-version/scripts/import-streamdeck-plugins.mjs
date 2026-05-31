@@ -107,17 +107,37 @@ async function buildFallbackManifest(zip, pluginDir, zipFilename) {
     /\.(svg|png|jpg|jpeg|gif)$/i.test(f) && f.startsWith(pluginDir)
   );
 
-  function bestImageForAction(actionSlug) {
-    // 우선순위: @2x.png > .svg > .png > 첫 매칭
+  function bestImageForAction(actionSlug, actionUuid) {
+    // 우선순위: @2x.png > @3x.png > .png > .svg (PNG 컬러 우선, SVG 마지막)
     const slugLower = actionSlug.toLowerCase();
-    const matches = imageFiles.filter((f) => f.toLowerCase().includes(slugLower));
+    // 1차: actionSlug 정확 매칭
+    let matches = imageFiles.filter((f) => f.toLowerCase().includes(slugLower));
+    // 2차: UUID 마지막/첫 segment 매칭
+    if (matches.length === 0 && actionUuid) {
+      const segs = actionUuid.toLowerCase().split('.');
+      const candidates = [segs[segs.length - 1], segs[segs.length - 2], segs[2]].filter(Boolean);
+      for (const c of candidates) {
+        matches = imageFiles.filter((f) => f.toLowerCase().includes(c));
+        if (matches.length > 0) break;
+      }
+    }
+    // 3차: actionSlug 분해 후 매칭
+    if (matches.length === 0) {
+      const parts = slugLower.split(/[_\-\s]/).filter((p) => p.length >= 3);
+      for (const p of parts) {
+        matches = imageFiles.filter((f) => f.toLowerCase().includes(p));
+        if (matches.length > 0) break;
+      }
+    }
     if (matches.length === 0) return null;
     const at2x = matches.find((f) => /@2x\.png$/i.test(f));
     if (at2x) return at2x;
+    const at3x = matches.find((f) => /@3x\.png$/i.test(f));
+    if (at3x) return at3x;
+    const png = matches.find((f) => /\.png$/i.test(f) && !/@\dx/.test(f));
+    if (png) return png;
     const svg = matches.find((f) => /\.svg$/i.test(f));
     if (svg) return svg;
-    const png = matches.find((f) => /\.png$/i.test(f) && !/@2x/.test(f));
-    if (png) return png;
     return matches[0];
   }
 
@@ -159,9 +179,9 @@ async function buildFallbackManifest(zip, pluginDir, zipFilename) {
                       zip.file(`${pluginDir}${c}.svg`);
         if (probe) { iconRef = c; break; }
       }
-      // 글로벌 검색 폴백 — actionSlug 가 파일명에 포함된 첫 이미지
+      // 글로벌 검색 폴백 — actionSlug + UUID 다단계 매칭
       if (!iconRef) {
-        const found = bestImageForAction(actionSlug);
+        const found = bestImageForAction(actionSlug, key);
         if (found) {
           // pluginDir 와 확장자 제거 — loadIconAsDataUrl 가 .svg/@2x.png/.png 모두 시도
           const stripped = found.replace(pluginDir, '').replace(/\.(svg|png|jpg|jpeg|gif)$/i, '').replace(/@\dx$/i, '');
@@ -209,15 +229,27 @@ async function buildFallbackManifest(zip, pluginDir, zipFilename) {
  * 작은 1x.png (< 1500 byte) 는 placeholder 인 경우가 많아 우선 건너뜀.
  * 다른 candidate 가 전혀 없을 때만 1x.png 어떤 크기든 허용.
  */
+/**
+ * SVG 가시성 정규화: StreamDeck 단색 회색 fill → 흰색 (어두운 배경 가시성).
+ * plugin-converter.ts 의 normalizeSvgVisibility 와 동일 로직.
+ */
+function normalizeSvgVisibility(svgText) {
+  const monoFills = /(fill|stroke)\s*=\s*"#([cdef][cdef][cdef]|[abc][abc][abc]|[89][89][89]|fff|ddd|ccc|bbb|aaa|999|888|eee)"/gi;
+  let result = svgText.replace(monoFills, '$1="#ffffff"');
+  const styleFills = /(fill|stroke)\s*:\s*#([cdef][cdef][cdef]|[abc][abc][abc]|[89][89][89]|fff|ddd|ccc|bbb|aaa|999|888|eee)/gi;
+  result = result.replace(styleFills, '$1:#ffffff');
+  return result;
+}
+
 async function loadIconAsDataUrl(zip, pluginDir, iconRef) {
   if (!iconRef) return { dataUrl: null, source: null };
   const MAX_BYTES = 1024 * 1024;
   const PNG_MIN_BYTES = 1500; // placeholder PNG (32x32 단색) 회피
-  // 1차: 선명한 후보
+  // 우선순위: PNG (@3x/@2x) 컬러풀세트 > SVG 단색 (정규화 후)
   const sharp = [
-    { suffix: '.svg', mime: 'image/svg+xml' },
     { suffix: '@3x.png', mime: 'image/png' },
     { suffix: '@2x.png', mime: 'image/png' },
+    { suffix: '.svg', mime: 'image/svg+xml' },
   ];
   for (const { suffix, mime } of sharp) {
     const full = `${pluginDir}${iconRef}${suffix}`;
@@ -225,6 +257,12 @@ async function loadIconAsDataUrl(zip, pluginDir, iconRef) {
     if (!entry) continue;
     const buf = await entry.async('uint8array');
     if (buf.byteLength === 0 || buf.byteLength > MAX_BYTES) continue;
+    if (mime === 'image/svg+xml') {
+      const text = new TextDecoder('utf-8').decode(buf);
+      const normalized = normalizeSvgVisibility(text);
+      const normalizedBuf = new TextEncoder().encode(normalized);
+      return { dataUrl: makeDataUrl(normalizedBuf, mime), source: suffix };
+    }
     return { dataUrl: makeDataUrl(buf, mime), source: suffix };
   }
   // 2차: 1x.png — placeholder 회피 (작으면 skip)
