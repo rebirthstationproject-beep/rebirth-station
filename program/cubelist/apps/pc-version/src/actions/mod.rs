@@ -106,11 +106,82 @@ pub async fn execute(payload: &ActionPayload) -> Result<ExecutionResult, ActionE
         } => {
             execute_plugin_action(plugin_uuid, payload).await?;
         }
+        // === P1 11 신규 액션 (Phase 3, 2026-05-31) ===
+        ActionPayload::MediaKey { key } => execute_media_key(key)?,
+        ActionPayload::WindowClose => execute_window_close()?,
+        // frontend store 처리 액션 — Rust 측 no-op (Tauri invoke 가 frontend 직접 호출)
+        ActionPayload::PageNavigate { .. }
+        | ActionPayload::PageJump { .. }
+        | ActionPayload::FolderUp
+        | ActionPayload::FolderOpen { .. }
+        | ActionPayload::ProfileRotate { .. } => {
+            // frontend store 변경 = Rust no-op
+        }
+        // Tier 3 위험 액션 — 현재 stub (사용자 확정 후 활성)
+        ActionPayload::SystemSleep => return Err(ActionError::PermissionRequired(3)),
+        ActionPayload::SystemActionbarToggle
+        | ActionPayload::HotkeyToggle { .. }
+        | ActionPayload::AudioPlay { .. } => {
+            return Err(ActionError::PermissionRequired(2));
+        }
+        // === P2 4 동적 큐브 — frontend tick 처리 = Rust no-op ===
+        ActionPayload::LiveClock { .. }
+        | ActionPayload::LiveTimer { .. }
+        | ActionPayload::LiveGauge { .. }
+        | ActionPayload::LiveBattery { .. } => {
+            // frontend tick 시스템 = Rust no-op
+        }
     }
 
     Ok(ExecutionResult {
         elapsed_ms: started.elapsed().as_millis() as u32,
     })
+}
+
+// ===== P1 즉시 구현 액션 =====
+
+#[cfg(feature = "keys")]
+fn execute_media_key(key: &str) -> Result<(), ActionError> {
+    use enigo::{Direction, Enigo, Key, Keyboard, Settings};
+    let mut enigo = Enigo::new(&Settings::default())
+        .map_err(|e| ActionError::OsCommand(format!("Enigo 초기화 실패: {e}")))?;
+    let media_key = match key {
+        "play_pause" => Key::MediaPlayPause,
+        "next" => Key::MediaNextTrack,
+        "prev" => Key::MediaPrevTrack,
+        "stop" => Key::MediaStop,
+        "volume_up" => Key::VolumeUp,
+        "volume_down" => Key::VolumeDown,
+        "mute" => Key::VolumeMute,
+        _ => return Err(ActionError::OsCommand(format!("미지원 미디어 키: {key}"))),
+    };
+    enigo
+        .key(media_key, Direction::Click)
+        .map_err(|e| ActionError::OsCommand(format!("미디어 키 송신 실패: {e}")))
+}
+
+#[cfg(not(feature = "keys"))]
+fn execute_media_key(_key: &str) -> Result<(), ActionError> {
+    Err(ActionError::FeatureDisabled("media_key"))
+}
+
+#[cfg(feature = "keys")]
+fn execute_window_close() -> Result<(), ActionError> {
+    use enigo::{Direction, Enigo, Key, Keyboard, Settings};
+    let mut enigo = Enigo::new(&Settings::default())
+        .map_err(|e| ActionError::OsCommand(format!("Enigo 초기화 실패: {e}")))?;
+    // Alt+F4
+    enigo
+        .key(Key::Alt, Direction::Press)
+        .map_err(|e| ActionError::OsCommand(format!("Alt press 실패: {e}")))?;
+    let f4_result = enigo.key(Key::F4, Direction::Click);
+    let _ = enigo.key(Key::Alt, Direction::Release);
+    f4_result.map_err(|e| ActionError::OsCommand(format!("F4 송신 실패: {e}")))
+}
+
+#[cfg(not(feature = "keys"))]
+fn execute_window_close() -> Result<(), ActionError> {
+    Err(ActionError::FeatureDisabled("window_close"))
 }
 
 // ---------------------------------------------------------------------------

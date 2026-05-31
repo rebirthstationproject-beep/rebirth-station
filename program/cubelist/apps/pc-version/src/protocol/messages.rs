@@ -218,6 +218,81 @@ pub enum ActionPayload {
         #[serde(default)]
         payload: serde_json::Value,
     },
+
+    // ===== P1 11 신규 액션 (Phase 3, 2026-05-31) — StreamDeck 100% 호환 =====
+    /// 미디어 키 (play/pause/next/prev/stop/volume_up/volume_down/mute) — Tier 1
+    MediaKey {
+        key: String,
+    },
+    /// 페이지 이동 (next/prev) — frontend store 처리. Rust = stub (Tier 1)
+    PageNavigate {
+        direction: String,
+    },
+    /// 특정 페이지 점프 — frontend store 처리. Rust = stub
+    PageJump {
+        page_index: u32,
+    },
+    /// 상위 폴더로 — frontend store 처리. Rust = stub
+    FolderUp,
+    /// 자식 폴더 진입 — frontend store 처리. Rust = stub
+    FolderOpen {
+        folder_id: String,
+    },
+    /// 활성 창 닫기 (Alt+F4) — Tier 2
+    WindowClose,
+    /// 시스템 절전 — Tier 3 (영구 토글 위험)
+    SystemSleep,
+    /// 시스템 액션바 토글 — Tier 2 (Windows-only)
+    SystemActionbarToggle,
+    /// 토글 hotkey (states 의존) — Tier 2
+    HotkeyToggle {
+        on_keys: Vec<String>,
+        off_keys: Vec<String>,
+    },
+    /// 오디오 클립 재생 — Tier 1
+    AudioPlay {
+        audio_url: String,
+        #[serde(default = "default_volume")]
+        volume: f32,
+        #[serde(default)]
+        loop_: bool,
+    },
+    /// 큐브 리스트 회전 — frontend store 처리. Rust = stub
+    ProfileRotate {
+        direction: String,
+    },
+
+    // ===== P2 4 동적 큐브 액션 (Phase 5 P2) — frontend tick 처리 =====
+    /// 라이브 시계 — frontend useDynamicCubes tick 처리. Rust = stub
+    LiveClock {
+        format: String,
+    },
+    /// 라이브 타이머 — frontend tick 처리. Rust = stub
+    LiveTimer {
+        target_ms: u64,
+        #[serde(default)]
+        label_format: String,
+    },
+    /// 라이브 게이지 — frontend tick 처리. Rust = stub
+    LiveGauge {
+        value: f64,
+        min: f64,
+        max: f64,
+        #[serde(default)]
+        unit: String,
+        #[serde(default)]
+        label_prefix: String,
+    },
+    /// 라이브 배터리 — frontend tick 처리. Rust = stub
+    LiveBattery {
+        source: String,
+        #[serde(default)]
+        manual_level: f32,
+    },
+}
+
+fn default_volume() -> f32 {
+    1.0
 }
 
 fn default_mouse_button() -> MouseButton {

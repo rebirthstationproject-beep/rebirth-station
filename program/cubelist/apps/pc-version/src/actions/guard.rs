@@ -32,6 +32,68 @@ pub fn validate(payload: &ActionPayload) -> Result<(), ActionError> {
         ActionPayload::PluginAction { plugin_uuid, payload } => {
             validate_plugin_action(plugin_uuid, payload)
         }
+        // === P1 11 신규 액션 (Phase 3) ===
+        ActionPayload::MediaKey { key } => validate_media_key(key),
+        ActionPayload::PageNavigate { direction } => validate_direction(direction),
+        ActionPayload::PageJump { .. } => Ok(()),
+        ActionPayload::FolderUp => Ok(()),
+        ActionPayload::FolderOpen { folder_id } => {
+            if folder_id.is_empty() || folder_id.len() > MAX_LABEL_LEN {
+                Err(ActionError::OsCommand("folder_id 길이 무효".into()))
+            } else {
+                Ok(())
+            }
+        }
+        ActionPayload::WindowClose => Ok(()),
+        ActionPayload::SystemSleep => Ok(()),
+        ActionPayload::SystemActionbarToggle => Ok(()),
+        ActionPayload::HotkeyToggle { on_keys, off_keys } => {
+            if on_keys.is_empty() || off_keys.is_empty() {
+                Err(ActionError::OsCommand("on/off_keys 필수".into()))
+            } else {
+                validate_shortcut(on_keys).and_then(|_| validate_shortcut(off_keys))
+            }
+        }
+        ActionPayload::AudioPlay { audio_url, volume, .. } => {
+            if audio_url.is_empty() || audio_url.len() > 4096 {
+                return Err(ActionError::OsCommand("audio_url 길이 무효".into()));
+            }
+            if !(0.0..=1.0).contains(volume) {
+                return Err(ActionError::OsCommand("volume 0.0~1.0 범위".into()));
+            }
+            Ok(())
+        }
+        ActionPayload::ProfileRotate { direction } => validate_direction(direction),
+        // === P2 4 동적 큐브 — frontend tick 처리 = Rust 단순 통과 ===
+        ActionPayload::LiveClock { .. } => Ok(()),
+        ActionPayload::LiveTimer { .. } => Ok(()),
+        ActionPayload::LiveGauge { min, max, .. } => {
+            if min >= max {
+                Err(ActionError::OsCommand("min < max 필수".into()))
+            } else {
+                Ok(())
+            }
+        }
+        ActionPayload::LiveBattery { .. } => Ok(()),
+    }
+}
+
+fn validate_media_key(key: &str) -> Result<(), ActionError> {
+    let allowed = [
+        "play_pause", "next", "prev", "stop", "volume_up", "volume_down", "mute",
+    ];
+    if allowed.contains(&key) {
+        Ok(())
+    } else {
+        Err(ActionError::OsCommand(format!("미디어 키 무효: {key}")))
+    }
+}
+
+fn validate_direction(direction: &str) -> Result<(), ActionError> {
+    if direction == "next" || direction == "prev" {
+        Ok(())
+    } else {
+        Err(ActionError::OsCommand(format!("direction 무효: {direction}")))
     }
 }
 
