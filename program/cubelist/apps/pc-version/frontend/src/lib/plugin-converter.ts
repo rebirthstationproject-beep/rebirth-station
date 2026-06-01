@@ -15,13 +15,7 @@ import JSZip from 'jszip';
 const RBS_FORMAT_VERSION = 3;
 const RBS_MIN_VERSION = '0.1.0';
 
-const ACTION_TYPE_MAP: Record<string, string> = {
-  'com.elgato.streamdeck.system.website': 'link',
-  'com.elgato.streamdeck.system.open': 'app_launch',
-  'com.elgato.streamdeck.system.openapp': 'app_launch',
-  'com.elgato.streamdeck.system.hotkey': 'shortcut',
-  'com.elgato.streamdeck.system.text': 'text_insert',
-};
+import { ACTION_TYPE_MAP, heuristicMatch } from './heuristic-mapping';
 
 const MAX_IMAGE_BYTES = 1024 * 1024;
 const PNG_MIN_BYTES = 1500;
@@ -369,19 +363,29 @@ async function readPluginManifest(
   return { manifest: JSON.parse(text) as PluginManifest, pluginDir, fallback: false };
 }
 
-function mapActionType(uuid: string | undefined): string {
-  return (uuid && ACTION_TYPE_MAP[uuid]) ?? 'plugin_action';
+function mapActionType(uuid: string | undefined, name?: string, tooltip?: string): { type: string; payload?: Record<string, unknown> } {
+  const matched = heuristicMatch(uuid, name, tooltip);
+  if (matched) return matched;
+  return { type: 'plugin_action' };
 }
 
-function buildActionPayload(uuid: string | undefined, mappedType: string): Record<string, unknown> {
+function buildActionPayload(uuid: string | undefined, mappedType: string, heuristicPayload?: Record<string, unknown>): Record<string, unknown> {
   if (mappedType === 'plugin_action') {
     return { plugin_uuid: uuid ?? '', action_id: 'default', payload: {} };
   }
+  // heuristic 매칭 payload 우선
+  if (heuristicPayload) return heuristicPayload;
   switch (mappedType) {
     case 'link': return { url: '' };
     case 'app_launch': return { path: '', args: [] };
     case 'shortcut': return { keys: [] };
     case 'text_insert': return { text: '' };
+    case 'live_clock': return { format: 'HH:mm' };
+    case 'live_timer': return { duration_seconds: 1500 };
+    case 'live_gauge': return { source: 'cpu' };
+    case 'live_battery': return {};
+    case 'media_key': return { key: 'VolumeMute' };
+    case 'macro': return { steps: [] };
     default: return {};
   }
 }
@@ -406,7 +410,9 @@ async function buildCubeOneZipBytes(
 ): Promise<Uint8Array> {
   const id = safeId(action.UUID ?? action.Name ?? 'action');
   const label = action.Name ?? id;
-  const mappedType = mapActionType(action.UUID);
+  const mappingResult = mapActionType(action.UUID, action.Name, action.Tooltip);
+  const mappedType = mappingResult.type;
+  const heuristicPayload = mappingResult.payload;
   const stateImage = Array.isArray(action.States) ? action.States[0]?.Image : null;
   let iconUrl: string | null = null;
   let iconSource = 'none';
@@ -444,7 +450,7 @@ async function buildCubeOneZipBytes(
           settings: {}, // PropertyInspector 옵션
           payload: {},
         }
-      : buildActionPayload(action.UUID, mappedType);
+      : buildActionPayload(action.UUID, mappedType, heuristicPayload);
 
   const cube = {
     label,
@@ -455,6 +461,8 @@ async function buildCubeOneZipBytes(
       source: 'streamdeck-import',
       sd_uuid: action.UUID,
       sd_tooltip: action.Tooltip,
+      // 2026-06-01 heuristic 매핑 결과 기록 — 사용자가 추가 매핑 / 디버깅 시 참고
+      mapping_kind: mappedType === 'plugin_action' ? 'fallback' : (ACTION_TYPE_MAP[action.UUID ?? ''] ? 'exact' : 'heuristic'),
       // 가시화 판정용 (frontend cube-cell class 분기)
       icon_source: iconSource,                     // 'state@2x.png' / 'state.svg' / 'plugin_icon_fallback' / 'none'
       icon_size_bytes: iconSizeBytes,              // 0 = placeholder/fallback, < 800 = tiny PNG, ≥ 800 = OK

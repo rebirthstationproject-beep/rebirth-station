@@ -20,8 +20,31 @@
  */
 
 import JSZip from 'jszip';
-import type { Cube, CubeList, CubePack } from '../types/cube';
+import type { Cube, CubeActionType, CubeList, CubePack } from '../types/cube';
 import { readCubeZip } from './cubepack-io';
+import { remapPluginActionCube } from './heuristic-mapping';
+
+/**
+ * 2026-06-01: 기존 plugin_action 큐브를 dynamic remap.
+ * label / metadata.sd_uuid / metadata.sd_tooltip 기반 heuristic.
+ * 사용자가 재변환 없이 즉시 효과.
+ */
+function applyDynamicRemap(cube: Cube): Cube {
+  const result = remapPluginActionCube(cube);
+  if (!result.changed) return cube;
+  const meta = (cube.metadata ?? {}) as Record<string, unknown>;
+  return {
+    ...cube,
+    action_type: result.type as CubeActionType,
+    action_payload: (result.payload ?? {}) as Record<string, unknown>,
+    metadata: {
+      ...meta,
+      mapping_kind: 'dynamic_heuristic',
+      dynamic_mapped_at: new Date().toISOString(),
+      original_action_type: 'plugin_action',
+    },
+  };
+}
 
 interface LibraryFile {
   relative_path: string;
@@ -61,6 +84,8 @@ export async function loadLibraryFromDir(path: string): Promise<CubePack> {
       console.warn(`[library-loader] ${file.relative_path} 파싱 실패`, e);
       continue;
     }
+    // 2026-06-01: plugin_action 큐브 dynamic remap (heuristic builtin 매핑)
+    cube = applyDynamicRemap(cube);
     if (parts.length === 1) {
       looseCubes.push(cube);
     } else {
