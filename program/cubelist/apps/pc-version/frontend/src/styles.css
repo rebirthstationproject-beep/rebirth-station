@@ -1907,6 +1907,12 @@ html, body, #root {
 .cube-cell.icon-tiny .cube-icon-bg {
   filter: invert(1) brightness(1.4) contrast(0.95);
 }
+/* 2026-06-01: StreamDeck SDK PNG (state@*.png, 보통 monochrome white-on-transparent)
+   검정 배경에 그대로 두면 잘 안 보임 → 살짝 brightness + drop-shadow 로 시인성 강화. */
+.cube-cell.icon-sdk-mono .cube-icon-bg {
+  filter: brightness(1.15) drop-shadow(0 0 1px rgba(255,255,255,0.4));
+  background-size: 70% auto;
+}
 /* plugin_icon_fallback / NO_ICON — 라벨 큰 글씨 중앙 표시 */
 .cube-cell.icon-placeholder .cube-icon-bg {
   background-image: none !important;

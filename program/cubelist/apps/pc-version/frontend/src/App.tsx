@@ -734,12 +734,15 @@ function CubeMakerCenter() {
             const iconMeta = (cube.metadata ?? {}) as Record<string, unknown>;
             const isTinyIcon = iconMeta.icon_is_tiny === true;
             const isPlaceholderIcon = !hasIcon || iconMeta.icon_is_placeholder === true;
+            // 2026-06-01: StreamDeck SDK PNG (state@*.png, 보통 monochrome) → invert + brightness
+            const iconSourceStr = (iconMeta.icon_source as string | undefined) ?? '';
+            const isSdkMonoPng = /^state(@\dx)?\.png$/i.test(iconSourceStr);
             const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
             return (
               <button
                 key={cube.id}
                 type="button"
-                className={`cube-cell ${hasIcon ? 'has-icon' : ''} ${isSelected ? 'is-selected' : ''} ${inSelection ? 'is-in-selection' : ''} ${isTinyIcon ? 'icon-tiny' : ''} ${isPlaceholderIcon ? 'icon-placeholder' : ''}`}
+                className={`cube-cell ${hasIcon ? 'has-icon' : ''} ${isSelected ? 'is-selected' : ''} ${inSelection ? 'is-in-selection' : ''} ${isTinyIcon ? 'icon-tiny' : ''} ${isSdkMonoPng ? 'icon-sdk-mono' : ''} ${isPlaceholderIcon ? 'icon-placeholder' : ''}`}
                 onClick={() => handleClickCube(cube.id)}
                 title={`${cube.label} (${cube.action_type})`}
               >
@@ -783,20 +786,16 @@ function CubeMakerCenter() {
                 <button
                   key={`maker-empty-${i}`}
                   type="button"
-                  className="cube-cell cube-cell-trail-empty"
+                  className="cube-cell cube-cell-add cube-cell-trail-empty"
                   onClick={handleAddNewCube}
                   title={`슬롯 ${slotIdx} 에 큐브 추가`}
                   aria-label={`빈 슬롯 ${slotIdx}`}
                   style={{
-                    border: '2px dashed var(--color-border, #333)',
-                    background: 'transparent',
-                    opacity: isPageBoundary ? 0.85 : 0.45,
-                    cursor: 'pointer',
-                    transition: 'opacity 0.15s',
+                    opacity: isPageBoundary ? 0.85 : 0.55,
                     position: 'relative',
                   }}
-                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.opacity = isPageBoundary ? '0.85' : '0.45'; }}
+                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.95'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.opacity = isPageBoundary ? '0.85' : '0.55'; }}
                 >
                   {isPageBoundary && (
                     <span
@@ -816,8 +815,10 @@ function CubeMakerCenter() {
                       권장 페이지 {RECOMMENDED_ROWS} 행
                     </span>
                   )}
-                  <span style={{ fontSize: 24, opacity: 0.5 }}>＋</span>
-                  <span style={{ fontSize: 9, opacity: 0.5 }}>{slotIdx}</span>
+                  <div className="cube-icon-bg">
+                    <span className="cube-cell-add-plus">＋</span>
+                  </div>
+                  <span className="cube-label" style={{ opacity: 0.5 }}>슬롯 {slotIdx}</span>
                 </button>
               );
             });
@@ -1962,6 +1963,9 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
   const iconMeta = (cube.metadata ?? {}) as Record<string, unknown>;
   const isTinyIcon = iconMeta.icon_is_tiny === true;
   const isPlaceholderIcon = !cube.icon_url || iconMeta.icon_is_placeholder === true;
+  // 2026-06-01: StreamDeck SDK PNG (state@*.png) = monochrome → invert
+  const iconSourceStr = (iconMeta.icon_source as string | undefined) ?? '';
+  const isSdkMonoPng = /^state(@\dx)?\.png$/i.test(iconSourceStr);
   const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
   // v0.1.2: payload validation 상태 (invalid 시 셀에 빨간 ! dot 표시)
   const validationErrors = useMemo(
@@ -2000,7 +2004,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       style={style}
       type="button"
       role="gridcell"
-      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''} ${cube.icon_url ? 'has-icon' : ''} ${isTinyIcon ? 'icon-tiny' : ''} ${isPlaceholderIcon ? 'icon-placeholder' : ''} ${isInvalid ? 'is-invalid' : ''}`}
+      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''} ${cube.icon_url ? 'has-icon' : ''} ${isTinyIcon ? 'icon-tiny' : ''} ${isSdkMonoPng ? 'icon-sdk-mono' : ''} ${isPlaceholderIcon ? 'icon-placeholder' : ''} ${isInvalid ? 'is-invalid' : ''}`}
       onClick={() => {
         // M4: plugin_action 큐브 더블클릭 → fireCubeKey, 단일클릭 → select
         selectCube(selected ? null : cube.id);
