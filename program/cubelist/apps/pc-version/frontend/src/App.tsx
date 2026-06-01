@@ -42,6 +42,7 @@ import { useCubeStates } from './lib/useCubeStates';
 import { CubeContextMenu } from './components/CubeContextMenu';
 import { DropZone } from './components/DropZone';
 import { CubePreview } from './components/CubePreview';
+import { LiveCubeVisual } from './components/LiveCubeVisual';
 import { CubeStatesEditor } from './components/CubeStatesEditor';
 import { MarketplaceMetaEditor } from './components/MarketplaceMetaEditor';
 import { MarketplaceCatalog } from './components/MarketplaceCatalog';
@@ -746,7 +747,14 @@ function CubeMakerCenter() {
                 onClick={() => handleClickCube(cube.id)}
                 title={`${cube.label} (${cube.action_type})`}
               >
-                {hasIcon && !isPlaceholderIcon ? (
+                {cube.action_type === 'live_clock' ||
+                cube.action_type === 'live_timer' ||
+                cube.action_type === 'live_battery' ||
+                cube.action_type === 'live_gauge' ? (
+                  <div className="cube-icon-bg" aria-hidden style={{ background: '#0a0a0a', overflow: 'hidden' }}>
+                    <LiveCubeVisual cube={cube} />
+                  </div>
+                ) : hasIcon && !isPlaceholderIcon ? (
                   <div
                     className="cube-icon-bg"
                     style={{ backgroundImage: `url("${cube.icon_url}")` }}
@@ -765,64 +773,23 @@ function CubeMakerCenter() {
               </button>
             );
           })}
-          {/* P1-B1 (2026-06-01): 그리드 끝 점선 빈 슬롯 (편집 모드 의존 제거)
-              - cols 단위로 row 완성 + 추가 2 row
-              - 한 페이지 권장 분량 (cols × 4) 도달 후엔 1 row 만 (분량 과시 X) */}
-          {(() => {
-            const total = cubesToShow.length + 1; // +1 = "새 큐브" 셀
-            const RECOMMENDED_ROWS = 4;
-            const TRAILING_ROWS_UNDER = 2;
-            const TRAILING_ROWS_OVER = 1;
-            const remainderInRow = total % cols;
-            const fillToRowEnd = remainderInRow === 0 ? 0 : cols - remainderInRow;
-            const overRecommended = total > cols * RECOMMENDED_ROWS;
-            const extraRows = overRecommended ? TRAILING_ROWS_OVER : TRAILING_ROWS_UNDER;
-            const emptyCount = fillToRowEnd + cols * extraRows;
-            return Array.from({ length: emptyCount }, (_, i) => {
-              const slotIdx = total + i + 1;
-              // 권장 페이지 경계 (cols × 4 = 16 또는 28) 첫 번째 빈 슬롯에 divider 표시
-              const isPageBoundary = slotIdx === cols * RECOMMENDED_ROWS + 1;
-              return (
-                <button
-                  key={`maker-empty-${i}`}
-                  type="button"
-                  className="cube-cell cube-cell-add cube-cell-trail-empty"
-                  onClick={handleAddNewCube}
-                  title={`슬롯 ${slotIdx} 에 큐브 추가`}
-                  aria-label={`빈 슬롯 ${slotIdx}`}
-                  style={{
-                    opacity: isPageBoundary ? 0.85 : 0.55,
-                    position: 'relative',
-                  }}
-                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.95'; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.opacity = isPageBoundary ? '0.85' : '0.55'; }}
-                >
-                  {isPageBoundary && (
-                    <span
-                      aria-hidden
-                      style={{
-                        position: 'absolute',
-                        top: -10,
-                        left: 0,
-                        right: 0,
-                        textAlign: 'center',
-                        fontSize: 9,
-                        color: 'var(--color-ink-muted, #888)',
-                        background: 'var(--color-bg, #0a0a0a)',
-                        padding: '0 4px',
-                      }}
-                    >
-                      권장 페이지 {RECOMMENDED_ROWS} 행
-                    </span>
-                  )}
-                  <div className="cube-icon-bg">
-                    <span className="cube-cell-add-plus">＋</span>
-                  </div>
-                  <span className="cube-label" style={{ opacity: 0.5 }}>슬롯 {slotIdx}</span>
-                </button>
-              );
-            });
-          })()}
+          {/* P1-B1 갱신 (2026-06-01): 사용자 명시 "앞과 뒤에 한개씩"
+              앞 = "+ 새 큐브" 셀 (이미 위에 있음). 뒤 = 점선 빈 슬롯 1개. */}
+          <button
+            type="button"
+            className="cube-cell cube-cell-add cube-cell-trail-empty"
+            onClick={handleAddNewCube}
+            title={`다음 슬롯에 큐브 추가`}
+            aria-label="다음 빈 슬롯"
+            style={{ opacity: 0.55 }}
+            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.95'; }}
+            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
+          >
+            <div className="cube-icon-bg">
+              <span className="cube-cell-add-plus">＋</span>
+            </div>
+            <span className="cube-label" style={{ opacity: 0.5 }}>새 큐브</span>
+          </button>
         </div>
       )}
       {/* 디바이스 권장 페이지 가이드 (2026-06-01) — 사용자 명시 디폴트 + 현재 큐브 수 */}
@@ -2038,7 +2005,14 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       {...restAttrs}
       {...listeners}
     >
-      {cube.icon_url && !isPlaceholderIcon ? (
+      {cube.action_type === 'live_clock' ||
+      cube.action_type === 'live_timer' ||
+      cube.action_type === 'live_battery' ||
+      cube.action_type === 'live_gauge' ? (
+        <div className="cube-icon-bg" aria-hidden style={{ background: '#0a0a0a', overflow: 'hidden' }}>
+          <LiveCubeVisual cube={cube} />
+        </div>
+      ) : cube.icon_url && !isPlaceholderIcon ? (
         <div
           className="cube-icon-bg"
           style={{ backgroundImage: `url("${cube.icon_url}")` }}
