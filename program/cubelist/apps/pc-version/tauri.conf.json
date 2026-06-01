@@ -98,7 +98,7 @@
     },
     "resources": [],
     "externalBin": [],
-    "createUpdaterArtifacts": true
+    "createUpdaterArtifacts": false
   },
   "plugins": {}
 }

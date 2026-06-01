@@ -67,6 +67,12 @@ import { CubeIconUpload } from './components/CubeIconUpload';
 import { GridLayoutModal } from './components/GridLayoutModal';
 import { LocaleSwitcher } from './components/LocaleSwitcher';
 import { useTranslation } from './lib/i18n/useTranslation';
+import {
+  PHONE_PORTRAIT,
+  PHONE_MAX_PORTRAIT,
+  TABLET_PORTRAIT,
+  PC_DEFAULT_ROWS,
+} from './lib/device-defaults';
 import { describeExecuteError, executeCube, isTauri } from './lib/tauri-bridge';
 import {
   buildPluginActionPayload,
@@ -818,7 +824,52 @@ function CubeMakerCenter() {
           })()}
         </div>
       )}
+      {/* 디바이스 권장 페이지 가이드 (2026-06-01) — 사용자 명시 디폴트 + 현재 큐브 수 */}
+      {cubesToShow.length > 0 && <PageSizeGuide currentCubeCount={cubesToShow.length} cols={cols} />}
     </>
+  );
+}
+
+/**
+ * 디바이스 권장 페이지 가이드 (2026-06-01) — cube-maker 그리드 하단.
+ * 사용자 명시: 일반 모바일 4×6, Pro Max 4×7, PC 사용자 정의 + 권장 4행.
+ */
+function PageSizeGuide({ currentCubeCount, cols }: { currentCubeCount: number; cols: number }) {
+  const pcRecommended = cols * PC_DEFAULT_ROWS;
+  const ratio = (currentCubeCount / pcRecommended) * 100;
+  return (
+    <div
+      role="note"
+      style={{
+        margin: '20px 16px 8px',
+        padding: '8px 12px',
+        fontSize: 10,
+        opacity: 0.55,
+        border: '1px solid var(--color-border, #333)',
+        borderRadius: 6,
+        display: 'flex',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        gap: 14,
+      }}
+    >
+      <span style={{ fontWeight: 600 }}>
+        📊 현재 {currentCubeCount} 큐브
+      </span>
+      <span>
+        PC 권장 페이지: <strong>{cols}×{PC_DEFAULT_ROWS}={pcRecommended}</strong>
+        ({Math.round(ratio)}%)
+      </span>
+      <span title="iPhone 일반/Pro, 갤럭시 일반">
+        모바일 권장: <strong>{PHONE_PORTRAIT.cols}×{PHONE_PORTRAIT.rows}={PHONE_PORTRAIT.cols * PHONE_PORTRAIT.rows}</strong>
+      </span>
+      <span title="iPhone Pro Max, 갤럭시 울트라">
+        Pro Max: <strong>{PHONE_MAX_PORTRAIT.cols}×{PHONE_MAX_PORTRAIT.rows}={PHONE_MAX_PORTRAIT.cols * PHONE_MAX_PORTRAIT.rows}</strong>
+      </span>
+      <span title="iPad / 갤럭시 탭 (잠정 — 사용자 실측 후 확정)">
+        태블릿: <strong>{TABLET_PORTRAIT.cols}×{TABLET_PORTRAIT.rows}={TABLET_PORTRAIT.cols * TABLET_PORTRAIT.rows}+</strong>
+      </span>
+    </div>
   );
 }
 
