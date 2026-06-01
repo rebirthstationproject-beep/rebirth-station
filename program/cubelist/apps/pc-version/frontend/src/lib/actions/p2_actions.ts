@@ -13,8 +13,8 @@ import type { ActionSpec } from './types';
 
 export const liveClockAction: ActionSpec = {
   id: 'live_clock',
-  label: '디지털 시계',
-  description: '현재 시각을 라이브로 표시합니다 (1초 또는 30초 간격).',
+  label: '시계 (디지털/아날로그)',
+  description: '현재 시각을 라이브로 표시합니다. 디지털 시:분:초 또는 아날로그 SVG 시계.',
   tier: 1,
   category: '시스템',
   defaultPayload: { format: 'HH:MM:SS' },
@@ -28,6 +28,7 @@ export const liveClockAction: ActionSpec = {
         { value: 'HH:MM:SS', label: '시:분:초 (1초 갱신)' },
         { value: 'HH:MM', label: '시:분 (30초 갱신)' },
         { value: 'h:MM AM/PM', label: '12시간 (1분 갱신)' },
+        { value: 'analog', label: '아날로그 시계 (SVG 1초 갱신)' },
       ],
     },
   ],
