@@ -80,6 +80,8 @@ import {
  * placeholder 큐브의 시각적 다양성 + 식별성을 위해.
  * 동일 라벨 → 항상 같은 색 (안정).
  */
+// 2026-06-01 v4: 자체 SVG 아이콘 생성기 (design.md Level 10)
+import { generateIconDataUrl } from './lib/icon-generator';
 function labelToGradient(label: string): [string, string] {
   // Brand 컬러 우선 매핑 (대표 vendor 컬러)
   const lower = label.toLowerCase();
@@ -773,6 +775,9 @@ function CubeMakerCenter() {
             const isSdkMonoPng = /^state(@\dx)?\.png$/i.test(iconSourceStr);
             const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
             const placeholderColors = labelToGradient(cube.label || cube.id);
+            // 2026-06-01 v4: 자체 SVG 아이콘 (design.md Level 10) — placeholder + tiny PNG 대체
+            const useGeneratedSvg = !hasIcon || isPlaceholderIcon || isTinyIcon;
+            const generatedSvgUrl = useGeneratedSvg ? generateIconDataUrl(cube.label, cube.action_type) : null;
             return (
               <button
                 key={cube.id}
@@ -791,10 +796,22 @@ function CubeMakerCenter() {
                   <div className="cube-icon-bg" aria-hidden style={{ background: '#0a0a0a', overflow: 'hidden' }}>
                     <LiveCubeVisual cube={cube} />
                   </div>
-                ) : hasIcon && !isPlaceholderIcon ? (
+                ) : hasIcon && !isPlaceholderIcon && !isTinyIcon ? (
                   <div
                     className="cube-icon-bg"
                     style={{ backgroundImage: `url("${cube.icon_url}")` }}
+                    aria-hidden
+                  />
+                ) : generatedSvgUrl ? (
+                  <div
+                    className="cube-icon-bg"
+                    style={{
+                      backgroundImage: `url("${generatedSvgUrl}")`,
+                      backgroundSize: '60% auto',
+                      background: `linear-gradient(135deg, ${placeholderColors[0]}22, ${placeholderColors[1]}22), #0a0a0a`,
+                      backgroundRepeat: 'no-repeat',
+                      backgroundPosition: 'center',
+                    }}
                     aria-hidden
                   />
                 ) : (
@@ -1993,6 +2010,8 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
   const isSdkMonoPng = /^state(@\dx)?\.png$/i.test(iconSourceStr);
   const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
   const placeholderColors = labelToGradient(cube.label || cube.id);
+  const useGeneratedSvg = !cube.icon_url || isPlaceholderIcon || isTinyIcon;
+  const generatedSvgUrl = useGeneratedSvg ? generateIconDataUrl(cube.label, cube.action_type) : null;
   // v0.1.2: payload validation 상태 (invalid 시 셀에 빨간 ! dot 표시)
   const validationErrors = useMemo(
     () => {
@@ -2073,10 +2092,22 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
         <div className="cube-icon-bg" aria-hidden style={{ background: '#0a0a0a', overflow: 'hidden' }}>
           <LiveCubeVisual cube={cube} />
         </div>
-      ) : cube.icon_url && !isPlaceholderIcon ? (
+      ) : cube.icon_url && !isPlaceholderIcon && !isTinyIcon ? (
         <div
           className="cube-icon-bg"
           style={{ backgroundImage: `url("${cube.icon_url}")` }}
+          aria-hidden
+        />
+      ) : !isFolder && generatedSvgUrl ? (
+        <div
+          className="cube-icon-bg"
+          style={{
+            backgroundImage: `url("${generatedSvgUrl}")`,
+            backgroundSize: '60% auto',
+            background: `linear-gradient(135deg, ${placeholderColors[0]}22, ${placeholderColors[1]}22), #0a0a0a`,
+            backgroundRepeat: 'no-repeat',
+            backgroundPosition: 'center',
+          }}
           aria-hidden
         />
       ) : !isFolder ? (
