@@ -589,10 +589,18 @@ export async function convertPlugin(
     }
   }
   if (cubes.length === 0) {
-    const placeholder = await buildPlaceholderCubeOne(folderName, '액션 0개');
-    cubes.push({ filename: `${folderName}01.cubeone`, bytes: placeholder });
-    iconStats['placeholder_empty'] = (iconStats['placeholder_empty'] ?? 0) + 1;
-    warnings.push('actions[] 비어있음 — placeholder 큐브 1개 생성');
+    // 2026-06-01 A3: 폴더명 자동 매핑 — Spotify Integration / Twitch Tools 등
+    const mapped = guessFolderMapping(folderName);
+    if (mapped) {
+      const cubeBytes = await buildMappedCubeOne(folderName, mapped);
+      cubes.push({ filename: `${folderName}01.cubeone`, bytes: cubeBytes });
+      iconStats['folder_heuristic'] = (iconStats['folder_heuristic'] ?? 0) + 1;
+      warnings.push(`actions[] 비어있음 — 폴더명 매핑 ${mapped.action_type} 적용`);
+    } else {
+      // A2: 매핑 실패 시 placeholder 생성 skip (사용자 라이브러리 오염 방지)
+      iconStats['skipped_no_action'] = (iconStats['skipped_no_action'] ?? 0) + 1;
+      warnings.push('actions[] 비어있음 + 폴더명 매핑 실패 — 큐브 생성 skip');
+    }
   }
   return {
     folderName,
@@ -604,6 +612,55 @@ export async function convertPlugin(
     iconSources: iconStats,
     warnings,
   };
+}
+
+/** 2026-06-01: 폴더명 자동 매핑 (A3). 4 placeholder 큐브 케이스 해결. */
+interface FolderMapping {
+  readonly label: string;
+  readonly action_type: string;
+  readonly action_payload: Record<string, unknown>;
+}
+function guessFolderMapping(folderName: string): FolderMapping | null {
+  const fn = folderName.toLowerCase();
+  if (/spotify/i.test(fn)) return { label: 'Spotify', action_type: 'link', action_payload: { url: 'https://open.spotify.com' } };
+  if (/twitch/i.test(fn)) return { label: 'Twitch', action_type: 'link', action_payload: { url: 'https://www.twitch.tv' } };
+  if (/youtube/i.test(fn)) return { label: 'YouTube', action_type: 'link', action_payload: { url: 'https://www.youtube.com' } };
+  if (/discord/i.test(fn)) return { label: 'Discord', action_type: 'link', action_payload: { url: 'https://discord.com/channels/@me' } };
+  if (/sound.?deck/i.test(fn)) return { label: 'Sound Deck', action_type: 'link', action_payload: { url: 'https://www.elgato.com/sound-deck' } };
+  if (/win.?tools|win.?settings/i.test(fn)) return { label: 'Windows', action_type: 'link', action_payload: { url: 'ms-settings:' } };
+  if (/weather/i.test(fn)) return { label: 'Weather', action_type: 'link', action_payload: { url: 'https://weather.com' } };
+  if (/github/i.test(fn)) return { label: 'GitHub', action_type: 'link', action_payload: { url: 'https://github.com' } };
+  return null;
+}
+
+async function buildMappedCubeOne(folderName: string, mapping: FolderMapping): Promise<Uint8Array> {
+  const now = new Date().toISOString();
+  const manifest = {
+    rbs_format_version: RBS_FORMAT_VERSION,
+    kind: 'cubeone',
+    id: safeId(`${folderName}-mapped`),
+    license: 'free',
+    created_at: now,
+    updated_at: now,
+    rbs_min_version: RBS_MIN_VERSION,
+    cube: {
+      label: mapping.label,
+      icon_url: null,
+      action_type: mapping.action_type,
+      action_payload: mapping.action_payload,
+      metadata: {
+        source: 'streamdeck-import-folder-heuristic',
+        original_folder: folderName,
+        icon_source: 'none',
+        icon_size_bytes: 0,
+        icon_is_tiny: false,
+        icon_is_placeholder: true,
+      },
+    },
+  };
+  const z = new JSZip();
+  z.file('manifest.json', JSON.stringify(manifest, null, 2));
+  return z.generateAsync({ type: 'uint8array', compression: 'DEFLATE' });
 }
 
 async function buildPlaceholderCubeOne(folderName: string, reason: string): Promise<Uint8Array> {

@@ -202,8 +202,9 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
   const packBody = manifest.pack as Record<string, unknown> | undefined;
   if (!packBody) throw new CubepackFormatError('manifest.pack 누락');
 
-  // 2026-06-01: plugin_action 큐브 → builtin 자동 매핑 (importCubepack 도 적용)
+  // 2026-06-01: plugin_action 큐브 → builtin 자동 매핑 (importCubepack 도 적용) + icon library fallback
   const { remapPluginActionCube } = await import('./heuristic-mapping');
+  const { applyIconFallback, registerCubeIcon } = await import('./icon-library');
   /** StreamDeck 표준 액션 payload → 우리 builtin payload 키 정규화 */
   function normalizeStreamDeckPayload(cube: Cube): Cube {
     if (cube.action_type !== 'link') return cube;
@@ -219,11 +220,16 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
     return cube;
   }
   function applyRemap(cube: Cube): Cube {
-    const r = remapPluginActionCube(cube);
+    // 1) Icon library 풀에서 icon_url fallback (.cubepack 큐브가 icon=null일 때)
+    let result = applyIconFallback(cube);
+    // 2) 동시에 풀에도 등록 (icon 있는 큐브)
+    registerCubeIcon(result);
+    // 3) heuristic remap
+    const r = remapPluginActionCube(result);
     if (r.changed) {
-      const meta = (cube.metadata ?? {}) as Record<string, unknown>;
+      const meta = (result.metadata ?? {}) as Record<string, unknown>;
       return normalizeStreamDeckPayload({
-        ...cube,
+        ...result,
         action_type: r.type as Cube['action_type'],
         action_payload: (r.payload ?? {}) as Record<string, unknown>,
         metadata: {
@@ -234,7 +240,7 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
         },
       });
     }
-    return normalizeStreamDeckPayload(cube);
+    return normalizeStreamDeckPayload(result);
   }
 
   const lists: CubeList[] = [];

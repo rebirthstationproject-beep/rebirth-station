@@ -23,6 +23,7 @@ import JSZip from 'jszip';
 import type { Cube, CubeActionType, CubeList, CubePack } from '../types/cube';
 import { readCubeZip } from './cubepack-io';
 import { remapPluginActionCube } from './heuristic-mapping';
+import { registerCubes } from './icon-library';
 
 /**
  * 2026-06-01: 기존 plugin_action 큐브를 dynamic remap.
@@ -149,6 +150,9 @@ export async function loadLibraryFromDir(path: string): Promise<CubePack> {
       libraryCubes.push({ ...c, id: crypto.randomUUID() as string, sort_order: 0 });
     }
   }
+
+  // 2026-06-01 C: Icon library 풀에 sd_uuid → icon_url 등록 (다음 .cubepack import 시 fallback)
+  registerCubes(libraryCubes);
 
   const lastSegment = path.split(/[\\/]/).filter(Boolean).pop() || '내 라이브러리';
   return {
