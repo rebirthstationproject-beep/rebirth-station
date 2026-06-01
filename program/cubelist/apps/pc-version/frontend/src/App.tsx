@@ -747,10 +747,13 @@ function CubeMakerCenter() {
                 onClick={() => handleClickCube(cube.id)}
                 title={`${cube.label} (${cube.action_type})`}
               >
-                {cube.action_type === 'live_clock' ||
-                cube.action_type === 'live_timer' ||
-                cube.action_type === 'live_battery' ||
-                cube.action_type === 'live_gauge' ? (
+                {(cube.action_type === 'live_clock' ||
+                  cube.action_type === 'live_timer' ||
+                  cube.action_type === 'live_battery' ||
+                  cube.action_type === 'live_gauge') &&
+                (!hasIcon || isPlaceholderIcon) ? (
+                  // live_* 큐브 + icon 없거나 placeholder → LiveCubeVisual.
+                  // 정상 icon_url 있으면 원본 아이콘 우선 (heuristic 잘못 매핑 회귀 보호).
                   <div className="cube-icon-bg" aria-hidden style={{ background: '#0a0a0a', overflow: 'hidden' }}>
                     <LiveCubeVisual cube={cube} />
                   </div>
@@ -2005,10 +2008,12 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       {...restAttrs}
       {...listeners}
     >
-      {cube.action_type === 'live_clock' ||
-      cube.action_type === 'live_timer' ||
-      cube.action_type === 'live_battery' ||
-      cube.action_type === 'live_gauge' ? (
+      {(cube.action_type === 'live_clock' ||
+        cube.action_type === 'live_timer' ||
+        cube.action_type === 'live_battery' ||
+        cube.action_type === 'live_gauge') &&
+      (!cube.icon_url || isPlaceholderIcon) ? (
+        // live_* 큐브 + icon 없거나 placeholder → LiveCubeVisual. icon 있으면 원본 우선.
         <div className="cube-icon-bg" aria-hidden style={{ background: '#0a0a0a', overflow: 'hidden' }}>
           <LiveCubeVisual cube={cube} />
         </div>

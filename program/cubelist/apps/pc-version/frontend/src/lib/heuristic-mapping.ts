@@ -18,37 +18,20 @@ interface HeuristicRule {
   readonly payload?: Record<string, unknown>;
 }
 
+/**
+ * 2026-06-01 정밀화: 패턴은 UUID 도메인 기반 (com.<vendor>.<plugin>.<action>) 만 매칭.
+ * label/tooltip 의 일반 단어 (memory, timer, play 등) 가 정상 큐브를 잘못 매핑하는 회귀 방지.
+ *
+ * 일반 라이브러리 큐브의 아이콘이 그대로 유지되도록 매우 보수적.
+ */
 const HEURISTIC_RULES: ReadonlyArray<HeuristicRule> = [
-  // Live 동적 큐브
-  { pattern: /tomato|pomodoro|timer\b/i, type: 'live_timer', payload: { duration_seconds: 1500 } },
-  { pattern: /\bclock\b|world.?clock|digital.?clock/i, type: 'live_clock', payload: { format: 'HH:mm' } },
-  { pattern: /analog.?clock/i, type: 'live_clock', payload: { format: 'analog' } },
-  { pattern: /battery/i, type: 'live_battery' },
-  { pattern: /\bcpu\b|memory|disk|network.?speed|hardware/i, type: 'live_gauge', payload: { source: 'cpu' } },
-  { pattern: /speedtest|speed.?test/i, type: 'live_gauge', payload: { source: 'network' } },
-  // 외부 사이트 링크
-  { pattern: /spotify/i, type: 'link', payload: { url: 'https://open.spotify.com' } },
-  { pattern: /youtube/i, type: 'link', payload: { url: 'https://www.youtube.com' } },
-  { pattern: /twitch/i, type: 'link', payload: { url: 'https://www.twitch.tv' } },
-  { pattern: /discord/i, type: 'link', payload: { url: 'https://discord.com/channels/@me' } },
-  { pattern: /github/i, type: 'link', payload: { url: 'https://github.com' } },
-  { pattern: /weather/i, type: 'link', payload: { url: 'https://weather.com' } },
-  { pattern: /streamlabs/i, type: 'link', payload: { url: 'https://streamlabs.com' } },
-  { pattern: /philips.?hue|hue\b/i, type: 'link', payload: { url: 'https://www.meethue.com' } },
-  // 미디어 키
-  { pattern: /\bmute\b|volume.?mute/i, type: 'media_key', payload: { key: 'VolumeMute' } },
-  { pattern: /volume.?up|vol.?up/i, type: 'media_key', payload: { key: 'VolumeUp' } },
-  { pattern: /volume.?down|vol.?down/i, type: 'media_key', payload: { key: 'VolumeDown' } },
-  { pattern: /\bplay\b|\bpause\b|playpause/i, type: 'media_key', payload: { key: 'MediaPlayPause' } },
-  { pattern: /\bnext\b.*track|track.*next/i, type: 'media_key', payload: { key: 'MediaNextTrack' } },
-  { pattern: /\bprev|previous.*track|track.*prev/i, type: 'media_key', payload: { key: 'MediaPrevTrack' } },
-  // OBS / Photoshop / 앱 액션 → shortcut (사용자 직접 매핑)
-  { pattern: /obs.?studio|obs.?tools/i, type: 'shortcut', payload: { keys: [] } },
-  { pattern: /photoshop|adobe/i, type: 'shortcut', payload: { keys: [] } },
-  { pattern: /powerpoint/i, type: 'shortcut', payload: { keys: [] } },
-  { pattern: /voicemod|wave.?link|sound.?deck/i, type: 'shortcut', payload: { keys: [] } },
-  { pattern: /super.?macro|macro/i, type: 'macro', payload: { steps: [] } },
-  { pattern: /launcher|launch\b/i, type: 'app_launch', payload: { path: '', args: [] } },
+  // Live 동적 큐브 — UUID 기반 명확 매칭만
+  { pattern: /com\.gallowaylabs\.tomato/i, type: 'live_timer', payload: { duration_seconds: 1500 } },
+  { pattern: /com\.[^.]+\.(analog.?clock|analogclock)/i, type: 'live_clock', payload: { format: 'analog' } },
+  { pattern: /com\.[^.]+\.(world.?clock|worldclock|digital.?clock|digitalclock|clock)$/i, type: 'live_clock', payload: { format: 'HH:mm' } },
+  { pattern: /com\.[^.]+\.(battery|batterylevel)/i, type: 'live_battery' },
+  { pattern: /com\.[^.]+\.(cpu|cpumonitor|cpugauge)$/i, type: 'live_gauge', payload: { source: 'cpu' } },
+  { pattern: /com\.[^.]+\.(speedtest|speed_test|networkmonitor)/i, type: 'live_gauge', payload: { source: 'network' } },
 ];
 
 /** 정확한 Elgato 공식 UUID → builtin */
