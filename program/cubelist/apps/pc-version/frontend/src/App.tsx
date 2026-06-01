@@ -74,6 +74,39 @@ import {
   TABLET_PORTRAIT,
   PC_DEFAULT_ROWS,
 } from './lib/device-defaults';
+
+/**
+ * 라벨 hash → HSL 그라데이션 컬러 페어 (2026-06-01 v3).
+ * placeholder 큐브의 시각적 다양성 + 식별성을 위해.
+ * 동일 라벨 → 항상 같은 색 (안정).
+ */
+function labelToGradient(label: string): [string, string] {
+  // Brand 컬러 우선 매핑 (대표 vendor 컬러)
+  const lower = label.toLowerCase();
+  if (lower.includes('discord')) return ['#5865F2', '#404EED'];
+  if (lower.includes('spotify')) return ['#1DB954', '#1aa34a'];
+  if (lower.includes('youtube')) return ['#FF0000', '#CC0000'];
+  if (lower.includes('twitch')) return ['#9146FF', '#772CE8'];
+  if (lower.includes('github')) return ['#24292F', '#0d1117'];
+  if (lower.includes('obs')) return ['#302E31', '#1a1a1d'];
+  if (lower.includes('photoshop') || lower.includes('adobe')) return ['#001E36', '#31A8FF'];
+  if (lower.includes('powerpoint')) return ['#D24726', '#B7411F'];
+  if (lower.includes('windows')) return ['#0078D4', '#005A9E'];
+  if (lower.includes('weather')) return ['#4A90E2', '#357ABD'];
+  if (lower.includes('hue') || lower.includes('philips')) return ['#4FC3F7', '#0277BD'];
+  if (lower.includes('wave link') || lower.includes('elgato')) return ['#0093D0', '#005F8C'];
+  if (lower.includes('streamlabs')) return ['#80F5D2', '#31C9A9'];
+  if (lower.includes('voicemod')) return ['#FF3D7F', '#D62E60'];
+  if (lower.includes('clock') || lower.includes('time')) return ['#FF9800', '#F57C00'];
+  if (lower.includes('volume') || lower.includes('mute') || lower.includes('audio')) return ['#7B1FA2', '#4A148C'];
+  if (lower.includes('battery')) return ['#4CAF50', '#2E7D32'];
+  if (lower.includes('cpu') || lower.includes('memory')) return ['#F44336', '#C62828'];
+  // 해시 기반 색상 (default)
+  let h = 0;
+  for (let i = 0; i < label.length; i++) h = ((h << 5) - h + label.charCodeAt(i)) | 0;
+  const hue = Math.abs(h) % 360;
+  return [`hsl(${hue}, 60%, 45%)`, `hsl(${(hue + 40) % 360}, 55%, 30%)`];
+}
 import { describeExecuteError, executeCube, isTauri } from './lib/tauri-bridge';
 import {
   buildPluginActionPayload,
@@ -739,6 +772,7 @@ function CubeMakerCenter() {
             const iconSourceStr = (iconMeta.icon_source as string | undefined) ?? '';
             const isSdkMonoPng = /^state(@\dx)?\.png$/i.test(iconSourceStr);
             const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
+            const placeholderColors = labelToGradient(cube.label || cube.id);
             return (
               <button
                 key={cube.id}
@@ -767,6 +801,7 @@ function CubeMakerCenter() {
                   <div
                     className="cube-icon-bg"
                     data-placeholder-letter={placeholderLetter}
+                    style={{ '--placeholder-c1': placeholderColors[0], '--placeholder-c2': placeholderColors[1] } as React.CSSProperties}
                     aria-hidden
                   />
                 )}
@@ -1937,6 +1972,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
   const iconSourceStr = (iconMeta.icon_source as string | undefined) ?? '';
   const isSdkMonoPng = /^state(@\dx)?\.png$/i.test(iconSourceStr);
   const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
+  const placeholderColors = labelToGradient(cube.label || cube.id);
   // v0.1.2: payload validation 상태 (invalid 시 셀에 빨간 ! dot 표시)
   const validationErrors = useMemo(
     () => {
@@ -2027,6 +2063,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
         <div
           className="cube-icon-bg"
           data-placeholder-letter={placeholderLetter}
+          style={{ '--placeholder-c1': placeholderColors[0], '--placeholder-c2': placeholderColors[1] } as React.CSSProperties}
           aria-hidden
         />
       ) : null}

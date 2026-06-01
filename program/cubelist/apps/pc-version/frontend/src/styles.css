@@ -1916,17 +1916,19 @@ html, body, #root {
   background-size: 85% auto;
   image-rendering: -webkit-optimize-contrast;
 }
-/* plugin_icon_fallback / NO_ICON — 라벨 큰 글씨 중앙 표시 */
+/* plugin_icon_fallback / NO_ICON — 라벨 큰 글씨 + hash 기반 컬러 그라데이션 (2026-06-01 v2) */
 .cube-cell.icon-placeholder .cube-icon-bg {
   background-image: none !important;
+  background: linear-gradient(135deg, var(--placeholder-c1, #3b82f6), var(--placeholder-c2, #8b5cf6)) !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.65);
-  font-size: 28px;
-  font-weight: 600;
+  color: #ffffff;
+  font-size: 36px;
+  font-weight: 700;
   letter-spacing: -0.02em;
   text-transform: uppercase;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
 }
 .cube-cell.icon-placeholder .cube-icon-bg::before {
   content: attr(data-placeholder-letter);
