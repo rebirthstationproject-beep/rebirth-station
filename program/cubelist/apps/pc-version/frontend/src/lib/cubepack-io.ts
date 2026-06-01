@@ -202,8 +202,49 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
   const packBody = manifest.pack as Record<string, unknown> | undefined;
   if (!packBody) throw new CubepackFormatError('manifest.pack 누락');
 
+  // 2026-06-01: plugin_action 큐브 → builtin 자동 매핑 (importCubepack 도 적용)
+  const { remapPluginActionCube } = await import('./heuristic-mapping');
+  /** StreamDeck 표준 액션 payload → 우리 builtin payload 키 정규화 */
+  function normalizeStreamDeckPayload(cube: Cube): Cube {
+    if (cube.action_type !== 'link') return cube;
+    const p = (cube.action_payload ?? {}) as Record<string, unknown>;
+    // StreamDeck system.website: { path: "Discord.com" } 또는 "https://..."
+    if (!p.url && typeof p.path === 'string') {
+      let url = p.path.trim();
+      if (url.length > 0 && !/^https?:\/\//i.test(url) && !url.startsWith('mailto:') && !url.startsWith('tel:')) {
+        url = `https://${url}`;
+      }
+      return { ...cube, action_payload: { ...p, url } };
+    }
+    return cube;
+  }
+  function applyRemap(cube: Cube): Cube {
+    const r = remapPluginActionCube(cube);
+    if (r.changed) {
+      const meta = (cube.metadata ?? {}) as Record<string, unknown>;
+      return normalizeStreamDeckPayload({
+        ...cube,
+        action_type: r.type as Cube['action_type'],
+        action_payload: (r.payload ?? {}) as Record<string, unknown>,
+        metadata: {
+          ...meta,
+          mapping_kind: 'import_heuristic',
+          dynamic_mapped_at: new Date().toISOString(),
+          original_action_type: 'plugin_action',
+        },
+      });
+    }
+    return normalizeStreamDeckPayload(cube);
+  }
+
   const lists: CubeList[] = [];
-  const order = Array.isArray(packBody.order) ? packBody.order : [];
+  // 2026-06-01 버그 수정: Profile 변환기는 `pack.lists` 키 사용, 우리 export 는 `pack.order` 사용.
+  // 두 키 모두 인식 (backward compat).
+  const order = Array.isArray(packBody.order)
+    ? packBody.order
+    : Array.isArray(packBody.lists)
+      ? packBody.lists
+      : [];
 
   for (const entry of order as Array<Record<string, unknown>>) {
     const ref = typeof entry.ref === 'string' ? entry.ref : null;
@@ -215,7 +256,8 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
 
     const listBlob = await listEntry.async('uint8array');
     const list = await readListZip(listBlob, sortOrder);
-    lists.push(list);
+    // 2026-06-01: 각 큐브에 heuristic remap 적용
+    lists.push({ ...list, cubes: list.cubes.map(applyRemap) });
   }
 
   // === 라이브러리 큐브 복원 (수정 #2) ===

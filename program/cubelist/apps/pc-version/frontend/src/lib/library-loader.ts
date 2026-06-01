@@ -68,6 +68,20 @@ export async function loadLibraryFromDir(path: string): Promise<CubePack> {
   const { invoke } = await import('@tauri-apps/api/core');
   const files = await invoke<LibraryFile[]>('read_library_files', { path });
 
+  // 2026-06-01: .cubeone 없고 .cubepack 만 있는 폴더 (Profile 변환 결과) → 첫 .cubepack 자동 import
+  const hasCubeOne = files.some((f) => f.relative_path.toLowerCase().endsWith('.cubeone'));
+  const cubepackFiles = files.filter((f) => f.relative_path.toLowerCase().endsWith('.cubepack'));
+  if (!hasCubeOne && cubepackFiles.length > 0) {
+    // 가장 큰 .cubepack 자동 로드 (가장 풍부한 큐브팩)
+    const biggest = cubepackFiles.reduce((a, b) =>
+      (Array.isArray(b.bytes) ? b.bytes.length : b.bytes.length) > (Array.isArray(a.bytes) ? a.bytes.length : a.bytes.length) ? b : a,
+    );
+    const { importCubepack } = await import('./cubepack-io');
+    const buf = toUint8(biggest.bytes);
+    const imported = await importCubepack(buf);
+    return imported;
+  }
+
   const listsMap = new Map<string, Cube[]>(); // 폴더명 → 큐브 배열 (정렬 전)
   const looseCubes: Cube[] = []; // 최상위 직속 .cubeone
   const libraryCubes: Cube[] = []; // pack.cubes 풀
