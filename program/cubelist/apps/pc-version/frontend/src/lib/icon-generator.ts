@@ -15,6 +15,8 @@
  *   // cube.icon_url = dataUrl;
  */
 
+import { findPhotoshopIcon } from './icon-catalog-photoshop';
+
 // ============================================================
 // Level 2 — 카테고리 컬러
 // ============================================================
@@ -291,8 +293,18 @@ function escapeXml(s: string): string {
 /**
  * 자체 SVG 아이콘 생성 (24×24).
  * 반환: SVG 마크업 문자열
+ *
+ * 매칭 우선순위:
+ * 1. Photoshop 카탈로그 (72 큐레이트 SVG) — 라벨 정확 매칭
+ * 2. 일반 METAPHOR_LIBRARY (60+ 패턴) — 액션/라벨 키워드 매칭
+ * 3. Fallback: 라벨 첫 글자 + 카테고리 컬러
  */
 export function generateIcon(spec: { label: string; action_type: string; size?: number }): string {
+  // 1. Photoshop 자체 카탈로그 우선 (제공된 라벨이 PS 액션 매칭 시)
+  const psSvg = findPhotoshopIcon(spec.label);
+  if (psSvg) return psSvg;
+
+  // 2. 일반 메타포 라이브러리
   const category = categoryFromAction(spec.action_type, spec.label);
   const colors = CATEGORY_COLORS[category];
   const color = colors.primary;
