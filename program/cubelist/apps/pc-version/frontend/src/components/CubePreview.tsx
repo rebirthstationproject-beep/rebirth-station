@@ -56,12 +56,19 @@ export function CubePreview({ cube }: CubePreviewProps) {
   const isPlaceholder = !displayIcon || iconMeta.icon_is_placeholder === true;
   const placeholderLetter = (displayLabel || '?').trim().charAt(0).toUpperCase();
 
-  // 2026-06-01: live_* 큐브는 LiveCubeVisual 로 실시간 표시 (clock/timer/battery/gauge)
+  // 2026-06-01: live_* 큐브는 LiveCubeVisual 로 실시간 표시 (clock/timer/battery/gauge + 통합 모델 7종)
   const isLiveType =
     cube.action_type === 'live_clock' ||
     cube.action_type === 'live_timer' ||
     cube.action_type === 'live_battery' ||
-    cube.action_type === 'live_gauge';
+    cube.action_type === 'live_gauge' ||
+    cube.action_type === 'live_weather' ||
+    cube.action_type === 'live_monitor' ||
+    cube.action_type === 'live_alarm' ||
+    cube.action_type === 'live_stock' ||
+    cube.action_type === 'live_calendar' ||
+    cube.action_type === 'live_news' ||
+    cube.action_type === 'live_network';
 
   return (
     <div className="cube-preview-card">

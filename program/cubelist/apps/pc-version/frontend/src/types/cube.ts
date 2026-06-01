@@ -39,11 +39,19 @@ export type CubeActionType =
   | 'hotkey_toggle'             // system.hotkeyswitch (states 의존)
   | 'audio_play'                // soundboard
   | 'profile_rotate'            // 큐브 리스트 회전 (선택)
-  // === P2 동적 큐브 (Phase 5, 후순위) ===
+  // === P2 동적 큐브 (Phase 5) ===
   | 'live_clock'                // system.digitaltime
   | 'live_timer'                // timer
   | 'live_gauge'                // 자체 확장
-  | 'live_battery';             // 자체 확장
+  | 'live_battery'              // 자체 확장
+  // === P3 동적 큐브 신규 (2026-06-01, 통합 모델 — 시계/모니터/알람/날씨) ===
+  | 'live_weather'              // 날씨 (지역별 온도/조건/아이콘)
+  | 'live_monitor'              // 시스템 모니터 (CPU/RAM/Disk/Network)
+  | 'live_alarm'                // 알람 (목표 시각 도달 시 알림)
+  | 'live_stock'                // 주가 / 환율 / 코인
+  | 'live_calendar'             // 캘린더 이벤트 (다음 일정)
+  | 'live_news'                 // 뉴스 헤드라인 (RSS/API)
+  | 'live_network';             // 네트워크 (Wi-Fi 신호 / 핑 / 다운로드 속도)
 
 /**
  * 매크로 step (M7 cron #21) — Rust `MacroStepDto` 와 1:1 (tag = "kind").

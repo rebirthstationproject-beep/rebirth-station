@@ -789,7 +789,14 @@ function CubeMakerCenter() {
                 {(cube.action_type === 'live_clock' ||
                   cube.action_type === 'live_timer' ||
                   cube.action_type === 'live_battery' ||
-                  cube.action_type === 'live_gauge') &&
+                  cube.action_type === 'live_gauge' ||
+                  cube.action_type === 'live_weather' ||
+                  cube.action_type === 'live_monitor' ||
+                  cube.action_type === 'live_alarm' ||
+                  cube.action_type === 'live_stock' ||
+                  cube.action_type === 'live_calendar' ||
+                  cube.action_type === 'live_news' ||
+                  cube.action_type === 'live_network') &&
                 (!hasIcon || isPlaceholderIcon) ? (
                   // live_* 큐브 + icon 없거나 placeholder → LiveCubeVisual.
                   // 정상 icon_url 있으면 원본 아이콘 우선 (heuristic 잘못 매핑 회귀 보호).
@@ -2086,7 +2093,14 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       {(cube.action_type === 'live_clock' ||
         cube.action_type === 'live_timer' ||
         cube.action_type === 'live_battery' ||
-        cube.action_type === 'live_gauge') &&
+        cube.action_type === 'live_gauge' ||
+        cube.action_type === 'live_weather' ||
+        cube.action_type === 'live_monitor' ||
+        cube.action_type === 'live_alarm' ||
+        cube.action_type === 'live_stock' ||
+        cube.action_type === 'live_calendar' ||
+        cube.action_type === 'live_news' ||
+        cube.action_type === 'live_network') &&
       (!cube.icon_url || isPlaceholderIcon) ? (
         // live_* 큐브 + icon 없거나 placeholder → LiveCubeVisual. icon 있으면 원본 우선.
         <div className="cube-icon-bg" aria-hidden style={{ background: '#0a0a0a', overflow: 'hidden' }}>

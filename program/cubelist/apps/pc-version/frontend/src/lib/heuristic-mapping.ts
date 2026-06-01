@@ -30,8 +30,15 @@ const HEURISTIC_RULES: ReadonlyArray<HeuristicRule> = [
   { pattern: /com\.[^.]+\.(analog.?clock|analogclock)/i, type: 'live_clock', payload: { format: 'analog' } },
   { pattern: /com\.[^.]+\.(world.?clock|worldclock|digital.?clock|digitalclock|clock)$/i, type: 'live_clock', payload: { format: 'HH:mm' } },
   { pattern: /com\.[^.]+\.(battery|batterylevel)/i, type: 'live_battery' },
-  { pattern: /com\.[^.]+\.(cpu|cpumonitor|cpugauge)$/i, type: 'live_gauge', payload: { source: 'cpu' } },
-  { pattern: /com\.[^.]+\.(speedtest|speed_test|networkmonitor)/i, type: 'live_gauge', payload: { source: 'network' } },
+  { pattern: /com\.[^.]+\.(cpu|cpumonitor|cpugauge)$/i, type: 'live_monitor', payload: { source: 'cpu' } },
+  { pattern: /com\.[^.]+\.(speedtest|speed_test|networkmonitor)/i, type: 'live_network' },
+  // 2026-06-01 P3 신규 — 통합 모델 (시계/모니터/알람/날씨)
+  { pattern: /com\.[^.]+\.(weather|forecast)/i, type: 'live_weather', payload: { condition: 'sunny', temp_c: 22 } },
+  { pattern: /com\.[^.]+\.(alarm|alert)/i, type: 'live_alarm', payload: { target_ms: Date.now() + 300_000 } },
+  { pattern: /com\.[^.]+\.(stock|crypto|coin|btc|exchange)/i, type: 'live_stock', payload: { symbol: 'BTC', price: 0, change_pct: 0 } },
+  { pattern: /com\.[^.]+\.(calendar|event|schedule)/i, type: 'live_calendar' },
+  { pattern: /com\.[^.]+\.(news|rss|headline)/i, type: 'live_news' },
+  { pattern: /com\.[^.]+\.(memory|ram|disk)/i, type: 'live_monitor', payload: { source: 'ram' } },
 ];
 
 /** 정확한 Elgato 공식 UUID → builtin */

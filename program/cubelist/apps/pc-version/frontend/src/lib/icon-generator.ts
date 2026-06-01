@@ -51,8 +51,15 @@ export function categoryFromAction(action_type: string, label: string): IconCate
   if (
     action_type === 'live_battery' ||
     action_type === 'live_gauge' ||
-    /\bbattery|\bgauge|\bcpu\b/.test(l)
+    action_type === 'live_monitor' ||
+    action_type === 'live_network' ||
+    /\bbattery|\bgauge|\bcpu\b|\bmonitor|\bnetwork|\bwifi/.test(l)
   ) return 'time';
+  if (action_type === 'live_weather' || /\bweather|\bforecast|\btemperature/.test(l)) return 'view';
+  if (action_type === 'live_alarm' || /\balarm/.test(l)) return 'time';
+  if (action_type === 'live_stock' || /\bstock|\bbtc|\bcrypto|\bcoin|\bexchange/.test(l)) return 'fill';
+  if (action_type === 'live_calendar' || /\bcalendar|\bevent|\bschedule/.test(l)) return 'navigation';
+  if (action_type === 'live_news' || /\bnews|\bheadline/.test(l)) return 'edit';
   if (action_type === 'media_key' || /\bvolume|\bmute|\baudio|\bplay|\bpause|\bnext|\bprev/.test(l))
     return 'audio';
   if (/\blayer/.test(l)) return 'layer';

@@ -24,6 +24,21 @@ export function LiveCubeVisual({ cube }: LiveCubeVisualProps) {
       return <LiveBattery />;
     case 'live_gauge':
       return <LiveGauge cube={cube} />;
+    // 2026-06-01 통합 모델 — 사용자 명시 "시계/모니터링/알람/날씨"
+    case 'live_weather':
+      return <LiveWeather cube={cube} />;
+    case 'live_monitor':
+      return <LiveMonitor cube={cube} />;
+    case 'live_alarm':
+      return <LiveAlarm cube={cube} />;
+    case 'live_stock':
+      return <LiveStock cube={cube} />;
+    case 'live_calendar':
+      return <LiveCalendar />;
+    case 'live_news':
+      return <LiveNews />;
+    case 'live_network':
+      return <LiveNetwork />;
     default:
       return null;
   }
@@ -245,6 +260,149 @@ function LiveGauge({ cube }: { cube: Cube }) {
       <text x="50" y="60" textAnchor="middle" fontSize="22" fontWeight="700" fill="#fff">
         {value}
       </text>
+    </svg>
+  );
+}
+
+// ============================================================
+// 2026-06-01 P3 신규 라이브 큐브 (통합 모델)
+// ============================================================
+
+/** live_weather — 날씨 (placeholder API, 실제 API는 사용자 키 입력) */
+function LiveWeather({ cube }: { cube: Cube }) {
+  const [now, setNow] = useState(0);
+  useEffect(() => { const i = setInterval(() => setNow((n) => n + 1), 60_000); return () => clearInterval(i); }, []);
+  void now;
+  const cond = (cube.action_payload?.condition as string) ?? 'sunny';
+  const temp = (cube.action_payload?.temp_c as number) ?? 22;
+  const icon: Record<string, string> = {
+    sunny: '☀', cloudy: '☁', rainy: '🌧', snowy: '❄', stormy: '⛈', windy: '💨',
+  };
+  return (
+    <svg viewBox="0 0 100 100" width="100%" height="100%">
+      <text x="50" y="55" textAnchor="middle" fontSize="40">{icon[cond] ?? '☀'}</text>
+      <text x="50" y="85" textAnchor="middle" fontSize="14" fontWeight="700" fill="#fff">{temp}°C</text>
+    </svg>
+  );
+}
+
+/** live_monitor — CPU/RAM/Disk/Network (Tauri API 필요, placeholder sin) */
+function LiveMonitor({ cube }: { cube: Cube }) {
+  const [val, setVal] = useState(0);
+  useEffect(() => {
+    function tick() {
+      const t = Date.now() / 3000;
+      setVal(Math.round((Math.sin(t) + 1) * 50));
+    }
+    tick();
+    const i = setInterval(tick, 1000);
+    return () => clearInterval(i);
+  }, []);
+  const source = (cube.action_payload?.source as string) ?? 'cpu';
+  const label: Record<string, string> = { cpu: 'CPU', ram: 'RAM', disk: 'DSK', network: 'NET' };
+  const color = val > 80 ? '#ef4444' : val > 50 ? '#f59e0b' : '#22c55e';
+  return (
+    <svg viewBox="0 0 100 100" width="100%" height="100%">
+      <text x="50" y="30" textAnchor="middle" fontSize="14" fontWeight="700" fill="#fff" opacity="0.7">{label[source] ?? 'MON'}</text>
+      <rect x="15" y="40" width="70" height="20" rx="3" fill="transparent" stroke="#444" strokeWidth="2" />
+      <rect x="17" y="42" width={Math.max(0, (val / 100) * 66)} height="16" rx="2" fill={color} />
+      <text x="50" y="80" textAnchor="middle" fontSize="20" fontWeight="700" fill="#fff">{val}%</text>
+    </svg>
+  );
+}
+
+/** live_alarm — 카운트다운 (목표 시각 도달 시 진동/색깔) */
+function LiveAlarm({ cube }: { cube: Cube }) {
+  const [now, setNow] = useState(() => Date.now());
+  useEffect(() => { const i = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(i); }, []);
+  const target = (cube.action_payload?.target_ms as number) ?? (Date.now() + 300_000);
+  const remaining = Math.max(0, Math.floor((target - now) / 1000));
+  const h = Math.floor(remaining / 3600);
+  const m = Math.floor((remaining % 3600) / 60);
+  const s = remaining % 60;
+  const ringing = remaining === 0;
+  const pad = (n: number) => String(n).padStart(2, '0');
+  const txt = h > 0 ? `${pad(h)}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
+  return (
+    <svg viewBox="0 0 100 100" width="100%" height="100%">
+      <circle cx="50" cy="55" r="35" fill={ringing ? '#ef4444' : 'transparent'} stroke={ringing ? '#fff' : '#9ca3af'} strokeWidth="3" opacity={ringing ? 0.7 : 1} />
+      <path d="M35 25l-5-5M65 25l5-5" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
+      <text x="50" y="60" textAnchor="middle" fontSize="16" fontFamily="monospace" fontWeight="700" fill="#fff">{txt}</text>
+      <text x="50" y="78" textAnchor="middle" fontSize="9" fill="#fff" opacity="0.7">{ringing ? '⏰ 알람!' : 'ALARM'}</text>
+    </svg>
+  );
+}
+
+/** live_stock — 주가/환율/코인 (placeholder API) */
+function LiveStock({ cube }: { cube: Cube }) {
+  const [_, force] = useState(0);
+  useEffect(() => { const i = setInterval(() => force((x) => x + 1), 30_000); return () => clearInterval(i); }, []);
+  void _;
+  const symbol = (cube.action_payload?.symbol as string) ?? 'BTC';
+  const price = (cube.action_payload?.price as number) ?? 0;
+  const changePct = (cube.action_payload?.change_pct as number) ?? 0;
+  const up = changePct >= 0;
+  return (
+    <svg viewBox="0 0 100 100" width="100%" height="100%">
+      <text x="50" y="30" textAnchor="middle" fontSize="16" fontWeight="700" fill="#fff">{symbol}</text>
+      <text x="50" y="55" textAnchor="middle" fontSize="14" fontFamily="monospace" fontWeight="600" fill="#fff">{price.toLocaleString()}</text>
+      <text x="50" y="78" textAnchor="middle" fontSize="12" fontWeight="700" fill={up ? '#22c55e' : '#ef4444'}>
+        {up ? '▲' : '▼'} {Math.abs(changePct).toFixed(2)}%
+      </text>
+    </svg>
+  );
+}
+
+/** live_calendar — 다음 일정 (placeholder, 사용자 ICS 연동) */
+function LiveCalendar() {
+  return (
+    <svg viewBox="0 0 100 100" width="100%" height="100%">
+      <rect x="20" y="20" width="60" height="60" rx="6" fill="transparent" stroke="#fff" strokeWidth="3" />
+      <rect x="20" y="20" width="60" height="14" rx="6" fill="#3b82f6" />
+      <text x="50" y="55" textAnchor="middle" fontSize="20" fontWeight="700" fill="#fff">15</text>
+      <text x="50" y="72" textAnchor="middle" fontSize="9" fill="#fff" opacity="0.7">다음 일정</text>
+    </svg>
+  );
+}
+
+/** live_news — RSS 헤드라인 (placeholder) */
+function LiveNews() {
+  return (
+    <svg viewBox="0 0 100 100" width="100%" height="100%">
+      <rect x="15" y="25" width="70" height="50" rx="3" fill="transparent" stroke="#fff" strokeWidth="2" />
+      <path d="M20 35h60M20 45h60M20 55h45M20 65h50" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" opacity="0.7" />
+      <circle cx="78" cy="22" r="4" fill="#ef4444" />
+      <text x="78" y="25" textAnchor="middle" fontSize="6" fontWeight="700" fill="#fff">!</text>
+    </svg>
+  );
+}
+
+/** live_network — Wi-Fi 신호 강도 (placeholder) */
+function LiveNetwork() {
+  const [strength, setStrength] = useState(3);
+  useEffect(() => {
+    const i = setInterval(() => setStrength(Math.floor(Math.random() * 4) + 1), 5000);
+    return () => clearInterval(i);
+  }, []);
+  const arcs = [
+    { r: 30, on: strength >= 4 },
+    { r: 20, on: strength >= 3 },
+    { r: 12, on: strength >= 2 },
+  ];
+  return (
+    <svg viewBox="0 0 100 100" width="100%" height="100%">
+      {arcs.map((a, i) => (
+        <path
+          key={i}
+          d={`M ${50 - a.r} 65 A ${a.r} ${a.r} 0 0 1 ${50 + a.r} 65`}
+          stroke={a.on ? '#22c55e' : '#374151'}
+          strokeWidth="6"
+          fill="none"
+          strokeLinecap="round"
+        />
+      ))}
+      <circle cx="50" cy="68" r="4" fill={strength >= 1 ? '#22c55e' : '#374151'} />
+      <text x="50" y="85" textAnchor="middle" fontSize="9" fill="#fff" opacity="0.7">WIFI {strength}/4</text>
     </svg>
   );
 }
