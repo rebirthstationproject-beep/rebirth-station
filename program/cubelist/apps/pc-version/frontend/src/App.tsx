@@ -756,6 +756,66 @@ function CubeMakerCenter() {
               </button>
             );
           })}
+          {/* P1-B1 (2026-06-01): 그리드 끝 점선 빈 슬롯 (편집 모드 의존 제거)
+              - cols 단위로 row 완성 + 추가 2 row
+              - 한 페이지 권장 분량 (cols × 4) 도달 후엔 1 row 만 (분량 과시 X) */}
+          {(() => {
+            const total = cubesToShow.length + 1; // +1 = "새 큐브" 셀
+            const RECOMMENDED_ROWS = 4;
+            const TRAILING_ROWS_UNDER = 2;
+            const TRAILING_ROWS_OVER = 1;
+            const remainderInRow = total % cols;
+            const fillToRowEnd = remainderInRow === 0 ? 0 : cols - remainderInRow;
+            const overRecommended = total > cols * RECOMMENDED_ROWS;
+            const extraRows = overRecommended ? TRAILING_ROWS_OVER : TRAILING_ROWS_UNDER;
+            const emptyCount = fillToRowEnd + cols * extraRows;
+            return Array.from({ length: emptyCount }, (_, i) => {
+              const slotIdx = total + i + 1;
+              // 권장 페이지 경계 (cols × 4 = 16 또는 28) 첫 번째 빈 슬롯에 divider 표시
+              const isPageBoundary = slotIdx === cols * RECOMMENDED_ROWS + 1;
+              return (
+                <button
+                  key={`maker-empty-${i}`}
+                  type="button"
+                  className="cube-cell cube-cell-trail-empty"
+                  onClick={handleAddNewCube}
+                  title={`슬롯 ${slotIdx} 에 큐브 추가`}
+                  aria-label={`빈 슬롯 ${slotIdx}`}
+                  style={{
+                    border: '2px dashed var(--color-border, #333)',
+                    background: 'transparent',
+                    opacity: isPageBoundary ? 0.85 : 0.45,
+                    cursor: 'pointer',
+                    transition: 'opacity 0.15s',
+                    position: 'relative',
+                  }}
+                  onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.9'; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.opacity = isPageBoundary ? '0.85' : '0.45'; }}
+                >
+                  {isPageBoundary && (
+                    <span
+                      aria-hidden
+                      style={{
+                        position: 'absolute',
+                        top: -10,
+                        left: 0,
+                        right: 0,
+                        textAlign: 'center',
+                        fontSize: 9,
+                        color: 'var(--color-ink-muted, #888)',
+                        background: 'var(--color-bg, #0a0a0a)',
+                        padding: '0 4px',
+                      }}
+                    >
+                      권장 페이지 {RECOMMENDED_ROWS} 행
+                    </span>
+                  )}
+                  <span style={{ fontSize: 24, opacity: 0.5 }}>＋</span>
+                  <span style={{ fontSize: 9, opacity: 0.5 }}>{slotIdx}</span>
+                </button>
+              );
+            });
+          })()}
         </div>
       )}
     </>
