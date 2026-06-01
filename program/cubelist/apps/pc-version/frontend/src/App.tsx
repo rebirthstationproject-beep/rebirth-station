@@ -74,7 +74,7 @@ import {
   QUALIFIED_PREFIX,
   usePluginRegistry,
 } from './lib/plugin-registry';
-import type { Cube, CubeList } from './types/cube';
+import type { Cube, CubeList, CubePack } from './types/cube';
 
 type MainTab = 'cube-maker' | 'list-maker' | 'marketplace';
 
@@ -114,6 +114,20 @@ export function App() {
   useEffect(() => {
     if (draftList) setMainTab('list-maker');
   }, [draftList?.id]);
+
+  // P0-A1 (2026-06-01): pack 로드 시 첫 list 자동 선택 (cube-maker 유지)
+  // StreamDeck 첫 인상 — 폴더 진입 없이 즉시 큐브 그리드 노출
+  const [autoFlatDone, setAutoFlatDone] = useState(false);
+  useEffect(() => {
+    if (autoFlatDone) return;
+    if (!pack) return;
+    if (pack.lists.length === 0) return;
+    const editor = useEditor.getState();
+    if (!editor.activeList()) {
+      editor.selectList(pack.lists[0].id);
+    }
+    setAutoFlatDone(true);
+  }, [pack?.id, autoFlatDone]);
 
   // M4 E: 윈도우 focus 시 라이브러리 자동 reload (plugin 추가/삭제 감지)
   useEffect(() => {
@@ -815,6 +829,175 @@ function PageTabs() {
   );
 }
 
+/**
+ * PackSwitcher (P0-A2, 2026-06-01) — TopBar 좌상단 큐브팩 전환 드롭다운.
+ * StreamDeck 프로필 드롭다운 패턴 채용. 1클릭으로 큐브팩 전환/관리.
+ */
+function PackSwitcher({
+  pack,
+  loadPack,
+  onImportClick,
+  onExportClick,
+}: {
+  pack: CubePack | null;
+  loadPack: (next: CubePack) => void;
+  onImportClick: () => void;
+  onExportClick: () => Promise<void>;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open) return;
+    function handleClick(e: MouseEvent): void {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    function handleKey(e: KeyboardEvent): void {
+      if (e.key === 'Escape') setOpen(false);
+    }
+    document.addEventListener('mousedown', handleClick);
+    document.addEventListener('keydown', handleKey);
+    return () => {
+      document.removeEventListener('mousedown', handleClick);
+      document.removeEventListener('keydown', handleKey);
+    };
+  }, [open]);
+
+  function handleLoadDemo(): void {
+    loadPack(buildDemoPack());
+    setOpen(false);
+  }
+
+  function handleNewPack(): void {
+    const name = window.prompt('새 큐브팩 이름:', '새 큐브팩');
+    if (!name) return;
+    const now = new Date().toISOString();
+    loadPack({
+      id: crypto.randomUUID(),
+      name: name.trim(),
+      rbs_format_version: 3,
+      lists: [],
+      cubes: [],
+      created_at: now,
+      updated_at: now,
+    } as CubePack);
+    setOpen(false);
+  }
+
+  function handleImport(): void {
+    onImportClick();
+    setOpen(false);
+  }
+
+  async function handleExport(): Promise<void> {
+    await onExportClick();
+    setOpen(false);
+  }
+
+  const packName = pack?.name ?? '큐브팩 없음';
+  const cubeCount = pack ? (pack.cubes?.length ?? 0) + pack.lists.reduce((a, l) => a + l.cubes.length, 0) : 0;
+  const listCount = pack?.lists.length ?? 0;
+
+  return (
+    <div ref={ref} style={{ position: 'relative', display: 'inline-flex', marginLeft: 12 }}>
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        aria-haspopup="menu"
+        aria-expanded={open}
+        title="큐브팩 전환"
+        style={{
+          background: 'transparent',
+          border: '1px solid var(--color-border, #333)',
+          borderRadius: 6,
+          color: 'inherit',
+          padding: '4px 10px',
+          fontSize: 12,
+          cursor: 'pointer',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 6,
+        }}
+      >
+        <span style={{ fontWeight: 600 }}>📦 {packName}</span>
+        <span style={{ opacity: 0.6, fontSize: 10 }}>
+          {cubeCount}큐브 · {listCount}리스트
+        </span>
+        <span style={{ opacity: 0.5 }}>▾</span>
+      </button>
+      {open && (
+        <div
+          role="menu"
+          style={{
+            position: 'absolute',
+            top: '100%',
+            left: 0,
+            marginTop: 4,
+            minWidth: 220,
+            background: 'var(--color-surface, #1a1a1a)',
+            border: '1px solid var(--color-border, #333)',
+            borderRadius: 6,
+            boxShadow: '0 4px 12px rgba(0,0,0,0.35)',
+            zIndex: 100,
+            padding: '4px 0',
+          }}
+        >
+          <PackMenuItem icon="🎬" label="데모 큐브팩 로드" onClick={handleLoadDemo} />
+          <PackMenuItem icon="✨" label="새 큐브팩 만들기" onClick={handleNewPack} />
+          <div style={{ height: 1, background: 'var(--color-border, #333)', margin: '4px 0' }} />
+          <PackMenuItem icon="📥" label="가져오기 (.cubepack)" onClick={handleImport} />
+          <PackMenuItem
+            icon="📤"
+            label="내보내기 (.cubepack)"
+            onClick={handleExport}
+            disabled={!pack}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function PackMenuItem({
+  icon,
+  label,
+  onClick,
+  disabled,
+}: {
+  icon: string;
+  label: string;
+  onClick: () => void;
+  disabled?: boolean;
+}) {
+  return (
+    <button
+      type="button"
+      role="menuitem"
+      onClick={onClick}
+      disabled={disabled}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: 8,
+        width: '100%',
+        padding: '6px 12px',
+        background: 'transparent',
+        border: 'none',
+        color: 'inherit',
+        fontSize: 12,
+        textAlign: 'left',
+        cursor: disabled ? 'not-allowed' : 'pointer',
+        opacity: disabled ? 0.4 : 1,
+      }}
+      onMouseEnter={(e) => { if (!disabled) e.currentTarget.style.background = 'rgba(255,255,255,0.06)'; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = 'transparent'; }}
+    >
+      <span aria-hidden style={{ width: 18, textAlign: 'center' }}>{icon}</span>
+      <span>{label}</span>
+    </button>
+  );
+}
+
 function TopBar({
   onOpenMarketplace,
   onOpenSettings,
@@ -1023,9 +1206,15 @@ function TopBar({
     <header className="topbar">
       <div className="topbar-left">
         <span className="brand">{t('app.title')}</span>
+        <PackSwitcher
+          pack={pack}
+          loadPack={loadPack}
+          onImportClick={handleImportClick}
+          onExportClick={handleExport}
+        />
       </div>
       <div className="topbar-right">
-        <span className="pack-meta">{pack?.name ?? t('app.no_pack')}</span>
+        <span className="pack-meta" style={{ display: 'none' }}>{pack?.name ?? t('app.no_pack')}</span>
         <button
           type="button"
           className="btn-ghost"
