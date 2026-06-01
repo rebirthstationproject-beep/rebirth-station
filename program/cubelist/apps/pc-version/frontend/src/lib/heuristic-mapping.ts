@@ -41,6 +41,15 @@ export const ACTION_TYPE_MAP: Record<string, string> = {
   'com.elgato.streamdeck.system.openapp': 'app_launch',
   'com.elgato.streamdeck.system.hotkey': 'shortcut',
   'com.elgato.streamdeck.system.text': 'text_insert',
+  // 2026-06-01 B: Sub-action StreamDeck 표준 UUID 추가
+  'com.elgato.streamdeck.profile.rotate': 'profile_rotate',
+  'com.elgato.streamdeck.profile.previous': 'page_navigate',
+  'com.elgato.streamdeck.profile.openchild': 'folder_open',
+  'com.elgato.streamdeck.profile.backtoparent': 'folder_up',
+  'com.elgato.streamdeck.page.previous': 'page_navigate',
+  'com.elgato.streamdeck.page.next': 'page_navigate',
+  'com.elgato.streamdeck.system.multimedia': 'media_key',
+  'com.elgato.streamdeck.system.volume': 'media_key',
 };
 
 /**

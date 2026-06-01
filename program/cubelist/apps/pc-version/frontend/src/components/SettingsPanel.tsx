@@ -187,6 +187,9 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
             </div>
           </section>
 
+          {/* 2026-06-01 C: Icon Library 풀 통계 */}
+          <IconLibraryPoolSection />
+
           {/* Phase 8 (2026-06-01): 단축키 viewer (편집은 v0.1.4) */}
           <section className="settings-section">
             <h3 className="settings-section-title">{t('settings.section_shortcuts')}</h3>
@@ -223,5 +226,53 @@ export function SettingsPanel({ onClose }: SettingsPanelProps) {
         </footer>
       </div>
     </div>
+  );
+}
+
+/**
+ * 2026-06-01 C: Icon Library 풀 통계 + 초기화 (SettingsPanel 섹션).
+ */
+function IconLibraryPoolSection() {
+  const [stats, setStats] = useState<{ total: number; sample: string[] }>({ total: 0, sample: [] });
+  useEffect(() => {
+    void import('../lib/icon-library').then(({ getPoolStats }) => {
+      setStats(getPoolStats());
+    });
+  }, []);
+
+  function handleClear(): void {
+    if (!window.confirm('Icon library 풀을 모두 초기화합니다. 다음 .cubepack 가져오기에서 아이콘 자동 보완이 안 됩니다.')) return;
+    void import('../lib/icon-library').then(({ clearPool, getPoolStats }) => {
+      clearPool();
+      setStats(getPoolStats());
+    });
+  }
+
+  return (
+    <section className="settings-section">
+      <h3 className="settings-section-title">🖼 Icon Library 풀</h3>
+      <div className="settings-current-value">
+        <span style={{ fontSize: 13, fontWeight: 600 }}>{stats.total}</span>
+        <span className="muted small" style={{ marginLeft: 6 }}>개 sd_uuid → icon_url 매핑</span>
+      </div>
+      {stats.sample.length > 0 && (
+        <div className="settings-hint" style={{ marginTop: 4, fontSize: 10, opacity: 0.6 }}>
+          예: {stats.sample.slice(0, 3).map((u) => u.split('.').pop()).join(', ')}
+        </div>
+      )}
+      <div className="settings-hint">
+        라이브러리 폴더 등록 시 자동 구축됩니다. .cubepack 가져오기 시 icon_url 비어있는 큐브를 sd_uuid 매칭으로 자동 보완.
+      </div>
+      {stats.total > 0 && (
+        <button
+          type="button"
+          className="btn-ghost settings-danger-btn"
+          onClick={handleClear}
+          style={{ marginTop: 8 }}
+        >
+          🗑 풀 초기화
+        </button>
+      )}
+    </section>
   );
 }

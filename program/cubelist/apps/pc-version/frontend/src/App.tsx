@@ -1173,6 +1173,26 @@ function TopBar({
         const buf = await file.arrayBuffer();
         const next = await importCubepack(buf);
         loadPack(next);
+        // 2026-06-01 D: 가져오기 후 통계 + icon pool 매칭률 alert
+        const totalCubes = next.lists.reduce((a, l) => a + l.cubes.length, 0);
+        const fromPool = next.lists.reduce(
+          (a, l) => a + l.cubes.filter((c) => (c.metadata as Record<string, unknown> | undefined)?.icon_from_pool).length,
+          0,
+        );
+        const heuristic = next.lists.reduce(
+          (a, l) => a + l.cubes.filter((c) => (c.metadata as Record<string, unknown> | undefined)?.mapping_kind === 'import_heuristic').length,
+          0,
+        );
+        const matchPct = totalCubes > 0 ? Math.round((fromPool / totalCubes) * 100) : 0;
+        window.alert(
+          `✅ 큐브팩 가져오기 완료\n\n` +
+          `이름: ${next.name}\n` +
+          `페이지: ${next.lists.length}\n` +
+          `큐브: ${totalCubes}\n\n` +
+          `🖼 Icon Pool 매칭: ${fromPool}/${totalCubes} (${matchPct}%)\n` +
+          `🔀 Heuristic 매핑: ${heuristic} 큐브\n\n` +
+          (matchPct < 50 ? '💡 라이브러리 폴더 등록 후 다시 가져오면 매칭률 ↑' : ''),
+        );
       } catch (e) {
         const msg = e instanceof CubepackFormatError ? e.message : '가져오기 실패';
         window.alert(`큐브팩 가져오기 오류: ${msg}`);

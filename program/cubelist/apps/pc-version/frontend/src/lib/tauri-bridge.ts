@@ -91,7 +91,54 @@ async function requireConsent(actionType: Cube['action_type']): Promise<boolean>
   return result === 'allow_once';
 }
 
+/**
+ * 2026-06-01 A: plugin_action 큐브 → vendor URL fallback.
+ * cube.metadata.sd_uuid 기반 SDK vendor 매핑.
+ */
+const SD_VENDOR_FALLBACK: ReadonlyArray<[RegExp, string]> = [
+  [/com\.elgato\.discord/i, 'https://discord.com'],
+  [/com\.elgato\.spotify|spotify/i, 'https://open.spotify.com'],
+  [/com\.elgato\.streamlabs|streamlabs/i, 'https://streamlabs.com'],
+  [/com\.elgato\.wavelink|wave.?link/i, 'https://www.elgato.com/wave-link'],
+  [/com\.elgato\.controlcenter|control.?center/i, 'https://www.elgato.com/control-center'],
+  [/com\.obsproject\.|obs.?studio|obs.?tools/i, 'https://obsproject.com'],
+  [/com\.adobe\.photoshop|photoshop|adobe/i, 'https://www.adobe.com/products/photoshop.html'],
+  [/com\.elgato\.twitch|twitch/i, 'https://www.twitch.tv'],
+  [/com\.elgato\.youtube|youtube/i, 'https://www.youtube.com'],
+  [/com\.elgato\.voicemod|voicemod/i, 'https://www.voicemod.net'],
+  [/com\.elgato\.philipshue|philips.?hue|\bhue\b/i, 'https://www.meethue.com'],
+  [/com\.elgato\.weather|weather/i, 'https://weather.com'],
+  [/com\.elgato\.cpu|cpu/i, 'https://www.elgato.com'],
+  [/com\.elgato\.advancedlauncher|launcher/i, 'https://www.elgato.com'],
+  [/com\.barraider\.supermacro/i, 'https://github.com/BarRaider/streamdeck-supermacro'],
+];
+
+function pluginActionFallbackUrl(cube: Cube): string | null {
+  const meta = (cube.metadata ?? {}) as Record<string, unknown>;
+  const sdUuid = (meta.sd_uuid as string | undefined) ?? '';
+  const label = cube.label ?? '';
+  const haystack = `${sdUuid} ${label}`;
+  for (const [pattern, url] of SD_VENDOR_FALLBACK) {
+    if (pattern.test(haystack)) return url;
+  }
+  return null;
+}
+
 export async function executeCube(cube: Cube): Promise<ExecuteResult> {
+  // 2026-06-01 A: plugin_action 큐브 → vendor URL fallback (작동 X 큐브를 사이트로)
+  if (cube.action_type === 'plugin_action') {
+    const fallback = pluginActionFallbackUrl(cube);
+    if (fallback) {
+      if (isTauri()) {
+        const { invoke } = await import('@tauri-apps/api/core');
+        await invoke<ExecuteResult>('execute_cube', { action: { action_type: 'link', url: fallback } }).catch(() => {});
+      } else {
+        window.open(fallback, '_blank', 'noopener,noreferrer');
+      }
+      return { elapsed_ms: 1 };
+    }
+  }
+
   // v0.1.2: hotkey_toggle 등 multi-state 큐브는 states[current_index] 의 payload 사용 후 advance
   const { resolveActionForExecution } = await import('./cube-states');
   const { payload: resolvedPayload } = resolveActionForExecution(cube);
