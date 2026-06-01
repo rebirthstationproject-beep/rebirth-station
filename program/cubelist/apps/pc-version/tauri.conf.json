@@ -1,6 +1,6 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "큐브 리스트",
+  "productName": "Cube List",
   "version": "0.1.0",
   "identifier": "com.rebirthstation.cubelist",
   "build": {
