@@ -159,6 +159,40 @@ export function MarketplaceCatalog({ onPackClick }: MarketplaceCatalogProps) {
                     ))}
                   </div>
                 )}
+                {/* P1-B2 (2026-06-01): 카드 즉시 Download / Buy 버튼 — PackDetail 진입 없이 1클릭 */}
+                {pack.download_url && (
+                  <div className="mp-pack-cta" style={{ marginTop: 8, display: 'flex', gap: 6 }}>
+                    {pack.meta.price_cents === 0 ? (
+                      <button
+                        type="button"
+                        className="btn-primary"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          if (pack.download_url) {
+                            window.open(pack.download_url, '_blank', 'noopener,noreferrer');
+                          }
+                        }}
+                        style={{ flex: 1, fontSize: 11, padding: '4px 8px' }}
+                        title="다운로드 페이지로 이동"
+                      >
+                        📥 Download
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        className="btn-ghost"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onPackClick?.(pack.id);
+                        }}
+                        style={{ flex: 1, fontSize: 11, padding: '4px 8px' }}
+                        title="결제 후 다운로드 (v0.1.4)"
+                      >
+                        🛒 Buy {formatPrice(pack.meta.price_cents)}
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             </button>
           ))

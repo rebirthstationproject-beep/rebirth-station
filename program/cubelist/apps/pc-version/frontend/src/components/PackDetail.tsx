@@ -47,11 +47,16 @@ export function PackDetail({ packId, onBack }: PackDetailProps) {
     pack.meta.payment_type === 'subscription_yearly';
 
   function handleInstall(): void {
+    // P1-B2 (2026-06-01): 무료 큐브팩 — download_url 있으면 즉시 외부 다운로드
     if (isFree) {
+      if (pack && pack.download_url) {
+        window.open(pack.download_url, '_blank', 'noopener,noreferrer');
+        return;
+      }
       window.alert(t('mp.install_free'));
       return;
     }
-    // 유료 — 라이센스 키 prompt (v0.1.4 ed25519 검증)
+    // 유료 — 라이센스 키 prompt (v0.1.4 ed25519 검증) + 결제 후 download_url
     window.alert(t('mp.install_paid'));
     const key = window.prompt(t('mp.license_prompt'), '');
     if (key === null) return; // cancel

@@ -22,7 +22,17 @@ export interface MockPack {
   readonly device_hint?: DeviceHint;
   /** 디바이스 그리드 미리보기용 큐브들 (사용자가 보는 sample) */
   readonly preview_cubes: ReadonlyArray<MockPackPreviewCube>;
+  /**
+   * 다운로드 URL (P1-B2, 2026-06-01).
+   * 무료 큐브팩: 즉시 다운로드 페이지로 이동
+   * 유료 큐브팩: 결제 후 redirect URL (v0.1.4 결제 완료 후 활성)
+   * 우리 사이트(rebirthstation.com) 의 다운로드 라우트로 연결 — 사이트 셋업 후 활성.
+   */
+  readonly download_url?: string;
 }
+
+/** P1-B2: 우리 사이트의 큐브팩 다운로드 베이스 URL (placeholder — 사이트 셋업 후 갱신) */
+const DOWNLOAD_BASE_URL = 'https://rebirthstation.com/cubelist/download';
 
 const PALETTE = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
 function paletteColor(idx: number): string {
@@ -64,6 +74,7 @@ export const MOCK_PACKS: ReadonlyArray<MockPack> = [
       'Music', 'Volume+', 'Volume-', 'Mute', 'Replay', 'Highlight', 'Clip', 'Save',
       'TTS', 'Bot', 'Discord', 'Twitch', 'YouTube', 'Spotify', 'OBS', 'Stats',
     ]),
+    download_url: `${DOWNLOAD_BASE_URL}/obs-streamer-essentials`,
   },
   {
     id: 'pack-vscode-dev',
@@ -87,6 +98,7 @@ export const MOCK_PACKS: ReadonlyArray<MockPack> = [
       'Push', 'Pull', 'Commit', 'Branch', 'Diff', 'Stash', 'Merge', 'Rebase',
       'Test', 'Build', 'Deploy', 'Lint', 'Type Check', 'Coverage', 'Profile', 'Logs',
     ]),
+    download_url: `${DOWNLOAD_BASE_URL}/vscode-power-dev`,
   },
   {
     id: 'pack-figma-design',
@@ -108,6 +120,7 @@ export const MOCK_PACKS: ReadonlyArray<MockPack> = [
       'Frame', 'Group', 'Comp', 'Variant', 'A/L', 'Bool', 'Mask', 'Constraint',
       'Style', 'Effect', 'Export', 'Plugin', 'Comment', 'Share', 'Inspect', 'Prototype',
     ]),
+    download_url: `${DOWNLOAD_BASE_URL}/figma-designer-kit`,
   },
   {
     id: 'pack-discord-mod',
@@ -128,6 +141,7 @@ export const MOCK_PACKS: ReadonlyArray<MockPack> = [
       'Mute', 'Deaf', 'Kick', 'Ban', 'Move', 'Timeout', 'Role', 'Warn',
       'Mod Log', 'Slow', 'Lock', 'Pin', 'Delete', 'Report', 'Help',
     ]),
+    download_url: `${DOWNLOAD_BASE_URL}/discord-moderator`,
   },
   {
     id: 'pack-photoshop-retouch',
@@ -151,6 +165,7 @@ export const MOCK_PACKS: ReadonlyArray<MockPack> = [
       'Mask', 'Select', 'Lasso', 'Magic', 'Refine', 'Quick', 'Color Range', 'Subject',
       'FreqSep', 'D&B', 'Color Grade', 'Skin', 'Eyes', 'Teeth', 'Hair', 'Bg',
     ]),
+    download_url: `${DOWNLOAD_BASE_URL}/photoshop-retoucher-pro`,
   },
   {
     id: 'pack-twitch-streamer',
@@ -172,6 +187,7 @@ export const MOCK_PACKS: ReadonlyArray<MockPack> = [
       'Go Live', 'End', 'Title', 'Cat', 'Tags', 'Mods', 'Alerts', 'Bots',
       'Clip', 'Highlight', 'Marker', 'Pause', 'Music', 'Chat', 'Polls', 'Pred',
     ]),
+    download_url: `${DOWNLOAD_BASE_URL}/twitch-streamer-all-in-one`,
   },
 ];
 
