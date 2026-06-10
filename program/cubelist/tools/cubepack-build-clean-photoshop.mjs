@@ -1,0 +1,166 @@
+#!/usr/bin/env node
+/**
+ * cubepack-build-clean-photoshop — 1호 클린 자산 빌더 (파이프라인 2~3단계).
+ *
+ * 입력: Downloads\플러그인\CUBE\Adobe Photoshop v2\*.cubeone (변환+1차 재작업본)
+ * 처리:
+ *   - shortcut 타입만 채택 (plugin_action 메뉴 스텁 = 작동 불가 → 제외)
+ *   - 아이콘: Elgato 아이콘팩 PNG → 자체 SVG 카탈로그(icon-catalog-photoshop.ts) 임베드 교체
+ *   - metadata: iconpack·sd 계열 잔여 전부 제거 → { source: 'rebirth-curated', icon_source: 'catalog:photoshop' }
+ *   - 팩 아이콘: assets/program-icons/adobe/photoshop.png → icon.png
+ * 출력: assets/cubepacks-clean/adobe-photoshop.cubepack  (검증: tools/cubepack-audit.mjs)
+ *
+ * 사용: node tools/cubepack-build-clean-photoshop.mjs [입력디렉토리]
+ */
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import { pathToFileURL } from 'node:url';
+import { createRequire } from 'node:module';
+
+const require = createRequire(import.meta.url);
+const HERE = path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1'));
+const ROOT = path.join(HERE, '..');
+const FRONTEND_NM = path.join(ROOT, 'apps', 'pc-version', 'frontend', 'node_modules');
+const JSZip = require(path.join(FRONTEND_NM, 'jszip'));
+const esbuild = require(path.join(FRONTEND_NM, 'esbuild'));
+
+const SRC_DIR = process.argv[2] ?? path.join(os.homedir(), 'Downloads', '플러그인', 'CUBE', 'Adobe Photoshop v2');
+const OUT_DIR = path.join(ROOT, 'assets', 'cubepacks-clean');
+const PACK_ICON = path.join(ROOT, 'assets', 'program-icons', 'adobe', 'photoshop.png');
+const CATALOG_TS = path.join(ROOT, 'apps', 'pc-version', 'frontend', 'src', 'lib', 'icon-catalog-photoshop.ts');
+
+const PACK_NAME = 'Adobe Photoshop';
+const PACK_ID = 'rbs.pack.adobe-photoshop';
+
+async function loadCatalog() {
+  const ts = fs.readFileSync(CATALOG_TS, 'utf-8');
+  const { code } = esbuild.transformSync(ts, { loader: 'ts', format: 'esm' });
+  const tmp = path.join(os.tmpdir(), `ps-catalog-${process.pid}.mjs`);
+  fs.writeFileSync(tmp, code, 'utf-8');
+  const mod = await import(pathToFileURL(tmp).href);
+  fs.unlinkSync(tmp);
+  return mod;
+}
+
+function svgToDataUrl(svg) {
+  return `data:image/svg+xml;base64,${Buffer.from(svg, 'utf-8').toString('base64')}`;
+}
+
+async function readCubeone(file) {
+  const zip = await JSZip.loadAsync(fs.readFileSync(file));
+  return JSON.parse(await zip.file('manifest.json').async('text'));
+}
+
+async function buildCubeoneZip(manifest) {
+  const zip = new JSZip();
+  zip.file('manifest.json', JSON.stringify(manifest, null, 1));
+  return zip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' });
+}
+
+async function main() {
+  const { findPhotoshopIcon } = await loadCatalog();
+  const now = new Date().toISOString();
+  const files = fs.readdirSync(SRC_DIR).filter((f) => f.endsWith('.cubeone')).sort();
+
+  const adopted = [];
+  const skipped = [];
+  const noIcon = [];
+
+  for (const f of files) {
+    const src = await readCubeone(path.join(SRC_DIR, f));
+    const cube = src.cube ?? {};
+    if (cube.action_type !== 'shortcut') { skipped.push(`${cube.label} (${cube.action_type})`); continue; }
+    const svg = findPhotoshopIcon(cube.label ?? '');
+    if (!svg) { noIcon.push(cube.label); continue; }
+
+    adopted.push({
+      label: cube.label,
+      action_type: 'shortcut',
+      action_payload: { keys: cube.action_payload?.keys ?? [] },
+      icon_url: svgToDataUrl(svg),
+      metadata: {
+        source: 'rebirth-curated',
+        icon_source: 'catalog:photoshop',
+        catalog_version: 'clean-v1',
+      },
+      title_style: { show: true },
+    });
+  }
+
+  if (adopted.length === 0) { console.error('채택 0 — 중단'); process.exit(2); }
+
+  // ── .cubeone → .cubelist → .cubepack 조립 ────────────────────────────────
+  const listId = 'PHOTOSHOP-MAIN';
+  const listZip = new JSZip();
+  const order = [];
+  for (const [i, c] of adopted.entries()) {
+    const cubeId = `ps-${String(i + 1).padStart(2, '0')}`;
+    const cubeManifest = {
+      rbs_format_version: 3,
+      kind: 'cubeone',
+      id: cubeId,
+      license: 'free',
+      created_at: now,
+      updated_at: now,
+      rbs_min_version: '0.1.0',
+      cube: { ...c, sort_order: i + 1 },
+    };
+    const ref = `cubes/${cubeId}.cubeone`;
+    listZip.file(ref, await buildCubeoneZip(cubeManifest));
+    order.push({ ref, sort_order: i + 1 });
+  }
+  listZip.file('manifest.json', JSON.stringify({
+    rbs_format_version: 3,
+    kind: 'cubelist',
+    id: listId,
+    license: 'free',
+    created_at: now,
+    updated_at: now,
+    rbs_min_version: '0.1.0',
+    list: {
+      name: 'Photoshop',
+      sort_order: 1,
+      order,
+      grid_layout: 'cubelist_unlimited',
+      controller_type: 'main',
+    },
+  }, null, 1));
+  const listBuf = await listZip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' });
+
+  const packZip = new JSZip();
+  const listRef = `lists/${listId}.cubelist`;
+  packZip.file(listRef, listBuf);
+  packZip.file('icon.png', fs.readFileSync(PACK_ICON));
+  packZip.file('manifest.json', JSON.stringify({
+    rbs_format_version: 3,
+    kind: 'cubepack',
+    id: PACK_ID,
+    name: PACK_NAME,
+    license: 'free',
+    created_at: now,
+    updated_at: now,
+    rbs_min_version: '0.1.0',
+    pack: {
+      name: PACK_NAME,
+      device_hint: 'cubelist_unlimited',
+      cubes_per_page_default: 28,
+      icon: 'icon.png',
+      lists: [{ ref: listRef, sort_order: 1, name: 'Photoshop', cube_count: adopted.length }],
+    },
+  }, null, 1));
+
+  fs.mkdirSync(OUT_DIR, { recursive: true });
+  const outFile = path.join(OUT_DIR, 'adobe-photoshop.cubepack');
+  fs.writeFileSync(outFile, await packZip.generateAsync({ type: 'nodebuffer', compression: 'DEFLATE' }));
+
+  console.log(`\n클린 팩 생성: ${outFile}`);
+  console.log(`채택 ${adopted.length} (shortcut + 자체 SVG)`);
+  console.log(`제외 ${skipped.length} (비 shortcut — 메뉴 스텁 등):`);
+  for (const s of skipped) console.log(`  - ${s}`);
+  if (noIcon.length) {
+    console.log(`카탈로그 미매칭 ${noIcon.length}: ${noIcon.join(', ')}`);
+  }
+}
+
+main().catch((e) => { console.error('오류:', e); process.exit(2); });

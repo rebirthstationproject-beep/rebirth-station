@@ -8,7 +8,14 @@
 - **R4 아이콘팩 = 구현 완료 확인** — docs/09 W2 전 항목 가동 중 (skin-pack.ts 파서·보수적 매칭 + SkinDialog + applySkinToList/removeSkinFromList + pre_skin_icon/skin_source 보존·복원). 기존 "스펙만 확정" 표기는 구버전
 - **모바일 이모지 제거 완료**(d3ec331): 9파일 40건 → 기하 글리프(▶●⧉⊙⊞◆✓)/미니 SVG 교체, 3언어 동시, typecheck 통과. UI 노출 잔존 0
 - **"헬퍼" 명칭 일괄 교체 완료**(e1b687c): 사용자 노출 문구 전체 PC 앱/PC アプリ/PC app (3언어 + 조사 교정 + PC title 1건). 코드 식별자·프로그래밍 용어 주석은 유지
-- 잔여: GUI 실검증(사용자) / D-06 Updater·D-07 사이닝(사용자 결정) / 큐브팩 v2 제작 계속(programs.json 기반, discord 1/10 완료)
+
+## ⭐ 2026-06-11 — 큐브팩 자산화 파이프라인 확정 + 1호 자산 (사용자 결정)
+- **파이프라인(영구)**: ①변환→자체 테스트 ②통과분만 수정+아이콘 제작 ③완성본만 분리 보관 자산화 (`assets/cubepacks-clean/`)
+- **QA 4 게이트**: 1)전 큐브 작동 2)라이선스·잔여 기록 0 (SD/Elgato/iconpack 출처 포함) 3)리스트 아이콘 정확 4)큐브 아이콘 통일 디자인
+- 도구: `tools/cubepack-audit.mjs`(게이트 자동 검사, exit 0=통과) / `tools/cubelib-inventory.mjs`(변환 라이브러리 전수 감사) / `tools/cubepack-build-clean-photoshop.mjs`(1호 빌더)
+- **1호 자산: adobe-photoshop.cubepack 게이트 통과** — v2 변환본 72큐브 중 shortcut 52 채택 + 자체 SVG 카탈로그(icon-catalog-photoshop.ts) 임베드 교체 + 메타 클린. 메뉴 스텁 20 제외(후속 재설계)
+- 라이브러리 현황: 31폴더 316큐브 — PS v2 외 전부 plugin_action 스텁 단계 (`assets/cubepacks-clean/_inventory.json`)
+- 잔여: PS 팩 PC 앱 실행 테스트(검토1 실측) + 디자인 통일감 수동 판정(검토4) / 다음 후보 = 네이티브 재설계 가능한 팩(Clocks·CPU→live_*, Advanced Launcher→app_launch, YouTube·Spotify→link 등) / discord 류 런타임 의존 팩은 액션 재설계 필요
 
 ## ⭐ 2026-06-10 품질 재설계 (Stream Deck 동급화) — R1~R3 완료
 - 권위 스펙: `docs/08-quality-redesign-plan.md` (Fable 5 검토 + 계획)

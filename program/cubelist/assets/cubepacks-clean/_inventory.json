@@ -1,0 +1,385 @@
+[
+ {
+  "folder": "Adobe Photoshop v2",
+  "cubes": 72,
+  "native": 52,
+  "stub": 20,
+  "icon": 72,
+  "residue": 0,
+  "types": {
+   "shortcut": 52,
+   "plugin_action": 20
+  },
+  "readiness": 83
+ },
+ {
+  "folder": "Live 데모",
+  "cubes": 13,
+  "native": 13,
+  "stub": 0,
+  "icon": 0,
+  "residue": 0,
+  "types": {
+   "live_clock": 2,
+   "live_timer": 1,
+   "live_battery": 1,
+   "live_gauge": 1,
+   "live_weather": 1,
+   "live_monitor": 2,
+   "live_alarm": 1,
+   "live_stock": 1,
+   "live_calendar": 1,
+   "live_news": 1,
+   "live_network": 1
+  },
+  "readiness": 60
+ },
+ {
+  "folder": "Sound_Deck-3.7.2-windows_fMlAsnk",
+  "cubes": 1,
+  "native": 1,
+  "stub": 0,
+  "icon": 0,
+  "residue": 1,
+  "types": {
+   "link": 1
+  },
+  "readiness": 60
+ },
+ {
+  "folder": "Spotify Integration",
+  "cubes": 1,
+  "native": 1,
+  "stub": 0,
+  "icon": 0,
+  "residue": 0,
+  "types": {
+   "link": 1
+  },
+  "readiness": 60
+ },
+ {
+  "folder": "Twitch Tools",
+  "cubes": 1,
+  "native": 1,
+  "stub": 0,
+  "icon": 0,
+  "residue": 0,
+  "types": {
+   "link": 1
+  },
+  "readiness": 60
+ },
+ {
+  "folder": "Win Tools",
+  "cubes": 1,
+  "native": 1,
+  "stub": 0,
+  "icon": 0,
+  "residue": 0,
+  "types": {
+   "link": 1
+  },
+  "readiness": 60
+ },
+ {
+  "folder": "Advanced Launcher",
+  "cubes": 4,
+  "native": 0,
+  "stub": 4,
+  "icon": 4,
+  "residue": 8,
+  "types": {
+   "plugin_action": 4
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Analog Clock",
+  "cubes": 1,
+  "native": 0,
+  "stub": 1,
+  "icon": 1,
+  "residue": 3,
+  "types": {
+   "plugin_action": 1
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Audio Mute",
+  "cubes": 3,
+  "native": 0,
+  "stub": 3,
+  "icon": 3,
+  "residue": 6,
+  "types": {
+   "plugin_action": 3
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Clocks",
+  "cubes": 2,
+  "native": 0,
+  "stub": 2,
+  "icon": 2,
+  "residue": 6,
+  "types": {
+   "plugin_action": 2
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Control Center",
+  "cubes": 8,
+  "native": 0,
+  "stub": 8,
+  "icon": 8,
+  "residue": 24,
+  "types": {
+   "plugin_action": 8
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "CPU",
+  "cubes": 1,
+  "native": 0,
+  "stub": 1,
+  "icon": 1,
+  "residue": 3,
+  "types": {
+   "plugin_action": 1
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Discord",
+  "cubes": 17,
+  "native": 0,
+  "stub": 17,
+  "icon": 17,
+  "residue": 51,
+  "types": {
+   "plugin_action": 17
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "OBS Tools",
+  "cubes": 26,
+  "native": 0,
+  "stub": 26,
+  "icon": 26,
+  "residue": 52,
+  "types": {
+   "plugin_action": 26
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Speed Test",
+  "cubes": 1,
+  "native": 0,
+  "stub": 1,
+  "icon": 1,
+  "residue": 2,
+  "types": {
+   "plugin_action": 1
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Streamlabs",
+  "cubes": 17,
+  "native": 0,
+  "stub": 17,
+  "icon": 17,
+  "residue": 51,
+  "types": {
+   "plugin_action": 17
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "SuperMacro",
+  "cubes": 6,
+  "native": 0,
+  "stub": 6,
+  "icon": 6,
+  "residue": 12,
+  "types": {
+   "plugin_action": 6
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Tomato Timer",
+  "cubes": 1,
+  "native": 0,
+  "stub": 1,
+  "icon": 1,
+  "residue": 2,
+  "types": {
+   "plugin_action": 1
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Voicemod",
+  "cubes": 11,
+  "native": 0,
+  "stub": 11,
+  "icon": 11,
+  "residue": 22,
+  "types": {
+   "plugin_action": 11
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Wave Link",
+  "cubes": 17,
+  "native": 0,
+  "stub": 17,
+  "icon": 17,
+  "residue": 51,
+  "types": {
+   "plugin_action": 17
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Weather",
+  "cubes": 2,
+  "native": 0,
+  "stub": 2,
+  "icon": 2,
+  "residue": 6,
+  "types": {
+   "plugin_action": 2
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "YouTube Ticker",
+  "cubes": 1,
+  "native": 0,
+  "stub": 1,
+  "icon": 1,
+  "residue": 2,
+  "types": {
+   "plugin_action": 1
+  },
+  "readiness": 40
+ },
+ {
+  "folder": "Powerpoint",
+  "cubes": 12,
+  "native": 0,
+  "stub": 12,
+  "icon": 11,
+  "residue": 36,
+  "types": {
+   "plugin_action": 12
+  },
+  "readiness": 37
+ },
+ {
+  "folder": "Adobe Photoshop",
+  "cubes": 19,
+  "native": 0,
+  "stub": 19,
+  "icon": 17,
+  "residue": 57,
+  "types": {
+   "plugin_action": 19
+  },
+  "readiness": 36
+ },
+ {
+  "folder": "Philips Hue",
+  "cubes": 10,
+  "native": 0,
+  "stub": 10,
+  "icon": 9,
+  "residue": 30,
+  "types": {
+   "plugin_action": 10
+  },
+  "readiness": 36
+ },
+ {
+  "folder": "YouTube",
+  "cubes": 7,
+  "native": 0,
+  "stub": 7,
+  "icon": 6,
+  "residue": 21,
+  "types": {
+   "plugin_action": 7
+  },
+  "readiness": 34
+ },
+ {
+  "folder": "OBS Studio",
+  "cubes": 19,
+  "native": 0,
+  "stub": 19,
+  "icon": 13,
+  "residue": 57,
+  "types": {
+   "plugin_action": 19
+  },
+  "readiness": 27
+ },
+ {
+  "folder": "Spotify",
+  "cubes": 6,
+  "native": 0,
+  "stub": 6,
+  "icon": 4,
+  "residue": 18,
+  "types": {
+   "plugin_action": 6
+  },
+  "readiness": 27
+ },
+ {
+  "folder": "Twitch",
+  "cubes": 16,
+  "native": 0,
+  "stub": 16,
+  "icon": 9,
+  "residue": 48,
+  "types": {
+   "plugin_action": 16
+  },
+  "readiness": 23
+ },
+ {
+  "folder": "Discord Volume Mixer",
+  "cubes": 9,
+  "native": 0,
+  "stub": 9,
+  "icon": 4,
+  "residue": 18,
+  "types": {
+   "plugin_action": 9
+  },
+  "readiness": 18
+ },
+ {
+  "folder": "Volume Controller",
+  "cubes": 11,
+  "native": 0,
+  "stub": 11,
+  "icon": 5,
+  "residue": 33,
+  "types": {
+   "plugin_action": 11
+  },
+  "readiness": 18
+ }
+]

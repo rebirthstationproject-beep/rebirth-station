@@ -1,0 +1,343 @@
+{
+ "file": "adobe-photoshop.cubepack",
+ "audited_at": null,
+ "pack_residue": [],
+ "lists": [
+  {
+   "ref": "lists/PHOTOSHOP-MAIN.cubelist",
+   "residue": [],
+   "cubes": [
+    {
+     "ref": "cubes/ps-01.cubeone",
+     "label": "Actual Size",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-02.cubeone",
+     "label": "Adj Black And White",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-03.cubeone",
+     "label": "Adj Color Balance",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-04.cubeone",
+     "label": "Auto Color",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-05.cubeone",
+     "label": "Background",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-06.cubeone",
+     "label": "Black And White",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-07.cubeone",
+     "label": "Brush",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-08.cubeone",
+     "label": "Burn",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-09.cubeone",
+     "label": "Clone Stamp",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-10.cubeone",
+     "label": "Content Aware Fill",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-11.cubeone",
+     "label": "Copy",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-12.cubeone",
+     "label": "Crop",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-13.cubeone",
+     "label": "Cut",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-14.cubeone",
+     "label": "Decrease Brush Size",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-15.cubeone",
+     "label": "Direct Selection",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-16.cubeone",
+     "label": "Dodge",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-17.cubeone",
+     "label": "Duplicate Layers",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-18.cubeone",
+     "label": "Export As",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-19.cubeone",
+     "label": "Eyedropper",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-20.cubeone",
+     "label": "Fade",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-21.cubeone",
+     "label": "File Info",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-22.cubeone",
+     "label": "Fill",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-23.cubeone",
+     "label": "Fill with Background Color",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-24.cubeone",
+     "label": "Fill with Foreground Color",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-25.cubeone",
+     "label": "Foreground",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-26.cubeone",
+     "label": "Free Transform",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-27.cubeone",
+     "label": "Group Layers",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-28.cubeone",
+     "label": "Healing Brush",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-29.cubeone",
+     "label": "Horizontal Type",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-30.cubeone",
+     "label": "Image Size",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-31.cubeone",
+     "label": "Increase Brush Size",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-32.cubeone",
+     "label": "Invert",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-33.cubeone",
+     "label": "Lasso",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-34.cubeone",
+     "label": "Last Filter",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-35.cubeone",
+     "label": "Levels",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-36.cubeone",
+     "label": "Line",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-37.cubeone",
+     "label": "Lock Layers",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-38.cubeone",
+     "label": "Magic Wand",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-39.cubeone",
+     "label": "Merge Layers",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-40.cubeone",
+     "label": "Move",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-41.cubeone",
+     "label": "New",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-42.cubeone",
+     "label": "New Group",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-43.cubeone",
+     "label": "Open",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-44.cubeone",
+     "label": "Paste",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-45.cubeone",
+     "label": "Path Selection",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-46.cubeone",
+     "label": "Pen",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-47.cubeone",
+     "label": "Perspective Crop",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-48.cubeone",
+     "label": "Rulers",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-49.cubeone",
+     "label": "Save",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-50.cubeone",
+     "label": "Select All",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-51.cubeone",
+     "label": "Undo",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/ps-52.cubeone",
+     "label": "Vertical Type",
+     "issues": [],
+     "residue": []
+    }
+   ]
+  }
+ ],
+ "totals": {
+  "cubes": 52,
+  "runnable_issues": 0,
+  "residue_hits": 0,
+  "icon": {
+   "ok": 52,
+   "placeholder": 0,
+   "tiny": 0,
+   "noIcon": 0
+  }
+ },
+ "verdict": {
+  "check1_runnable": true,
+  "check2_clean": true,
+  "check3_list_icon": true,
+  "check4_cube_icons": true
+ },
+ "pack_icon": "icon.png"
+}

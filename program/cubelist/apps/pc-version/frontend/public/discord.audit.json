@@ -1,0 +1,1029 @@
+{
+ "file": "discord.cubepack",
+ "audited_at": null,
+ "pack_residue": [
+  {
+   "path": "pack.pack.streamdeck_source",
+   "kind": "key",
+   "detail": "streamdeck_source"
+  }
+ ],
+ "lists": [
+  {
+   "ref": "lists/6TWBLJS9Q96MDA98DAABKAR1MKZ.cubelist",
+   "residue": [
+    {
+     "path": "list.list.streamdeck_source",
+     "kind": "key",
+     "detail": "streamdeck_source"
+    }
+   ],
+   "cubes": [
+    {
+     "ref": "cubes/6TWBLJS9-0-0.cubeone",
+     "label": "Video Toggle",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)",
+      "states[0].image 깨진 참조: Images/3LTDO5ABOT3R7C9ON7WK323EV0Z.png",
+      "states[1].image 깨진 참조: Images/E5I798ESMD7E7BBK8EFBP31VC0Z.png"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.videotoggle"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.videotoggle"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.discord.videotoggle"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/6TWBLJS9-1-0.cubeone",
+     "label": "Website",
+     "issues": [
+      "link url 무효: (없음)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.system.website"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.system.website"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/6TWBLJS9-2-0.cubeone",
+     "label": "Website",
+     "issues": [
+      "link url 무효: (없음)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.system.website"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.system.website"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/6TWBLJS9-0-1.cubeone",
+     "label": "Previous Page",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.page.previous"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.page.previous"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.page.previous"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/6TWBLJS9-1-1.cubeone",
+     "label": "Website",
+     "issues": [
+      "link url 무효: (없음)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.path",
+       "kind": "value",
+       "detail": "Elgato.com"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.system.website"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.system.website"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/6TWBLJS9-2-1.cubeone",
+     "label": "Website",
+     "issues": [
+      "link url 무효: (없음)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.system.website"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.system.website"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ref": "lists/9NST6VEL595VRET8VPWTBPP6W0Z.cubelist",
+   "residue": [
+    {
+     "path": "list.list.streamdeck_source",
+     "kind": "key",
+     "detail": "streamdeck_source"
+    }
+   ],
+   "cubes": []
+  },
+  {
+   "ref": "lists/KI8V7SS5Q9691E14G8V52Q2CNGZ.cubelist",
+   "residue": [
+    {
+     "path": "list.list.streamdeck_source",
+     "kind": "key",
+     "detail": "streamdeck_source"
+    }
+   ],
+   "cubes": [
+    {
+     "ref": "cubes/KI8V7SS5-0-0.cubeone",
+     "label": "Parent Folder",
+     "issues": [],
+     "residue": [
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.profile.backtoparent"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.profile.backtoparent"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/KI8V7SS5-1-0.cubeone",
+     "label": "Soundboard",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/KI8V7SS5-2-0.cubeone",
+     "label": "Soundboard",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/KI8V7SS5-0-1.cubeone",
+     "label": "Soundboard",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/KI8V7SS5-1-1.cubeone",
+     "label": "Soundboard",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/KI8V7SS5-2-1.cubeone",
+     "label": "Soundboard",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.discord.soundboard"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "ref": "lists/QBKEL5KEJ57MWEQ06F88VR2SI8Z.cubelist",
+   "residue": [
+    {
+     "path": "list.list.streamdeck_source",
+     "kind": "key",
+     "detail": "streamdeck_source"
+    }
+   ],
+   "cubes": [
+    {
+     "ref": "cubes/QBKEL5KE-0-0.cubeone",
+     "label": "Mute",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)",
+      "states[0].image 깨진 참조: Images/MTN544FNVH4TB56FJ2NW0O3PGGZ.png",
+      "states[1].image 깨진 참조: Images/TGGT6WTIFL10F4WK4KCFTN0TROZ.png"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.mute"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.mute"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.discord.mute"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/QBKEL5KE-1-0.cubeone",
+     "label": "Website",
+     "issues": [
+      "link url 무효: (없음)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.path",
+       "kind": "value",
+       "detail": "https://e.lga.to/nitro-redeem-stream-deck"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.system.website"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.system.website"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/QBKEL5KE-2-0.cubeone",
+     "label": "Create Folder",
+     "issues": [],
+     "residue": [
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.profile.openchild"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.profile.openchild"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/QBKEL5KE-0-1.cubeone",
+     "label": "Deafen",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)",
+      "states[0].image 깨진 참조: Images/DCQ771KSP14OPB1O3I4QH3HBGSZ.png",
+      "states[1].image 깨진 참조: Images/9BILD09F415ITDQ2NDDGSHBG8KZ.png"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.deafen"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.deafen"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.discord.deafen"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/QBKEL5KE-1-1.cubeone",
+     "label": "Stream Toggle",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)",
+      "states[0].image 깨진 참조: Images/HRBCOQECTL6GFEIMT1EILI3574Z.png",
+      "states[1].image 깨진 참조: Images/9QREWMEPNP6NWED2902GFD3SJGZ.png"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.streamtoggle"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.discord.streamtoggle"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.discord.streamtoggle"
+      }
+     ]
+    },
+    {
+     "ref": "cubes/QBKEL5KE-2-1.cubeone",
+     "label": "Next Page",
+     "issues": [
+      "plugin_action 스텁 — plugin_dir/plugin_id 비어있음 (런타임 포팅 전, 작동 불가)"
+     ],
+     "residue": [
+      {
+       "path": "cube.cube.action_payload.plugin_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.page.next"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.source",
+       "kind": "value",
+       "detail": "streamdeck-profile-import"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "key",
+       "detail": "sd_uuid"
+      },
+      {
+       "path": "cube.cube.metadata.sd_uuid",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.page.next"
+      },
+      {
+       "path": "cube.cube.metadata.sd_action_id",
+       "kind": "key",
+       "detail": "sd_action_id"
+      },
+      {
+       "path": "cube.cube.metadata.sd_coord",
+       "kind": "key",
+       "detail": "sd_coord"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta",
+       "kind": "key",
+       "detail": "streamdeck_meta"
+      },
+      {
+       "path": "cube.cube.streamdeck_meta.UUID",
+       "kind": "value",
+       "detail": "com.elgato.streamdeck.page.next"
+      }
+     ]
+    }
+   ]
+  }
+ ],
+ "totals": {
+  "cubes": 18,
+  "runnable_issues": 24,
+  "residue_hits": 162,
+  "icon": {
+   "ok": 0,
+   "placeholder": 0,
+   "tiny": 0,
+   "noIcon": 18
+  }
+ },
+ "verdict": {
+  "check1_runnable": false,
+  "check2_clean": false,
+  "check3_list_icon": false,
+  "check4_cube_icons": false
+ },
+ "pack_icon": null
+}
