@@ -74,7 +74,11 @@ export function CubeCellVisual({
   const isLiveType = LIVE_TYPES.has(cube.action_type);
   const iconMeta = (cube.metadata ?? {}) as Record<string, unknown>;
   const isTinyIcon = iconMeta.icon_is_tiny === true;
-  const isPlaceholderIcon = !cube.icon_url || iconMeta.icon_is_placeholder === true;
+  // icon_is_duplicate: 변환 폴백으로 동일 아이콘 반복 (2026-06-10) → 생성 글리프로 대체
+  const isPlaceholderIcon =
+    !cube.icon_url ||
+    iconMeta.icon_is_placeholder === true ||
+    iconMeta.icon_is_duplicate === true;
   const iconSourceStr = (iconMeta.icon_source as string | undefined) ?? '';
   const isSdkMonoPng = /^state(@\dx)?\.png$/i.test(iconSourceStr);
   const isFolder = cube.action_type === 'folder';

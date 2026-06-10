@@ -24,6 +24,7 @@ import type { Cube, CubeActionType, CubeList, CubePack } from '../types/cube';
 import { readCubeZip } from './cubepack-io';
 import { remapPluginActionCube } from './heuristic-mapping';
 import { registerCubes } from './icon-library';
+import { markDuplicateIcons } from './icon-dedupe';
 
 /**
  * 2026-06-01: 기존 plugin_action 큐브를 dynamic remap.
@@ -133,7 +134,8 @@ export async function loadLibraryFromDir(path: string): Promise<CubePack> {
       sort_order: order++,
       cols: 4,
       cubes_per_page: 28,
-      cubes,
+      // 변환 폴백 중복 아이콘 → 렌더 플래그 마킹 (2026-06-10)
+      cubes: markDuplicateIcons(cubes),
     });
   }
   if (looseCubes.length > 0) {

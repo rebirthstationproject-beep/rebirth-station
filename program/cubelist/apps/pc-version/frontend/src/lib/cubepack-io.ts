@@ -263,7 +263,9 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
     const listBlob = await listEntry.async('uint8array');
     const list = await readListZip(listBlob, sortOrder);
     // 2026-06-01: 각 큐브에 heuristic remap 적용
-    lists.push({ ...list, cubes: list.cubes.map(applyRemap) });
+    // 2026-06-10: 변환 폴백 중복 아이콘 마킹 (동일 icon_url 3회+ → 2번째부터 생성 글리프)
+    const { markDuplicateIcons } = await import('./icon-dedupe');
+    lists.push({ ...list, cubes: markDuplicateIcons(list.cubes.map(applyRemap)) });
   }
 
   // === 라이브러리 큐브 복원 (수정 #2) ===
