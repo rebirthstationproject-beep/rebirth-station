@@ -614,6 +614,55 @@ function DraftPageTabs() {
   );
 }
 
+// ── MakerSortableCell — CubeMakerCenter DnD 래퍼 (소형, CubeCellVisual 재사용) ──────────────
+function MakerSortableCell({
+  cube,
+  isSelected,
+  selectionIndex,
+  nowMs,
+  onClick,
+  onDoubleClick,
+}: {
+  cube: Cube;
+  isSelected: boolean;
+  selectionIndex: number;
+  nowMs: number;
+  onClick: () => void;
+  onDoubleClick: () => void;
+}) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+    id: cube.id,
+  });
+  const { role: _r, 'aria-pressed': _ap, ...restAttrs } = attributes;
+  void _r; void _ap;
+  const style: React.CSSProperties = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.5 : 1,
+  };
+  return (
+    <button
+      ref={setNodeRef}
+      style={style}
+      type="button"
+      className="cube-cell"
+      onClick={onClick}
+      onDoubleClick={onDoubleClick}
+      title={`${cube.label} (${cube.action_type})`}
+      {...restAttrs}
+      {...listeners}
+    >
+      <CubeCellVisual
+        cube={cube}
+        selected={isSelected}
+        selectionIndex={selectionIndex}
+        nowMs={nowMs}
+        isDragging={isDragging}
+      />
+    </button>
+  );
+}
+
 /**
  * 큐브 만들기 가운데 영역 (Phase 2b).
  * - 라이브러리 큐브 그리드 (어플 아이콘 모양)
@@ -630,6 +679,8 @@ function CubeMakerCenter() {
   const addLibraryCube = useEditor((s) => s.addLibraryCube);
   const addCubeAtSlot = useEditor((s) => s.addCubeAtSlot);
   const selectCube = useEditor((s) => s.selectCube);
+  const removeCube = useEditor((s) => s.removeCube);
+  const moveCubeToSlot = useEditor((s) => s.moveCubeToSlot);
 
   const listMakerActive = useEditor((s) => s.list_maker_active);
   const listMakerSelection = useEditor(useShallow((s) => s.list_maker_selection));
@@ -681,6 +732,47 @@ function CubeMakerCenter() {
   // draft 가 활성이면 큐브 만들기 페이지는 "전체" 폴더 그리드로 폴백 (draft 는 큐브 리스트 만들기 페이지 전용)
   const isAllMode = activeList === null || (!!draftList && activeList?.id === draftList.id);
   const lists = pack?.lists ?? [];
+
+  // ── DnD sensors (CubeGrid 동일 패턴) ──────────────────────────────────────
+  const makerSensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  function handleMakerDragEnd(e: DragEndEvent): void {
+    const { active, over } = e;
+    if (!over || active.id === over.id || !activeList) return;
+    const activeId = String(active.id);
+    const overId = String(over.id);
+    const overCube = listCubes.find((c) => c.id === overId);
+    if (overCube) {
+      // 다른 큐브 위 → swap
+      moveCubeToSlot(activeList.id, activeId, overCube.sort_order);
+    } else {
+      // 빈 영역/trail → 마지막+1 슬롯
+      const maxSlot = listCubes.length > 0 ? Math.max(...listCubes.map((c) => c.sort_order)) : 0;
+      moveCubeToSlot(activeList.id, activeId, maxSlot + 1);
+    }
+  }
+
+  // ── Delete 키 — 선택 큐브 삭제 ─────────────────────────────────────────────
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent): void {
+      if (e.key !== 'Delete') return;
+      const target = e.target as HTMLElement | null;
+      if (target && ['INPUT', 'TEXTAREA'].includes(target.tagName)) return;
+      if (!activeList) return;
+      const state = useEditor.getState();
+      const selectedId = state.cube_id;
+      if (!selectedId) return;
+      const cube = activeList.cubes.find((c) => c.id === selectedId);
+      if (!cube) return;
+      if (!window.confirm(`"${cube.label}" — ${t('inspector.delete_confirm')}`)) return;
+      removeCube(activeList.id, selectedId);
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [activeList, removeCube, t]);
 
   // "전체" 모드: 각 리스트(폴더)를 큐브 셀처럼 표시
   if (isAllMode) {
@@ -757,60 +849,117 @@ function CubeMakerCenter() {
           </button>
         </div>
       ) : (
-        <div
-          className="cube-grid"
-          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))`, padding: '16px' }}
-        >
-          {/* 첫 셀: + 새 큐브 추가 */}
-          <button
-            type="button"
-            className="cube-cell cube-cell-add"
-            onClick={handleAddNewCube}
-            title="＋ 새 큐브 추가"
-            aria-label="새 큐브 추가"
-          >
-            <div className="cube-icon-bg">
-              <span className="cube-cell-add-plus">＋</span>
-            </div>
-            <span className="cube-label">새 큐브</span>
-          </button>
-          {cubesToShow.map((cube) => {
-            const selectionIdx = listMakerSelection.indexOf(cube.id);
-            const isSelected = librarySelectedId === cube.id;
-            // R1-1: CubeCellVisual 단일 렌더러 소비
-            return (
-              <button
-                key={cube.id}
-                type="button"
-                className="cube-cell"
-                onClick={() => handleClickCube(cube.id)}
-                title={`${cube.label} (${cube.action_type})`}
+        // activeList DnD 모드: SortableContext 래핑. 라이브러리 풀 모드(activeList 없음) = 비 DnD.
+        activeList ? (
+          <DndContext sensors={makerSensors} collisionDetection={closestCenter} onDragEnd={handleMakerDragEnd}>
+            <SortableContext items={listCubes.map((c) => c.id)} strategy={rectSortingStrategy}>
+              <div
+                className="cube-grid"
+                style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))`, padding: '16px' }}
               >
-                <CubeCellVisual
-                  cube={cube}
-                  selected={isSelected}
-                  selectionIndex={selectionIdx}
-                  nowMs={libLiveNowMs}
-                />
-              </button>
-            );
-          })}
-          {/* P1-B1 갱신 (2026-06-01): 사용자 명시 "앞과 뒤에 한개씩"
-              앞 = "+ 새 큐브" 셀 (이미 위에 있음). 뒤 = 점선 빈 슬롯 1개. */}
-          {/* R2-3: 인라인 opacity 조작 제거 → CSS .cube-cell-trail-empty:hover */}
-          <button
-            type="button"
-            className="cube-cell cube-cell-add cube-cell-trail-empty"
-            onClick={handleAddNewCube}
-            title={`다음 슬롯에 큐브 추가`}
-            aria-label="다음 빈 슬롯"
+                {/* 첫 셀: + 새 큐브 추가 (DnD 제외) */}
+                <button
+                  type="button"
+                  className="cube-cell cube-cell-add"
+                  onClick={handleAddNewCube}
+                  title="＋ 새 큐브 추가"
+                  aria-label="새 큐브 추가"
+                >
+                  <div className="cube-icon-bg">
+                    <span className="cube-cell-add-plus">＋</span>
+                  </div>
+                  <span className="cube-label">새 큐브</span>
+                </button>
+                {listCubes.map((cube) => {
+                  const selectionIdx = listMakerSelection.indexOf(cube.id);
+                  const isSelected = librarySelectedId === cube.id;
+                  return (
+                    <MakerSortableCell
+                      key={cube.id}
+                      cube={cube}
+                      isSelected={isSelected}
+                      selectionIndex={selectionIdx}
+                      nowMs={libLiveNowMs}
+                      onClick={() => handleClickCube(cube.id)}
+                      onDoubleClick={() => {
+                        if (cube.action_type === 'folder') return;
+                        import('./lib/run-cube').then(({ runCube }) => {
+                          runCube(cube, activeList.id).catch((e) => console.warn('[maker dblclick]', e));
+                        });
+                      }}
+                    />
+                  );
+                })}
+                {/* trail 빈 슬롯 (DnD 제외) */}
+                <button
+                  type="button"
+                  className="cube-cell cube-cell-add cube-cell-trail-empty"
+                  onClick={handleAddNewCube}
+                  title={`다음 슬롯에 큐브 추가`}
+                  aria-label="다음 빈 슬롯"
+                >
+                  <div className="cube-icon-bg">
+                    <span className="cube-cell-add-plus">＋</span>
+                  </div>
+                  <span className="cube-label">새 큐브</span>
+                </button>
+              </div>
+            </SortableContext>
+          </DndContext>
+        ) : (
+          // 라이브러리 풀 모드 — DnD 없음
+          <div
+            className="cube-grid"
+            style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))`, padding: '16px' }}
           >
-            <div className="cube-icon-bg">
-              <span className="cube-cell-add-plus">＋</span>
-            </div>
-            <span className="cube-label">새 큐브</span>
-          </button>
-        </div>
+            {/* 첫 셀: + 새 큐브 추가 */}
+            <button
+              type="button"
+              className="cube-cell cube-cell-add"
+              onClick={handleAddNewCube}
+              title="＋ 새 큐브 추가"
+              aria-label="새 큐브 추가"
+            >
+              <div className="cube-icon-bg">
+                <span className="cube-cell-add-plus">＋</span>
+              </div>
+              <span className="cube-label">새 큐브</span>
+            </button>
+            {cubesToShow.map((cube) => {
+              const selectionIdx = listMakerSelection.indexOf(cube.id);
+              const isSelected = librarySelectedId === cube.id;
+              return (
+                <button
+                  key={cube.id}
+                  type="button"
+                  className="cube-cell"
+                  onClick={() => handleClickCube(cube.id)}
+                  title={`${cube.label} (${cube.action_type})`}
+                >
+                  <CubeCellVisual
+                    cube={cube}
+                    selected={isSelected}
+                    selectionIndex={selectionIdx}
+                    nowMs={libLiveNowMs}
+                  />
+                </button>
+              );
+            })}
+            {/* P1-B1 갱신 (2026-06-01): trail 빈 슬롯 */}
+            <button
+              type="button"
+              className="cube-cell cube-cell-add cube-cell-trail-empty"
+              onClick={handleAddNewCube}
+              title={`다음 슬롯에 큐브 추가`}
+              aria-label="다음 빈 슬롯"
+            >
+              <div className="cube-icon-bg">
+                <span className="cube-cell-add-plus">＋</span>
+              </div>
+              <span className="cube-label">새 큐브</span>
+            </button>
+          </div>
+        )
       )}
       {/* 디바이스 권장 페이지 가이드 (2026-06-01) — 사용자 명시 디폴트 + 현재 큐브 수 */}
       {cubesToShow.length > 0 && <PageSizeGuide currentCubeCount={cubesToShow.length} cols={cols} />}
@@ -1710,9 +1859,6 @@ function GridArea() {
         />
       )}
       <CubeGrid list={list} visibleCubes={visibleCubes} />
-      <div className="grid-hint">
-        M7: 폴더 진입 · 페이지네이션 (cubes_per_page 초과 자동 페이지) · 멀티액션 대기
-      </div>
     </main>
   );
 }
