@@ -2293,3 +2293,134 @@ input[type="text"]:focus, select:focus {
   font-family: 'Consolas', monospace;
   letter-spacing: 0.02em;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   2A-2: 리스트 빌더 상하 분할 레이아웃 + 큐브 팔레트
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* 상하 분할 컨테이너 */
+.list-builder-split {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+/* 위 영역 — DraftPageTabs + GridArea */
+.list-builder-top {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* grid-area 는 list-builder-top 안에서 flex:1 스크롤 */
+.list-builder-top .grid-area {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+/* 큐브 팔레트 패널 (하단 고정) */
+.cube-palette {
+  flex-shrink: 0;
+  height: 220px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-surface);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* 팔레트 헤더 */
+.palette-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 4px;
+  flex-shrink: 0;
+  border-bottom: 1px solid var(--border);
+  min-height: 32px;
+}
+
+.palette-source-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.palette-cube-count {
+  font-size: 11px;
+}
+
+.palette-all-btn {
+  font-size: 11px;
+  padding: 2px 8px;
+}
+
+.palette-drag-hint {
+  margin-left: auto;
+  font-size: 10px;
+  opacity: 0.5;
+}
+
+/* 팔레트 타일 스크롤 영역 */
+.palette-tiles {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  padding: 8px 12px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex: 1;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+}
+
+/* 팔레트 개별 타일 — --cube-size 로컬 오버라이드 64px */
+.palette-cell {
+  --cube-size: 64px;
+  flex-shrink: 0;
+  width: var(--cube-size);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: grab;
+  border-radius: 8px;
+  padding: 4px;
+  border: 1px solid transparent;
+  transition: background 0.1s, border-color 0.1s;
+  user-select: none;
+}
+
+.palette-cell:hover {
+  background: var(--bg-hover);
+  border-color: var(--border);
+}
+
+/* 팔레트 타일 안의 .cube-icon-bg 크기 축소 */
+.palette-cell .cube-icon-bg {
+  width: var(--cube-size);
+  height: var(--cube-size);
+  border-radius: 10px;
+}
+
+/* 팔레트 타일 라벨 1줄 말줄임 */
+.palette-cell .cube-label {
+  font-size: 9px;
+  max-width: var(--cube-size);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  margin-top: 3px;
+}
+
+/* 드래그 중 고스트 */
+.palette-cell[data-dragging="true"],
+.palette-cell:active {
+  cursor: grabbing;
+  opacity: 0.5;
+}

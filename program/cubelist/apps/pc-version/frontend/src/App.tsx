@@ -50,6 +50,7 @@ import { MarketplaceCatalog } from './components/MarketplaceCatalog';
 import { PackDetail } from './components/PackDetail';
 import { GlobalSearch } from './components/GlobalSearch';
 import { SettingsPanel } from './components/SettingsPanel';
+import { CubePalette } from './components/CubePalette';
 import {
   PluginActionsBackground,
   PluginPropertyInspector,
@@ -85,7 +86,6 @@ import type { Cube, CubeList, CubePack } from './types/cube';
 import { PlayMode } from './components/PlayMode';
 import { SkinDialog } from './components/SkinDialog';
 
-type MainTab = 'cube-maker' | 'list-maker' | 'marketplace';
 
 const PACK_STORAGE_KEY = 'cubelist:last_pack';
 const LIBRARY_DIR_KEY = 'cubelist:library_dir';
@@ -97,7 +97,9 @@ export function App() {
   const loadPack = useEditor((s) => s.loadPack);
   const draftList = useEditor((s) => s.draft_list);
   const refreshPlugins = usePluginRegistry((s) => s.refresh);
-  const [mainTab, setMainTab] = useState<MainTab>('cube-maker');
+  // 2A-2: mainTab/setMainTab → store 승격
+  const mainTab = useEditor((s) => s.main_tab);
+  const setMainTab = useEditor((s) => s.setMainTab);
   // v0.1.3 사전: 마켓플레이스 메타 편집 모달 + 전역 검색 + 마켓플레이스 상세 라우팅 + 설정 패널
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
   // W1: 작동 모드
@@ -360,7 +362,7 @@ export function App() {
       <div className="workspace">
         <Sidebar />
         <main className="center-area">
-          <MainTabBar activeTab={mainTab} onChange={setMainTab} />
+          <MainTabBar />
           {mainTab === 'list-maker' ? (
             <ListMakerCenter />
           ) : mainTab === 'marketplace' ? (
@@ -402,8 +404,11 @@ function PlayModeWrapper({ pack, onClose }: { pack: CubePack; onClose: () => voi
   return <PlayMode pack={pack} initialListId={listId} onClose={onClose} />;
 }
 
-function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (tab: MainTab) => void }) {
+function MainTabBar() {
   const { t } = useTranslation();
+  // 2A-2: store에서 mainTab/setMainTab 직접 구독
+  const activeTab = useEditor((s) => s.main_tab);
+  const onChange = useEditor((s) => s.setMainTab);
   const activeList = useEditor(useShallow((s) => s.activeList()));
   const startListMaker = useEditor((s) => s.startListMaker);
   const cancelListMaker = useEditor((s) => s.cancelListMaker);
@@ -543,16 +548,41 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (ta
 }
 
 /**
- * 큐브 리스트 만들기 가운데 영역 — 페이지 탭 + GridArea (기존).
- */
-/**
- * 큐브 리스트 만들기 = draft_list 만 표시.
- * draft 가 없으면 빈 안내. draft 가 있으면 PageTabs (draft 페이지 1, 2, 3...) + GridArea.
+ * 큐브 리스트 만들기 가운데 영역 — 2A-2 재설계.
+ *
+ * 구조:
+ *  - 위: DraftPageTabs + GridArea (flex:1, 내부 스크롤)
+ *  - 아래: CubePalette 패널 (고정 ~220px)
+ *
+ * draft 없으면 자동 생성(빈 안내 화면 제거).
+ * 외부 DndContext 가 GridArea(CubeGrid externalDnd) + CubePalette 를 통합.
  */
 function ListMakerCenter() {
+  const { t } = useTranslation();
   const draftList = useEditor((s) => s.draft_list);
+  const setDraftList = useEditor((s) => s.setDraftList);
   const selectList = useEditor((s) => s.selectList);
   const list_id = useEditor((s) => s.list_id);
+  const moveCubeInDraft = useEditor((s) => s.moveCubeInDraft);
+  const pack = useEditor((s) => s.pack);
+
+  // 2A-2: 탭 진입 시 draft 없으면 빈 draft 자동 생성
+  useEffect(() => {
+    if (!draftList) {
+      const newDraft = {
+        id: crypto.randomUUID() as string,
+        name: t('list_maker.auto_draft_name'),
+        sort_order: 0,
+        cols: 4,
+        cubes_per_page: 28,
+        cubes: [],
+      };
+      setDraftList(newDraft);
+      selectList(newDraft.id);
+    }
+  // list_maker 탭 진입 시 1회만 — draftList 의존 없이 (null 판별은 내부에서)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // draft 가 있는데 list_id 가 draft.id 아니면 강제 활성 (페이지 전환 동기)
   useEffect(() => {
@@ -561,23 +591,100 @@ function ListMakerCenter() {
     }
   }, [draftList?.id, list_id, selectList]);
 
-  if (!draftList) {
-    return (
-      <div className="list-maker-empty">
-        <h3>큐브 리스트 비어 있음</h3>
-        <p className="muted">
-          큐브 만들기 탭 → 라이브러리 큐브 선택 → 우상단 <strong>리스트 만들기</strong> 클릭
-        </p>
-        <p className="muted small">완료 시 자동으로 이 페이지로 이동하여 배치 + 저장합니다.</p>
-      </div>
-    );
+  // ── 외부 DndContext — GridArea(externalDnd) + CubePalette 통합 ──────────────
+  const extSensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
+    useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
+  );
+
+  function handleExternalDragEnd(e: DragEndEvent): void {
+    const { active, over } = e;
+    if (!over || !draftList) return;
+
+    const activeId = String(active.id);
+    const overId = String(over.id);
+
+    // ── 팔레트 → 그리드: 복사 배치 ─────────────────────────────────────
+    if (activeId.startsWith('palette:')) {
+      const srcCubeId = activeId.slice('palette:'.length);
+      // 소스 큐브 검색 (pack.cubes + pack.lists 전체)
+      let srcCube: typeof draftList.cubes[0] | undefined;
+      if (pack) {
+        srcCube =
+          (pack.cubes ?? []).find((c) => c.id === srcCubeId) ??
+          pack.lists.flatMap((l) => l.cubes).find((c) => c.id === srcCubeId);
+      }
+      if (!srcCube) return;
+
+      // 드롭 위치 결정
+      let targetSlot: number;
+      if (overId.startsWith('empty-')) {
+        // 빈 슬롯 — 그 슬롯 번호
+        targetSlot = Number(overId.slice('empty-'.length));
+        if (!Number.isFinite(targetSlot)) return;
+      } else {
+        // 큐브 위 → 마지막+1
+        const maxSlot =
+          draftList.cubes.length > 0
+            ? Math.max(...draftList.cubes.map((c) => c.sort_order))
+            : 0;
+        targetSlot = maxSlot + 1;
+      }
+
+      // 복사본 생성 (새 id, 딥카피)
+      const copy = {
+        ...srcCube,
+        id: crypto.randomUUID() as string,
+        sort_order: targetSlot,
+        metadata: srcCube.metadata ? { ...(srcCube.metadata as Record<string, unknown>) } : undefined,
+        action_payload: srcCube.action_payload
+          ? { ...(srcCube.action_payload as Record<string, unknown>) }
+          : srcCube.action_payload,
+      };
+
+      // draft에 추가 (슬롯에 이미 큐브 있으면 다음 빈 슬롯으로)
+      const occupiedSlots = new Set(draftList.cubes.map((c) => c.sort_order));
+      let slot = targetSlot;
+      while (occupiedSlots.has(slot)) slot++;
+      const finalCopy = { ...copy, sort_order: slot };
+
+      useEditor.getState().setDraftList({
+        ...draftList,
+        cubes: [...draftList.cubes, finalCopy],
+      });
+      return;
+    }
+
+    // ── 그리드 내부 정렬 (기존 로직 위임) ───────────────────────────────
+    if (activeId.startsWith('empty-')) return;
+
+    if (overId.startsWith('empty-')) {
+      const targetSlot = Number(overId.slice('empty-'.length));
+      if (Number.isFinite(targetSlot)) moveCubeInDraft(activeId, targetSlot);
+      return;
+    }
+
+    const overCube = draftList.cubes.find((c) => c.id === overId);
+    if (overCube) {
+      const activeCube = draftList.cubes.find((c) => c.id === activeId);
+      // folder 드롭은 draft 에서 미지원 — swap 만 처리
+      if (overCube.action_type === 'folder' && activeCube?.action_type !== 'folder') {
+        // draft 팔레트에서는 폴더-인 미지원, 일반 swap
+      }
+      moveCubeInDraft(activeId, overCube.sort_order);
+    }
   }
 
   return (
-    <>
-      <DraftPageTabs />
-      <GridArea />
-    </>
+    <DndContext sensors={extSensors} collisionDetection={closestCenter} onDragEnd={handleExternalDragEnd}>
+      <div className="list-builder-split">
+        <div className="list-builder-top">
+          <DraftPageTabs />
+          <GridArea externalDnd />
+        </div>
+        <CubePalette />
+      </div>
+    </DndContext>
   );
 }
 
@@ -1640,6 +1747,10 @@ function Sidebar() {
   const selectedCubeId = useEditor((s) => s.cube_id);
   const selectList = useEditor((s) => s.selectList);
   const selectCubeFn = useEditor((s) => s.selectCube);
+  // 2A-2: main_tab에 따라 사이드바 클릭 동작 분기
+  const mainTab = useEditor((s) => s.main_tab);
+  const paletteListId = useEditor((s) => s.palette_list_id);
+  const setPaletteList = useEditor((s) => s.setPaletteList);
   const lists = pack?.lists ?? [];
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [recentIds, setRecentIds] = useState<string[]>([]);
@@ -1719,8 +1830,19 @@ function Sidebar() {
       <div className="sidebar-tree-body sidebar-section-top">
         <button
           type="button"
-          className={`tree-folder tree-folder-root ${activeListId === null ? 'is-active' : ''}`}
-          onClick={() => selectList(null)}
+          className={`tree-folder tree-folder-root ${
+            mainTab === 'list-maker'
+              ? (paletteListId === null ? 'is-active' : '')
+              : (activeListId === null ? 'is-active' : '')
+          }`}
+          onClick={() => {
+            if (mainTab === 'list-maker') {
+              // 2A-2: 리스트 만들기 탭 — "전체" = setPaletteList(null)
+              setPaletteList(null);
+            } else {
+              selectList(null);
+            }
+          }}
         >
           <span className="tree-icon">●</span>
           <span className="tree-label">전체</span>
@@ -1732,8 +1854,19 @@ function Sidebar() {
             <div key={list.id} className="tree-folder-group">
               <button
                 type="button"
-                className={`tree-folder ${activeListId === list.id ? 'is-active' : ''}`}
-                onClick={() => selectList(list.id)}
+                className={`tree-folder ${
+                  mainTab === 'list-maker'
+                    ? (paletteListId === list.id ? 'is-active' : '')
+                    : (activeListId === list.id ? 'is-active' : '')
+                }`}
+                onClick={() => {
+                  if (mainTab === 'list-maker') {
+                    // 2A-2: 팔레트 소스 변경 (draft는 activeList 유지)
+                    setPaletteList(list.id);
+                  } else {
+                    selectList(list.id);
+                  }
+                }}
               >
                 <span
                   className="tree-arrow"
@@ -1762,8 +1895,13 @@ function Sidebar() {
                           type="button"
                           className={`tree-cube ${selectedCubeId === cube.id ? 'is-active' : ''}`}
                           onClick={() => {
-                            selectList(list.id);
-                            selectCubeFn(cube.id);
+                            if (mainTab === 'list-maker') {
+                              // 2A-2: 팔레트 소스 변경만 (draft activeList 유지)
+                              setPaletteList(list.id);
+                            } else {
+                              selectList(list.id);
+                              selectCubeFn(cube.id);
+                            }
                           }}
                           title={`${cube.label} (${cube.action_type})`}
                         >
@@ -1789,8 +1927,18 @@ function Sidebar() {
               <li key={list.id}>
                 <button
                   type="button"
-                  className={`recent-item ${activeListId === list.id ? 'is-active' : ''}`}
-                  onClick={() => selectList(list.id)}
+                  className={`recent-item ${
+                    mainTab === 'list-maker'
+                      ? (paletteListId === list.id ? 'is-active' : '')
+                      : (activeListId === list.id ? 'is-active' : '')
+                  }`}
+                  onClick={() => {
+                    if (mainTab === 'list-maker') {
+                      setPaletteList(list.id);
+                    } else {
+                      selectList(list.id);
+                    }
+                  }}
                   title={`${list.name} · ${list.cubes.length} 큐브`}
                 >
                   <span className="recent-icon">●</span>
@@ -1808,11 +1956,16 @@ function Sidebar() {
 
 // R1-4: _LegacySidebar 삭제 (사용처 0 확인 후)
 
-function GridArea() {
+/** 2A-2: externalDnd = true 면 CubeGrid 내부 DndContext 래핑 생략 */
+function GridArea({ externalDnd = false }: { externalDnd?: boolean }) {
   const { t } = useTranslation();
   const pack = useEditor((s) => s.pack);
   const listId = useEditor((s) => s.list_id);
-  const list = pack?.lists.find((l) => l.id === listId) ?? null;
+  // 2A-2: draft_list 도 같이 확인 (list_id === draft.id 일 때 draft 반환)
+  const draftList = useEditor((s) => s.draft_list);
+  const list = (draftList && listId === draftList.id)
+    ? draftList
+    : (pack?.lists.find((l) => l.id === listId) ?? null);
   const currentFolder = useEditor(useShallow((s) => s.currentFolder()));
   const visibleCubes = useEditor(useShallow((s) => s.visibleCubes()));
   const scopedTotal = useEditor((s) => s.scopedCubes().length) // .length = 숫자, 안정;
@@ -1929,12 +2082,24 @@ function GridArea() {
           onClose={() => setSkinDialogOpen(false)}
         />
       )}
-      <CubeGrid list={list} visibleCubes={visibleCubes} />
+      <CubeGrid list={list} visibleCubes={visibleCubes} externalDnd={externalDnd} />
     </main>
   );
 }
 
-function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[] }) {
+/**
+ * CubeGrid — 2A-2: externalDnd=true 일 때 내부 DndContext 래핑 생략.
+ * SortableContext + 셀은 그대로, 외부 컨텍스트(ListMakerCenter)가 DnD 담당.
+ */
+function CubeGrid({
+  list,
+  visibleCubes,
+  externalDnd = false,
+}: {
+  list: CubeList;
+  visibleCubes: Cube[];
+  externalDnd?: boolean;
+}) {
   const addCubeAtSlot = useEditor((s) => s.addCubeAtSlot);
   const moveCubeToSlot = useEditor((s) => s.moveCubeToSlot);
   const addCubeToFolder = useEditor((s) => s.addCubeToFolder);
@@ -2027,43 +2192,52 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
     }
   }
 
+  // 2A-2: externalDnd = true 면 DndContext 래핑 생략 (외부 컨텍스트 사용)
+  const gridContent = (
+    <SortableContext items={slotIds} strategy={rectSortingStrategy}>
+      <div
+        className="cube-grid"
+        role="grid"
+        aria-label="큐브 그리드"
+        style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))` }}
+      >
+        {slotIds.map((id, idx) => {
+          const globalSlot = startSlot + idx;
+          const cube = cubeBySlot.get(globalSlot);
+          if (cube) {
+            // 우선순위: states (hotkey_toggle 등) > dynamic (live_*)
+            const stateOverride = stateUpdates.get(cube.id);
+            const dyn = dynamicUpdates.get(cube.id);
+            let displayCube = stateOverride ?? cube;
+            if (dyn) {
+              displayCube = {
+                ...displayCube,
+                label: dyn.label ?? displayCube.label,
+                icon_url: dyn.icon_url ?? displayCube.icon_url,
+              };
+            }
+            return <SortableCubeCell key={id} cube={displayCube} nowMs={liveNowMs} showLabels={list.show_labels} />;
+          }
+          return (
+            <EmptySlot
+              key={id}
+              slotId={id}
+              slotIndex={globalSlot}
+              onClick={() => addCubeAtSlot(list.id, globalSlot)}
+            />
+          );
+        })}
+      </div>
+    </SortableContext>
+  );
+
+  if (externalDnd) {
+    return gridContent;
+  }
+
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
-      <SortableContext items={slotIds} strategy={rectSortingStrategy}>
-        <div
-          className="cube-grid"
-          role="grid"
-          aria-label="큐브 그리드"
-          style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))` }}
-        >
-          {slotIds.map((id, idx) => {
-            const globalSlot = startSlot + idx;
-            const cube = cubeBySlot.get(globalSlot);
-            if (cube) {
-              // 우선순위: states (hotkey_toggle 등) > dynamic (live_*)
-              const stateOverride = stateUpdates.get(cube.id);
-              const dyn = dynamicUpdates.get(cube.id);
-              let displayCube = stateOverride ?? cube;
-              if (dyn) {
-                displayCube = {
-                  ...displayCube,
-                  label: dyn.label ?? displayCube.label,
-                  icon_url: dyn.icon_url ?? displayCube.icon_url,
-                };
-              }
-              return <SortableCubeCell key={id} cube={displayCube} nowMs={liveNowMs} showLabels={list.show_labels} />;
-            }
-            return (
-              <EmptySlot
-                key={id}
-                slotId={id}
-                slotIndex={globalSlot}
-                onClick={() => addCubeAtSlot(list.id, globalSlot)}
-              />
-            );
-          })}
-        </div>
-      </SortableContext>
+      {gridContent}
     </DndContext>
   );
 }

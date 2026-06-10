@@ -203,6 +203,12 @@ const MESSAGES_KO = {
 
   // 2A: Ctrl 다중 선택 일괄 삭제 (ko)
   'maker.multi_delete_confirm': '{n}개 큐브를 삭제할까요?',
+
+  // 2A-2: 큐브 팔레트 (ko)
+  'palette.all_source': '전체',
+  'palette.cube_count': '{n} 큐브',
+  'palette.drag_hint': '타일을 위 그리드 슬롯으로 드래그하여 배치',
+  'list_maker.auto_draft_name': '새 리스트',
 } as const;
 
 export type MessageKey = keyof typeof MESSAGES_KO;
@@ -386,6 +392,12 @@ const MESSAGES_EN: Record<MessageKey, string> = {
 
   // 2A: Ctrl multi-select bulk delete (en)
   'maker.multi_delete_confirm': 'Delete {n} cubes?',
+
+  // 2A-2: Cube Palette (en)
+  'palette.all_source': 'All',
+  'palette.cube_count': '{n} cubes',
+  'palette.drag_hint': 'Drag a tile to a slot above to place it',
+  'list_maker.auto_draft_name': 'New List',
 };
 
 const MESSAGES_JA: Record<MessageKey, string> = {
@@ -567,6 +579,12 @@ const MESSAGES_JA: Record<MessageKey, string> = {
 
   // 2A: Ctrl 複数選択 一括削除 (ja)
   'maker.multi_delete_confirm': '{n}個のキューブを削除しますか？',
+
+  // 2A-2: キューブパレット (ja)
+  'palette.all_source': 'すべて',
+  'palette.cube_count': '{n} キューブ',
+  'palette.drag_hint': 'タイルを上のグリッドスロットにドラッグして配置',
+  'list_maker.auto_draft_name': '新しいリスト',
 };
 
 export const MESSAGES: Record<Locale, Record<MessageKey, string>> = {

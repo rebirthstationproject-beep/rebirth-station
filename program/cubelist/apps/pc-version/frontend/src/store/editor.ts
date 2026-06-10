@@ -11,6 +11,19 @@ import type { Cube, CubeList, CubePack, EditorSelection } from '../types/cube';
 interface EditorState extends EditorSelection {
   pack: CubePack | null;
 
+  // === 2A-2: 메인 탭 (store 승격) ===
+  /** 메인 탭 (큐브 만들기 / 큐브 리스트 만들기 / 마켓플레이스) */
+  main_tab: 'cube-maker' | 'list-maker' | 'marketplace';
+  setMainTab(tab: 'cube-maker' | 'list-maker' | 'marketplace'): void;
+
+  // === 2A-2: 팔레트 소스 ===
+  /**
+   * 큐브 팔레트에 표시할 소스 리스트 ID.
+   * null = "전체" (pack.cubes 라이브러리 풀 + 모든 리스트 큐브).
+   */
+  palette_list_id: string | null;
+  setPaletteList(listId: string | null): void;
+
   // === M7 폴더 스택 ===
   /** 현재 진입한 폴더 큐브 ID. null = 루트 */
   current_folder_id: string | null;
@@ -157,6 +170,16 @@ export const useEditor = create<EditorState>((set, get) => ({
   list_maker_active: false,
   list_maker_selection: [],
   draft_list: null,
+  main_tab: 'cube-maker',
+  palette_list_id: null,
+
+  setMainTab(tab): void {
+    set({ main_tab: tab });
+  },
+
+  setPaletteList(listId): void {
+    set({ palette_list_id: listId });
+  },
 
   activeList(): CubeList | null {
     const { pack, list_id, draft_list } = get();
