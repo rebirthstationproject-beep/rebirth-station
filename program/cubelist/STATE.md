@@ -20,6 +20,16 @@
 - 완성도 라운드(6d21621): 큐브 만들기 그리드 DnD(슬롯 swap) + 더블클릭 즉시 실행(run-cube.ts 공용 헬퍼) + Delete 삭제 + 무채색 글로우 + grid-hint 제거
 - UI 이모지 전면 제거(8e57830): **영구 정책** (memory: feedback_no_emoji_ui) — 기하 글리프(▶×＋●)/자체 SVG만. LiveWeather 이모지→미니 SVG 6종. 잔존 스캔 0건
 
+### 2026-06-10 야간 자율 라운드 (사용자 취침 — "라운드 3까지 진행" 지시)
+- 라운드 2A(391c937): TopBar 구분선 + 폴더 드래그 인 + Ctrl 다중선택 일괄삭제
+- 2A-2 리스트 빌더 재설계(100e9ee): 상하 분할(위 배치 그리드 + 아래 큐브 팔레트) + 팔레트→그리드 DnD 복사 배치 + draft 자동 생성 + 사이드바 탭 분기
+- 피드백 4건(2983e02): 빈 슬롯 솔리드 타일 / 팔레트 세로 스크롤 / DragOverlay(드래그 고스트) / **draft 액션 분기 버그**(removeCube 등 7개 액션이 pack만 갱신 — draft에서 삭제 불가 원인) + Inspector draft 조회
+- Delete 키 draft 화면 보강(39ae1d3) / PlayMode 오버레이 CSS 누락 정정 + 그리드 중앙 정렬(c05725e)
+- **2B 모바일 정렬**(1f55778, mobile-pwa): / → /list 작동 메인 + 더보기 메뉴 + 로컬 모드 링크 추가 (파일 IO·작동 뷰는 기존 완비 확인)
+- **2C 웹**(fe5551b): rebirthstation.com **/app/** 에 PC 편집기 웹 빌드 서빙 (build:web 스크립트, CSP open-meteo 추가, editor/ 소개 페이지 보존)
+- **라운드 3 v1**(jusomoa bba033b2): 주소모아 **/cube-board** noindex 베타 — .cubepack 업로드→렌더→link 실행+live_clock, cube-format 최소 포팅, 데모 보드 12링크
+- 잔여: 모바일 이모지 제거 / cube-board icon_ref 임베드 아이콘 / 케이링크 작동 페이지 이식(라운드 3 잔여)
+
 ---
 
 ## 0. 핵심 결정 (영구) — `docs/05-decisions.md` 참조
