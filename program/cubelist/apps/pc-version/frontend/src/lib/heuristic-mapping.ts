@@ -28,9 +28,11 @@ const HEURISTIC_RULES: ReadonlyArray<HeuristicRule> = [
   // Live 동적 큐브 — UUID 기반 명확 매칭만
   { pattern: /com\.gallowaylabs\.tomato/i, type: 'live_timer', payload: { duration_seconds: 1500 } },
   { pattern: /com\.[^.]+\.(analog.?clock|analogclock)/i, type: 'live_clock', payload: { format: 'analog' } },
-  { pattern: /com\.[^.]+\.(world.?clock|worldclock|digital.?clock|digitalclock|clock)$/i, type: 'live_clock', payload: { format: 'HH:mm' } },
+  // 2026-06-10 정정: $ 앵커 → 토큰 경계. uuid 가 ".action" 등으로 끝나
+  //   com.elgato.clocks.action / com.elgato.worldclock.action / com.elgato.cpu.cpu 가 전부 매칭 실패했음
+  { pattern: /com\.[^.]+\.(world.?clock|worldclock|digital.?clock|digitalclock|clocks?)(\.|\b)/i, type: 'live_clock', payload: { format: 'HH:mm:ss' } },
   { pattern: /com\.[^.]+\.(battery|batterylevel)/i, type: 'live_battery' },
-  { pattern: /com\.[^.]+\.(cpu|cpumonitor|cpugauge)$/i, type: 'live_monitor', payload: { source: 'cpu' } },
+  { pattern: /com\.[^.]+\.(cpu|cpumonitor|cpugauge)(\.|\b)/i, type: 'live_monitor', payload: { source: 'cpu' } },
   { pattern: /com\.[^.]+\.(speedtest|speed_test|networkmonitor)/i, type: 'live_network' },
   // 2026-06-01 P3 신규 — 통합 모델 (시계/모니터/알람/날씨)
   { pattern: /com\.[^.]+\.(weather|forecast)/i, type: 'live_weather', payload: { condition: 'sunny', temp_c: 22 } },
