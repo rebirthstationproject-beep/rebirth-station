@@ -82,6 +82,8 @@ import {
   usePluginRegistry,
 } from './lib/plugin-registry';
 import type { Cube, CubeList, CubePack } from './types/cube';
+import { PlayMode } from './components/PlayMode';
+import { SkinDialog } from './components/SkinDialog';
 
 type MainTab = 'cube-maker' | 'list-maker' | 'marketplace';
 
@@ -97,6 +99,8 @@ export function App() {
   const [mainTab, setMainTab] = useState<MainTab>('cube-maker');
   // v0.1.3 사전: 마켓플레이스 메타 편집 모달 + 전역 검색 + 마켓플레이스 상세 라우팅 + 설정 패널
   const [marketplaceOpen, setMarketplaceOpen] = useState(false);
+  // W1: 작동 모드
+  const [playModeOpen, setPlayModeOpen] = useState(false);
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [selectedPackId, setSelectedPackId] = useState<string | null>(null);
@@ -351,6 +355,7 @@ export function App() {
       <TopBar
         onOpenMarketplace={() => setMarketplaceOpen(true)}
         onOpenSettings={() => setSettingsOpen(true)}
+        onOpenPlayMode={() => setPlayModeOpen(true)}
       />
       <div className="workspace">
         <Sidebar />
@@ -383,8 +388,18 @@ export function App() {
       {globalSearchOpen && <GlobalSearch onClose={() => setGlobalSearchOpen(false)} />}
       {/* v0.1.3: 설정 패널 (TopBar ⚙) */}
       {settingsOpen && <SettingsPanel onClose={() => setSettingsOpen(false)} />}
+      {/* W1: 작동 모드 전체화면 오버레이 */}
+      {playModeOpen && pack && (
+        <PlayModeWrapper pack={pack} onClose={() => setPlayModeOpen(false)} />
+      )}
     </div>
   );
+}
+
+/** W1: PlayMode 를 위한 thin wrapper — initialListId 를 store 에서 읽기 */
+function PlayModeWrapper({ pack, onClose }: { pack: CubePack; onClose: () => void }) {
+  const listId = useEditor((s) => s.list_id);
+  return <PlayMode pack={pack} initialListId={listId} onClose={onClose} />;
 }
 
 function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (tab: MainTab) => void }) {
@@ -1059,9 +1074,11 @@ function PackMenuItem({
 function TopBar({
   onOpenMarketplace,
   onOpenSettings,
+  onOpenPlayMode,
 }: {
   onOpenMarketplace?: () => void;
   onOpenSettings?: () => void;
+  onOpenPlayMode?: () => void;
 }) {
   const { t } = useTranslation();
   const pack = useEditor((s) => s.pack);
@@ -1345,6 +1362,18 @@ function TopBar({
             🏪 팩 정보
           </button>
         )}
+        {/* W1: 작동 모드 토글 */}
+        {onOpenPlayMode && (
+          <button
+            type="button"
+            className="btn-ghost"
+            onClick={onOpenPlayMode}
+            disabled={!pack}
+            title={t('playmode.title')}
+          >
+            {t('topbar.play')}
+          </button>
+        )}
         <LocaleSwitcher />
         <button
           className="icon-btn"
@@ -1548,7 +1577,11 @@ function GridArea() {
   const exitFolder = useEditor((s) => s.exitFolder);
   const setListLayout = useEditor((s) => s.setListLayout);
   const setListShowLabels = useEditor((s) => s.setListShowLabels);
+  const applySkinToList = useEditor((s) => s.applySkinToList);
+  const removeSkinFromList = useEditor((s) => s.removeSkinFromList);
   const [layoutModalOpen, setLayoutModalOpen] = useState(false);
+  // W2: 스킨 다이얼로그
+  const [skinDialogOpen, setSkinDialogOpen] = useState(false);
 
   if (!list) {
     return (
@@ -1590,6 +1623,15 @@ function GridArea() {
           >
             {list.show_labels !== false ? '🏷 ON' : '🏷 OFF'}
           </button>
+          {/* W2: 스킨 버튼 */}
+          <button
+            className="btn-ghost"
+            type="button"
+            onClick={() => setSkinDialogOpen(true)}
+            title={t('skin.btn_label')}
+          >
+            {t('skin.btn_label')}
+          </button>
           <button
             className="btn-ghost"
             type="button"
@@ -1627,6 +1669,18 @@ function GridArea() {
             setLayoutModalOpen(false);
           }}
           onCancel={() => setLayoutModalOpen(false)}
+        />
+      )}
+      {/* W2: 스킨 다이얼로그 */}
+      {skinDialogOpen && (
+        <SkinDialog
+          list={list}
+          hasSkin={list.cubes.some(
+            (c) => ((c.metadata ?? {}) as Record<string, unknown>).skin_source !== undefined,
+          )}
+          onApply={(matches) => applySkinToList(list.id, matches)}
+          onRemove={() => removeSkinFromList(list.id)}
+          onClose={() => setSkinDialogOpen(false)}
         />
       )}
       <CubeGrid list={list} visibleCubes={visibleCubes} />

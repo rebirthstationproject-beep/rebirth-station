@@ -172,6 +172,31 @@ const MESSAGES_KO = {
   // R2 보완: 리스트 라벨 표시 토글 (ko)
   'list.show_labels': '라벨 표시',
   'list.show_labels_hint': '리스트의 모든 큐브 셀에서 라벨을 표시하거나 숨깁니다.',
+
+  // W1: 작동 모드 (ko)
+  'topbar.play': '▶ 작동',
+  'playmode.title': '작동 모드',
+  'playmode.close': '닫기',
+  'playmode.no_list': '리스트가 없습니다.',
+  'playmode.pc_only_toast': 'PC 앱 전용 기능입니다. Tauri 앱에서 실행하세요.',
+
+  // W2: 리스트 스킨 (ko)
+  'skin.title': '🎨 리스트 스킨',
+  'skin.description': '.cubeiconpack 또는 .streamDeckIconPack 파일로 큐브 아이콘을 일괄 교체합니다. 매칭된 큐브만 변경되며 원본은 보존됩니다.',
+  'skin.select_file': '아이콘팩 파일 선택…',
+  'skin.loading': '분석 중…',
+  'skin.match_preview': '매칭 {n} / {m} 큐브',
+  'skin.no_match': '매칭된 큐브가 없습니다.',
+  'skin.more_matches': '외 {n}개 더',
+  'skin.apply': '적용',
+  'skin.cancel': '취소',
+  'skin.remove': '스킨 해제',
+  'skin.parse_error': '아이콘팩 파싱 실패',
+  'skin.btn_label': '🎨 스킨',
+  'skin.remove_btn_label': '🎨 스킨 해제',
+
+  // W3: SD 변환 라이선스 클린화 (ko)
+  'w3.restricted_notice': 'Stream Deck 변환 자산 포함 — 개인 사용 전용, 마켓 배포 불가',
 } as const;
 
 export type MessageKey = keyof typeof MESSAGES_KO;
@@ -324,6 +349,31 @@ const MESSAGES_EN: Record<MessageKey, string> = {
   // R2 supplement: list label visibility toggle (en)
   'list.show_labels': 'Show Labels',
   'list.show_labels_hint': 'Show or hide labels on all cube cells in this list.',
+
+  // W1: Play Mode (en)
+  'topbar.play': '▶ Play',
+  'playmode.title': 'Play Mode',
+  'playmode.close': 'Close',
+  'playmode.no_list': 'No list available.',
+  'playmode.pc_only_toast': 'PC app only. Run the Tauri app to use this action.',
+
+  // W2: List Skin (en)
+  'skin.title': '🎨 List Skin',
+  'skin.description': 'Bulk-replace cube icons using a .cubeiconpack or .streamDeckIconPack file. Only matched cubes are changed; originals are preserved.',
+  'skin.select_file': 'Select icon pack file…',
+  'skin.loading': 'Analyzing…',
+  'skin.match_preview': 'Matched {n} / {m} cubes',
+  'skin.no_match': 'No cubes matched.',
+  'skin.more_matches': '+ {n} more',
+  'skin.apply': 'Apply',
+  'skin.cancel': 'Cancel',
+  'skin.remove': 'Remove Skin',
+  'skin.parse_error': 'Failed to parse icon pack',
+  'skin.btn_label': '🎨 Skin',
+  'skin.remove_btn_label': '🎨 Remove Skin',
+
+  // W3: SD Conversion License (en)
+  'w3.restricted_notice': 'Contains Stream Deck assets — personal use only, marketplace publishing not allowed',
 };
 
 const MESSAGES_JA: Record<MessageKey, string> = {
@@ -474,6 +524,31 @@ const MESSAGES_JA: Record<MessageKey, string> = {
   // R2 補完: リストラベル表示トグル (ja)
   'list.show_labels': 'ラベル表示',
   'list.show_labels_hint': 'このリストのすべてのキューブセルでラベルを表示/非表示にします。',
+
+  // W1: 作動モード (ja)
+  'topbar.play': '▶ 実行',
+  'playmode.title': '実行モード',
+  'playmode.close': '閉じる',
+  'playmode.no_list': 'リストがありません。',
+  'playmode.pc_only_toast': 'PC アプリ専用です。Tauri アプリで実行してください。',
+
+  // W2: リストスキン (ja)
+  'skin.title': '🎨 リストスキン',
+  'skin.description': '.cubeiconpack または .streamDeckIconPack でキューブアイコンを一括置換します。マッチしたキューブのみ変更され、原本は保存されます。',
+  'skin.select_file': 'アイコンパックファイル選択…',
+  'skin.loading': '解析中…',
+  'skin.match_preview': 'マッチ {n} / {m} キューブ',
+  'skin.no_match': 'マッチするキューブがありません。',
+  'skin.more_matches': '他 {n} 件',
+  'skin.apply': '適用',
+  'skin.cancel': 'キャンセル',
+  'skin.remove': 'スキン解除',
+  'skin.parse_error': 'アイコンパックの解析に失敗',
+  'skin.btn_label': '🎨 スキン',
+  'skin.remove_btn_label': '🎨 スキン解除',
+
+  // W3: SD 変換ライセンスクリーン化 (ja)
+  'w3.restricted_notice': 'Stream Deck 変換アセット含む — 個人使用専用、マーケット配布不可',
 };
 
 export const MESSAGES: Record<Locale, Record<MessageKey, string>> = {
