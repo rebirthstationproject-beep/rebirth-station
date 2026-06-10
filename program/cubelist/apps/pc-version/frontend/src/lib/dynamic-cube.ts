@@ -128,9 +128,9 @@ export const liveTimerTick: DynamicCubeTick = (nowMs, payload) => {
 };
 
 /**
- * live_gauge — 게이지 큐브 (수치 + 색상).
+ * live_gauge — 게이지 큐브 (라벨만 갱신).
  * payload: { value: number, min: number, max: number, unit?: string, label_prefix?: string }
- * 라벨에 값+단위, icon_url 은 SVG bar 자동 생성.
+ * R1-4: icon_url SVG 생성 경로 제거 (LiveCubeVisual 이 직접 렌더).
  */
 export const liveGaugeTick: DynamicCubeTick = (_nowMs, payload) => {
   const value = Number(payload.value) || 0;
@@ -138,25 +138,16 @@ export const liveGaugeTick: DynamicCubeTick = (_nowMs, payload) => {
   const max = Number(payload.max) || 100;
   const unit = (payload.unit as string) || '%';
   const prefix = (payload.label_prefix as string) || '';
-  const ratio = Math.max(0, Math.min(1, (value - min) / (max - min || 1)));
-  const percent = Math.round(ratio * 100);
-  const hue = Math.round(120 * ratio); // 0 빨강 → 120 초록
-  // SVG bar 동적 생성 (data URL)
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-    <rect x="8" y="48" width="48" height="8" rx="2" fill="#222"/>
-    <rect x="8" y="48" width="${48 * ratio}" height="8" rx="2" fill="hsl(${hue},60%,55%)"/>
-    <text x="32" y="32" text-anchor="middle" fill="#ffffff" font-size="14" font-family="sans-serif">${percent}${unit}</text>
-  </svg>`;
-  const dataUrl = `data:image/svg+xml;base64,${btoa(svg)}`;
+  void min; void max;
   return {
     label: prefix ? `${prefix} ${Math.round(value)}${unit}` : `${Math.round(value)}${unit}`,
-    icon_url: dataUrl,
   };
 };
 
 /**
- * live_battery — 배터리 잔량 큐브 (navigator.getBattery 또는 외부 source).
+ * live_battery — 배터리 잔량 큐브 (라벨만 갱신).
  * payload: { source: 'system' | 'manual', manual_level?: number }
+ * R1-4: icon_url SVG 생성 경로 제거 (LiveCubeVisual 이 직접 렌더).
  */
 export const liveBatteryTick: DynamicCubeTick = (_nowMs, payload) => {
   const source = (payload.source as string) || 'manual';
@@ -164,21 +155,10 @@ export const liveBatteryTick: DynamicCubeTick = (_nowMs, payload) => {
   if (source === 'manual') {
     level = Number(payload.manual_level) || 0;
   } else if (source === 'system') {
-    // navigator.getBattery() 는 비동기 — 이미 수집된 값을 payload._cached_level 로 보관
     level = Number(payload._cached_level) || 0;
   }
   const percent = Math.round(Math.max(0, Math.min(1, level)) * 100);
-  const hue = percent > 50 ? 120 : percent > 20 ? 60 : 0;
-  // 배터리 모양 SVG
-  const filledW = (38 * percent) / 100;
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">
-    <rect x="10" y="22" width="42" height="20" rx="3" fill="none" stroke="#ffffff" stroke-width="2"/>
-    <rect x="52" y="28" width="4" height="8" fill="#ffffff"/>
-    <rect x="12" y="24" width="${filledW}" height="16" rx="1.5" fill="hsl(${hue},65%,55%)"/>
-    <text x="32" y="56" text-anchor="middle" fill="#ffffff" font-size="10" font-family="sans-serif">${percent}%</text>
-  </svg>`;
-  const dataUrl = `data:image/svg+xml;base64,${btoa(svg)}`;
-  return { label: `${percent}%`, icon_url: dataUrl };
+  return { label: `${percent}%` };
 };
 
 // === 큐브 → tick 매핑 ===

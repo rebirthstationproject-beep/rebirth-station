@@ -1,36 +1,36 @@
 /**
- * 큐브 셀 라이브 비주얼 (2026-06-01) — 사용자 명시:
- * "미리보기에서가 아니라 가능하면 큐브리스트 페이지 자체에서 작동해서 보이면 좋겠어
- *  시계 뿐만 아니라 디스플레이 자체가 실시간으로 보이게"
+ * 큐브 셀 라이브 비주얼 (R1-3 리팩터, 2026-06-10) — 순수 렌더러.
  *
- * live_clock (analog / digital), live_timer, live_battery, live_gauge 각각 SVG 또는 인라인 표시.
- * 큐브 셀의 cube-icon-bg 영역에 그대로 inline 렌더링.
+ * 내부 setInterval 전면 제거.
+ * nowMs props 를 그리드 컨테이너에서 받아 렌더. 없으면 Date.now() 1회 폴백.
+ * 11종 live 전부 지원.
  */
 
-import { useEffect, useState } from 'react';
 import type { Cube } from '../types/cube';
 
-interface LiveCubeVisualProps {
+export interface LiveCubeVisualProps {
   readonly cube: Cube;
+  /** 중앙 tick ms (useDynamicCubes 에서 전달). 없으면 Date.now() 폴백. */
+  readonly nowMs?: number;
 }
 
-export function LiveCubeVisual({ cube }: LiveCubeVisualProps) {
+export function LiveCubeVisual({ cube, nowMs }: LiveCubeVisualProps) {
+  const now = nowMs ?? Date.now();
   switch (cube.action_type) {
     case 'live_clock':
-      return <LiveClock cube={cube} />;
+      return <LiveClock cube={cube} nowMs={now} />;
     case 'live_timer':
-      return <LiveTimer cube={cube} />;
+      return <LiveTimer cube={cube} nowMs={now} />;
     case 'live_battery':
-      return <LiveBattery />;
+      return <LiveBattery cube={cube} />;
     case 'live_gauge':
-      return <LiveGauge cube={cube} />;
-    // 2026-06-01 통합 모델 — 사용자 명시 "시계/모니터링/알람/날씨"
+      return <LiveGauge cube={cube} nowMs={now} />;
     case 'live_weather':
       return <LiveWeather cube={cube} />;
     case 'live_monitor':
-      return <LiveMonitor cube={cube} />;
+      return <LiveMonitor cube={cube} nowMs={now} />;
     case 'live_alarm':
-      return <LiveAlarm cube={cube} />;
+      return <LiveAlarm cube={cube} nowMs={now} />;
     case 'live_stock':
       return <LiveStock cube={cube} />;
     case 'live_calendar':
@@ -38,29 +38,26 @@ export function LiveCubeVisual({ cube }: LiveCubeVisualProps) {
     case 'live_news':
       return <LiveNews />;
     case 'live_network':
-      return <LiveNetwork />;
+      return <LiveNetwork cube={cube} nowMs={now} />;
     default:
       return null;
   }
 }
 
 /** live_clock — analog 시계 SVG 또는 디지털 큰 글씨 */
-function LiveClock({ cube }: { cube: Cube }) {
-  const [now, setNow] = useState(() => new Date());
-  useEffect(() => {
-    const i = setInterval(() => setNow(new Date()), 1000);
-    return () => clearInterval(i);
-  }, []);
-  const format = (cube.action_payload?.format as string | undefined) ?? 'HH:mm';
+function LiveClock({ cube, nowMs }: { cube: Cube; nowMs: number }) {
+  const now = new Date(nowMs);
+  // 'HH:MM' 형식(구 저장값) → 'HH:mm' 로 정규화해 처리
+  const rawFmt = (cube.action_payload?.format as string | undefined) ?? 'HH:mm';
+  const format = rawFmt === 'HH:MM' ? 'HH:mm' : rawFmt === 'HH:MM:SS' ? 'HH:mm:ss' : rawFmt;
   if (format === 'analog') return <AnalogClock now={now} />;
-  // 디지털 — 큰 글씨로 시:분(:초)
   const h = now.getHours();
   const m = now.getMinutes();
   const s = now.getSeconds();
   const pad = (n: number) => String(n).padStart(2, '0');
   let txt: string;
-  if (format === 'HH:MM:SS' || format === 'HH:mm:ss') txt = `${pad(h)}:${pad(m)}:${pad(s)}`;
-  else if (format === 'h:MM AM/PM') {
+  if (format === 'HH:mm:ss') txt = `${pad(h)}:${pad(m)}:${pad(s)}`;
+  else if (format === 'h:mm AM/PM' || format === 'h:MM AM/PM') {
     const ap = h >= 12 ? 'PM' : 'AM';
     const hh = h % 12 || 12;
     txt = `${hh}:${pad(m)} ${ap}`;
@@ -146,16 +143,10 @@ function AnalogClock({ now }: { now: Date }) {
 }
 
 /** live_timer — 카운트다운 MM:SS 또는 progress ring */
-function LiveTimer({ cube }: { cube: Cube }) {
-  const [tick, setTick] = useState(0);
-  useEffect(() => {
-    const i = setInterval(() => setTick((t) => t + 1), 1000);
-    return () => clearInterval(i);
-  }, []);
-  void tick;
+function LiveTimer({ cube, nowMs }: { cube: Cube; nowMs: number }) {
   const duration = (cube.action_payload?.duration_seconds as number | undefined) ?? 1500;
   const targetMs = (cube.action_payload?.target_ms as number | undefined) ?? null;
-  const remaining = targetMs ? Math.max(0, Math.floor((targetMs - Date.now()) / 1000)) : duration;
+  const remaining = targetMs ? Math.max(0, Math.floor((targetMs - nowMs) / 1000)) : duration;
   const m = Math.floor(remaining / 60);
   const s = remaining % 60;
   const ratio = duration > 0 ? remaining / duration : 0;
@@ -189,29 +180,14 @@ function LiveTimer({ cube }: { cube: Cube }) {
   );
 }
 
-/** live_battery — 배터리 사각형 + % */
-function LiveBattery() {
-  const [pct, setPct] = useState<number | null>(null);
-  useEffect(() => {
-    let mounted = true;
-    function update() {
-      const nav = navigator as unknown as { getBattery?: () => Promise<{ level: number }> };
-      if (!nav.getBattery) {
-        setPct(85); // fallback placeholder
-        return;
-      }
-      void nav.getBattery().then((b) => {
-        if (mounted) setPct(Math.round(b.level * 100));
-      });
-    }
-    update();
-    const i = setInterval(update, 30_000);
-    return () => {
-      mounted = false;
-      clearInterval(i);
-    };
-  }, []);
-  const p = pct ?? 0;
+/** live_battery — 배터리 사각형 + % (navigator.getBattery 직접 읽기 유지) */
+function LiveBattery({ cube }: { cube: Cube }) {
+  // 배터리는 비동기 system 값 → useDynamicCubes 가 payload._cached_level 에 캐싱한 값 사용
+  const payload = cube.action_payload as Record<string, unknown>;
+  const cachedLevel = typeof payload._cached_level === 'number' ? payload._cached_level : null;
+  const manualLevel = typeof payload.manual_level === 'number' ? payload.manual_level : null;
+  const level = cachedLevel ?? manualLevel ?? 0.85;
+  const p = Math.round(Math.max(0, Math.min(1, level)) * 100);
   const color = p > 50 ? '#22c55e' : p > 20 ? '#f59e0b' : '#ef4444';
   return (
     <svg viewBox="0 0 100 100" width="100%" height="100%" aria-label="배터리">
@@ -226,21 +202,11 @@ function LiveBattery() {
 }
 
 /** live_gauge — 원형 게이지 + 수치 */
-function LiveGauge({ cube }: { cube: Cube }) {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    const source = (cube.action_payload?.source as string | undefined) ?? 'cpu';
-    function update() {
-      // 실제 CPU/Memory monitoring 은 Tauri command 필요 — placeholder 로 sin 파동 표시
-      const t = Date.now() / 5000;
-      const v = (Math.sin(t) + 1) * 50;
-      void source;
-      setValue(Math.round(v));
-    }
-    update();
-    const i = setInterval(update, 1000);
-    return () => clearInterval(i);
-  }, [cube.action_payload]);
+function LiveGauge({ cube, nowMs }: { cube: Cube; nowMs: number }) {
+  // placeholder sin 값 (R3 에서 실데이터로 교체 예정)
+  const t = nowMs / 5000;
+  const value = Math.round((Math.sin(t) + 1) * 50);
+  void cube;
   const ratio = value / 100;
   return (
     <svg viewBox="0 0 100 100" width="100%" height="100%" aria-label="게이지">
@@ -264,15 +230,8 @@ function LiveGauge({ cube }: { cube: Cube }) {
   );
 }
 
-// ============================================================
-// 2026-06-01 P3 신규 라이브 큐브 (통합 모델)
-// ============================================================
-
-/** live_weather — 날씨 (placeholder API, 실제 API는 사용자 키 입력) */
+/** live_weather — 날씨 (payload 기반 정적) */
 function LiveWeather({ cube }: { cube: Cube }) {
-  const [now, setNow] = useState(0);
-  useEffect(() => { const i = setInterval(() => setNow((n) => n + 1), 60_000); return () => clearInterval(i); }, []);
-  void now;
   const cond = (cube.action_payload?.condition as string) ?? 'sunny';
   const temp = (cube.action_payload?.temp_c as number) ?? 22;
   const icon: Record<string, string> = {
@@ -286,18 +245,10 @@ function LiveWeather({ cube }: { cube: Cube }) {
   );
 }
 
-/** live_monitor — CPU/RAM/Disk/Network (Tauri API 필요, placeholder sin) */
-function LiveMonitor({ cube }: { cube: Cube }) {
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    function tick() {
-      const t = Date.now() / 3000;
-      setVal(Math.round((Math.sin(t) + 1) * 50));
-    }
-    tick();
-    const i = setInterval(tick, 1000);
-    return () => clearInterval(i);
-  }, []);
+/** live_monitor — CPU/RAM/Disk/Network (placeholder sin) */
+function LiveMonitor({ cube, nowMs }: { cube: Cube; nowMs: number }) {
+  const t = nowMs / 3000;
+  const val = Math.round((Math.sin(t) + 1) * 50);
   const source = (cube.action_payload?.source as string) ?? 'cpu';
   const label: Record<string, string> = { cpu: 'CPU', ram: 'RAM', disk: 'DSK', network: 'NET' };
   const color = val > 80 ? '#ef4444' : val > 50 ? '#f59e0b' : '#22c55e';
@@ -311,12 +262,10 @@ function LiveMonitor({ cube }: { cube: Cube }) {
   );
 }
 
-/** live_alarm — 카운트다운 (목표 시각 도달 시 진동/색깔) */
-function LiveAlarm({ cube }: { cube: Cube }) {
-  const [now, setNow] = useState(() => Date.now());
-  useEffect(() => { const i = setInterval(() => setNow(Date.now()), 1000); return () => clearInterval(i); }, []);
-  const target = (cube.action_payload?.target_ms as number) ?? (Date.now() + 300_000);
-  const remaining = Math.max(0, Math.floor((target - now) / 1000));
+/** live_alarm — 카운트다운 (목표 시각 도달 시 색깔 변경) */
+function LiveAlarm({ cube, nowMs }: { cube: Cube; nowMs: number }) {
+  const target = (cube.action_payload?.target_ms as number) ?? (nowMs + 300_000);
+  const remaining = Math.max(0, Math.floor((target - nowMs) / 1000));
   const h = Math.floor(remaining / 3600);
   const m = Math.floor((remaining % 3600) / 60);
   const s = remaining % 60;
@@ -333,11 +282,8 @@ function LiveAlarm({ cube }: { cube: Cube }) {
   );
 }
 
-/** live_stock — 주가/환율/코인 (placeholder API) */
+/** live_stock — 주가/환율/코인 (payload 기반 정적 — R3-4 제외) */
 function LiveStock({ cube }: { cube: Cube }) {
-  const [_, force] = useState(0);
-  useEffect(() => { const i = setInterval(() => force((x) => x + 1), 30_000); return () => clearInterval(i); }, []);
-  void _;
   const symbol = (cube.action_payload?.symbol as string) ?? 'BTC';
   const price = (cube.action_payload?.price as number) ?? 0;
   const changePct = (cube.action_payload?.change_pct as number) ?? 0;
@@ -353,7 +299,7 @@ function LiveStock({ cube }: { cube: Cube }) {
   );
 }
 
-/** live_calendar — 다음 일정 (placeholder, 사용자 ICS 연동) */
+/** live_calendar — 다음 일정 (placeholder) */
 function LiveCalendar() {
   return (
     <svg viewBox="0 0 100 100" width="100%" height="100%">
@@ -377,13 +323,10 @@ function LiveNews() {
   );
 }
 
-/** live_network — Wi-Fi 신호 강도 (placeholder) */
-function LiveNetwork() {
-  const [strength, setStrength] = useState(3);
-  useEffect(() => {
-    const i = setInterval(() => setStrength(Math.floor(Math.random() * 4) + 1), 5000);
-    return () => clearInterval(i);
-  }, []);
+/** live_network — Wi-Fi 신호 강도 (nowMs 기반 결정적 값) */
+function LiveNetwork({ cube: _cube, nowMs }: { cube: Cube; nowMs: number }) {
+  // nowMs 5초 단위로 1~4 결정적 값 (random 제거)
+  const strength = (Math.floor(nowMs / 5000) % 4) + 1;
   const arcs = [
     { r: 30, on: strength >= 4 },
     { r: 20, on: strength >= 3 },

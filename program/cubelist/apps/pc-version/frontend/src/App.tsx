@@ -42,7 +42,7 @@ import { useCubeStates } from './lib/useCubeStates';
 import { CubeContextMenu } from './components/CubeContextMenu';
 import { DropZone } from './components/DropZone';
 import { CubePreview } from './components/CubePreview';
-import { LiveCubeVisual } from './components/LiveCubeVisual';
+import { CubeCellVisual } from './components/CubeCell';
 import { CubeStatesEditor } from './components/CubeStatesEditor';
 import { MarketplaceMetaEditor } from './components/MarketplaceMetaEditor';
 import { MarketplaceCatalog } from './components/MarketplaceCatalog';
@@ -57,11 +57,8 @@ import {
 } from './components/PluginRunnerHost';
 import {
   ACTIONS,
-  ACTION_CATEGORIES,
   defaultPayloadFor,
   validatePayload,
-  type ActionCategory,
-  type ActionSpec,
 } from './lib/actions';
 import { ActionPayloadForm } from './components/ActionPayloadForm';
 import { CubeIconUpload } from './components/CubeIconUpload';
@@ -75,40 +72,7 @@ import {
   PC_DEFAULT_ROWS,
 } from './lib/device-defaults';
 
-/**
- * 라벨 hash → HSL 그라데이션 컬러 페어 (2026-06-01 v3).
- * placeholder 큐브의 시각적 다양성 + 식별성을 위해.
- * 동일 라벨 → 항상 같은 색 (안정).
- */
-// 2026-06-01 v4: 자체 SVG 아이콘 생성기 (design.md Level 10)
-import { generateIconDataUrl } from './lib/icon-generator';
-function labelToGradient(label: string): [string, string] {
-  // Brand 컬러 우선 매핑 (대표 vendor 컬러)
-  const lower = label.toLowerCase();
-  if (lower.includes('discord')) return ['#5865F2', '#404EED'];
-  if (lower.includes('spotify')) return ['#1DB954', '#1aa34a'];
-  if (lower.includes('youtube')) return ['#FF0000', '#CC0000'];
-  if (lower.includes('twitch')) return ['#9146FF', '#772CE8'];
-  if (lower.includes('github')) return ['#24292F', '#0d1117'];
-  if (lower.includes('obs')) return ['#302E31', '#1a1a1d'];
-  if (lower.includes('photoshop') || lower.includes('adobe')) return ['#001E36', '#31A8FF'];
-  if (lower.includes('powerpoint')) return ['#D24726', '#B7411F'];
-  if (lower.includes('windows')) return ['#0078D4', '#005A9E'];
-  if (lower.includes('weather')) return ['#4A90E2', '#357ABD'];
-  if (lower.includes('hue') || lower.includes('philips')) return ['#4FC3F7', '#0277BD'];
-  if (lower.includes('wave link') || lower.includes('elgato')) return ['#0093D0', '#005F8C'];
-  if (lower.includes('streamlabs')) return ['#80F5D2', '#31C9A9'];
-  if (lower.includes('voicemod')) return ['#FF3D7F', '#D62E60'];
-  if (lower.includes('clock') || lower.includes('time')) return ['#FF9800', '#F57C00'];
-  if (lower.includes('volume') || lower.includes('mute') || lower.includes('audio')) return ['#7B1FA2', '#4A148C'];
-  if (lower.includes('battery')) return ['#4CAF50', '#2E7D32'];
-  if (lower.includes('cpu') || lower.includes('memory')) return ['#F44336', '#C62828'];
-  // 해시 기반 색상 (default)
-  let h = 0;
-  for (let i = 0; i < label.length; i++) h = ((h << 5) - h + label.charCodeAt(i)) | 0;
-  const hue = Math.abs(h) % 360;
-  return [`hsl(${hue}, 60%, 45%)`, `hsl(${(hue + 40) % 360}, 55%, 30%)`];
-}
+// R1-1/R1-4: labelToGradient + generateIconDataUrl 이전됨 → CubeCell.tsx 내부 사용 (App.tsx 에서 제거)
 import { describeExecuteError, executeCube, isTauri } from './lib/tauri-bridge';
 import {
   buildPluginActionPayload,
@@ -122,8 +86,7 @@ type MainTab = 'cube-maker' | 'list-maker' | 'marketplace';
 
 const PACK_STORAGE_KEY = 'cubelist:last_pack';
 const LIBRARY_DIR_KEY = 'cubelist:library_dir';
-/** 최초 부팅 시 사용할 기본 라이브러리 경로 — 폴더 존재 시 자동 등록 */
-const DEFAULT_LIBRARY_DIR = 'C:\\Users\\PC\\Downloads\\플러그인\\CUBE';
+// R1-4: DEFAULT_LIBRARY_DIR 하드코딩 제거 — 설정 패널에서 폴더 지정. 미설정 시 데모 팩.
 
 export function App() {
   const pack = useEditor((s) => s.pack);
@@ -195,12 +158,9 @@ export function App() {
     if (pack) return;
     let cancelled = false;
     (async () => {
-      // 1. 등록된 라이브러리 폴더 (Tauri 환경 한정)
-      let libDir = window.localStorage.getItem(LIBRARY_DIR_KEY);
-      // 최초 부팅 시 DEFAULT 경로 자동 시도 — 존재하면 자동 등록
-      if (!libDir && isTauri()) {
-        libDir = DEFAULT_LIBRARY_DIR;
-      }
+      // 1. 등록된 라이브러리 폴더 (Tauri 환경 한정, 설정 패널에서 지정)
+      const libDir = window.localStorage.getItem(LIBRARY_DIR_KEY);
+      // R1-4: 자동 경로 추측 없음 — 설정 패널에서 명시적 등록만
       if (libDir && isTauri()) {
         try {
           // M4 Step 2.2: Rust state 에 library_dir 등록 (cubelist-plugin:// 핸들러 사용)
@@ -653,6 +613,9 @@ function CubeMakerCenter() {
   const toggleListMakerSelection = useEditor((s) => s.toggleListMakerSelection);
   const finishListMaker = useEditor((s) => s.finishListMaker);
 
+  // R1-3: 라이브러리 큐브에도 중앙 tick 전달 (live_* 큐브가 라이브러리에 있을 때)
+  const { nowMs: libLiveNowMs } = useDynamicCubes(libraryCubes);
+
   const [saveModalOpen, setSaveModalOpen] = useState(false);
 
   // 다중 선택 완료 후 모달 트리거는 MainTabBar 의 prompt 로 대체. saveModal 은 추후 풀-기능 시.
@@ -765,92 +728,38 @@ function CubeMakerCenter() {
           {cubesToShow.map((cube) => {
             const selectionIdx = listMakerSelection.indexOf(cube.id);
             const isSelected = librarySelectedId === cube.id;
-            const inSelection = selectionIdx !== -1;
-            const hasIcon = !!cube.icon_url;
-            const iconMeta = (cube.metadata ?? {}) as Record<string, unknown>;
-            const isTinyIcon = iconMeta.icon_is_tiny === true;
-            const isPlaceholderIcon = !hasIcon || iconMeta.icon_is_placeholder === true;
-            // 2026-06-01: StreamDeck SDK PNG (state@*.png, 보통 monochrome) → invert + brightness
-            const iconSourceStr = (iconMeta.icon_source as string | undefined) ?? '';
-            const isSdkMonoPng = /^state(@\dx)?\.png$/i.test(iconSourceStr);
-            const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
-            const placeholderColors = labelToGradient(cube.label || cube.id);
-            // 2026-06-01 v4: 자체 SVG 아이콘 (design.md Level 10) — placeholder + tiny PNG 대체
-            const useGeneratedSvg = !hasIcon || isPlaceholderIcon || isTinyIcon;
-            const generatedSvgUrl = useGeneratedSvg ? generateIconDataUrl(cube.label, cube.action_type) : null;
+            // R1-1: CubeCellVisual 단일 렌더러 소비
             return (
               <button
                 key={cube.id}
                 type="button"
-                className={`cube-cell ${hasIcon ? 'has-icon' : ''} ${isSelected ? 'is-selected' : ''} ${inSelection ? 'is-in-selection' : ''} ${isTinyIcon ? 'icon-tiny' : ''} ${isSdkMonoPng ? 'icon-sdk-mono' : ''} ${isPlaceholderIcon ? 'icon-placeholder' : ''}`}
+                className="cube-cell"
                 onClick={() => handleClickCube(cube.id)}
                 title={`${cube.label} (${cube.action_type})`}
               >
-                {(cube.action_type === 'live_clock' ||
-                  cube.action_type === 'live_timer' ||
-                  cube.action_type === 'live_battery' ||
-                  cube.action_type === 'live_gauge' ||
-                  cube.action_type === 'live_weather' ||
-                  cube.action_type === 'live_monitor' ||
-                  cube.action_type === 'live_alarm' ||
-                  cube.action_type === 'live_stock' ||
-                  cube.action_type === 'live_calendar' ||
-                  cube.action_type === 'live_news' ||
-                  cube.action_type === 'live_network') &&
-                (!hasIcon || isPlaceholderIcon) ? (
-                  // live_* 큐브 + icon 없거나 placeholder → LiveCubeVisual.
-                  // 정상 icon_url 있으면 원본 아이콘 우선 (heuristic 잘못 매핑 회귀 보호).
-                  <div className="cube-icon-bg" aria-hidden style={{ background: '#0a0a0a', overflow: 'hidden' }}>
-                    <LiveCubeVisual cube={cube} />
-                  </div>
-                ) : hasIcon && !isPlaceholderIcon && !isTinyIcon ? (
-                  <div
-                    className="cube-icon-bg"
-                    style={{ backgroundImage: `url("${cube.icon_url}")` }}
-                    aria-hidden
-                  />
-                ) : generatedSvgUrl ? (
-                  <div
-                    className="cube-icon-bg"
-                    style={{
-                      backgroundImage: `url("${generatedSvgUrl}")`,
-                      backgroundSize: '60% auto',
-                      background: `linear-gradient(135deg, ${placeholderColors[0]}22, ${placeholderColors[1]}22), #0a0a0a`,
-                      backgroundRepeat: 'no-repeat',
-                      backgroundPosition: 'center',
-                    }}
-                    aria-hidden
-                  />
-                ) : (
-                  <div
-                    className="cube-icon-bg"
-                    data-placeholder-letter={placeholderLetter}
-                    style={{ '--placeholder-c1': placeholderColors[0], '--placeholder-c2': placeholderColors[1] } as React.CSSProperties}
-                    aria-hidden
-                  />
-                )}
-                <span className="cube-label">{cube.label}</span>
-                <span className="cube-action-badge">{cube.action_type}</span>
-                {inSelection && <span className="library-cube-order">{selectionIdx + 1}</span>}
+                <CubeCellVisual
+                  cube={cube}
+                  selected={isSelected}
+                  selectionIndex={selectionIdx}
+                  nowMs={libLiveNowMs}
+                />
               </button>
             );
           })}
           {/* P1-B1 갱신 (2026-06-01): 사용자 명시 "앞과 뒤에 한개씩"
               앞 = "+ 새 큐브" 셀 (이미 위에 있음). 뒤 = 점선 빈 슬롯 1개. */}
+          {/* R2-3: 인라인 opacity 조작 제거 → CSS .cube-cell-trail-empty:hover */}
           <button
             type="button"
             className="cube-cell cube-cell-add cube-cell-trail-empty"
             onClick={handleAddNewCube}
             title={`다음 슬롯에 큐브 추가`}
             aria-label="다음 빈 슬롯"
-            style={{ opacity: 0.55 }}
-            onMouseEnter={(e) => { e.currentTarget.style.opacity = '0.95'; }}
-            onMouseLeave={(e) => { e.currentTarget.style.opacity = '0.55'; }}
           >
             <div className="cube-icon-bg">
               <span className="cube-cell-add-plus">＋</span>
             </div>
-            <span className="cube-label" style={{ opacity: 0.5 }}>새 큐브</span>
+            <span className="cube-label">새 큐브</span>
           </button>
         </div>
       )}
@@ -1614,143 +1523,7 @@ function Sidebar() {
   );
 }
 
-// @ts-expect-error: 구 카탈로그 Sidebar — 라이브러리 트리로 대체, 향후 인스펙터 통합 시 부활 가능
-function _LegacySidebar() {
-  const { t } = useTranslation();
-  const pluginActions = usePluginRegistry(useShallow((s) => s.allActions()));
-  const installedPlugins = usePluginRegistry((s) => s.installed);
-  const upsertCube = useEditor((s) => s.upsertCube);
-  const selectCube = useEditor((s) => s.selectCube);
-  const listId = useEditor((s) => s.list_id);
-  const list = useEditor(useShallow((s) => s.activeList()));
-  const [filter, setFilter] = useState<ActionCategory | null>(null);
-
-  function addCube(partial: Pick<Cube, 'label' | 'action_type' | 'action_payload'>): void {
-    if (!listId || !list) return;
-    const maxSort = list.cubes.length === 0
-      ? 0
-      : Math.max(...list.cubes.map((c) => c.sort_order));
-    const newCube: Cube = {
-      id: crypto.randomUUID(),
-      sort_order: maxSort + 1,
-      icon_url: null,
-      ...partial,
-    };
-    upsertCube(listId, newCube);
-    selectCube(newCube.id);
-  }
-
-  const builtinFiltered = ACTIONS.filter(
-    (a) => filter === null || a.category === filter,
-  );
-  const pluginFiltered = pluginActions.filter(
-    (p) => filter === null || p.category === filter,
-  );
-
-  return (
-    <aside className="sidebar" aria-label={t('sidebar.categories')}>
-      <div className="sidebar-section">
-        <h3 className="sidebar-title">{t('sidebar.categories')}</h3>
-        <ul className="category-list">
-          <li className="category-item">
-            <button
-              type="button"
-              className={`category-btn ${filter === null ? 'is-active' : ''}`}
-              onClick={() => setFilter(null)}
-            >
-              {t('sidebar.all')}
-            </button>
-          </li>
-          {ACTION_CATEGORIES.map((c) => (
-            <li key={c} className="category-item">
-              <button
-                type="button"
-                className={`category-btn ${filter === c ? 'is-active' : ''}`}
-                onClick={() => setFilter(c)}
-              >
-                {c}
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-
-      <div className="sidebar-section">
-        <h3 className="sidebar-title">{t('sidebar.builtin')} ({builtinFiltered.length})</h3>
-        {builtinFiltered.length === 0 ? (
-          <div className="sidebar-hint">{t('sidebar.no_category_match')}</div>
-        ) : (
-          <ul className="plugin-list">
-            {builtinFiltered.map((spec: ActionSpec) => (
-              <li key={spec.id} className="plugin-item">
-                <button
-                  className="plugin-btn"
-                  type="button"
-                  onClick={() =>
-                    addCube({
-                      label: spec.label,
-                      action_type: spec.id,
-                      action_payload: defaultPayloadFor(spec.id),
-                    })
-                  }
-                  disabled={!listId}
-                  title={`${spec.description}\n클릭 → 현재 리스트에 큐브 추가`}
-                >
-                  <span className="plugin-label">{spec.label}</span>
-                  <span className="plugin-meta">
-                    {spec.id} · T{spec.tier}
-                    {spec.category ? ` · ${spec.category}` : ''}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      <div className="sidebar-section">
-        <h3 className="sidebar-title">
-          {t('sidebar.plugins')} ({installedPlugins.length})
-        </h3>
-        {installedPlugins.length === 0 ? (
-          <div className="sidebar-hint">
-            {t('sidebar.no_plugins')}
-          </div>
-        ) : (
-          <ul className="plugin-list">
-            {pluginFiltered.map((entry) => (
-              <li key={entry.qualified_id} className="plugin-item">
-                <button
-                  className="plugin-btn"
-                  type="button"
-                  onClick={() =>
-                    addCube({
-                      label: entry.label,
-                      action_type: 'plugin_action',
-                      action_payload: {
-                        plugin_uuid: entry.package_id,
-                        action_id: entry.action_id,
-                        payload: { ...entry.default_payload },
-                      },
-                    })
-                  }
-                  title={`${entry.description ?? entry.action_type}\n${entry.package_id}/${entry.action_id}`}
-                  disabled={!listId}
-                >
-                  <span className="plugin-label">{entry.label}</span>
-                  <span className="plugin-meta">
-                    {entry.package_id.split('.').slice(-1)[0]}
-                    {entry.tier ? ` · T${entry.tier}` : ''}
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
-    </aside>
-  );
-}
+// R1-4: _LegacySidebar 삭제 (사용처 0 확인 후)
 
 function GridArea() {
   const { t } = useTranslation();
@@ -1853,8 +1626,8 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
   const pageSize = useEditor((s) => s.pageSize());
   const selectCube = useEditor((s) => s.selectCube);
   const cube_id = useEditor((s) => s.cube_id);
-  // 동적 큐브 (live_clock/timer/gauge/battery) 1초 tick
-  const dynamicUpdates = useDynamicCubes(visibleCubes);
+  // 동적 큐브 (live_clock/timer/gauge/battery) 1초 tick — R1-3 중앙 tick
+  const { updates: dynamicUpdates, nowMs: liveNowMs } = useDynamicCubes(visibleCubes);
   // v0.1.2: states 있는 큐브 (hotkey_toggle 등) 상태 반영
   const stateUpdates = useCubeStates(visibleCubes);
   // v0.1.3 사전: 방향키 네비게이션 + Enter 실행
@@ -1955,7 +1728,7 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
                   icon_url: dyn.icon_url ?? displayCube.icon_url,
                 };
               }
-              return <SortableCubeCell key={id} cube={displayCube} />;
+              return <SortableCubeCell key={id} cube={displayCube} nowMs={liveNowMs} />;
             }
             return (
               <EmptySlot
@@ -2001,24 +1774,13 @@ function EmptySlot({
   );
 }
 
-function SortableCubeCell({ cube }: { cube: Cube }) {
+function SortableCubeCell({ cube, nowMs }: { cube: Cube; nowMs?: number }) {
   const cube_id = useEditor((s) => s.cube_id);
   const selectCube = useEditor((s) => s.selectCube);
   const enterFolder = useEditor((s) => s.enterFolder);
   const activeListId = useEditor((s) => s.list_id);
   const selected = cube_id === cube.id;
   const isFolder = cube.action_type === 'folder';
-  // StreamDeck 아이콘 가시화 분기
-  const iconMeta = (cube.metadata ?? {}) as Record<string, unknown>;
-  const isTinyIcon = iconMeta.icon_is_tiny === true;
-  const isPlaceholderIcon = !cube.icon_url || iconMeta.icon_is_placeholder === true;
-  // 2026-06-01: StreamDeck SDK PNG (state@*.png) = monochrome → invert
-  const iconSourceStr = (iconMeta.icon_source as string | undefined) ?? '';
-  const isSdkMonoPng = /^state(@\dx)?\.png$/i.test(iconSourceStr);
-  const placeholderLetter = (cube.label || '?').trim().charAt(0).toUpperCase();
-  const placeholderColors = labelToGradient(cube.label || cube.id);
-  const useGeneratedSvg = !cube.icon_url || isPlaceholderIcon || isTinyIcon;
-  const generatedSvgUrl = useGeneratedSvg ? generateIconDataUrl(cube.label, cube.action_type) : null;
   // v0.1.2: payload validation 상태 (invalid 시 셀에 빨간 ! dot 표시)
   const validationErrors = useMemo(
     () => {
@@ -2056,7 +1818,7 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       style={style}
       type="button"
       role="gridcell"
-      className={`cube-cell ${selected ? 'is-selected' : ''} ${isDragging ? 'is-dragging' : ''} ${isFolder ? 'is-folder' : ''} ${cube.icon_url ? 'has-icon' : ''} ${isTinyIcon ? 'icon-tiny' : ''} ${isSdkMonoPng ? 'icon-sdk-mono' : ''} ${isPlaceholderIcon ? 'icon-placeholder' : ''} ${isInvalid ? 'is-invalid' : ''}`}
+      className="cube-cell"
       onClick={() => {
         // M4: plugin_action 큐브 더블클릭 → fireCubeKey, 단일클릭 → select
         selectCube(selected ? null : cube.id);
@@ -2090,52 +1852,14 @@ function SortableCubeCell({ cube }: { cube: Cube }) {
       {...restAttrs}
       {...listeners}
     >
-      {(cube.action_type === 'live_clock' ||
-        cube.action_type === 'live_timer' ||
-        cube.action_type === 'live_battery' ||
-        cube.action_type === 'live_gauge' ||
-        cube.action_type === 'live_weather' ||
-        cube.action_type === 'live_monitor' ||
-        cube.action_type === 'live_alarm' ||
-        cube.action_type === 'live_stock' ||
-        cube.action_type === 'live_calendar' ||
-        cube.action_type === 'live_news' ||
-        cube.action_type === 'live_network') &&
-      (!cube.icon_url || isPlaceholderIcon) ? (
-        // live_* 큐브 + icon 없거나 placeholder → LiveCubeVisual. icon 있으면 원본 우선.
-        <div className="cube-icon-bg" aria-hidden style={{ background: '#0a0a0a', overflow: 'hidden' }}>
-          <LiveCubeVisual cube={cube} />
-        </div>
-      ) : cube.icon_url && !isPlaceholderIcon && !isTinyIcon ? (
-        <div
-          className="cube-icon-bg"
-          style={{ backgroundImage: `url("${cube.icon_url}")` }}
-          aria-hidden
-        />
-      ) : !isFolder && generatedSvgUrl ? (
-        <div
-          className="cube-icon-bg"
-          style={{
-            backgroundImage: `url("${generatedSvgUrl}")`,
-            backgroundSize: '60% auto',
-            background: `linear-gradient(135deg, ${placeholderColors[0]}22, ${placeholderColors[1]}22), #0a0a0a`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
-          }}
-          aria-hidden
-        />
-      ) : !isFolder ? (
-        <div
-          className="cube-icon-bg"
-          data-placeholder-letter={placeholderLetter}
-          style={{ '--placeholder-c1': placeholderColors[0], '--placeholder-c2': placeholderColors[1] } as React.CSSProperties}
-          aria-hidden
-        />
-      ) : null}
-      <span className="cube-label">
-        {isFolder ? '📁 ' : ''}{cube.label}
-      </span>
-      <span className="cube-action-badge">{cube.action_type}</span>
+      {/* R1-1: CubeCellVisual 단일 렌더러 소비 */}
+      <CubeCellVisual
+        cube={cube}
+        selected={selected}
+        invalid={isInvalid}
+        isDragging={isDragging}
+        nowMs={nowMs}
+      />
     </button>
       {menuPos && (
         <CubeContextMenu
@@ -2266,6 +1990,23 @@ function Inspector() {
         value={cube.action_payload}
         onChange={(next) => patch({ action_payload: next })}
       />
+      {/* R1-2: live_* 큐브 → 정적 아이콘 토글 */}
+      {cube.action_type.startsWith('live_') && (
+        <div style={{ marginTop: 12, display: 'flex', alignItems: 'center', gap: 8 }}>
+          <label style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 12, cursor: 'pointer' }}>
+            <input
+              type="checkbox"
+              checked={(cube.metadata as Record<string, unknown> | undefined)?.live_static_icon === true}
+              onChange={(e) => {
+                const meta = { ...((cube.metadata as Record<string, unknown>) ?? {}), live_static_icon: e.target.checked };
+                patch({ metadata: meta });
+              }}
+            />
+            {t('inspector.live_static_icon')}
+          </label>
+          <span className="muted small">{t('inspector.live_static_icon_hint')}</span>
+        </div>
+      )}
       {/* v0.1.2: hotkey_toggle 등 toggle 성 액션 → states 편집 UI */}
       {(cube.action_type === 'hotkey_toggle' ||
         (cube.states && cube.states.length > 0)) && (

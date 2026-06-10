@@ -21,7 +21,13 @@ export interface DynamicUpdate {
   readonly icon_url?: string | null;
 }
 
-export function useDynamicCubes(cubes: readonly Cube[]): Map<string, DynamicUpdate> {
+export interface DynamicCubesResult {
+  readonly updates: Map<string, DynamicUpdate>;
+  /** 중앙 tick ms — LiveCubeVisual 에 전달해 내부 setInterval 없이 렌더 */
+  readonly nowMs: number;
+}
+
+export function useDynamicCubes(cubes: readonly Cube[]): DynamicCubesResult {
   // 동적 큐브만 추출
   const dynamicCubes = useMemo(
     () => cubes.filter((c) => getDynamicTick(c) !== null),
@@ -29,6 +35,7 @@ export function useDynamicCubes(cubes: readonly Cube[]): Map<string, DynamicUpda
   );
 
   const [updates, setUpdates] = useState<Map<string, DynamicUpdate>>(new Map());
+  const [nowMs, setNowMs] = useState<number>(() => Date.now());
 
   useEffect(() => {
     if (dynamicCubes.length === 0) {
@@ -43,7 +50,9 @@ export function useDynamicCubes(cubes: readonly Cube[]): Map<string, DynamicUpda
     }
 
     function applyTick(): void {
-      const u = registry.tickAll(Date.now());
+      const ts = Date.now();
+      setNowMs(ts);
+      const u = registry.tickAll(ts);
       const map = new Map<string, DynamicUpdate>();
       for (const item of u) {
         map.set(item.id, { label: item.label, icon_url: item.icon_url });
@@ -88,7 +97,7 @@ export function useDynamicCubes(cubes: readonly Cube[]): Map<string, DynamicUpda
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dynamicCubes.length, dynamicCubes.map((c) => `${c.id}-${c.action_type}-${JSON.stringify(c.action_payload)}`).join('|')]);
 
-  return updates;
+  return { updates, nowMs };
 }
 
 export type { DynamicCubeUpdate };

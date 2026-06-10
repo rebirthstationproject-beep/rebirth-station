@@ -159,6 +159,10 @@ const MESSAGES_KO = {
   'mp.install_paid': 'v0.1.4 에서 활성 — 현재는 mock.\n\n결제 (PayPal / Binance Pay) 후 라이센스 키가 발급됩니다.',
   'mp.license_prompt': '라이센스 키를 입력하세요 (v0.1.4 발급):',
   'mp.license_invalid': '라이센스 키 형식 무효 — Ed25519 서명 확인 실패 (v0.1.4 활성)',
+
+  // R1-2: live 큐브 정적 아이콘 토글 (ko)
+  'inspector.live_static_icon': '정적 아이콘 사용',
+  'inspector.live_static_icon_hint': '라이브 비주얼 대신 icon_url 아이콘을 표시합니다.',
 } as const;
 
 export type MessageKey = keyof typeof MESSAGES_KO;
@@ -298,6 +302,10 @@ const MESSAGES_EN: Record<MessageKey, string> = {
   'mp.install_paid': 'Activated at v0.1.4 — currently mock.\n\nPayment (PayPal / Binance Pay) issues a license key.',
   'mp.license_prompt': 'Enter license key (v0.1.4 issued):',
   'mp.license_invalid': 'Invalid license — Ed25519 signature check failed (v0.1.4 active)',
+
+  // R1-2: live 큐브 정적 아이콘 토글 (en)
+  'inspector.live_static_icon': 'Use Static Icon',
+  'inspector.live_static_icon_hint': 'Show the icon_url instead of the live visual.',
 };
 
 const MESSAGES_JA: Record<MessageKey, string> = {
@@ -435,6 +443,10 @@ const MESSAGES_JA: Record<MessageKey, string> = {
   'mp.install_paid': 'v0.1.4 で有効化 — 現在はモック。\n\n決済（PayPal / Binance Pay）後ライセンスキー発行。',
   'mp.license_prompt': 'ライセンスキー入力（v0.1.4 発行）:',
   'mp.license_invalid': 'ライセンスキー無効 — Ed25519 署名検証失敗（v0.1.4 有効）',
+
+  // R1-2: live 큐브 정적 아이콘 토글 (ja) — 마지막에 추가됨
+  'inspector.live_static_icon': '静止アイコン使用',
+  'inspector.live_static_icon_hint': 'ライブ表示の代わりにアイコンを表示します。',
 };
 
 export const MESSAGES: Record<Locale, Record<MessageKey, string>> = {
