@@ -25,13 +25,13 @@ import { useTranslation } from '@/lib/i18n/useTranslation';
 const INSPECTOR_COPY = {
   ko: {
     cubeInfo: '큐브 정보',
-    library: '📚 라이브러리',
+    library: '라이브러리',
     name: '이름',
     save: '저장',
     fullEdit: '전체 편집 (단축키·매크로·폴더…)',
     deselect: '선택 해제',
     libraryHint: '드래그 또는 클릭으로 보드에 추가',
-    searchPlaceholder: '🔍 검색...',
+    searchPlaceholder: '검색...',
     nameMissing: '이름을 입력해주세요',
     saved: '저장됨',
     selectListFirst: '먼저 리스트를 선택하세요',
@@ -62,13 +62,13 @@ const INSPECTOR_COPY = {
   },
   en: {
     cubeInfo: 'Cube info',
-    library: '📚 Library',
+    library: 'Library',
     name: 'Name',
     save: 'Save',
     fullEdit: 'Edit all (shortcut · macro · folder…)',
     deselect: 'Deselect',
     libraryHint: 'Drag or click to add',
-    searchPlaceholder: '🔍 Search...',
+    searchPlaceholder: 'Search...',
     nameMissing: 'Please enter a name',
     saved: 'Saved',
     selectListFirst: 'Select a list first',
@@ -99,13 +99,13 @@ const INSPECTOR_COPY = {
   },
   ja: {
     cubeInfo: 'キューブ情報',
-    library: '📚 ライブラリ',
+    library: 'ライブラリ',
     name: '名前',
     save: '保存',
     fullEdit: '全体編集 (ショートカット・マクロ・フォルダ…)',
     deselect: '選択解除',
     libraryHint: 'ドラッグまたはクリックで追加',
-    searchPlaceholder: '🔍 検索...',
+    searchPlaceholder: '検索...',
     nameMissing: '名前を入力してください',
     saved: '保存しました',
     selectListFirst: 'リストを先に選択してください',
@@ -330,7 +330,7 @@ export function CubeInspector({
               allActions.push({
                 uuid: a.uuid,
                 name: a.name,
-                icon: a.icon ?? '🔘',
+                icon: a.icon ?? '●',
                 action_type: a.action_type,
                 default_payload: a.default_payload ?? {},
               });
@@ -1054,9 +1054,9 @@ export function CubeInspector({
             />
             {searchQuery.trim().length > 0 && (
               <p className="text-[9px] text-ink-muted mt-1 flex items-center gap-2 font-mono">
-                <span>📦 {filteredPluginActions.length}</span>
+                <span>◆ {filteredPluginActions.length}</span>
                 <span>·</span>
-                <span>📁 {filteredItems.length}</span>
+                <span>▶ {filteredItems.length}</span>
               </p>
             )}
           </div>
@@ -1083,7 +1083,7 @@ export function CubeInspector({
                 className="w-full text-left px-3 py-1.5 text-[11px] font-semibold text-ink flex items-center justify-between hover:bg-surface-2"
               >
                 <span>
-                  📦 Stream Deck 호환 ({filteredPluginActions.length}
+                  ◆ Stream Deck 호환 ({filteredPluginActions.length}
                   {searchQuery.trim() && filteredPluginActions.length !== pluginActions.length
                     ? `/${pluginActions.length}`
                     : ''}

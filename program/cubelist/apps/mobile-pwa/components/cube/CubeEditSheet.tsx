@@ -768,7 +768,7 @@ export function CubeEditSheet({ open, item, onClose, onSaved, onDeleted }: CubeE
             {/* SD-BQ (2026-05-23): %USERNAME% 등 환경변수 사용 시 안내 */}
             {/[%$]/.test(appPath) && (
               <p className="text-[10px] text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-950/30 px-2 py-1 rounded">
-                💡 환경변수 (예: %USERNAME%, $HOME)는 PC 헬퍼에서 자동 expand됩니다.
+                환경변수 (예: %USERNAME%, $HOME)는 PC 헬퍼에서 자동 expand됩니다.
               </p>
             )}
           </div>
@@ -790,7 +790,7 @@ export function CubeEditSheet({ open, item, onClose, onSaved, onDeleted }: CubeE
             </p>
             {/* SD-BV (2026-05-23): 패턴 예시 */}
             <details className="text-[10px] text-ink-muted">
-              <summary className="cursor-pointer hover:text-rbs-accent">📖 패턴 예시</summary>
+              <summary className="cursor-pointer hover:text-rbs-accent">패턴 예시</summary>
               <ul className="mt-1 pl-3 space-y-0.5 list-disc">
                 <li><code className="font-mono">Notepad</code> — 부분 일치 (제목에 "Notepad" 포함)</li>
                 <li><code className="font-mono">*.txt - Notepad</code> — `*`는 임의 문자 (위치 자유), `.txt` 확장자 메모장</li>
@@ -850,7 +850,7 @@ export function CubeEditSheet({ open, item, onClose, onSaved, onDeleted }: CubeE
             </label>
             {/* SD-BN (2026-05-23): 좌표 picker — PC 헬퍼 의존 안내 (sendMessage 후속) */}
             <p className="text-[10px] text-ink-muted italic">
-              💡 좌표 직접 입력 (PC 헬퍼 페어링 후 "현재 위치 캡처" 자동 입력 후속 지원 — SD-BN-2)
+              좌표 직접 입력 (PC 헬퍼 페어링 후 "현재 위치 캡처" 자동 입력 후속 지원 — SD-BN-2)
             </p>
             <p className="text-xs text-ink-muted">Tier 2 — PC 헬퍼 필요.</p>
           </div>

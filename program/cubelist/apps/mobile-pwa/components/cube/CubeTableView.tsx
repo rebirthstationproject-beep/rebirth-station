@@ -499,7 +499,7 @@ export function CubeTableView({ onImportDone }: CubeTableViewProps = {}) {
                 }}
                 className="text-xs px-3 py-1.5 rounded-md border border-rbs-accent text-rbs-accent hover:bg-rbs-accent-soft dark:hover:bg-rbs-accent/10 disabled:opacity-50"
               >
-                📁 {c.importAsFolder(selectedSlugs.size)}
+                ▶ {c.importAsFolder(selectedSlugs.size)}
               </button>
               <span className="text-xs text-ink-muted">
                 {c.selectionCount(selectedSlugs.size, filtered.length)}

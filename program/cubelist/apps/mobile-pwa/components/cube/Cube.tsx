@@ -311,13 +311,13 @@ function CubeImpl({ item: rawItem, editMode, onPress, onLongPress, onContextMenu
           {String(item.metadata.hotkey).slice(0, 4)}
         </kbd>
       )}
-      {/* 폴더 큐브 시각 — 우상단 📁 + cube_ids 카운트 (뒤로 가기 가상 큐브 제외) */}
+      {/* 폴더 큐브 시각 — 우상단 ▶ 글리프 + cube_ids 카운트 (뒤로 가기 가상 큐브 제외, PC CubeCell 컨벤션 동일) */}
       {item.action_type === 'folder' && !item.metadata?.__back__ && (
         <span
           className="absolute top-1 right-1 text-[10px] font-semibold leading-none px-1 py-0.5 rounded bg-rbs-accent-soft text-rbs-accent-strong dark:bg-rbs-accent/30 dark:text-rbs-accent flex items-center gap-0.5"
           aria-label="폴더"
         >
-          📁{' '}
+          ▶{' '}
           {Array.isArray((item.action_payload as { cube_ids?: unknown })?.cube_ids)
             ? ((item.action_payload as { cube_ids: unknown[] }).cube_ids?.length ?? 0)
             : 0}
@@ -491,12 +491,12 @@ function summarizeAction(item: CubeItem, locale: 'ko' | 'en' | 'ja' = 'ko'): str
       return `→ ⧉ "${t}${payload.text.length > 30 ? '…' : ''}"`;
     }
     case 'app_launch':
-      return `→ 🚀 ${payload.path || '(no path)'}`;
+      return `→ ▶ ${payload.path || '(no path)'}`;
     case 'focus_window':
-      return `→ 🪟 ${payload.title_pattern || '(no pattern)'}`;
+      return `→ ⊞ ${payload.title_pattern || '(no pattern)'}`;
     case 'mouse_click':
-      return `→ 🖱 (${payload.x}, ${payload.y}) ${payload.button}`;
+      return `→ ⊙ (${payload.x}, ${payload.y}) ${payload.button}`;
     case 'plugin_action':
-      return `→ 🧩 ${payload.plugin_uuid || '(no plugin)'}`;
+      return `→ ◆ ${payload.plugin_uuid || '(no plugin)'}`;
   }
 }

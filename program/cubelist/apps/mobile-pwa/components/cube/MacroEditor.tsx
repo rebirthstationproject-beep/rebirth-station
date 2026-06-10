@@ -36,7 +36,7 @@ const MACRO_COPY = {
     copyTitle: '시퀀스 텍스트를 클립보드에 복사',
     copySuccess: '시퀀스를 클립보드에 복사했습니다',
     copyFail: '복사 실패',
-    keyboardRecord: '🔴 키 녹화',
+    keyboardRecord: '● 키 녹화',
     recordTitle: '키 입력 캡처하여 단계 자동 추가',
     handleAria: (n: number) => `단계 ${n} 드래그 핸들`,
     handleTitle: '드래그하여 순서 변경',
@@ -78,7 +78,7 @@ const MACRO_COPY = {
     copyTitle: 'Copy the sequence text to clipboard',
     copySuccess: 'Sequence copied to clipboard',
     copyFail: 'Copy failed',
-    keyboardRecord: '🔴 Record keys',
+    keyboardRecord: '● Record keys',
     recordTitle: 'Capture key presses to add steps',
     handleAria: (n: number) => `Drag handle for step ${n}`,
     handleTitle: 'Drag to reorder',
@@ -122,7 +122,7 @@ const MACRO_COPY = {
     copyTitle: 'シーケンスをクリップボードにコピー',
     copySuccess: 'シーケンスをクリップボードにコピーしました',
     copyFail: 'コピー失敗',
-    keyboardRecord: '🔴 キー録画',
+    keyboardRecord: '● キー録画',
     recordTitle: 'キー入力をキャプチャしてステップを自動追加',
     handleAria: (n: number) => `ステップ ${n} のドラッグ ハンドル`,
     handleTitle: 'ドラッグで並び替え',
@@ -383,7 +383,7 @@ export function MacroEditor({ steps, onChange }: MacroEditorProps) {
                 aria-label={mc.copyAria}
                 title={mc.copyTitle}
               >
-                📋 {mc.copyBtn}
+                ⧉ {mc.copyBtn}
               </button>
               <span className="text-[10px] text-ink-muted group-open:rotate-90 transition-transform">▶</span>
             </span>
@@ -419,7 +419,7 @@ function summarizeStep(step: MacroStepDto): string {
     case 'key':
       return step.keys.length > 0 ? `⌨${step.keys.join('+')}` : '⌨(빈)';
     case 'click':
-      return `🖱${step.button[0]}@${step.x},${step.y}`;
+      return `⊙${step.button[0]}@${step.x},${step.y}`;
     case 'delay':
       return `⏱${step.ms}ms`;
     case 'launch_app': {
@@ -427,7 +427,7 @@ function summarizeStep(step: MacroStepDto): string {
       return `▶${name}`;
     }
     case 'focus_window':
-      return `🪟${step.title_pattern || '(빈)'}`;
+      return `⊞${step.title_pattern || '(빈)'}`;
   }
 }
 

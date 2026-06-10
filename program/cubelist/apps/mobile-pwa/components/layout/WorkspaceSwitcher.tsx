@@ -86,7 +86,7 @@ export function WorkspaceSwitcher() {
         aria-expanded={open}
         title={c.select}
       >
-        <span className="truncate max-w-[120px]">📁 {activeName}</span>
+        <span className="truncate max-w-[120px]">▶ {activeName}</span>
         <span className="text-[10px] opacity-60">▾</span>
       </button>
 
@@ -106,7 +106,7 @@ export function WorkspaceSwitcher() {
               activeWorkspaceId === null ? 'bg-rbs-accent-soft text-rbs-accent-strong font-medium' : 'text-ink'
             }`}
           >
-            📂 {c.defaultWs}
+            ▶ {c.defaultWs}
           </button>
           {workspaces.map((ws) => (
             <div key={ws.id} className="flex items-stretch border-t border-border">
@@ -123,7 +123,7 @@ export function WorkspaceSwitcher() {
                     : 'text-ink'
                 }`}
               >
-                📁 {ws.name}
+                ▶ {ws.name}
               </button>
               <button
                 type="button"

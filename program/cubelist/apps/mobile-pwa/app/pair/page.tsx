@@ -27,9 +27,9 @@ const PAIR_COPY = {
     cameraDeniedToast: '카메라 권한이 차단되어 QR 스캔을 시작할 수 없습니다',
     helperTitle: 'PC 헬퍼가 아직 없나요?',
     helperBody: '페어링하려면 먼저 PC에 큐브 리스트 헬퍼를 설치해야 합니다.',
-    helperWindows: '🪟 Windows 감지 — PC 헬퍼 (Tauri v2 + Rust)는 Stage 2 진입 시 EV 코드 사이닝과 함께 배포됩니다.',
-    helperMac: '🍎 macOS — Windows 1차 배포 후 Phase 2에서 지원 예정입니다.',
-    helperLinux: '🐧 Linux — 정식 빌드는 Phase 2 이후. 그동안 소스 빌드 가능합니다.',
+    helperWindows: 'Windows 감지 — PC 헬퍼 (Tauri v2 + Rust)는 Stage 2 진입 시 EV 코드 사이닝과 함께 배포됩니다.',
+    helperMac: 'macOS — Windows 1차 배포 후 Phase 2에서 지원 예정입니다.',
+    helperLinux: 'Linux — 정식 빌드는 Phase 2 이후. 그동안 소스 빌드 가능합니다.',
     helperOther: '현재 디바이스에서 OS를 감지하지 못했습니다. PC(Windows·Mac)에서 다시 시도하세요.',
     helperDevNote: '공식 빌드 배포 전까지 페어링은 개발자 모드에서만 가능합니다.',
   },
@@ -50,9 +50,9 @@ const PAIR_COPY = {
     cameraDeniedToast: 'Cannot start QR scan — camera access is blocked.',
     helperTitle: 'No PC helper yet?',
     helperBody: 'You need the Cube List helper installed on your PC first.',
-    helperWindows: '🪟 Windows detected — PC helper (Tauri v2 + Rust) ships with EV signing when Stage 2 lands.',
-    helperMac: '🍎 macOS — supported after the Windows 1st rollout in Phase 2.',
-    helperLinux: '🐧 Linux — official builds after Phase 2. Source builds available meanwhile.',
+    helperWindows: 'Windows detected — PC helper (Tauri v2 + Rust) ships with EV signing when Stage 2 lands.',
+    helperMac: 'macOS — supported after the Windows 1st rollout in Phase 2.',
+    helperLinux: 'Linux — official builds after Phase 2. Source builds available meanwhile.',
     helperOther: 'Could not detect the OS. Open this page on a PC (Windows / Mac).',
     helperDevNote: 'Until the official binary ships, pairing only works in dev mode.',
   },
@@ -73,9 +73,9 @@ const PAIR_COPY = {
     cameraDeniedToast: 'カメラのアクセスがブロックされているため QR スキャンを開始できません',
     helperTitle: 'PC ヘルパーがまだ無いですか?',
     helperBody: 'ペアリングには先に PC にキューブ・リスト ヘルパーをインストールしてください。',
-    helperWindows: '🪟 Windows を検出 — PC ヘルパー (Tauri v2 + Rust) は Stage 2 進入時に EV コード署名と共に配布されます。',
-    helperMac: '🍎 macOS — Windows 1次リリース後、Phase 2 でサポート予定です。',
-    helperLinux: '🐧 Linux — 正式ビルドは Phase 2 以降。それまではソースビルドが可能です。',
+    helperWindows: 'Windows を検出 — PC ヘルパー (Tauri v2 + Rust) は Stage 2 進入時に EV コード署名と共に配布されます。',
+    helperMac: 'macOS — Windows 1次リリース後、Phase 2 でサポート予定です。',
+    helperLinux: 'Linux — 正式ビルドは Phase 2 以降。それまではソースビルドが可能です。',
     helperOther: '現在のデバイスで OS を検出できませんでした。PC (Windows・Mac) で再度お試しください。',
     helperDevNote: '公式バイナリ配布まで、ペアリングは開発者モードでのみ動作します。',
   },
@@ -245,7 +245,7 @@ export default function PairPage() {
 
       {step === 'success' && (
         <div className="text-center">
-          <p className="text-2xl mb-2">✅</p>
+          <p className="text-2xl mb-2">✓</p>
           <p className="font-medium mb-1">{t.successTitle}</p>
           <p className="text-sm text-ink-muted">{t.successSub}</p>
           <a

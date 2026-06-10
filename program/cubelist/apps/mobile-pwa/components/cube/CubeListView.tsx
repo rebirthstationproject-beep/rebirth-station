@@ -977,7 +977,10 @@ export function CubeListView({ editMode, onRequestEdit, onOpenLibrary, onSelectC
             aria-keyshortcuts="/ Control+k"
             title="/ 또는 Cmd/Ctrl+K"
           >
-            <span>🔍</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+              <circle cx="10.5" cy="10.5" r="6.5" />
+              <line x1="15.5" y1="15.5" x2="21" y2="21" />
+            </svg>
             <span className="hidden sm:inline">{hc.searchBtn}</span>
             <kbd className="hidden sm:inline text-[10px] opacity-60">/</kbd>
           </button>
