@@ -7,8 +7,8 @@
 - 재부팅 전 미커밋 자산 수습(65b4e2f): program-icons 31파일(Adobe 20 + 프로그램 10 + programs.json) + discord.cubepack — 큐브팩 v2 1차 자산
 - **R4 아이콘팩 = 구현 완료 확인** — docs/09 W2 전 항목 가동 중 (skin-pack.ts 파서·보수적 매칭 + SkinDialog + applySkinToList/removeSkinFromList + pre_skin_icon/skin_source 보존·복원). 기존 "스펙만 확정" 표기는 구버전
 - **모바일 이모지 제거 완료**(d3ec331): 9파일 40건 → 기하 글리프(▶●⧉⊙⊞◆✓)/미니 SVG 교체, 3언어 동시, typecheck 통과. UI 노출 잔존 0
-- ⚠ 발견: mobile-pwa UI 문구에 "PC 헬퍼" 표기 다수 — feedback_no_helper_term(헬퍼 명칭 금지, "PC 앱/PC 버전" 사용) 위반. 별도 일괄 교체 필요(i18n 3언어 + 문서)
-- 잔여: GUI 실검증(사용자) / D-06 Updater·D-07 사이닝(사용자 결정) / "PC 헬퍼" 명칭 일괄 교체 / 큐브팩 v2 제작 계속(programs.json 기반)
+- **"헬퍼" 명칭 일괄 교체 완료**(e1b687c): 사용자 노출 문구 전체 PC 앱/PC アプリ/PC app (3언어 + 조사 교정 + PC title 1건). 코드 식별자·프로그래밍 용어 주석은 유지
+- 잔여: GUI 실검증(사용자) / D-06 Updater·D-07 사이닝(사용자 결정) / 큐브팩 v2 제작 계속(programs.json 기반, discord 1/10 완료)
 
 ## ⭐ 2026-06-10 품질 재설계 (Stream Deck 동급화) — R1~R3 완료
 - 권위 스펙: `docs/08-quality-redesign-plan.md` (Fable 5 검토 + 계획)
