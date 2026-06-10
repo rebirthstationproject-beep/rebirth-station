@@ -43,6 +43,7 @@ import { CubeContextMenu } from './components/CubeContextMenu';
 import { DropZone } from './components/DropZone';
 import { CubePreview } from './components/CubePreview';
 import { CubeCellVisual } from './components/CubeCell';
+import { useSystemMetrics } from './lib/system-metrics';
 import { CubeStatesEditor } from './components/CubeStatesEditor';
 import { MarketplaceMetaEditor } from './components/MarketplaceMetaEditor';
 import { MarketplaceCatalog } from './components/MarketplaceCatalog';
@@ -99,6 +100,13 @@ export function App() {
   const [globalSearchOpen, setGlobalSearchOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [selectedPackId, setSelectedPackId] = useState<string | null>(null);
+
+  // R3: 시스템 메트릭 폴링 시작 (Tauri 환경에서만 동작 — store 내부에서 분기)
+  useEffect(() => {
+    const metrics = useSystemMetrics.getState();
+    metrics.startPolling();
+    return () => metrics.stopPolling();
+  }, []);
 
   // v0.1.3: Ctrl+F / Cmd+F 전역 검색
   useEffect(() => {
@@ -1539,6 +1547,7 @@ function GridArea() {
   const prevPage = useEditor((s) => s.prevPage);
   const exitFolder = useEditor((s) => s.exitFolder);
   const setListLayout = useEditor((s) => s.setListLayout);
+  const setListShowLabels = useEditor((s) => s.setListShowLabels);
   const [layoutModalOpen, setLayoutModalOpen] = useState(false);
 
   if (!list) {
@@ -1572,6 +1581,15 @@ function GridArea() {
           )}
         </span>
         <div className="grid-meta-actions">
+          <button
+            className="btn-ghost"
+            type="button"
+            onClick={() => setListShowLabels(list.id, list.show_labels === false)}
+            aria-pressed={list.show_labels !== false}
+            title={t('grid.show_labels')}
+          >
+            {list.show_labels !== false ? '🏷 ON' : '🏷 OFF'}
+          </button>
           <button
             className="btn-ghost"
             type="button"
@@ -1728,7 +1746,7 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
                   icon_url: dyn.icon_url ?? displayCube.icon_url,
                 };
               }
-              return <SortableCubeCell key={id} cube={displayCube} nowMs={liveNowMs} />;
+              return <SortableCubeCell key={id} cube={displayCube} nowMs={liveNowMs} showLabels={list.show_labels} />;
             }
             return (
               <EmptySlot
@@ -1774,7 +1792,7 @@ function EmptySlot({
   );
 }
 
-function SortableCubeCell({ cube, nowMs }: { cube: Cube; nowMs?: number }) {
+function SortableCubeCell({ cube, nowMs, showLabels }: { cube: Cube; nowMs?: number; showLabels?: boolean }) {
   const cube_id = useEditor((s) => s.cube_id);
   const selectCube = useEditor((s) => s.selectCube);
   const enterFolder = useEditor((s) => s.enterFolder);
@@ -1859,6 +1877,7 @@ function SortableCubeCell({ cube, nowMs }: { cube: Cube; nowMs?: number }) {
         invalid={isInvalid}
         isDragging={isDragging}
         nowMs={nowMs}
+        showLabels={showLabels}
       />
     </button>
       {menuPos && (

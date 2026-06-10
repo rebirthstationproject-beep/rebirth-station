@@ -71,6 +71,8 @@ interface EditorState extends EditorSelection {
   addList(name?: string): void;
   /** 리스트 이름 변경 */
   renameList(listId: string, name: string): void;
+  /** 리스트 라벨 표시 토글 (R2 보완 — show_labels 옵셔널, undefined=ON) */
+  setListShowLabels(listId: string, show: boolean): void;
   /** 리스트 삭제 */
   removeList(listId: string): void;
 
@@ -490,6 +492,15 @@ export const useEditor = create<EditorState>((set, get) => ({
     if (trimmed.length === 0) return;
     const nextLists = pack.lists.map((l) =>
       l.id === listId ? { ...l, name: trimmed } : l,
+    );
+    set({ pack: { ...pack, lists: nextLists } });
+  },
+
+  setListShowLabels(listId: string, show: boolean): void {
+    const { pack } = get();
+    if (!pack) return;
+    const nextLists = pack.lists.map((l) =>
+      l.id === listId ? { ...l, show_labels: show } : l,
     );
     set({ pack: { ...pack, lists: nextLists } });
   },

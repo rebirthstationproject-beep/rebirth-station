@@ -33,6 +33,7 @@ const MESSAGES_KO = {
 
   // Grid
   'grid.select_list': '리스트를 선택하세요',
+  'grid.show_labels': '라벨 표시',
   'grid.prev_page': '◀ 이전',
   'grid.next_page': '다음 ▶',
   'grid.exit_folder': '↩ 상위',
@@ -193,6 +194,7 @@ const MESSAGES_EN: Record<MessageKey, string> = {
   'sidebar.no_category_match': 'No built-in action in this category',
 
   'grid.select_list': 'Select a list',
+  'grid.show_labels': 'Show labels',
   'grid.prev_page': '◀ Prev',
   'grid.next_page': 'Next ▶',
   'grid.exit_folder': '↩ Up',
@@ -342,6 +344,7 @@ const MESSAGES_JA: Record<MessageKey, string> = {
   'sidebar.no_category_match': 'このカテゴリーにビルトインアクションなし',
 
   'grid.select_list': 'リストを選択してください',
+  'grid.show_labels': 'ラベル表示',
   'grid.prev_page': '◀ 前へ',
   'grid.next_page': '次へ ▶',
   'grid.exit_folder': '↩ 上へ',
