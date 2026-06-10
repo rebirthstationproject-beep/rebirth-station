@@ -1,6 +1,13 @@
 # 큐브 리스트 — 현재 상태 (STATE)
 
-> 매 세션 시작 시 여기부터. 마지막 갱신: 2026-05-23 (M0 완료 / 사용자 결정 D-01~03 영구화)
+> 매 세션 시작 시 여기부터. 마지막 갱신: 2026-06-10 (품질 재설계 R1~R3 실행 완료)
+
+## ⭐ 2026-06-10 품질 재설계 (Stream Deck 동급화) — R1~R3 완료
+- 권위 스펙: `docs/08-quality-redesign-plan.md` (Fable 5 검토 + 계획)
+- R1 구조 안정화(5d55a6b): CubeCell.tsx 셀 단일화 / live_* 라이브 비주얼 무조건 우선(정적 아이콘=옵트인) / 중앙 tick 단일화 / _LegacySidebar·하드코딩 제거
+- R2 시인성(d3bdf13): 아이콘 풀블리드 + 라벨 하단 오버레이 + action_type 배지 제거 / placeholder 무채색 1종 / 그리드 토큰(--cube-size 96px 등)
+- R3 실데이터(75e88f0·cda8cb5·026c863): Rust sysinfo 메트릭(get_system_metrics) + Open-Meteo 날씨 + stock/calendar/news "설정 필요" 정직 표기 / 리스트 라벨 토글(show_labels)
+- 잔여: R4 아이콘팩(.cubeiconpack — 스펙만 확정, docs/08 §R4) / GUI 실검증(사용자) / D-06·07 기존 대기 유지
 
 ---
 
