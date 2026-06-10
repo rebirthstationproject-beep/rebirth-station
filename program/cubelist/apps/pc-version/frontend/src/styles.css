@@ -1363,7 +1363,9 @@ html, body, #root {
    2026-06-10: 라벨 = 타일 아래 별도 줄 (겹침 해소, 사용자 피드백) → height auto */
 .cube-cell {
   width: calc(var(--cube-size) + 16px);
-  height: auto;
+  /* 2026-06-10: height auto 금지 — 스크롤 그리드에서 auto 행이 컨테이너 높이를 균등 분배해
+     행 수가 많을수록 셀이 압축됨 (아이콘 반토막 버그). 명시 높이 = pad 8 + 타일 96 + 라벨 20 */
+  height: calc(var(--cube-size) + 28px);
   box-sizing: border-box;
   background: transparent;
   border: none;

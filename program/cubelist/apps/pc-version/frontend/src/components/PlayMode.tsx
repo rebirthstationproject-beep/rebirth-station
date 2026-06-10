@@ -17,6 +17,7 @@ import { useDynamicCubes } from '../lib/useDynamicCubes';
 import { executeCube, isTauri } from '../lib/tauri-bridge';
 import { fireCubeKey } from './PluginRunnerHost';
 import { useTranslation } from '../lib/i18n/useTranslation';
+import { useEditor } from '../store/editor';
 
 // ── 토스트 ─────────────────────────────────────────────────────────────────
 
@@ -272,6 +273,20 @@ export function PlayMode({ pack, initialListId, onClose }: PlayModeProps) {
           ...prev,
           page: Math.max(0, Math.min(idx, totalPagesCount - 1)),
         }));
+        return;
+      }
+
+      // live_timer / live_alarm: 클릭 = 시작/재시작 (target_ms 설정) — 2026-06-10
+      // (target_ms 없으면 정지 표시라 "작동 안 함"으로 보임. 클릭으로 카운트다운 시작)
+      if (at === 'live_timer' || at === 'live_alarm') {
+        const durationSec =
+          Number(cube.action_payload.duration_seconds) || (at === 'live_timer' ? 1500 : 300);
+        const target = Date.now() + durationSec * 1000;
+        useEditor.getState().upsertCube(nav.listId, {
+          ...cube,
+          action_payload: { ...cube.action_payload, target_ms: target },
+        });
+        addToast(t('playmode.timer_started'));
         return;
       }
 

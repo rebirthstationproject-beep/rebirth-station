@@ -52,6 +52,15 @@ const ACTION_TYPES: ReadonlySet<CubeActionType> = new Set<CubeActionType>([
   'live_timer',
   'live_gauge',
   'live_battery',
+  // P3 동적 큐브 (2026-06-01 통합 모델) — 2026-06-10 검증 누락 정정
+  // (Live 데모 .cubeone 8개가 여기서 거부돼 라이브러리 로드 전체 실패했음)
+  'live_weather',
+  'live_monitor',
+  'live_alarm',
+  'live_stock',
+  'live_calendar',
+  'live_news',
+  'live_network',
 ]);
 
 export class CubepackFormatError extends Error {
@@ -384,10 +393,22 @@ export async function readCubeZip(buf: Uint8Array, sortOrder: number): Promise<C
   const cubeBody = manifest.cube as Record<string, unknown> | undefined;
   if (!cubeBody) throw new CubepackFormatError('cube.body 누락');
 
-  const actionType = cubeBody.action_type;
-  if (typeof actionType !== 'string' || !ACTION_TYPES.has(actionType as CubeActionType)) {
-    throw new CubepackFormatError(`action_type 무효: ${actionType}`);
+  const actionTypeRaw = cubeBody.action_type;
+  if (typeof actionTypeRaw !== 'string' || actionTypeRaw.length === 0) {
+    throw new CubepackFormatError(`action_type 무효: ${actionTypeRaw}`);
   }
+  // 2026-06-10 forward-compat: 미지 action_type 은 throw 대신 plugin_action 강등
+  // (신규 타입 추가 때마다 구 빌드에서 라이브러리 전체 로드가 깨지는 구조 방지.
+  //  원본 타입은 metadata.original_unknown_type 에 보존 — 상위 빌드에서 복원 가능)
+  const isKnown = ACTION_TYPES.has(actionTypeRaw as CubeActionType);
+  const actionType = isKnown ? (actionTypeRaw as CubeActionType) : 'plugin_action';
+  const baseMetadata =
+    cubeBody.metadata && typeof cubeBody.metadata === 'object'
+      ? (cubeBody.metadata as Record<string, unknown>)
+      : undefined;
+  const metadataWithCompat = isKnown
+    ? baseMetadata
+    : { ...(baseMetadata ?? {}), original_unknown_type: actionTypeRaw };
 
   return {
     id: cubeId,
@@ -396,9 +417,7 @@ export async function readCubeZip(buf: Uint8Array, sortOrder: number): Promise<C
     icon_url: typeof cubeBody.icon_url === 'string' ? cubeBody.icon_url : null,
     action_type: actionType as CubeActionType,
     action_payload: (cubeBody.action_payload ?? {}) as Record<string, unknown>,
-    ...(cubeBody.metadata
-      ? { metadata: cubeBody.metadata as Record<string, unknown> }
-      : {}),
+    ...(metadataWithCompat ? { metadata: metadataWithCompat } : {}),
   };
 }
 

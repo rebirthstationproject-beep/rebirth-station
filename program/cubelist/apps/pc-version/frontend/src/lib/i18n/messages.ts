@@ -179,6 +179,7 @@ const MESSAGES_KO = {
   'playmode.close': '닫기',
   'playmode.no_list': '리스트가 없습니다.',
   'playmode.pc_only_toast': 'PC 앱 전용 기능입니다. Tauri 앱에서 실행하세요.',
+  'playmode.timer_started': '⏱ 타이머 시작! (다시 클릭 = 재시작)',
 
   // W2: 리스트 스킨 (ko)
   'skin.title': '🎨 리스트 스킨',
@@ -358,6 +359,7 @@ const MESSAGES_EN: Record<MessageKey, string> = {
   'playmode.close': 'Close',
   'playmode.no_list': 'No list available.',
   'playmode.pc_only_toast': 'PC app only. Run the Tauri app to use this action.',
+  'playmode.timer_started': '⏱ Timer started! (click again to restart)',
 
   // W2: List Skin (en)
   'skin.title': '🎨 List Skin',
@@ -535,6 +537,7 @@ const MESSAGES_JA: Record<MessageKey, string> = {
   'playmode.close': '閉じる',
   'playmode.no_list': 'リストがありません。',
   'playmode.pc_only_toast': 'PC アプリ専用です。Tauri アプリで実行してください。',
+  'playmode.timer_started': '⏱ タイマー開始! (再クリック = リスタート)',
 
   // W2: リストスキン (ja)
   'skin.title': '🎨 リストスキン',
