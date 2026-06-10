@@ -117,6 +117,22 @@ interface EditorState extends EditorSelection {
   updateCubeIconUrl(cubeId: string, iconUrl: string): void;
   /** PropertyInspector setSettings → 큐브 action_payload.settings 갱신 */
   updateCubeSettings(cubeId: string, settings: Record<string, unknown>): void;
+
+  // === W2 리스트 스킨 ===
+  /**
+   * 리스트 내 특정 큐브들의 icon_url 을 아이콘팩 data URL 로 교체.
+   * 원본은 metadata.pre_skin_icon 에 보존 (최초 원본 유지 — 이미 있으면 덮어쓰지 않음).
+   * metadata.skin_source = 팩 이름 기록.
+   */
+  applySkinToList(
+    listId: string,
+    replacements: Array<{ cubeId: string; iconDataUrl: string; packName: string }>,
+  ): void;
+  /**
+   * 리스트 내 모든 스킨 큐브를 원상복구.
+   * pre_skin_icon 복원 + skin_source 제거.
+   */
+  removeSkinFromList(listId: string): void;
 }
 
 export const useEditor = create<EditorState>((set, get) => ({
@@ -781,6 +797,55 @@ export const useEditor = create<EditorState>((set, get) => ({
 
   cancelListMaker(): void {
     set({ list_maker_active: false, list_maker_selection: [] });
+  },
+
+  // === W2 리스트 스킨 ===
+
+  applySkinToList(listId, replacements) {
+    const { pack } = get();
+    if (!pack) return;
+    const replacementMap = new Map(replacements.map((r) => [r.cubeId, r]));
+    const nextLists = pack.lists.map((l) => {
+      if (l.id !== listId) return l;
+      const cubes = l.cubes.map((c) => {
+        const rep = replacementMap.get(c.id);
+        if (!rep) return c;
+        const meta = (c.metadata ?? {}) as Record<string, unknown>;
+        // 최초 원본만 보존 (이미 pre_skin_icon 있으면 덮어쓰지 않음)
+        const preSkinIcon = meta.pre_skin_icon !== undefined ? meta.pre_skin_icon : c.icon_url;
+        return {
+          ...c,
+          icon_url: rep.iconDataUrl,
+          metadata: {
+            ...meta,
+            pre_skin_icon: preSkinIcon,
+            skin_source: rep.packName,
+          },
+        };
+      });
+      return { ...l, cubes };
+    });
+    set({ pack: { ...pack, lists: nextLists } });
+  },
+
+  removeSkinFromList(listId) {
+    const { pack } = get();
+    if (!pack) return;
+    const nextLists = pack.lists.map((l) => {
+      if (l.id !== listId) return l;
+      const cubes = l.cubes.map((c) => {
+        const meta = (c.metadata ?? {}) as Record<string, unknown>;
+        if (!('skin_source' in meta)) return c;
+        const { pre_skin_icon, skin_source: _removed, ...restMeta } = meta;
+        return {
+          ...c,
+          icon_url: (pre_skin_icon as string | null | undefined) ?? null,
+          metadata: restMeta,
+        };
+      });
+      return { ...l, cubes };
+    });
+    set({ pack: { ...pack, lists: nextLists } });
   },
 
   // === 그리드 배치 설정 ===
