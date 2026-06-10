@@ -1,0 +1,38 @@
+{
+  "_comment": "큐브 리스트 프로그램 아이콘 + 링크 메타. icon은 program-icons 폴더 기준 상대경로.",
+  "_generated": "2026-06-10",
+  "adobe": {
+    "photoshop": { "name": "Photoshop", "icon": "adobe/photoshop.png", "url": "https://www.adobe.com/products/photoshop.html" },
+    "illustrator": { "name": "Illustrator", "icon": "adobe/illustrator.png", "url": "https://www.adobe.com/products/illustrator.html" },
+    "premiere-pro": { "name": "Premiere Pro", "icon": "adobe/premiere-pro.png", "url": "https://www.adobe.com/products/premiere.html" },
+    "after-effects": { "name": "After Effects", "icon": "adobe/after-effects.png", "url": "https://www.adobe.com/products/aftereffects.html" },
+    "lightroom": { "name": "Lightroom", "icon": "adobe/lightroom.png", "url": "https://www.adobe.com/products/photoshop-lightroom.html" },
+    "lightroom-classic": { "name": "Lightroom Classic", "icon": "adobe/lightroom-classic.png", "url": "https://www.adobe.com/products/photoshop-lightroom-classic.html" },
+    "audition": { "name": "Audition", "icon": "adobe/audition.png", "url": "https://www.adobe.com/products/audition.html" },
+    "indesign": { "name": "InDesign", "icon": "adobe/indesign.png", "url": "https://www.adobe.com/products/indesign.html" },
+    "incopy": { "name": "InCopy", "icon": "adobe/incopy.png", "url": "https://www.adobe.com/products/incopy.html" },
+    "animate": { "name": "Animate", "icon": "adobe/animate.png", "url": "https://www.adobe.com/products/animate.html" },
+    "dreamweaver": { "name": "Dreamweaver", "icon": "adobe/dreamweaver.png", "url": "https://www.adobe.com/products/dreamweaver.html" },
+    "media-encoder": { "name": "Media Encoder", "icon": "adobe/media-encoder.png", "url": "https://www.adobe.com/products/media-encoder.html" },
+    "acrobat": { "name": "Acrobat", "icon": "adobe/acrobat.png", "url": "https://www.adobe.com/acrobat.html" },
+    "aero": { "name": "Aero", "icon": "adobe/aero.png", "url": "https://www.adobe.com/products/aero.html" },
+    "dimension": { "name": "Dimension", "icon": "adobe/dimension.png", "url": "https://www.adobe.com/products/dimension.html" },
+    "premiere-rush": { "name": "Premiere Rush", "icon": "adobe/premiere-rush.png", "url": "https://www.adobe.com/products/premiere-rush.html" },
+    "substance-3d-modeler": { "name": "Substance 3D Modeler", "icon": "adobe/substance-3d-modeler.png", "url": "https://www.adobe.com/products/substance3d-modeler.html" },
+    "substance-3d-stager": { "name": "Substance 3D Stager", "icon": "adobe/substance-3d-stager.png", "url": "https://www.adobe.com/products/substance3d-stager.html" },
+    "bridge": { "name": "Bridge", "icon": "adobe/bridge.png", "url": "https://www.adobe.com/products/bridge.html" },
+    "behance": { "name": "Behance", "icon": "adobe/behance.png", "url": "https://www.behance.net" }
+  },
+  "programs": {
+    "discord": { "name": "Discord", "icon": "discord.png", "url": "https://discord.com", "elgato": "https://marketplace.elgato.com/product/discord-e3559f36-d31d-4529-ab1f-739955e2ac7a" },
+    "obs-studio": { "name": "OBS Studio", "icon": "obs-studio.png", "url": "https://obsproject.com", "elgato": "https://marketplace.elgato.com/product/obs-studio-35615969-830f-45c9-ba0a-1a295bba7fec" },
+    "tiktok": { "name": "TikTok", "icon": "tiktok.png", "url": "https://www.tiktok.com", "elgato": "https://marketplace.elgato.com/stream-deck/plugins?search=tiktok" },
+    "vscode": { "name": "VS Code", "icon": "vscode.png", "url": "https://code.visualstudio.com", "elgato": null },
+    "spotify": { "name": "Spotify", "icon": "spotify.png", "url": "https://www.spotify.com", "elgato": "https://marketplace.elgato.com/product/spotify-17f49e8b-09a0-4209-95ed-6dee2469f97b" },
+    "twitch": { "name": "Twitch", "icon": "twitch.png", "url": "https://www.twitch.tv", "elgato": "https://marketplace.elgato.com/product/twitch-54e38b3b-89ab-4400-b55f-645378785709" },
+    "youtube": { "name": "YouTube", "icon": "youtube.png", "url": "https://www.youtube.com", "elgato": "https://marketplace.elgato.com/product/youtube-1aff8623-89a4-456e-88a8-76724ae7cb4b" },
+    "voicemod": { "name": "Voicemod", "icon": "voicemod.png", "url": "https://www.voicemod.com", "elgato": "https://marketplace.elgato.com/product/voicemod-ec172e17-7e9a-43a5-841f-2d91a87589d5" },
+    "slack": { "name": "Slack", "icon": "slack.png", "url": "https://slack.com", "elgato": null },
+    "figma": { "name": "Figma", "icon": "figma.png", "url": "https://www.figma.com", "elgato": null }
+  }
+}
