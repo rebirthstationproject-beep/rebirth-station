@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { CubeListView } from '@/components/cube/CubeListView';
 import { CubeTableView } from '@/components/cube/CubeTableView';
@@ -22,6 +22,8 @@ import { WorkspaceSwitcher } from '@/components/layout/WorkspaceSwitcher';
 import { BoardSidebar } from '@/components/layout/BoardSidebar';
 
 export default function ListPage() {
+  const [moreOpen, setMoreOpen] = useState(false);
+  const moreRef = useRef<HTMLDivElement>(null);
   const [editMode, setEditMode] = useState(false);
   const searchParams = useSearchParams();
   const initialView = searchParams?.get('openLibrary') === '1' ? 'table' : 'grid';
@@ -41,6 +43,19 @@ export default function ListPage() {
   const { showToast } = useToast();
   const nickname = (user?.user_metadata?.nickname as string | undefined) ?? null;
   const { locale } = useTranslation();
+
+  // 더보기 메뉴 외부 클릭 닫기 (M-A §1 보조 메뉴)
+  useEffect(() => {
+    if (!moreOpen) return;
+    const handler = (e: MouseEvent): void => {
+      if (moreRef.current && !moreRef.current.contains(e.target as Node)) {
+        setMoreOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [moreOpen]);
+
   // Mac 감지 — 단축키 기호 표기에 사용 (formatShortcut과 동일 로직)
   const [isMac, setIsMac] = useState(false);
   useEffect(() => {
@@ -235,6 +250,67 @@ export default function ListPage() {
               {isMac ? '⇧?' : 'Shift+?'}
             </kbd>
           </button>
+
+          {/* M-A §1 보조 메뉴 — 기존 랜딩 허브 항목(pair/about/pro 등) 접근 */}
+          <div className="relative" ref={moreRef}>
+            <button
+              type="button"
+              onClick={() => setMoreOpen((v) => !v)}
+              className="text-xs sm:text-sm px-2.5 sm:px-3 py-1 rounded-lg border border-border hover:bg-surface-2"
+              aria-label={locale === 'en' ? 'More' : locale === 'ja' ? 'その他' : '더보기'}
+              aria-expanded={moreOpen}
+              aria-haspopup="menu"
+            >
+              &#8943;
+            </button>
+            {moreOpen && (
+              <div
+                role="menu"
+                className="absolute right-0 top-full mt-1 z-50 min-w-[140px] bg-surface border border-border rounded-xl shadow-lg py-1 flex flex-col"
+              >
+                <Link
+                  href="/pair"
+                  role="menuitem"
+                  onClick={() => setMoreOpen(false)}
+                  className="px-4 py-2 text-sm text-ink hover:bg-surface-2"
+                >
+                  {locale === 'en' ? 'Pair PC' : locale === 'ja' ? 'PC ペアリング' : 'PC 연결'}
+                </Link>
+                <Link
+                  href="/account"
+                  role="menuitem"
+                  onClick={() => setMoreOpen(false)}
+                  className="px-4 py-2 text-sm text-ink hover:bg-surface-2"
+                >
+                  {locale === 'en' ? 'Account' : locale === 'ja' ? 'アカウント' : '계정'}
+                </Link>
+                <Link
+                  href="/seeds"
+                  role="menuitem"
+                  onClick={() => setMoreOpen(false)}
+                  className="px-4 py-2 text-sm text-ink hover:bg-surface-2"
+                >
+                  {locale === 'en' ? 'Seed catalog' : locale === 'ja' ? 'シード カタログ' : '시드 카탈로그'}
+                </Link>
+                <Link
+                  href="/pro"
+                  role="menuitem"
+                  onClick={() => setMoreOpen(false)}
+                  className="px-4 py-2 text-sm text-ink hover:bg-surface-2"
+                >
+                  Pro
+                </Link>
+                <Link
+                  href="/about"
+                  role="menuitem"
+                  onClick={() => setMoreOpen(false)}
+                  className="px-4 py-2 text-sm text-ink hover:bg-surface-2"
+                >
+                  {locale === 'en' ? 'About' : locale === 'ja' ? 'ブランド紹介' : '브랜드 소개'}
+                </Link>
+              </div>
+            )}
+          </div>
         </div>
       </header>
 

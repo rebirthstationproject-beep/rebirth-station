@@ -677,6 +677,23 @@ export function CubeListView({ editMode, onRequestEdit, onOpenLibrary, onSelectC
 
   const handleAddCube = useCallback(
     async (boardId: string): Promise<void> => {
+      // M-A §2: local mode 분기 — 간단 link 큐브 추가 (Supabase 불필요)
+      if (isLocalMode()) {
+        const newItem = localStore.addItem(boardId, {
+          label: '새 큐브',
+          action_type: 'link',
+          action_payload: { url: 'https://' },
+        });
+        if (!newItem) {
+          showToast({ level: 'error', message: `${hc.addCubeFailPrefix}: board not found` });
+          return;
+        }
+        await loadBoards();
+        setEditingItem(newItem);
+        showToast({ level: 'success', message: hc.addCubeSuccess });
+        return;
+      }
+
       const supabase = getSupabase();
       const { data: session } = await supabase.auth.getSession();
       if (!session?.session) {
