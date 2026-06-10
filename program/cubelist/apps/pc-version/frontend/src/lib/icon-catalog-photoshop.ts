@@ -24,9 +24,11 @@ void PS_WHITE;
 
 /** SVG wrapper 생성 — color는 strokeColor로 사용 */
 function svgOf(body: string, strokeColor: string = PS_BLUE, fillColor: string = 'none'): string {
+  // color 속성 필수 — img/background-image 컨텍스트에서 fill="currentColor"가
+  // 검정으로 해석돼 다크 셀 배경에 묻히는 결함 방지 (2026-06-11 콘택트 시트 검증)
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" ` +
-    `stroke="${strokeColor}" fill="${fillColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+    `color="${strokeColor}" stroke="${strokeColor}" fill="${fillColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
     `${body}</svg>`
   );
 }

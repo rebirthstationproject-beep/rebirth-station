@@ -33,6 +33,23 @@ const CATALOG_TS = path.join(ROOT, 'apps', 'pc-version', 'frontend', 'src', 'lib
 const PACK_NAME = 'Adobe Photoshop';
 const PACK_ID = 'rbs.pack.adobe-photoshop';
 
+// ── 검토사항 1 (라벨=동작 일치) 정합 규칙 — 2026-06-11 자체 검증 결과 ──────
+// 제외: 라벨이 약속하는 동작과 키가 불일치하거나 비결정적(툴 그룹 공유 키)인 큐브
+const EXCLUDE_LABELS = new Set([
+  'New Group',            // Ctrl+Shift+G = 실제 PS에선 Ungroup (오매핑)
+  'Content Aware Fill',   // Shift+F5 = Fill 대화상자 (CC2019+ 전용 단축키 없음)
+  'Black And White',      // Adj Black And White와 동일 키 중복 (Ctrl+Alt+Shift+B)
+  'Perspective Crop',     // C = Crop 그룹 활성화 — 특정 툴 비결정
+  'Path Selection',       // A = Direct Selection과 그룹 공유 — 비결정
+  'Vertical Type',        // T = Horizontal Type과 그룹 공유 — 비결정
+  'Burn',                 // O = Dodge와 그룹 공유 — 비결정
+]);
+// 라벨 정정: 실제 동작 명칭으로 (카탈로그 아이콘 키는 원 라벨 유지)
+const RELABEL = new Map([
+  ['Foreground', 'Default Colors'], // D = 기본색 리셋
+  ['Background', 'Swap Colors'],    // X = 전경/배경 교체
+]);
+
 async function loadCatalog() {
   const ts = fs.readFileSync(CATALOG_TS, 'utf-8');
   const { code } = esbuild.transformSync(ts, { loader: 'ts', format: 'esm' });
@@ -71,11 +88,12 @@ async function main() {
     const src = await readCubeone(path.join(SRC_DIR, f));
     const cube = src.cube ?? {};
     if (cube.action_type !== 'shortcut') { skipped.push(`${cube.label} (${cube.action_type})`); continue; }
+    if (EXCLUDE_LABELS.has(cube.label)) { skipped.push(`${cube.label} (라벨-동작 불일치/비결정 — 재설계 대상)`); continue; }
     const svg = findPhotoshopIcon(cube.label ?? '');
     if (!svg) { noIcon.push(cube.label); continue; }
 
     adopted.push({
-      label: cube.label,
+      label: RELABEL.get(cube.label) ?? cube.label,
       action_type: 'shortcut',
       action_payload: { keys: cube.action_payload?.keys ?? [] },
       icon_url: svgToDataUrl(svg),
