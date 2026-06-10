@@ -9,6 +9,14 @@
 - R3 실데이터(75e88f0·cda8cb5·026c863): Rust sysinfo 메트릭(get_system_metrics) + Open-Meteo 날씨 + stock/calendar/news "설정 필요" 정직 표기 / 리스트 라벨 토글(show_labels)
 - 잔여: R4 아이콘팩(.cubeiconpack — 스펙만 확정, docs/08 §R4) / GUI 실검증(사용자) / D-06·07 기존 대기 유지
 
+### 2026-06-10 오후 — 사용자 실사용 피드백 수정 (Playwright 재현·검증)
+- 기본 라이브러리 경로 복원(f40c0cd): 미등록 시 Downloads\플러그인\CUBE 자동 시도
+- 새 큐브 회색화면 크래시(475e587): icon-generator btoa → encodeURIComponent (한글 라벨 UTF-8)
+- 라벨 겹침 해소(475e587): 오버레이 → 타일 아래 별도 줄 / 생성 글리프 무채색 / icon-tiny invert 제거
+- 변환 폴백 중복 아이콘(e88bbc0): 리스트 내 동일 icon_url 3회+ → 2번째부터 생성 글리프 (icon-dedupe.ts)
+- 클린 스킨(fba448a): 자체 글리프 일괄 교체 (SkinDialog ✨ 버튼 + CubeMakerCenter 스킨 접근), PS 19/19 검증
+- 릴리즈 빌드: cargo tauri build --no-bundle --features keys → target/release/cubelist-pc-helper.exe
+
 ---
 
 ## 0. 핵심 결정 (영구) — `docs/05-decisions.md` 참조
