@@ -7,6 +7,10 @@
 
 :root {
   color-scheme: dark;
+  /* R2-3: 그리드 셀 크기 토큰 */
+  --cube-size: 96px;
+  --cube-gap: 10px;
+  --cube-radius: 12px;
   --bg-app: #1a1a1a;
   --bg-surface: #232323;
   --bg-surface-2: #2c2c2c;
@@ -1338,9 +1342,10 @@ html, body, #root {
 }
 .sidebar-filter-clear:hover { background: var(--bg-surface); color: var(--text); }
 
+/* R2-3: cube-grid gap 토큰 사용 */
 .cube-grid {
   display: grid;
-  gap: 14px;
+  gap: var(--cube-gap);
   justify-content: start;
   padding: 20px;
   overflow-y: auto;
@@ -1354,9 +1359,10 @@ html, body, #root {
     inset 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
+/* R2-3: cube-cell 크기 토큰 사용 (--cube-size, --cube-gap, --cube-radius) */
 .cube-cell {
-  width: 112px;
-  height: 112px;
+  width: calc(var(--cube-size) + 16px);
+  height: calc(var(--cube-size) + 16px);
   aspect-ratio: 1;
   box-sizing: border-box;
   background: transparent;
@@ -1414,6 +1420,9 @@ html, body, #root {
   color: var(--accent);
 }
 .cube-cell-add-plus { line-height: 1; pointer-events: none; }
+/* R2-3: trail empty 셀 CSS :hover (인라인 opacity 조작 제거) */
+.cube-cell.cube-cell-trail-empty { opacity: 0.55; }
+.cube-cell.cube-cell-trail-empty:hover { opacity: 0.95; }
 
 /* Sidebar tree (사용자 요구: 카테고리/생산성 카탈로그 → 폴더 트리) */
 .sidebar.sidebar-tree {
@@ -1881,10 +1890,11 @@ html, body, #root {
 
 /* === 큐브 셀 아이콘 배경 (StreamDeck LCD 톤) === */
 .cube-cell { position: relative; overflow: hidden; }
+/* R2-3: cube-icon-bg 크기/radius 토큰 사용 */
 .cube-icon-bg {
-  width: 84px;
-  height: 84px;
-  border-radius: 14px;
+  width: var(--cube-size);
+  height: var(--cube-size);
+  border-radius: var(--cube-radius);
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -1916,42 +1926,62 @@ html, body, #root {
   background-size: 85% auto;
   image-rendering: -webkit-optimize-contrast;
 }
-/* plugin_icon_fallback / NO_ICON — 라벨 큰 글씨 + hash 기반 컬러 그라데이션 (2026-06-01 v2) */
+/* R2-2: placeholder = 무채색 다크 타일 (컬러 그라데이션 제거) — CubeCell 에서 generated SVG 렌더 */
 .cube-cell.icon-placeholder .cube-icon-bg {
   background-image: none !important;
-  background: linear-gradient(135deg, var(--placeholder-c1, #3b82f6), var(--placeholder-c2, #8b5cf6)) !important;
+  background: #0d0d0d !important;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #ffffff;
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-  text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+  color: var(--text-muted);
+  font-size: 28px;
 }
-.cube-cell.icon-placeholder .cube-icon-bg::before {
-  content: attr(data-placeholder-letter);
+/* R2-1: cube-cell-visual — CubeCell 컴포넌트 래퍼 */
+.cube-cell-visual {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  position: relative;
+}
+/* R2-1: live/folder 구분 글리프 — 우상단 6px 무채색 */
+.cube-type-glyph {
+  position: absolute;
+  top: 2px;
+  right: 3px;
+  font-size: 6px;
+  color: var(--text-muted);
+  opacity: 0.7;
+  line-height: 1;
+  pointer-events: none;
 }
 .cube-cell.has-icon .cube-label { color: var(--text); }
+/* R2-1: action_type 배지 완전 제거 (인스펙터 + hover title로 대체) */
 .cube-cell .cube-action-badge {
-  display: none; /* 사용자 요청: 라벨 1줄 + 깔끔하게, action 배지는 숨김 */
+  display: none;
 }
+/* R2-1: 라벨 = 하단 오버레이 (그라데이션 스크림 위 1줄 ellipsis) */
 .cube-cell .cube-label {
   position: absolute;
-  bottom: 2px;
-  left: 4px;
-  right: 4px;
-  height: 14px;
-  line-height: 14px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  line-height: 20px;
   margin: 0;
-  padding: 0;
+  padding: 0 5px;
   font-size: 10px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
+  border-bottom-left-radius: var(--cube-radius);
+  border-bottom-right-radius: var(--cube-radius);
+  color: #e8e8e8;
 }
 .cube-cell.is-empty {
   background: transparent;
