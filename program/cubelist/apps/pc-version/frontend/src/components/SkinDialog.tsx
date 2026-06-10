@@ -8,6 +8,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CubeList } from '../types/cube';
 import { parseSkinPack, matchSkinPack, type SkinMatch } from '../lib/skin-pack';
+import { buildCleanSkinMatches, CLEAN_SKIN_NAME } from '../lib/clean-skin';
 import { useTranslation } from '../lib/i18n/useTranslation';
 
 export interface SkinDialogProps {
@@ -84,8 +85,8 @@ export function SkinDialog({ list, onApply, onRemove, onClose, hasSkin }: SkinDi
             {t('skin.description')}
           </p>
 
-          {/* 파일 선택 */}
-          <div>
+          {/* 파일 선택 + 클린 스킨 */}
+          <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
             <input
               ref={fileInputRef}
               type="file"
@@ -100,6 +101,19 @@ export function SkinDialog({ list, onApply, onRemove, onClose, hasSkin }: SkinDi
               disabled={loading}
             >
               {loading ? t('skin.loading') : t('skin.select_file')}
+            </button>
+            <button
+              type="button"
+              className="btn-ghost"
+              onClick={() => {
+                setError(null);
+                setPackName(CLEAN_SKIN_NAME);
+                setMatches(buildCleanSkinMatches(list.cubes));
+              }}
+              disabled={loading}
+              title={t('skin.clean_hint')}
+            >
+              {t('skin.clean')}
             </button>
           </div>
 

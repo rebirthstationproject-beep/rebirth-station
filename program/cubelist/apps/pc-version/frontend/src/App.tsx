@@ -639,6 +639,12 @@ function CubeMakerCenter() {
   // R1-3: 라이브러리 큐브에도 중앙 tick 전달 (live_* 큐브가 라이브러리에 있을 때)
   const { nowMs: libLiveNowMs } = useDynamicCubes(libraryCubes);
 
+  // 2026-06-10: 클린 스킨 — 라이브러리 리스트에서 스킨 다이얼로그 접근
+  const { t } = useTranslation();
+  const applySkin = useEditor((s) => s.applySkinToList);
+  const removeSkin = useEditor((s) => s.removeSkinFromList);
+  const [makerSkinOpen, setMakerSkinOpen] = useState(false);
+
   const [saveModalOpen, setSaveModalOpen] = useState(false);
 
   // 다중 선택 완료 후 모달 트리거는 MainTabBar 의 prompt 로 대체. saveModal 은 추후 풀-기능 시.
@@ -721,6 +727,26 @@ function CubeMakerCenter() {
   return (
     <>
       <PageTabs />
+
+      {/* 2026-06-10: 라이브러리 리스트에서도 스킨 접근 (기존엔 draft GridArea 전용 = 도달 불가) */}
+      {activeList && (
+        <div className="cube-maker-toolbar" style={{ paddingTop: 8 }}>
+          <span className="muted small">{activeList.name} · {activeList.cubes.length} 큐브</span>
+          <span className="cube-maker-spacer" />
+          <button type="button" className="btn-ghost" onClick={() => setMakerSkinOpen(true)}>
+            {t('skin.btn_label')}
+          </button>
+        </div>
+      )}
+      {makerSkinOpen && activeList && (
+        <SkinDialog
+          list={activeList}
+          hasSkin={activeList.cubes.some((c) => ((c.metadata ?? {}) as Record<string, unknown>).skin_source !== undefined)}
+          onApply={(matches) => applySkin(activeList.id, matches)}
+          onRemove={() => removeSkin(activeList.id)}
+          onClose={() => setMakerSkinOpen(false)}
+        />
+      )}
 
       {cubesToShow.length === 0 ? (
         <div className="cube-maker-empty">

@@ -194,6 +194,8 @@ const MESSAGES_KO = {
   'skin.parse_error': '아이콘팩 파싱 실패',
   'skin.btn_label': '🎨 스킨',
   'skin.remove_btn_label': '🎨 스킨 해제',
+  'skin.clean': '✨ 클린 스킨 (자체 아이콘)',
+  'skin.clean_hint': '리스트 전체를 자체 제작 무채색 아이콘으로 교체합니다 (라이브·폴더 제외, 해제 가능).',
 
   // W3: SD 변환 라이선스 클린화 (ko)
   'w3.restricted_notice': 'Stream Deck 변환 자산 포함 — 개인 사용 전용, 마켓 배포 불가',
@@ -371,6 +373,8 @@ const MESSAGES_EN: Record<MessageKey, string> = {
   'skin.parse_error': 'Failed to parse icon pack',
   'skin.btn_label': '🎨 Skin',
   'skin.remove_btn_label': '🎨 Remove Skin',
+  'skin.clean': '✨ Clean Skin (built-in icons)',
+  'skin.clean_hint': 'Replace all icons in this list with our built-in neutral glyphs (live/folder excluded, reversible).',
 
   // W3: SD Conversion License (en)
   'w3.restricted_notice': 'Contains Stream Deck assets — personal use only, marketplace publishing not allowed',
@@ -546,6 +550,8 @@ const MESSAGES_JA: Record<MessageKey, string> = {
   'skin.parse_error': 'アイコンパックの解析に失敗',
   'skin.btn_label': '🎨 スキン',
   'skin.remove_btn_label': '🎨 スキン解除',
+  'skin.clean': '✨ クリーンスキン (内蔵アイコン)',
+  'skin.clean_hint': 'リスト全体を内蔵の無彩色アイコンに置き換えます (ライブ・フォルダ除外、解除可能)。',
 
   // W3: SD 変換ライセンスクリーン化 (ja)
   'w3.restricted_notice': 'Stream Deck 変換アセット含む — 個人使用専用、マーケット配布不可',
