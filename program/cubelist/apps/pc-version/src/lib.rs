@@ -26,6 +26,9 @@ use tauri::{Emitter, Manager};
 /// - autostart 플러그인 (사용자 토글)
 /// - 창 close → hide (종료가 아닌 트레이로)
 #[cfg(feature = "gui")]
+/// R3-1: 시스템 메트릭 폴링 재사용 State
+pub use commands::SystemMetricsState;
+
 /// M4 Step 2: 라이브러리 폴더 경로 (custom URI scheme handler 가 사용)
 pub struct LibraryDirState(pub std::sync::Mutex<Option<String>>);
 
@@ -48,6 +51,7 @@ pub fn run_tauri() -> tauri::Result<()> {
         .manage(LibraryDirState(std::sync::Mutex::new(None)))
         .manage(PluginServerState(std::sync::Arc::new(tokio::sync::Mutex::new(None))))
         .manage(PluginProcessState(std::sync::Arc::new(std::sync::Mutex::new(std::collections::HashMap::new()))))
+        .manage(SystemMetricsState::new())
         .register_uri_scheme_protocol("cubelist-plugin", |ctx, request| {
             // URL: cubelist-plugin://<plugin_id>/<rest_of_path>
             // 응답: 라이브러리 폴더 안 _plugins/<plugin_id>/<rest_of_path> 의 파일
@@ -74,6 +78,7 @@ pub fn run_tauri() -> tauri::Result<()> {
             commands::list_plugin_processes,
             commands::broadcast_cube_update,
             commands::broadcast_selection_change,
+            commands::get_system_metrics,
         ])
         .setup(|app| {
             // 시스템 트레이 메뉴

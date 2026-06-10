@@ -6,6 +6,111 @@
 //! - Tier 3 (영구 토글): 셸 실행, 레지스트리 — 본 모듈에 없음
 
 use crate::actions::{self, ActionError};
+
+// ============================================================================
+// R3-1: 시스템 메트릭 State (sysinfo 폴링 재사용)
+// ============================================================================
+
+use sysinfo::{System, Networks};
+use std::sync::Mutex;
+use std::time::Instant;
+
+/// sysinfo System 인스턴스 + 마지막 네트워크 스냅샷 (rx/tx 차분 계산용)
+pub struct SystemMetricsState {
+    pub system: Mutex<System>,
+    pub last_net: Mutex<Option<(Instant, u64, u64)>>,   // (when, rx_bytes, tx_bytes)
+}
+
+impl SystemMetricsState {
+    pub fn new() -> Self {
+        Self {
+            system: Mutex::new(System::new_all()),
+            last_net: Mutex::new(None),
+        }
+    }
+}
+
+/// R3-1: 시스템 메트릭 1회 스냅샷 — frontend 5초 폴링.
+#[derive(serde::Serialize)]
+pub struct SystemMetricsDto {
+    pub cpu_percent: f32,
+    pub ram_used_mb: u64,
+    pub ram_total_mb: u64,
+    pub disk_used_gb: f64,
+    pub disk_total_gb: f64,
+    pub network_rx_kbps: f64,
+    pub network_tx_kbps: f64,
+}
+
+#[cfg_attr(feature = "gui", tauri::command)]
+pub fn get_system_metrics(
+    state: tauri::State<'_, SystemMetricsState>,
+) -> Result<SystemMetricsDto, String> {
+    // CPU: refresh_cpu_all 전 sleep 없이 두 번째 이후 호출에서 정확값 얻음
+    {
+        let mut sys = state.system.lock().map_err(|e| e.to_string())?;
+        sys.refresh_cpu();
+        sys.refresh_memory();
+
+        let cpu_percent: f32 = {
+            let cpus = sys.cpus();
+            if cpus.is_empty() {
+                0.0
+            } else {
+                cpus.iter().map(|c| c.cpu_usage()).sum::<f32>() / cpus.len() as f32
+            }
+        };
+
+        let ram_used_mb = sys.used_memory() / 1024 / 1024;
+        let ram_total_mb = sys.total_memory() / 1024 / 1024;
+
+        // Disk: 첫 번째 마운트된 디스크
+        let (disk_used_gb, disk_total_gb) = {
+            use sysinfo::Disks;
+            let disks = Disks::new_with_refreshed_list();
+            let (mut used, mut total) = (0u64, 0u64);
+            for d in disks.list() {
+                total += d.total_space();
+                used += d.total_space().saturating_sub(d.available_space());
+            }
+            let gb = |b: u64| b as f64 / 1_073_741_824.0;
+            (gb(used), gb(total))
+        };
+
+        // Network: 누적값 차분 → kbps
+        let (rx_kbps, tx_kbps) = {
+            let mut nets = Networks::new_with_refreshed_list();
+            nets.refresh();
+            let (rx_now, tx_now): (u64, u64) = nets
+                .iter()
+                .fold((0, 0), |(rx, tx), (_, d)| (rx + d.total_received(), tx + d.total_transmitted()));
+
+            let mut last = state.last_net.lock().map_err(|e| e.to_string())?;
+            let (rx_kbps, tx_kbps) = if let Some((prev_time, prev_rx, prev_tx)) = last.as_ref() {
+                let elapsed = prev_time.elapsed().as_secs_f64().max(0.001);
+                let rx_diff = rx_now.saturating_sub(*prev_rx) as f64;
+                let tx_diff = tx_now.saturating_sub(*prev_tx) as f64;
+                (rx_diff / elapsed / 1024.0, tx_diff / elapsed / 1024.0)
+            } else {
+                // 첫 호출 — 이전 스냅샷 없음, 0 반환
+                (0.0, 0.0)
+            };
+            *last = Some((Instant::now(), rx_now, tx_now));
+            (rx_kbps, tx_kbps)
+        };
+
+        Ok(SystemMetricsDto {
+            cpu_percent,
+            ram_used_mb,
+            ram_total_mb,
+            disk_used_gb,
+            disk_total_gb,
+            network_rx_kbps: rx_kbps,
+            network_tx_kbps: tx_kbps,
+        })
+    }
+}
+
 use crate::auth::{
     pairing::PairingPayload,
     secret_store::{DefaultStore, SecretStore},

@@ -163,6 +163,14 @@ const MESSAGES_KO = {
   // R1-2: live 큐브 정적 아이콘 토글 (ko)
   'inspector.live_static_icon': '정적 아이콘 사용',
   'inspector.live_static_icon_hint': '라이브 비주얼 대신 icon_url 아이콘을 표시합니다.',
+
+  // R3: 라이브 큐브 상태 표기 (ko)
+  'live.needs_setup': '설정 필요',
+  'live.needs_location': '위치 설정 필요',
+
+  // R2 보완: 리스트 라벨 표시 토글 (ko)
+  'list.show_labels': '라벨 표시',
+  'list.show_labels_hint': '리스트의 모든 큐브 셀에서 라벨을 표시하거나 숨깁니다.',
 } as const;
 
 export type MessageKey = keyof typeof MESSAGES_KO;
@@ -306,6 +314,14 @@ const MESSAGES_EN: Record<MessageKey, string> = {
   // R1-2: live 큐브 정적 아이콘 토글 (en)
   'inspector.live_static_icon': 'Use Static Icon',
   'inspector.live_static_icon_hint': 'Show the icon_url instead of the live visual.',
+
+  // R3: live cube status labels (en)
+  'live.needs_setup': 'Setup Required',
+  'live.needs_location': 'Location Required',
+
+  // R2 supplement: list label visibility toggle (en)
+  'list.show_labels': 'Show Labels',
+  'list.show_labels_hint': 'Show or hide labels on all cube cells in this list.',
 };
 
 const MESSAGES_JA: Record<MessageKey, string> = {
@@ -447,6 +463,14 @@ const MESSAGES_JA: Record<MessageKey, string> = {
   // R1-2: live 큐브 정적 아이콘 토글 (ja) — 마지막에 추가됨
   'inspector.live_static_icon': '静止アイコン使用',
   'inspector.live_static_icon_hint': 'ライブ表示の代わりにアイコンを表示します。',
+
+  // R3: ライブキューブ状態表記 (ja)
+  'live.needs_setup': '設定が必要',
+  'live.needs_location': '位置設定が必要',
+
+  // R2 補完: リストラベル表示トグル (ja)
+  'list.show_labels': 'ラベル表示',
+  'list.show_labels_hint': 'このリストのすべてのキューブセルでラベルを表示/非表示にします。',
 };
 
 export const MESSAGES: Record<Locale, Record<MessageKey, string>> = {

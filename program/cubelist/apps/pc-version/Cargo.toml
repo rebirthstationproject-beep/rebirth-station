@@ -72,6 +72,9 @@ urlencoding                    = "2"
 # --- M4 Step 3: Native plugin WebSocket 서버 stream split ----------
 futures-util                   = "0.3"
 
+# --- 시스템 메트릭 (CPU / RAM / Disk / Network) - R3-1 ----------------
+sysinfo              = "0.30"
+
 # --- Windows 전용 (focus_window 액션) -------------------------------------
 [target.'cfg(target_os = "windows")'.dependencies]
 windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_UI_WindowsAndMessaging", "Win32_System_Power"] }
