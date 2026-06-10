@@ -95,14 +95,17 @@ Stream Deck 대비 시각 격차의 직접 원인:
 
 ---
 
-## R4 — 아이콘팩 (.cubeiconpack) [후속 — 이번 실행 제외, 스펙만 확정]
+## R4 — 아이콘팩 [2026-06-10 사용자 결정으로 재정의 — "리스트 스킨" 모델]
 
-- SD 모델 채택: **기능과 아이콘 완전 분리**.
-- `.cubeiconpack` = ZIP `{ manifest.json(id/name/author/version), icons.json(메타 배열), icons/*.svg|png, cover.png }` — `.streamDeckIconPack`(sdIconPack)과 1:1, 변환기는 리네이밍+manifest 변환 수준.
-- 큐브 아이콘 해석 순서(영구): ① `icon_override`(사용자 지정, 아이콘팩 ref 또는 업로드) ② 임베드 `icon_url` ③ 생성 SVG ④ 레터 placeholder. live_* 큐브는 R1-2 규칙 우선.
-- 인스펙터 아이콘 피커: 설치된 아이콘팩 브라우즈 + 검색.
-- 라이선스: 기존 SD 아이콘팩 재배포는 라이선스 확인 필수(Entypo=CC BY-SA 등). 마켓 배포는 자체 제작 카탈로그 우선(icon-catalog-photoshop.ts 72종이 시작점).
-- 마켓플레이스 Layer 3 상품군: 아이콘팩 = 독립 판매 단위.
+> ❗ 분리 참조 모델 폐기. 사용자 확정: **큐브 = 아이콘이 임베드된 온전한 1개 파일** (큐브/아이콘 분리 관리 = 심각한 불편 → 금지).
+> 아이콘팩은 **스킨**으로만 존재: 특정 큐브 리스트에 발행·적용하면 그 리스트 큐브들의 임베드 아이콘을 **일괄 교체**한다.
+
+- `.cubeiconpack` 포맷 자체(ZIP: manifest + icons.json + icons/ + cover)는 유지하되, 용도 = **리스트 단위 일괄 스킨 적용 도구**.
+- 적용 규칙: 적용 시 큐브의 `icon_url`을 새 아이콘으로 **임베드 교체**, 원본은 `metadata.pre_skin_icon`에 보존 + `metadata.skin_source`(팩 id) 기록 → "스킨 해제" 1클릭 복원. 결과물은 여전히 자기완결적 큐브.
+- 매칭: icons.json 이름/태그 ↔ 큐브 라벨·action_type 토큰 매칭(보수적). 미매칭 큐브는 그대로 둠(부분 적용 OK).
+- 라이선스: 기존 SD 아이콘팩 재배포는 라이선스 확인 필수(Entypo=CC BY-SA 등). 마켓 배포 스킨은 자체 제작 카탈로그 우선.
+- 마켓플레이스 Layer 3 상품군: 스킨(아이콘팩) = 독립 판매 단위 — 단 "적용형" 상품(소비 시 리스트에 흡수).
+- 상세 실행 계획: `docs/09-platform-roadmap.md` W2.
 
 ---
 
