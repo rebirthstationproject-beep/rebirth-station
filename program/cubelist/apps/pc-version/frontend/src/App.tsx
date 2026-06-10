@@ -89,7 +89,8 @@ type MainTab = 'cube-maker' | 'list-maker' | 'marketplace';
 
 const PACK_STORAGE_KEY = 'cubelist:last_pack';
 const LIBRARY_DIR_KEY = 'cubelist:library_dir';
-// R1-4: DEFAULT_LIBRARY_DIR 하드코딩 제거 — 설정 패널에서 폴더 지정. 미설정 시 데모 팩.
+// 2026-06-10 사용자 지시: 미등록 시 기본 라이브러리 경로 자동 시도 (성공하면 영구 등록).
+const DEFAULT_LIBRARY_DIR = 'C:\\Users\\PC\\Downloads\\플러그인\\CUBE';
 
 export function App() {
   const pack = useEditor((s) => s.pack);
@@ -170,9 +171,8 @@ export function App() {
     if (pack) return;
     let cancelled = false;
     (async () => {
-      // 1. 등록된 라이브러리 폴더 (Tauri 환경 한정, 설정 패널에서 지정)
-      const libDir = window.localStorage.getItem(LIBRARY_DIR_KEY);
-      // R1-4: 자동 경로 추측 없음 — 설정 패널에서 명시적 등록만
+      // 1. 등록된 라이브러리 폴더 (Tauri 환경 한정) — 미등록 시 기본 경로 자동 시도
+      const libDir = window.localStorage.getItem(LIBRARY_DIR_KEY) ?? DEFAULT_LIBRARY_DIR;
       if (libDir && isTauri()) {
         try {
           // M4 Step 2.2: Rust state 에 library_dir 등록 (cubelist-plugin:// 핸들러 사용)
