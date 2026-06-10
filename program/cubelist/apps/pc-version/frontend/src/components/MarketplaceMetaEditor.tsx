@@ -16,14 +16,33 @@ import {
   type Platform,
   type PaymentType,
 } from '../types/marketplace';
+import { useTranslation } from '../lib/i18n/useTranslation';
 
 interface MarketplaceMetaEditorProps {
   readonly onClose: () => void;
 }
 
+/** W3: pack.license==='restricted' 또는 변환 큐브 포함 여부 판정 */
+function isRestrictedPack(pack: ReturnType<typeof useEditor.getState>['pack']): boolean {
+  if (!pack) return false;
+  if ((pack as unknown as Record<string, unknown>).license === 'restricted') return true;
+  // 리스트 큐브 안에 origin==='streamdeck-conversion' 이 1개 이상이면 restricted
+  for (const list of pack.lists) {
+    for (const cube of list.cubes) {
+      const meta = (cube.metadata ?? {}) as Record<string, unknown>;
+      if (meta.origin === 'streamdeck-conversion') return true;
+    }
+  }
+  return false;
+}
+
 export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
+  const { t } = useTranslation();
   const pack = useEditor((s) => s.pack);
   const loadPack = useEditor((s) => s.loadPack);
+
+  // W3: restricted 팩이면 배포 액션 비활성
+  const restricted = isRestrictedPack(pack);
 
   // 초기 메타 (저장된 값 또는 빈 값)
   const initialMeta = (pack?.extensions as { marketplace?: MarketplaceMeta } | undefined)
@@ -308,6 +327,24 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
                 </ul>
               )}
 
+              {/* W3: restricted 안내문 */}
+              {restricted && (
+                <div
+                  className="mp-restricted-notice"
+                  role="alert"
+                  style={{
+                    padding: '10px 14px',
+                    borderRadius: 6,
+                    background: 'var(--bg-tertiary, #1a1a1a)',
+                    border: '1px solid var(--border-subtle, #444)',
+                    fontSize: 13,
+                    color: 'var(--text-secondary)',
+                  }}
+                >
+                  ⚠ {t('w3.restricted_notice')}
+                </div>
+              )}
+
               <div className="mp-publish-info">
                 <strong>📋 게시 정보</strong>
                 <p>
@@ -326,7 +363,8 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
             type="button"
             className="btn-primary"
             onClick={save}
-            disabled={!pack || errors.length > 0}
+            disabled={!pack || errors.length > 0 || restricted}
+            title={restricted ? t('w3.restricted_notice') : undefined}
           >
             저장
           </button>

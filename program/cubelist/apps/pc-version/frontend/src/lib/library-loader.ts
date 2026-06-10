@@ -101,6 +101,16 @@ export async function loadLibraryFromDir(path: string): Promise<CubePack> {
     }
     // 2026-06-01: plugin_action 큐브 dynamic remap (heuristic builtin 매핑)
     cube = applyDynamicRemap(cube);
+    // W3: streamdeck-import 로 로드된 큐브 = 변환 산출물 → origin/license 강제 마킹
+    {
+      const meta = (cube.metadata ?? {}) as Record<string, unknown>;
+      if (meta.source === 'streamdeck-import' && meta.origin !== 'streamdeck-conversion') {
+        cube = {
+          ...cube,
+          metadata: { ...meta, origin: 'streamdeck-conversion' },
+        };
+      }
+    }
     if (parts.length === 1) {
       looseCubes.push(cube);
     } else {

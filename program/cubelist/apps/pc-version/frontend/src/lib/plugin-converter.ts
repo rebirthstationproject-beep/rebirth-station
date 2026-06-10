@@ -459,6 +459,8 @@ async function buildCubeOneZipBytes(
     action_payload: payload,
     metadata: {
       source: 'streamdeck-import',
+      // W3: 변환 산출 큐브 origin 마킹 (라이선스 클린화)
+      origin: 'streamdeck-conversion' as const,
       sd_uuid: action.UUID,
       sd_tooltip: action.Tooltip,
       // 2026-06-01 heuristic 매핑 결과 기록 — 사용자가 추가 매핑 / 디버깅 시 참고
@@ -474,7 +476,8 @@ async function buildCubeOneZipBytes(
     rbs_format_version: RBS_FORMAT_VERSION,
     kind: 'cubeone',
     id,
-    license: 'free',
+    // W3: 변환 산출물은 항상 restricted (기존 값 무시, 강제 마킹)
+    license: 'restricted' as const,
     created_at: now,
     updated_at: now,
     rbs_min_version: RBS_MIN_VERSION,
