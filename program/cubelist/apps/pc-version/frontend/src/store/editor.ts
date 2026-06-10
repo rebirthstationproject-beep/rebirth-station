@@ -60,6 +60,16 @@ interface EditorState extends EditorSelection {
   // === 그리드 배치 설정 (수정 #1) ===
   setListLayout(listId: string, layout: { cols: number; cubes_per_page: number }): void;
 
+  // === 2A 폴더 드래그 인 ===
+  /**
+   * 큐브를 폴더의 cube_ids 에 추가 (불변 갱신).
+   * ① 대상이 folder 타입인지 확인
+   * ② cubeId 가 다른 폴더의 cube_ids 에 있으면 제거
+   * ③ 대상 폴더 cube_ids 에 추가 (중복 방지)
+   * ④ folder 를 folder 에 넣으려는 경우 no-op (중첩 1단 금지)
+   */
+  addCubeToFolder(listId: string, folderId: string, cubeId: string): void;
+
   // === 자유 슬롯 배치 (수정 #2) ===
   /** 지정 슬롯(1-based) 에 빈 큐브 생성 + 선택 */
   addCubeAtSlot(listId: string, slotIndex: number): void;
@@ -414,6 +424,50 @@ export const useEditor = create<EditorState>((set, get) => ({
   prevPage(): void {
     const { current_page } = get();
     if (current_page > 0) set({ current_page: current_page - 1 });
+  },
+
+  // === 2A 폴더 드래그 인 ===
+
+  addCubeToFolder(listId: string, folderId: string, cubeId: string): void {
+    const { pack } = get();
+    if (!pack) return;
+    const list = pack.lists.find((l) => l.id === listId);
+    if (!list) return;
+
+    const folderCube = list.cubes.find((c) => c.id === folderId);
+    // ① folder 타입인지 확인
+    if (!folderCube || folderCube.action_type !== 'folder') return;
+    // ④ folder 를 folder 에 넣는 것 금지 (중첩 1단)
+    const movingCube = list.cubes.find((c) => c.id === cubeId);
+    if (!movingCube || movingCube.action_type === 'folder') return;
+
+    const nextCubes = list.cubes.map((c) => {
+      if (c.action_type !== 'folder') return c;
+      const payload = c.action_payload as { cube_ids?: string[] };
+      const existingIds: string[] = payload.cube_ids ?? [];
+
+      if (c.id === folderId) {
+        // ③ 대상 폴더에 추가 (중복 방지)
+        if (existingIds.includes(cubeId)) return c;
+        return {
+          ...c,
+          action_payload: { ...payload, cube_ids: [...existingIds, cubeId] },
+        };
+      }
+      // ② 다른 폴더에 있으면 제거
+      if (existingIds.includes(cubeId)) {
+        return {
+          ...c,
+          action_payload: { ...payload, cube_ids: existingIds.filter((id) => id !== cubeId) },
+        };
+      }
+      return c;
+    });
+
+    const nextLists = pack.lists.map((l) =>
+      l.id === listId ? { ...l, cubes: nextCubes } : l,
+    );
+    set({ pack: { ...pack, lists: nextLists } });
   },
 
   // === 자유 슬롯 배치 (수정 #2) ===

@@ -619,6 +619,8 @@ function MakerSortableCell({
   cube,
   isSelected,
   selectionIndex,
+  isInMultiSelection,
+  isDropTarget,
   nowMs,
   onClick,
   onDoubleClick,
@@ -626,11 +628,15 @@ function MakerSortableCell({
   cube: Cube;
   isSelected: boolean;
   selectionIndex: number;
+  /** 2A: Ctrl 다중 선택 포함 여부 */
+  isInMultiSelection?: boolean;
+  /** 2A: 폴더 드롭 타겟 강조 */
+  isDropTarget?: boolean;
   nowMs: number;
-  onClick: () => void;
+  onClick: (ctrlOrMeta: boolean) => void;
   onDoubleClick: () => void;
 }) {
-  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging, isOver } = useSortable({
     id: cube.id,
   });
   const { role: _r, 'aria-pressed': _ap, ...restAttrs } = attributes;
@@ -640,13 +646,17 @@ function MakerSortableCell({
     transition,
     opacity: isDragging ? 0.5 : 1,
   };
+  // 2A: 폴더 위에 드래그 중일 때 is-drop-target
+  const dropTargetClass = (isDropTarget || (cube.action_type === 'folder' && isOver)) ? 'is-drop-target' : '';
+  // 2A: Ctrl 다중 선택은 is-in-selection 클래스 (CubeCellVisual 내부 selectionIndex 로직과 별도)
+  const multiSelClass = isInMultiSelection ? 'is-in-selection' : '';
   return (
     <button
       ref={setNodeRef}
       style={style}
       type="button"
-      className="cube-cell"
-      onClick={onClick}
+      className={`cube-cell${dropTargetClass ? ` ${dropTargetClass}` : ''}${multiSelClass ? ` ${multiSelClass}` : ''}`}
+      onClick={(e) => onClick(e.ctrlKey || e.metaKey)}
       onDoubleClick={onDoubleClick}
       title={`${cube.label} (${cube.action_type})`}
       {...restAttrs}
@@ -681,6 +691,7 @@ function CubeMakerCenter() {
   const selectCube = useEditor((s) => s.selectCube);
   const removeCube = useEditor((s) => s.removeCube);
   const moveCubeToSlot = useEditor((s) => s.moveCubeToSlot);
+  const addCubeToFolder = useEditor((s) => s.addCubeToFolder);
 
   const listMakerActive = useEditor((s) => s.list_maker_active);
   const listMakerSelection = useEditor(useShallow((s) => s.list_maker_selection));
@@ -698,18 +709,36 @@ function CubeMakerCenter() {
 
   const [saveModalOpen, setSaveModalOpen] = useState(false);
 
+  // 2A: Ctrl 다중 선택 Set (CubeMakerCenter 한정)
+  const [multiSelection, setMultiSelection] = useState<Set<string>>(new Set());
+
   // 다중 선택 완료 후 모달 트리거는 MainTabBar 의 prompt 로 대체. saveModal 은 추후 풀-기능 시.
   void saveModalOpen;
   void setSaveModalOpen;
   void finishListMaker;
 
-  function handleClickCube(cubeId: string): void {
+  function handleClickCube(cubeId: string, ctrlOrMeta: boolean): void {
     if (listMakerActive) {
       toggleListMakerSelection(cubeId);
-    } else {
-      selectLibraryCube(librarySelectedId === cubeId ? null : cubeId);
-      selectCube(cubeId);
+      return;
     }
+    if (ctrlOrMeta) {
+      // Ctrl/Meta 클릭 = 다중 선택 토글
+      setMultiSelection((prev) => {
+        const next = new Set(prev);
+        if (next.has(cubeId)) {
+          next.delete(cubeId);
+        } else {
+          next.add(cubeId);
+        }
+        return next;
+      });
+      return;
+    }
+    // 일반 클릭 = 다중 선택 해제 + 기존 단일 선택
+    setMultiSelection(new Set());
+    selectLibraryCube(librarySelectedId === cubeId ? null : cubeId);
+    selectCube(cubeId);
   }
 
   function handleAddNewCube(): void {
@@ -745,8 +774,14 @@ function CubeMakerCenter() {
     const activeId = String(active.id);
     const overId = String(over.id);
     const overCube = listCubes.find((c) => c.id === overId);
+    const activeCube = listCubes.find((c) => c.id === activeId);
     if (overCube) {
-      // 다른 큐브 위 → swap
+      // 2A: folder 위 + 드래그 큐브가 folder 아닌 경우 → 폴더에 추가
+      if (overCube.action_type === 'folder' && activeCube?.action_type !== 'folder') {
+        addCubeToFolder(activeList.id, overCube.id, activeId);
+        return;
+      }
+      // 일반 큐브 위 → swap
       moveCubeToSlot(activeList.id, activeId, overCube.sort_order);
     } else {
       // 빈 영역/trail → 마지막+1 슬롯
@@ -755,13 +790,35 @@ function CubeMakerCenter() {
     }
   }
 
-  // ── Delete 키 — 선택 큐브 삭제 ─────────────────────────────────────────────
+  // 2A: 리스트 전환 시 multiSelection 초기화
+  useEffect(() => {
+    setMultiSelection(new Set());
+  }, [activeList?.id]);
+
+  // ── Delete 키 — 단일/다중 삭제 ─────────────────────────────────────────────
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent): void {
       if (e.key !== 'Delete') return;
       const target = e.target as HTMLElement | null;
       if (target && ['INPUT', 'TEXTAREA'].includes(target.tagName)) return;
       if (!activeList) return;
+
+      // 2A: 다중 선택 삭제
+      const currentMulti = useEditor.getState(); // multiSelection 은 로컬 state
+      void currentMulti; // 클로저에서 multiSelection 직접 접근
+
+      if (multiSelection.size > 0) {
+        const n = multiSelection.size;
+        const msg = t('maker.multi_delete_confirm').replace('{n}', String(n));
+        if (!window.confirm(msg)) return;
+        for (const id of multiSelection) {
+          removeCube(activeList.id, id);
+        }
+        setMultiSelection(new Set());
+        return;
+      }
+
+      // 단일 선택 삭제 (기존 동작)
       const state = useEditor.getState();
       const selectedId = state.cube_id;
       if (!selectedId) return;
@@ -772,7 +829,7 @@ function CubeMakerCenter() {
     }
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeList, removeCube, t]);
+  }, [activeList, removeCube, t, multiSelection]);
 
   // "전체" 모드: 각 리스트(폴더)를 큐브 셀처럼 표시
   if (isAllMode) {
@@ -873,14 +930,16 @@ function CubeMakerCenter() {
                 {listCubes.map((cube) => {
                   const selectionIdx = listMakerSelection.indexOf(cube.id);
                   const isSelected = librarySelectedId === cube.id;
+                  const isInMulti = multiSelection.has(cube.id);
                   return (
                     <MakerSortableCell
                       key={cube.id}
                       cube={cube}
                       isSelected={isSelected}
                       selectionIndex={selectionIdx}
+                      isInMultiSelection={isInMulti}
                       nowMs={libLiveNowMs}
-                      onClick={() => handleClickCube(cube.id)}
+                      onClick={(ctrlOrMeta) => handleClickCube(cube.id, ctrlOrMeta)}
                       onDoubleClick={() => {
                         if (cube.action_type === 'folder') return;
                         import('./lib/run-cube').then(({ runCube }) => {
@@ -933,7 +992,7 @@ function CubeMakerCenter() {
                   key={cube.id}
                   type="button"
                   className="cube-cell"
-                  onClick={() => handleClickCube(cube.id)}
+                  onClick={(e) => handleClickCube(cube.id, e.ctrlKey || e.metaKey)}
                   title={`${cube.label} (${cube.action_type})`}
                 >
                   <CubeCellVisual
@@ -1485,6 +1544,7 @@ function TopBar({
       </div>
       <div className="topbar-right">
         <span className="pack-meta" style={{ display: 'none' }}>{pack?.name ?? t('app.no_pack')}</span>
+        {/* 그룹 1: 가져오기·내보내기 */}
         <button
           type="button"
           className="btn-ghost"
@@ -1502,6 +1562,9 @@ function TopBar({
         >
           {t('topbar.export')}
         </button>
+        {/* 구분선 1 */}
+        <span className="topbar-sep" aria-hidden />
+        {/* 그룹 2: + 플러그인·플러그인 변환 */}
         <button
           type="button"
           className="btn-ghost"
@@ -1518,6 +1581,9 @@ function TopBar({
         >
           플러그인 변환
         </button>
+        {/* 구분선 2 */}
+        <span className="topbar-sep" aria-hidden />
+        {/* 그룹 3: 폴더·팩 정보 */}
         <button
           type="button"
           className="btn-ghost"
@@ -1537,7 +1603,9 @@ function TopBar({
             팩 정보
           </button>
         )}
-        {/* W1: 작동 모드 토글 */}
+        {/* 구분선 3 */}
+        <span className="topbar-sep" aria-hidden />
+        {/* 그룹 4: ▶ 작동 */}
         {onOpenPlayMode && (
           <button
             type="button"
@@ -1549,6 +1617,9 @@ function TopBar({
             {t('topbar.play')}
           </button>
         )}
+        {/* 구분선 4 */}
+        <span className="topbar-sep" aria-hidden />
+        {/* 그룹 5: LocaleSwitcher·설정 */}
         <LocaleSwitcher />
         <button
           className="icon-btn"
@@ -1866,6 +1937,7 @@ function GridArea() {
 function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[] }) {
   const addCubeAtSlot = useEditor((s) => s.addCubeAtSlot);
   const moveCubeToSlot = useEditor((s) => s.moveCubeToSlot);
+  const addCubeToFolder = useEditor((s) => s.addCubeToFolder);
   const currentPage = useEditor((s) => s.current_page);
   const pageSize = useEditor((s) => s.pageSize());
   const selectCube = useEditor((s) => s.selectCube);
@@ -1941,9 +2013,16 @@ function CubeGrid({ list, visibleCubes }: { list: CubeList; visibleCubes: Cube[]
       moveCubeToSlot(list.id, activeId, targetSlot);
       return;
     }
-    // over 가 다른 큐브 → swap (moveCubeToSlot 가 swap 도 처리)
+    // over 가 다른 큐브
     const overCube = visibleCubes.find((c) => c.id === overId);
     if (overCube) {
+      // 2A: folder 위 + 드래그 큐브가 folder 아닌 경우 → 폴더에 추가
+      const activeCube = visibleCubes.find((c) => c.id === activeId);
+      if (overCube.action_type === 'folder' && activeCube?.action_type !== 'folder') {
+        addCubeToFolder(list.id, overCube.id, activeId);
+        return;
+      }
+      // 일반 → swap (moveCubeToSlot 가 swap 도 처리)
       moveCubeToSlot(list.id, activeId, overCube.sort_order);
     }
   }

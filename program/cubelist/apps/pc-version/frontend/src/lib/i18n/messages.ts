@@ -200,6 +200,9 @@ const MESSAGES_KO = {
 
   // W3: SD 변환 라이선스 클린화 (ko)
   'w3.restricted_notice': 'Stream Deck 변환 자산 포함 — 개인 사용 전용, 마켓 배포 불가',
+
+  // 2A: Ctrl 다중 선택 일괄 삭제 (ko)
+  'maker.multi_delete_confirm': '{n}개 큐브를 삭제할까요?',
 } as const;
 
 export type MessageKey = keyof typeof MESSAGES_KO;
@@ -380,6 +383,9 @@ const MESSAGES_EN: Record<MessageKey, string> = {
 
   // W3: SD Conversion License (en)
   'w3.restricted_notice': 'Contains Stream Deck assets — personal use only, marketplace publishing not allowed',
+
+  // 2A: Ctrl multi-select bulk delete (en)
+  'maker.multi_delete_confirm': 'Delete {n} cubes?',
 };
 
 const MESSAGES_JA: Record<MessageKey, string> = {
@@ -558,6 +564,9 @@ const MESSAGES_JA: Record<MessageKey, string> = {
 
   // W3: SD 変換ライセンスクリーン化 (ja)
   'w3.restricted_notice': 'Stream Deck 変換アセット含む — 個人使用専用、マーケット配布不可',
+
+  // 2A: Ctrl 複数選択 一括削除 (ja)
+  'maker.multi_delete_confirm': '{n}個のキューブを削除しますか？',
 };
 
 export const MESSAGES: Record<Locale, Record<MessageKey, string>> = {

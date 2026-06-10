@@ -295,6 +295,32 @@ html, body, #root {
   gap: 24px;
 }
 
+/* 2026-06-10: topbar-right 간격 부재 정정 — 버튼·언어 스위처가 붙어 보임 (사용자 피드백) */
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.topbar-right .locale-switcher {
+  margin: 0 6px;
+}
+
+/* 2A: TopBar 그룹 구분선 */
+.topbar-sep {
+  display: inline-block;
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+  margin: 0 4px;
+  flex-shrink: 0;
+}
+
+/* 2A: 폴더 드롭 타겟 강조 (드래그 중 폴더 셀 위) */
+.cube-cell.is-drop-target {
+  outline: 2px solid var(--accent, #cfcfcf);
+  outline-offset: -2px;
+}
+
 .brand {
   font-weight: 600;
   letter-spacing: -0.02em;
