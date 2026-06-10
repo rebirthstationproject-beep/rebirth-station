@@ -1359,11 +1359,11 @@ html, body, #root {
     inset 0 2px 8px rgba(0, 0, 0, 0.6);
 }
 
-/* R2-3: cube-cell 크기 토큰 사용 (--cube-size, --cube-gap, --cube-radius) */
+/* R2-3: cube-cell 크기 토큰 사용 (--cube-size, --cube-gap, --cube-radius)
+   2026-06-10: 라벨 = 타일 아래 별도 줄 (겹침 해소, 사용자 피드백) → height auto */
 .cube-cell {
   width: calc(var(--cube-size) + 16px);
-  height: calc(var(--cube-size) + 16px);
-  aspect-ratio: 1;
+  height: auto;
   box-sizing: border-box;
   background: transparent;
   border: none;
@@ -1913,9 +1913,10 @@ html, body, #root {
     inset 0 0 0 1px rgba(255, 255, 255, 0.18),
     0 2px 6px rgba(0, 0, 0, 0.7);
 }
-/* PNG_TINY (단색 placeholder PNG, < 800 byte) — invert + brightness 로 가시화 + 사이즈 ↑ */
+/* PNG_TINY (단색 placeholder PNG, < 800 byte)
+   2026-06-10: invert 제거 — 흰 글리프가 invert 되면 검정 타일 위에서 안 보임 (사용자 "아이콘 이상함") */
 .cube-cell.icon-tiny .cube-icon-bg {
-  filter: invert(1) brightness(1.5) contrast(1.05);
+  filter: brightness(1.3) contrast(1.05);
   background-size: 85% auto;
   image-rendering: -webkit-optimize-contrast;
 }
@@ -1936,10 +1937,11 @@ html, body, #root {
   color: var(--text-muted);
   font-size: 28px;
 }
-/* R2-1: cube-cell-visual — CubeCell 컴포넌트 래퍼 */
+/* R2-1: cube-cell-visual — CubeCell 컴포넌트 래퍼
+   2026-06-10: 타일(아이콘) + 아래 라벨 column. 글리프/배지 absolute 기준은 래퍼 */
 .cube-cell-visual {
-  width: 100%;
-  height: 100%;
+  width: auto;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1962,26 +1964,23 @@ html, body, #root {
 .cube-cell .cube-action-badge {
   display: none;
 }
-/* R2-1: 라벨 = 하단 오버레이 (그라데이션 스크림 위 1줄 ellipsis) */
+/* 2026-06-10: 라벨 = 타일 아래 별도 줄 (오버레이 겹침 해소 — 사용자 피드백)
+   아이콘 영역과 분리, 1줄 ellipsis, 스크림 없음 */
 .cube-cell .cube-label {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 20px;
-  line-height: 20px;
-  margin: 0;
-  padding: 0 5px;
+  position: static;
+  width: var(--cube-size);
+  height: 16px;
+  line-height: 16px;
+  margin: 4px 0 0;
+  padding: 0 2px;
   font-size: 10px;
   text-align: center;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   display: block;
-  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, transparent 100%);
-  border-bottom-left-radius: var(--cube-radius);
-  border-bottom-right-radius: var(--cube-radius);
-  color: #e8e8e8;
+  background: none;
+  color: var(--text-muted);
 }
 .cube-cell.is-empty {
   background: transparent;

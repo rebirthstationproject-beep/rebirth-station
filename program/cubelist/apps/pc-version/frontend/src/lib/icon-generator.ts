@@ -305,11 +305,9 @@ export function generateIcon(spec: { label: string; action_type: string; size?: 
   if (psSvg) return psSvg;
 
   // 2. 일반 메타포 라이브러리
-  const category = categoryFromAction(spec.action_type, spec.label);
-  const colors = CATEGORY_COLORS[category];
-  const color = colors.primary;
+  // 2026-06-10: 무채색 정책 — 카테고리 컬러 대신 중립 그레이 글리프 (사용자 "아이콘 이상함" 피드백)
   const block = findBlock(spec.label, spec.action_type);
-  const strokeColor = block.strokeOverride ?? color;
+  const strokeColor = block.strokeOverride ?? '#b8b8b8';
   const fillColor = block.fillOverride ?? 'none';
   const size = spec.size ?? 24;
   return (
@@ -322,9 +320,8 @@ export function generateIcon(spec: { label: string; action_type: string; size?: 
 
 /** SVG → data URL (cube.icon_url 호환) */
 export function asDataUrl(svg: string): string {
-  // base64 (한글 안 들어가는 SVG라 일반 btoa OK)
-  const encoded = typeof window !== 'undefined' && window.btoa ? window.btoa(svg) : Buffer.from(svg).toString('base64');
-  return `data:image/svg+xml;base64,${encoded}`;
+  // fallback 글리프에 한글 라벨 첫 글자가 들어감 → btoa(Latin1 한정) 크래시. URL 인코딩으로 UTF-8 안전.
+  return `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
 }
 
 /** 라벨 + 액션으로 바로 data URL 생성 */
