@@ -295,6 +295,38 @@ html, body, #root {
   gap: 24px;
 }
 
+/* 2026-06-10 점검 스윕: PlayMode 오버레이 CSS 누락 정정 —
+   클래스만 있고 스타일이 없어 전체화면으로 덮이지 않고 본 화면 아래로 흘러나왔음 */
+.play-mode-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--bg-app);
+  display: flex;
+  flex-direction: column;
+}
+.play-mode-topbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+}
+.play-mode-list-tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  min-width: 0;
+}
+.play-mode-nav {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
 /* 2026-06-10: topbar-right 간격 부재 정정 — 버튼·언어 스위처가 붙어 보임 (사용자 피드백) */
 .topbar-right {
   display: flex;

@@ -127,9 +127,11 @@ function PlayModeGrid({
       className="play-mode-grid"
       style={{
         display: 'grid',
-        gridTemplateColumns: `repeat(${cols}, 1fr)`,
-        gap: 'var(--cube-gap, 10px)',
-        padding: '16px',
+        gridTemplateColumns: `repeat(${cols}, var(--cube-size, 96px))`,
+        justifyContent: 'center',
+        alignContent: 'start',
+        gap: 'calc(var(--cube-gap, 10px) * 2)',
+        padding: '24px 16px',
         flex: 1,
         overflow: 'auto',
       }}
