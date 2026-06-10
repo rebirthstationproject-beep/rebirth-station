@@ -16,6 +16,9 @@
 - 변환 폴백 중복 아이콘(e88bbc0): 리스트 내 동일 icon_url 3회+ → 2번째부터 생성 글리프 (icon-dedupe.ts)
 - 클린 스킨(fba448a): 자체 글리프 일괄 교체 (SkinDialog ✨ 버튼 + CubeMakerCenter 스킨 접근), PS 19/19 검증
 - 릴리즈 빌드: cargo tauri build --no-bundle --features keys → target/release/cubelist-pc-helper.exe
+- heuristic $ 앵커 정정(96937ef): Dynamic Clocks/World Clock/CPU 라이브 매핑 복구 (매핑 5→8큐브)
+- 완성도 라운드(6d21621): 큐브 만들기 그리드 DnD(슬롯 swap) + 더블클릭 즉시 실행(run-cube.ts 공용 헬퍼) + Delete 삭제 + 무채색 글로우 + grid-hint 제거
+- UI 이모지 전면 제거(8e57830): **영구 정책** (memory: feedback_no_emoji_ui) — 기하 글리프(▶×＋●)/자체 SVG만. LiveWeather 이모지→미니 SVG 6종. 잔존 스캔 0건
 
 ---
 
