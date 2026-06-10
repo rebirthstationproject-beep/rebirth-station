@@ -2063,7 +2063,28 @@ function GridArea({ externalDnd = false }: { externalDnd?: boolean }) {
   const setListShowLabels = useEditor((s) => s.setListShowLabels);
   const applySkinToList = useEditor((s) => s.applySkinToList);
   const removeSkinFromList = useEditor((s) => s.removeSkinFromList);
+  const removeCubeInGrid = useEditor((s) => s.removeCube);
   const [layoutModalOpen, setLayoutModalOpen] = useState(false);
+
+  // 2026-06-10: Delete 키 — 리스트 만들기(draft) 화면에서도 선택 큐브 삭제
+  // (기존 핸들러는 CubeMakerCenter 마운트 중에만 동작 → list-maker 탭 미동작 버그)
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent): void {
+      if (e.key !== 'Delete') return;
+      const target = e.target as HTMLElement | null;
+      if (target && ['INPUT', 'TEXTAREA'].includes(target.tagName)) return;
+      const state = useEditor.getState();
+      const currentList = state.activeList();
+      const selectedId = state.cube_id;
+      if (!currentList || !selectedId) return;
+      const cube = currentList.cubes.find((c) => c.id === selectedId);
+      if (!cube) return;
+      if (!window.confirm(`"${cube.label}" — ${t('inspector.delete_confirm')}`)) return;
+      removeCubeInGrid(currentList.id, selectedId);
+    }
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [removeCubeInGrid, t]);
   // W2: 스킨 다이얼로그
   const [skinDialogOpen, setSkinDialogOpen] = useState(false);
 
