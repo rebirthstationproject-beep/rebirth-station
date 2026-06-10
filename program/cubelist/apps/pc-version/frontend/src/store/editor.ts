@@ -173,6 +173,8 @@ export const useEditor = create<EditorState>((set, get) => ({
   main_tab: 'cube-maker',
   palette_list_id: null,
 
+  // ── 내부 헬퍼: listId 가 draft 이면 draft_list, 아니면 pack.lists 를 불변 갱신 ──
+
   setMainTab(tab): void {
     set({ main_tab: tab });
   },
@@ -327,7 +329,16 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   upsertCube(listId: string, cube: Cube): void {
-    const { pack } = get();
+    const { pack, draft_list } = get();
+    // draft 분기
+    if (draft_list && listId === draft_list.id) {
+      const idx = draft_list.cubes.findIndex((c) => c.id === cube.id);
+      const cubes = idx === -1
+        ? [...draft_list.cubes, cube]
+        : draft_list.cubes.map((c, i) => (i === idx ? cube : c));
+      set({ draft_list: { ...draft_list, cubes } });
+      return;
+    }
     if (!pack) return;
     const nextLists = pack.lists.map((l) => {
       if (l.id !== listId) return l;
@@ -341,7 +352,15 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   removeCube(listId: string, cubeId: string): void {
-    const { pack, cube_id } = get();
+    const { pack, cube_id, draft_list } = get();
+    // draft 분기
+    if (draft_list && listId === draft_list.id) {
+      set({
+        draft_list: { ...draft_list, cubes: draft_list.cubes.filter((c) => c.id !== cubeId) },
+        cube_id: cube_id === cubeId ? null : cube_id,
+      });
+      return;
+    }
     if (!pack) return;
     const nextLists = pack.lists.map((l) =>
       l.id === listId ? { ...l, cubes: l.cubes.filter((c) => c.id !== cubeId) } : l,
@@ -358,17 +377,18 @@ export const useEditor = create<EditorState>((set, get) => ({
    * SD-G 결정(모바일 PWA 동일): 1D real sort_order, 사이값 보간으로 row/col 변경 불필요.
    */
   reorderCubes(listId: string, fromId: string, toId: string): void {
-    const { pack } = get();
-    if (!pack || fromId === toId) return;
+    const { pack, draft_list } = get();
+    if (fromId === toId) return;
 
     const REORDER_EPSILON = 1e-6;
 
-    const nextLists = pack.lists.map((l) => {
-      if (l.id !== listId) return l;
-      const sorted = [...l.cubes].sort((a, b) => a.sort_order - b.sort_order);
+    // draft 분기
+    const applyReorder = (cubes: Cube[]): Cube[] => {
+      if (!cubes || cubes.length === 0) return cubes;
+      const sorted = [...cubes].sort((a, b) => a.sort_order - b.sort_order);
       const fromIdx = sorted.findIndex((c) => c.id === fromId);
       const toIdx = sorted.findIndex((c) => c.id === toId);
-      if (fromIdx === -1 || toIdx === -1) return l;
+      if (fromIdx === -1 || toIdx === -1) return cubes;
 
       const targetSort = sorted[toIdx].sort_order;
       const neighborIdx = fromIdx < toIdx ? toIdx + 1 : toIdx - 1;
@@ -380,11 +400,7 @@ export const useEditor = create<EditorState>((set, get) => ({
             : targetSort - 1;
 
       const newSort = (targetSort + neighborSort) / 2;
-
-      // 1차: 사이값 보간 적용
-      let updated = l.cubes.map((c) => (c.id === fromId ? { ...c, sort_order: newSort } : c));
-
-      // 2차: 인접 간격 검사 — 1e-6 이하면 전체 정수 재정규화 (1, 2, 3...)
+      let updated = cubes.map((c) => (c.id === fromId ? { ...c, sort_order: newSort } : c));
       const reSorted = [...updated].sort((a, b) => a.sort_order - b.sort_order);
       let needsRenorm = false;
       for (let i = 1; i < reSorted.length; i++) {
@@ -397,10 +413,21 @@ export const useEditor = create<EditorState>((set, get) => ({
         const renormMap = new Map(reSorted.map((c, i) => [c.id, i + 1]));
         updated = updated.map((c) => ({ ...c, sort_order: renormMap.get(c.id) ?? c.sort_order }));
       }
+      return updated;
+    };
 
-      return { ...l, cubes: updated };
+    if (draft_list && listId === draft_list.id) {
+      const updated = applyReorder(draft_list.cubes);
+      if (updated) set({ draft_list: { ...draft_list, cubes: updated } });
+      return;
+    }
+
+    if (!pack) return;
+    const nextLists = pack.lists.map((l) => {
+      if (l.id !== listId) return l;
+      const updated = applyReorder(l.cubes);
+      return updated ? { ...l, cubes: updated } : l;
     });
-
     set({ pack: { ...pack, lists: nextLists } });
   },
 
@@ -452,10 +479,13 @@ export const useEditor = create<EditorState>((set, get) => ({
   // === 2A 폴더 드래그 인 ===
 
   addCubeToFolder(listId: string, folderId: string, cubeId: string): void {
-    const { pack } = get();
-    if (!pack) return;
-    const list = pack.lists.find((l) => l.id === listId);
-    if (!list) return;
+    const { pack, draft_list } = get();
+    // draft 분기
+    const targetList = (draft_list && listId === draft_list.id)
+      ? draft_list
+      : pack?.lists.find((l) => l.id === listId) ?? null;
+    if (!targetList) return;
+    const list = targetList;
 
     const folderCube = list.cubes.find((c) => c.id === folderId);
     // ① folder 타입인지 확인
@@ -487,10 +517,15 @@ export const useEditor = create<EditorState>((set, get) => ({
       return c;
     });
 
-    const nextLists = pack.lists.map((l) =>
-      l.id === listId ? { ...l, cubes: nextCubes } : l,
-    );
-    set({ pack: { ...pack, lists: nextLists } });
+    // draft 또는 pack 갱신
+    if (draft_list && listId === draft_list.id) {
+      set({ draft_list: { ...draft_list, cubes: nextCubes } });
+    } else if (pack) {
+      const nextLists = pack.lists.map((l) =>
+        l.id === listId ? { ...l, cubes: nextCubes } : l,
+      );
+      set({ pack: { ...pack, lists: nextLists } });
+    }
   },
 
   // === 자유 슬롯 배치 (수정 #2) ===
@@ -579,10 +614,14 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   renameList(listId: string, name: string): void {
-    const { pack } = get();
-    if (!pack) return;
+    const { pack, draft_list } = get();
     const trimmed = name.trim();
     if (trimmed.length === 0) return;
+    if (draft_list && listId === draft_list.id) {
+      set({ draft_list: { ...draft_list, name: trimmed } });
+      return;
+    }
+    if (!pack) return;
     const nextLists = pack.lists.map((l) =>
       l.id === listId ? { ...l, name: trimmed } : l,
     );
@@ -590,7 +629,11 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   setListShowLabels(listId: string, show: boolean): void {
-    const { pack } = get();
+    const { pack, draft_list } = get();
+    if (draft_list && listId === draft_list.id) {
+      set({ draft_list: { ...draft_list, show_labels: show } });
+      return;
+    }
     if (!pack) return;
     const nextLists = pack.lists.map((l) =>
       l.id === listId ? { ...l, show_labels: show } : l,
@@ -928,7 +971,11 @@ export const useEditor = create<EditorState>((set, get) => ({
   // === 그리드 배치 설정 ===
 
   setListLayout(listId: string, layout: { cols: number; cubes_per_page: number }): void {
-    const { pack } = get();
+    const { pack, draft_list } = get();
+    if (draft_list && listId === draft_list.id) {
+      set({ draft_list: { ...draft_list, cols: layout.cols, cubes_per_page: layout.cubes_per_page }, current_page: 0 });
+      return;
+    }
     if (!pack) return;
     const nextLists = pack.lists.map((l) =>
       l.id === listId

@@ -1433,24 +1433,31 @@ html, body, #root {
   color: var(--text-muted);
 }
 .folder-cell-emoji { line-height: 1; }
+/* #1: + 새 큐브 셀 — 솔리드 타일 (dashed 제거) */
 .cube-cell.cube-cell-add .cube-icon-bg {
-  background-color: transparent;
-  border: 2px dashed var(--border);
-  color: var(--text-muted);
+  background: #0d0d0d;
+  border: 1px solid rgba(255,255,255,0.05);
+  box-shadow: none;
+  color: rgba(255,255,255,0.35);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 300;
+  transition: border-color 0.15s, color 0.15s;
 }
 .cube-cell.cube-cell-add:hover .cube-icon-bg {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.65);
 }
 .cube-cell-add-plus { line-height: 1; pointer-events: none; }
-/* R2-3: trail empty 셀 CSS :hover (인라인 opacity 조작 제거) */
-.cube-cell.cube-cell-trail-empty { opacity: 0.55; }
-.cube-cell.cube-cell-trail-empty:hover { opacity: 0.95; }
+/* #1: trail empty 셀 — 솔리드 타일, 약간 투명하게 */
+.cube-cell.cube-cell-trail-empty .cube-icon-bg {
+  border-color: rgba(255,255,255,0.03) !important;
+}
+.cube-cell.cube-cell-trail-empty:hover .cube-icon-bg {
+  border-color: rgba(255,255,255,0.14) !important;
+}
 
 /* Sidebar tree (사용자 요구: 카테고리/생산성 카탈로그 → 폴더 트리) */
 .sidebar.sidebar-tree {
@@ -2010,20 +2017,44 @@ html, body, #root {
   background: none;
   color: var(--text-muted);
 }
+/* #1: 빈 슬롯 솔리드 타일 — dashed 완전 제거 */
 .cube-cell.is-empty {
   background: transparent;
-  border-style: dashed;
-  color: var(--text-muted);
+  border: none;
+  color: transparent; /* ＋ 기호 숨김 — hover 에서 노출 */
   font-size: 18px;
-}
-.cube-cell.is-empty:hover { color: var(--text); border-color: var(--accent); cursor: pointer; }
-.cube-cell.is-empty {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 4px;
+}
+/* 빈 슬롯 아이콘 배경 솔리드 타일 */
+.cube-cell.is-empty .cube-icon-bg {
+  background: #0d0d0d !important;
+  border: 1px solid rgba(255,255,255,0.05) !important;
+  box-shadow: none !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+/* 빈 슬롯 center + 기호 (pseudo, 항상 투명 → hover 시 노출) */
+.cube-cell.is-empty .cube-icon-bg::after {
+  content: '+';
+  font-size: 20px;
+  font-weight: 300;
+  color: rgba(255,255,255,0);
+  transition: color 0.15s;
+  line-height: 1;
+  user-select: none;
+}
+.cube-cell.is-empty:hover .cube-icon-bg {
+  border-color: rgba(255,255,255,0.18) !important;
+  cursor: pointer;
+}
+.cube-cell.is-empty:hover .cube-icon-bg::after {
+  color: rgba(255,255,255,0.35);
 }
 .cube-slot-num {
   position: absolute;
@@ -2034,10 +2065,12 @@ html, body, #root {
   opacity: 0.6;
   font-family: 'Consolas', monospace;
 }
-.cube-cell.is-empty.is-drop-target {
-  border-color: var(--accent);
-  background: rgba(207, 207, 207, 0.08);
-  color: var(--text);
+.cube-cell.is-empty.is-drop-target .cube-icon-bg {
+  border-color: var(--accent) !important;
+  background: rgba(207,207,207,0.06) !important;
+}
+.cube-cell.is-empty.is-drop-target .cube-icon-bg::after {
+  color: rgba(255,255,255,0.55);
 }
 .inspector-actions {
   margin-top: 24px;
@@ -2316,17 +2349,18 @@ input[type="text"]:focus, select:focus {
   overflow: hidden;
 }
 
-/* grid-area 는 list-builder-top 안에서 flex:1 스크롤 */
+/* #5: grid-area 는 list-builder-top 안에서 flex:1 스크롤 — min-height:0 필수 */
 .list-builder-top .grid-area {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  /* padding은 grid-area 기본값(24px) 그대로 유지 */
 }
 
-/* 큐브 팔레트 패널 (하단 고정) */
+/* #2: 큐브 팔레트 패널 — 높이 260px, 세로 스크롤 */
 .cube-palette {
   flex-shrink: 0;
-  height: 220px;
+  height: 260px;
   border-top: 1px solid var(--border);
   background: var(--bg-surface);
   display: flex;
@@ -2366,24 +2400,22 @@ input[type="text"]:focus, select:focus {
   opacity: 0.5;
 }
 
-/* 팔레트 타일 스크롤 영역 */
+/* #2: 팔레트 타일 스크롤 영역 — 세로 스크롤, 그리드 배치 */
 .palette-tiles {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(72px, 1fr));
   gap: 6px;
   padding: 8px 12px;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow-y: auto;
+  overflow-x: hidden;
   flex: 1;
-  align-items: flex-start;
-  flex-wrap: nowrap;
+  align-content: start;
 }
 
-/* 팔레트 개별 타일 — --cube-size 로컬 오버라이드 64px */
+/* #2: 팔레트 개별 타일 — 그리드 셀 */
 .palette-cell {
   --cube-size: 64px;
-  flex-shrink: 0;
-  width: var(--cube-size);
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;

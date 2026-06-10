@@ -14,12 +14,14 @@ import * as React from 'react';
 import { useShallow } from 'zustand/react/shallow';
 import {
   DndContext,
+  DragOverlay,
   PointerSensor,
   KeyboardSensor,
   useSensor,
   useSensors,
   closestCenter,
   type DragEndEvent,
+  type DragStartEvent,
 } from '@dnd-kit/core';
 import {
   SortableContext,
@@ -566,6 +568,9 @@ function ListMakerCenter() {
   const moveCubeInDraft = useEditor((s) => s.moveCubeInDraft);
   const pack = useEditor((s) => s.pack);
 
+  // #3: DragOverlay 상태 — 드래그 중인 큐브 + 타입(palette|grid)
+  const [activeDragCube, setActiveDragCube] = useState<{ cube: Cube; size: 64 | 96 } | null>(null);
+
   // 2A-2: 탭 진입 시 draft 없으면 빈 draft 자동 생성
   useEffect(() => {
     if (!draftList) {
@@ -597,7 +602,27 @@ function ListMakerCenter() {
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
+  function handleExternalDragStart(e: DragStartEvent): void {
+    const activeId = String(e.active.id);
+    if (activeId.startsWith('palette:')) {
+      // 팔레트 타일 — 소스 큐브 찾기
+      const srcCubeId = activeId.slice('palette:'.length);
+      let srcCube: Cube | undefined;
+      if (pack) {
+        srcCube =
+          (pack.cubes ?? []).find((c) => c.id === srcCubeId) ??
+          pack.lists.flatMap((l) => l.cubes).find((c) => c.id === srcCubeId);
+      }
+      if (srcCube) setActiveDragCube({ cube: srcCube, size: 64 });
+    } else if (!activeId.startsWith('empty-')) {
+      // 그리드 큐브
+      const cube = draftList?.cubes.find((c) => c.id === activeId);
+      if (cube) setActiveDragCube({ cube, size: 96 });
+    }
+  }
+
   function handleExternalDragEnd(e: DragEndEvent): void {
+    setActiveDragCube(null);
     const { active, over } = e;
     if (!over || !draftList) return;
 
@@ -676,7 +701,13 @@ function ListMakerCenter() {
   }
 
   return (
-    <DndContext sensors={extSensors} collisionDetection={closestCenter} onDragEnd={handleExternalDragEnd}>
+    <DndContext
+      sensors={extSensors}
+      collisionDetection={closestCenter}
+      onDragStart={handleExternalDragStart}
+      onDragEnd={handleExternalDragEnd}
+      onDragCancel={() => setActiveDragCube(null)}
+    >
       <div className="list-builder-split">
         <div className="list-builder-top">
           <DraftPageTabs />
@@ -684,6 +715,25 @@ function ListMakerCenter() {
         </div>
         <CubePalette />
       </div>
+      {/* #3: DragOverlay — 드래그 중 고스트 */}
+      <DragOverlay>
+        {activeDragCube && (
+          <div
+            style={{
+              width: activeDragCube.size,
+              height: activeDragCube.size,
+              transform: 'scale(1.05)',
+              transformOrigin: 'top left',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.6)',
+              borderRadius: 12,
+              overflow: 'hidden',
+              pointerEvents: 'none',
+            }}
+          >
+            <CubeCellVisual cube={activeDragCube.cube} isDragging={false} />
+          </div>
+        )}
+      </DragOverlay>
     </DndContext>
   );
 }
@@ -751,7 +801,7 @@ function MakerSortableCell({
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
+    opacity: isDragging ? 0.3 : 1,
   };
   // 2A: 폴더 위에 드래그 중일 때 is-drop-target
   const dropTargetClass = (isDropTarget || (cube.action_type === 'folder' && isOver)) ? 'is-drop-target' : '';
@@ -869,13 +919,23 @@ function CubeMakerCenter() {
   const isAllMode = activeList === null || (!!draftList && activeList?.id === draftList.id);
   const lists = pack?.lists ?? [];
 
+  // #3: DragOverlay 상태 (CubeMakerCenter 전용)
+  const [makerDragCube, setMakerDragCube] = useState<Cube | null>(null);
+
   // ── DnD sensors (CubeGrid 동일 패턴) ──────────────────────────────────────
   const makerSensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 4 } }),
     useSensor(KeyboardSensor, { coordinateGetter: sortableKeyboardCoordinates }),
   );
 
+  function handleMakerDragStart(e: DragStartEvent): void {
+    const id = String(e.active.id);
+    const cube = listCubes.find((c) => c.id === id);
+    if (cube) setMakerDragCube(cube);
+  }
+
   function handleMakerDragEnd(e: DragEndEvent): void {
+    setMakerDragCube(null);
     const { active, over } = e;
     if (!over || active.id === over.id || !activeList) return;
     const activeId = String(active.id);
@@ -1015,7 +1075,13 @@ function CubeMakerCenter() {
       ) : (
         // activeList DnD 모드: SortableContext 래핑. 라이브러리 풀 모드(activeList 없음) = 비 DnD.
         activeList ? (
-          <DndContext sensors={makerSensors} collisionDetection={closestCenter} onDragEnd={handleMakerDragEnd}>
+          <DndContext
+              sensors={makerSensors}
+              collisionDetection={closestCenter}
+              onDragStart={handleMakerDragStart}
+              onDragEnd={handleMakerDragEnd}
+              onDragCancel={() => setMakerDragCube(null)}
+            >
             <SortableContext items={listCubes.map((c) => c.id)} strategy={rectSortingStrategy}>
               <div
                 className="cube-grid"
@@ -1071,6 +1137,25 @@ function CubeMakerCenter() {
                 </button>
               </div>
             </SortableContext>
+            {/* #3: DragOverlay */}
+            <DragOverlay>
+              {makerDragCube && (
+                <div
+                  style={{
+                    width: 96,
+                    height: 96,
+                    transform: 'scale(1.05)',
+                    transformOrigin: 'top left',
+                    boxShadow: '0 8px 24px rgba(0,0,0,0.6)',
+                    borderRadius: 12,
+                    overflow: 'hidden',
+                    pointerEvents: 'none',
+                  }}
+                >
+                  <CubeCellVisual cube={makerDragCube} isDragging={false} />
+                </div>
+              )}
+            </DragOverlay>
           </DndContext>
         ) : (
           // 라이브러리 풀 모드 — DnD 없음
@@ -2107,6 +2192,8 @@ function CubeGrid({
   const pageSize = useEditor((s) => s.pageSize());
   const selectCube = useEditor((s) => s.selectCube);
   const cube_id = useEditor((s) => s.cube_id);
+  // #3: DragOverlay 상태 (CubeGrid 내부 DndContext 전용 — externalDnd=false 시 사용)
+  const [gridDragCube, setGridDragCube] = useState<Cube | null>(null);
   // 동적 큐브 (live_clock/timer/gauge/battery) 1초 tick — R1-3 중앙 tick
   const { updates: dynamicUpdates, nowMs: liveNowMs } = useDynamicCubes(visibleCubes);
   // v0.1.2: states 있는 큐브 (hotkey_toggle 등) 상태 반영
@@ -2164,7 +2251,16 @@ function CubeGrid({
     slotIds.push(cube ? cube.id : `empty-${globalSlot}`);
   }
 
+  function handleGridDragStart(e: DragStartEvent): void {
+    const id = String(e.active.id);
+    if (!id.startsWith('empty-')) {
+      const cube = visibleCubes.find((c) => c.id === id);
+      if (cube) setGridDragCube(cube);
+    }
+  }
+
   function handleDragEnd(e: DragEndEvent): void {
+    setGridDragCube(null);
     const { active, over } = e;
     if (!over || active.id === over.id) return;
     const activeId = String(active.id);
@@ -2236,8 +2332,33 @@ function CubeGrid({
   }
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragStart={handleGridDragStart}
+      onDragEnd={handleDragEnd}
+      onDragCancel={() => setGridDragCube(null)}
+    >
       {gridContent}
+      {/* #3: DragOverlay */}
+      <DragOverlay>
+        {gridDragCube && (
+          <div
+            style={{
+              width: 96,
+              height: 96,
+              transform: 'scale(1.05)',
+              transformOrigin: 'top left',
+              boxShadow: '0 8px 24px rgba(0,0,0,0.6)',
+              borderRadius: 12,
+              overflow: 'hidden',
+              pointerEvents: 'none',
+            }}
+          >
+            <CubeCellVisual cube={gridDragCube} isDragging={false} />
+          </div>
+        )}
+      </DragOverlay>
     </DndContext>
   );
 }
@@ -2265,7 +2386,8 @@ function EmptySlot({
       title={`슬롯 ${slotIndex} 에 큐브 추가 · 드래그로 큐브 이동 가능`}
       aria-label={`슬롯 ${slotIndex} (빈 슬롯)`}
     >
-      <span className="cube-empty">＋</span>
+      {/* #1: 솔리드 타일 — ::after 에서 + 노출 */}
+      <div className="cube-icon-bg" aria-hidden />
       <span className="cube-slot-num">{slotIndex}</span>
     </button>
   );
@@ -2305,7 +2427,8 @@ function SortableCubeCell({ cube, nowMs, showLabels }: { cube: Cube; nowMs?: num
   const style: React.CSSProperties = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.5 : 1,
+    // #3: 드래그 중 원본 셀은 opacity 0.3
+    opacity: isDragging ? 0.3 : 1,
   };
 
   return (
@@ -2384,9 +2507,17 @@ function Inspector() {
   const removeLibraryCube = useEditor((s) => s.removeLibraryCube);
   const pluginActions = usePluginRegistry(useShallow((s) => s.allActions()));
 
-  // 리스트 큐브 (현재 페이지 선택) 우선, 없으면 라이브러리 큐브
-  const listCube =
-    pack?.lists.find((l) => l.id === list_id)?.cubes.find((c) => c.id === cube_id) ?? null;
+  const draftListInspector = useEditor((s) => s.draft_list);
+  // 리스트 큐브 (현재 페이지 선택) 우선, 없으면 라이브러리 큐브.
+  // draft 가 활성이면 draft_list 에서도 검색 (pack.lists 에는 없음).
+  const listCube = (() => {
+    if (!cube_id || !list_id) return null;
+    // draft 분기
+    if (draftListInspector && list_id === draftListInspector.id) {
+      return draftListInspector.cubes.find((c) => c.id === cube_id) ?? null;
+    }
+    return pack?.lists.find((l) => l.id === list_id)?.cubes.find((c) => c.id === cube_id) ?? null;
+  })();
   const libraryCube = librarySelectedId
     ? (pack?.cubes ?? []).find((c) => c.id === librarySelectedId) ?? null
     : null;
