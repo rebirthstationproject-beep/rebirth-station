@@ -7,9 +7,11 @@
  *
  * R1-2: live_* → live_static_icon===true 아닐 때 무조건 LiveCubeVisual.
  * R1-3: now(ms) props 수신 → 순수 렌더러 (setInterval 없음).
+ * R2 보완: title_style 정식 CubeTitleStyle 타입 사용 (단언 제거).
+ *          show_labels prop 추가 (리스트 단위 라벨 토글).
  */
 
-import type { Cube } from '../types/cube';
+import type { Cube, CubeTitleStyle } from '../types/cube';
 import { LiveCubeVisual } from './LiveCubeVisual';
 import { generateIconDataUrl } from '../lib/icon-generator';
 
@@ -52,6 +54,12 @@ export interface CubeCellVisualProps {
    * 없으면 LiveCubeVisual 에서 Date.now() 폴백.
    */
   readonly nowMs?: number;
+  /**
+   * 리스트 단위 라벨 표시 여부 (R2 보완, CubeList.show_labels).
+   * undefined = ON (기본), false = 리스트 전체 라벨 숨김.
+   * 개별 큐브의 title_style.show === false 도 라벨 숨김 → 어느 한쪽이라도 false 면 숨김.
+   */
+  readonly showLabels?: boolean;
 }
 
 export function CubeCellVisual({
@@ -61,6 +69,7 @@ export function CubeCellVisual({
   invalid,
   isDragging,
   nowMs,
+  showLabels,
 }: CubeCellVisualProps) {
   const isLiveType = LIVE_TYPES.has(cube.action_type);
   const iconMeta = (cube.metadata ?? {}) as Record<string, unknown>;
@@ -135,8 +144,9 @@ export function CubeCellVisual({
         />
       )}
 
-      {/* R2-1: 라벨 하단 오버레이 — title_style.show===false 숨김 */}
-      {(cube as Cube & { title_style?: { show?: boolean } }).title_style?.show !== false && (
+      {/* R2-1: 라벨 하단 오버레이 — title_style.show===false 숨김 (R2 보완: 정식 CubeTitleStyle 타입 사용) */}
+      {/* showLabels===false(리스트 토글) 또는 title_style.show===false(큐브 단위) 시 숨김 */}
+      {showLabels !== false && (cube.title_style as CubeTitleStyle | undefined)?.show !== false && (
         <span className="cube-label">{isFolder ? '📁 ' : ''}{cube.label}</span>
       )}
 

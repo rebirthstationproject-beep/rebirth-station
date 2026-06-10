@@ -196,6 +196,12 @@ export interface CubeList {
   cols?: number;
   /** 한 페이지에 표시할 큐브 수 (기본 = cols × 3). M7 페이지네이션 (cron #20) */
   cubes_per_page?: number;
+  /**
+   * 리스트 단위 라벨 표시 토글 (R2 보완).
+   * undefined = ON (기본값), false = 라벨 숨김.
+   * 개별 큐브의 title_style.show 보다 낮은 우선순위 (큐브 단위 설정이 우선).
+   */
+  show_labels?: boolean;
   metadata?: Record<string, unknown>;
   // === P0 영구 lock 필드 (2026-05-31) ===
   /** 그리드 레이아웃 hint (디바이스별 자동 매핑). 우리 = cubelist_unlimited */
