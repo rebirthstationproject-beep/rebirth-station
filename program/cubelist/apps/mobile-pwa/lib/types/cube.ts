@@ -77,7 +77,7 @@ export interface CubeItem {
    * - plugin_action (Tier 1~3, 플러그인 정의)
    * `delay`는 macro.steps[] 내부 sub-step 전용 (top-level enum 아님).
    *
-   * Stage 1 LOCAL_MODE = 10종 모두 저장 가능. 실 발화는 PC helper Tier 정책에 따름.
+   * Stage 1 LOCAL_MODE = 10종 모두 저장 가능. 실 발화는 PC app Tier 정책에 따름.
    * BLOCKED SD-AX: DB 마이그레이션 0008 (mylist_items.action_type CHECK 확장) — Supabase DB 모드 진입 시점.
    */
   action_type:

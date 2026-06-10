@@ -384,7 +384,7 @@ function DevicesList({ labels }: { labels: AccountLabels }) {
 function deviceLabel(type: string): string {
   switch (type) {
     case 'pc_helper':
-      return 'PC 헬퍼';
+      return 'PC 앱';
     case 'mobile_pwa':
       return '모바일';
     default:

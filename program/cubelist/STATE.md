@@ -1,6 +1,14 @@
 # 큐브 리스트 — 현재 상태 (STATE)
 
-> 매 세션 시작 시 여기부터. 마지막 갱신: 2026-06-10 (품질 재설계 R1~R3 실행 완료)
+> 매 세션 시작 시 여기부터. 마지막 갱신: 2026-06-11 (재부팅 복구 + 잔여 정리)
+
+## ⭐ 2026-06-11 — 재부팅 복구 + 잔여 정리 (사용자 지시: 큐브리스트 완성에만 집중)
+- 사용자 지시: **주소모아 보류** (cube-board icon_ref·케이링크 이식 = 시스템 완성 후 / brand-logos 검증 URL 큐브 일괄 제작도 그때)
+- 재부팅 전 미커밋 자산 수습(65b4e2f): program-icons 31파일(Adobe 20 + 프로그램 10 + programs.json) + discord.cubepack — 큐브팩 v2 1차 자산
+- **R4 아이콘팩 = 구현 완료 확인** — docs/09 W2 전 항목 가동 중 (skin-pack.ts 파서·보수적 매칭 + SkinDialog + applySkinToList/removeSkinFromList + pre_skin_icon/skin_source 보존·복원). 기존 "스펙만 확정" 표기는 구버전
+- **모바일 이모지 제거 완료**(d3ec331): 9파일 40건 → 기하 글리프(▶●⧉⊙⊞◆✓)/미니 SVG 교체, 3언어 동시, typecheck 통과. UI 노출 잔존 0
+- ⚠ 발견: mobile-pwa UI 문구에 "PC 헬퍼" 표기 다수 — feedback_no_helper_term(헬퍼 명칭 금지, "PC 앱/PC 버전" 사용) 위반. 별도 일괄 교체 필요(i18n 3언어 + 문서)
+- 잔여: GUI 실검증(사용자) / D-06 Updater·D-07 사이닝(사용자 결정) / "PC 헬퍼" 명칭 일괄 교체 / 큐브팩 v2 제작 계속(programs.json 기반)
 
 ## ⭐ 2026-06-10 품질 재설계 (Stream Deck 동급화) — R1~R3 완료
 - 권위 스펙: `docs/08-quality-redesign-plan.md` (Fable 5 검토 + 계획)

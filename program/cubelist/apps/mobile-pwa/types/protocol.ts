@@ -157,7 +157,7 @@ export type ActionPayload =
   | { action_type: 'shortcut'; keys: string[] }
   | { action_type: 'macro'; steps: MacroStepDto[] }
   | { action_type: 'folder'; cube_ids: string[] }
-  // SD-AQ: 텍스트 입력 (현 포커스, Tier 1, env3 PC 헬퍼)
+  // SD-AQ: 텍스트 입력 (현 포커스, Tier 1, env3 PC 앱)
   | { action_type: 'text_insert'; text: string }
   // SD-AR: 클립보드 복사 (정적 텍스트, Tier 1, env3)
   | { action_type: 'clipboard_copy'; text: string }
@@ -171,7 +171,7 @@ export type ActionPayload =
   | {
       action_type: 'plugin_action';
       plugin_uuid: string;
-      /** 단일 플러그인 내 액션 ID — 미명시 시 PC 헬퍼가 첫 액션 fallback + warn 로그 (M5 cron #15) */
+      /** 단일 플러그인 내 액션 ID — 미명시 시 PC 앱이 첫 액션 fallback + warn 로그 (M5 cron #15) */
       action_id?: string;
       payload: Record<string, unknown>;
     };

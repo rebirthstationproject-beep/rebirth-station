@@ -25,10 +25,10 @@ const PRO_COPY = {
     payPlay: 'Google Play Billing (Android 앱)',
     payApple: 'Apple App Store IAP (iOS 앱)',
     payNote:
-      'PWA·Windows 헬퍼에서는 구매 불가. 같은 계정으로 로그인하면 entitlement가 자동 동기화됩니다.',
+      'PWA·Windows 앱에서는 구매 불가. 같은 계정으로 로그인하면 entitlement가 자동 동기화됩니다.',
     ctaActive: '큐브 리스트에서 Pro 업그레이드',
     ctaPending: (n: number) => `Stage 4 진입 후 활성화됩니다 (현재 Stage ${n})`,
-    ctaNotAvailable: 'PWA·Windows 헬퍼는 Pro 구매 채널이 아닙니다. 모바일 앱이 출시되면 안내합니다.',
+    ctaNotAvailable: 'PWA·Windows 앱은 Pro 구매 채널이 아닙니다. 모바일 앱이 출시되면 안내합니다.',
     relatedAbout: '브랜드 소개',
     relatedPolicy: '마켓플레이스 정책',
     relatedLabel: '관련',
@@ -76,11 +76,11 @@ const PRO_COPY = {
     payPlay: 'Google Play Billing (Android アプリ)',
     payApple: 'Apple App Store IAP (iOS アプリ)',
     payNote:
-      'PWA · Windows ヘルパーでは購入不可。同じアカウントでサインインすると entitlement が自動同期されます。',
+      'PWA · Windows アプリでは購入不可。同じアカウントでサインインすると entitlement が自動同期されます。',
     ctaActive: 'キューブ・リストから Pro にアップグレード',
     ctaPending: (n: number) => `Stage 4 以降に有効化されます (現在 Stage ${n})`,
     ctaNotAvailable:
-      'PWA · Windows ヘルパーは購入チャネルではありません。モバイルアプリ公開時に案内します。',
+      'PWA · Windows アプリは購入チャネルではありません。モバイルアプリ公開時に案内します。',
     relatedAbout: 'ブランド紹介',
     relatedPolicy: 'マーケットプレイス ポリシー',
     relatedLabel: '関連',

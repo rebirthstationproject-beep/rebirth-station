@@ -1,5 +1,5 @@
 /**
- * LAN WebSocket 클라이언트 — PC 헬퍼 통신
+ * LAN WebSocket 클라이언트 — PC 앱 통신
  *
  * 흐름
  * 1. 페어링 완료 후 IndexedDB에 저장된 HMAC secret + device_id 로드

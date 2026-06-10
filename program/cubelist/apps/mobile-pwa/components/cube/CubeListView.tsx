@@ -566,14 +566,14 @@ export function CubeListView({ editMode, onRequestEdit, onOpenLibrary, onSelectC
     // SD-CH-2 (2026-05-23): multi-state 큐브의 effective payload 적용 (state별 다른 동작)
     const effectivePayload = getCubeEffectivePayload(item);
     const action = parseActionPayload({ ...item, action_payload: effectivePayload });
-    // SD-AE (2026-05-23): shortcut/macro 큐브는 PC helper 필요 — 미연결 시 toast 안내
+    // SD-AE (2026-05-23): shortcut/macro 큐브는 PC app 필요 — 미연결 시 toast 안내
     if ((item.action_type === 'shortcut' || item.action_type === 'macro') && helper.status !== 'connected') {
       const msg =
         locale === 'en'
-          ? 'PC helper not connected — shortcut/macro requires pairing'
+          ? 'PC app not connected — shortcut/macro requires pairing'
           : locale === 'ja'
-            ? 'PC ヘルパー未接続 — ショートカット/マクロにはペアリングが必要'
-            : 'PC 헬퍼 미연결 — 단축키/매크로 실행에 페어링이 필요합니다';
+            ? 'PC アプリ未接続 — ショートカット/マクロにはペアリングが必要'
+            : 'PC 앱 미연결 — 단축키/매크로 실행에 페어링이 필요합니다';
       showToast({ level: 'warning', message: msg, duration: 2_500 });
     }
     helper.sendPressItem(activeBoardId ?? '', item.id, 'tap', action);

@@ -6,7 +6,7 @@
  *
  * 흐름
  * 1. 모바일 PWA가 Supabase Auth로 로그인 (같은 계정 보장)
- * 2. PC 헬퍼 화면의 QR 스캔 → PairingPayload 획득
+ * 2. PC 앱 화면의 QR 스캔 → PairingPayload 획득
  * 3. PairingPayload.otp_secret을 Supabase Edge Function `/pair-device`로 전송
  * 4. Edge Function이 user_devices에 등록 + HMAC secret 안전 채널로 전달
  * 5. PWA는 HMAC secret을 IndexedDB에 보관, 매 WS 연결마다 HMAC nonce 생성

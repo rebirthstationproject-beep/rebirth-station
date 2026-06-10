@@ -7,7 +7,7 @@ import { isPurchaseAvailable } from '@/lib/iap';
  * Capacitor 네이티브 앱에서 IAP store 초기화 (1회).
  *
  * 정착본: memory/project_cubelist_iap.md
- * - PWA / Windows 헬퍼에서는 no-op
+ * - PWA / Windows 앱에서는 no-op
  * - Android/iOS 네이티브 앱에서만 cordova-plugin-purchase store 초기화
  */
 export function IapInitializer() {

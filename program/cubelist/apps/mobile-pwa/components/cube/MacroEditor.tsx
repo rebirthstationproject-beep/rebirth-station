@@ -45,7 +45,7 @@ const MACRO_COPY = {
     duplicateAria: '단계 복제',
     duplicateTitle: '같은 단계를 바로 아래에 복사',
     deleteAria: '단계 삭제',
-    tier2LaunchNote: 'Tier 2 — 첫 실행 시 PC 헬퍼가 사용자 동의를 요청합니다',
+    tier2LaunchNote: 'Tier 2 — 첫 실행 시 PC 앱이 사용자 동의를 요청합니다',
     tier2FocusNote: 'Tier 2 — 사용자 동의 필요',
     delayMaxLabel: '최대 5000ms',
     errorMaxStep: (max: number) => `step은 최대 ${max}개까지 추가할 수 있습니다`,
@@ -87,7 +87,7 @@ const MACRO_COPY = {
     duplicateAria: 'Duplicate step',
     duplicateTitle: 'Duplicate this step below',
     deleteAria: 'Delete step',
-    tier2LaunchNote: 'Tier 2 — PC helper will ask for consent on first run',
+    tier2LaunchNote: 'Tier 2 — PC app will ask for consent on first run',
     tier2FocusNote: 'Tier 2 — user consent required',
     delayMaxLabel: 'max 5000ms',
     errorMaxStep: (max: number) => `Up to ${max} steps allowed`,
@@ -131,7 +131,7 @@ const MACRO_COPY = {
     duplicateAria: 'ステップ複製',
     duplicateTitle: '同じステップをすぐ下に複製',
     deleteAria: 'ステップ削除',
-    tier2LaunchNote: 'Tier 2 — 初回実行時に PC ヘルパーが同意を求めます',
+    tier2LaunchNote: 'Tier 2 — 初回実行時に PC アプリが同意を求めます',
     tier2FocusNote: 'Tier 2 — ユーザー同意が必要',
     delayMaxLabel: '最大 5000ms',
     errorMaxStep: (max: number) => `ステップは最大 ${max} 個まで追加できます`,
@@ -630,7 +630,7 @@ function StepBody({ step, onChange }: StepFormProps) {
             placeholder="인자 (공백 구분)"
           />
           <p className="text-[10px] text-yellow-700">
-            Tier 2 — 첫 실행 시 PC 헬퍼가 사용자 동의를 요청합니다
+            Tier 2 — 첫 실행 시 PC 앱이 사용자 동의를 요청합니다
           </p>
         </div>
       );

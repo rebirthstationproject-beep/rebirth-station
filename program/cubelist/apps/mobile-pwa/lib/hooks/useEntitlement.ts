@@ -15,7 +15,7 @@ export interface Entitlement {
  *
  * 결제 모델 (memory/project_cubelist_iap.md):
  * - 외부 결제 X — 모바일 앱 IAP만
- * - PWA·Windows 헬퍼는 IAP 구매 불가, 같은 계정 로그인 시 entitlement 조회로 광고 제거
+ * - PWA·Windows 앱은 IAP 구매 불가, 같은 계정 로그인 시 entitlement 조회로 광고 제거
  *
  * 데이터 소스: `user_entitlements` view (0002 마이그레이션)
  */

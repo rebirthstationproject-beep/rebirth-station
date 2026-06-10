@@ -115,7 +115,7 @@ const ko: Catalog = {
   'common.required': '필수',
 
   'pair.title': '기기 페어링',
-  'pair.subtitle': 'PC 헬퍼 화면에 표시된 QR 코드를 스캔해주세요',
+  'pair.subtitle': 'PC 앱 화면에 표시된 QR 코드를 스캔해주세요',
   'pair.start': 'QR 스캔 시작',
   'pair.success': '페어링 완료',
   'pair.openList': '큐브 리스트 열기',
@@ -183,7 +183,7 @@ const en: Catalog = {
   'common.required': 'Required',
 
   'pair.title': 'Pair device',
-  'pair.subtitle': 'Scan the QR code on your PC helper',
+  'pair.subtitle': 'Scan the QR code on your PC app',
   'pair.start': 'Start QR scan',
   'pair.success': 'Paired',
   'pair.openList': 'Open Cube List',
@@ -251,7 +251,7 @@ const ja: Catalog = {
   'common.required': '必須',
 
   'pair.title': 'デバイスを連携',
-  'pair.subtitle': 'PC ヘルパーに表示されている QR コードをスキャンしてください',
+  'pair.subtitle': 'PC アプリに表示されている QR コードをスキャンしてください',
   'pair.start': 'QR スキャンを開始',
   'pair.success': '連携完了',
   'pair.openList': 'キューブ・リストを開く',

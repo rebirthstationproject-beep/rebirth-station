@@ -17,7 +17,7 @@ const REC_COPY = {
     stop: '중지',
     start: '녹화 시작',
     emptyHint: '아직 캡처된 키가 없습니다',
-    pcOnlyNote: '마우스 클릭·앱 실행 같은 단계는 PC 헬퍼 측 녹화(향후)가 필요하며 본 시트에서는 캡처되지 않습니다.',
+    pcOnlyNote: '마우스 클릭·앱 실행 같은 단계는 PC 앱 측 녹화(향후)가 필요하며 본 시트에서는 캡처되지 않습니다.',
     clearBtn: '지우기',
     cancel: '취소',
     addToMacro: '매크로에 추가',
@@ -53,7 +53,7 @@ const REC_COPY = {
     start: '録画開始',
     emptyHint: 'まだキャプチャされたキーはありません',
     pcOnlyNote:
-      'マウス クリックやアプリ起動などのステップは PC ヘルパー側録画 (将来) が必要で、本シートではキャプチャされません。',
+      'マウス クリックやアプリ起動などのステップは PC アプリ側録画 (将来) が必要で、本シートではキャプチャされません。',
     clearBtn: 'クリア',
     cancel: 'キャンセル',
     addToMacro: 'マクロに追加',
@@ -80,7 +80,7 @@ interface CapturedKey {
  * - actions/shortcut.rs 키 매핑(ctrl/shift/alt/meta/문자/F1-F12 등)과 동일 어휘
  * - 한 번 누름당 1 step
  * - 비-ASCII 키(한글 입력기 등)는 무시
- * - 안전: click·launch_app·focus_window는 PC 헬퍼 측 W2 작업이므로 본 UI에서 제외
+ * - 안전: click·launch_app·focus_window는 PC 앱 측 W2 작업이므로 본 UI에서 제외
  */
 export function MacroKeyRecorder({ open, onClose, onCapture }: MacroKeyRecorderProps) {
   const [captured, setCaptured] = useState<CapturedKey[]>([]);

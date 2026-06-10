@@ -26,7 +26,7 @@ const INSIGHTS_COPY = {
     srCount: '누름 횟수',
     mountTitle: '거치 모드 사용 비율 (최근 8주)',
     mountBody: (total: number, mount: number) =>
-      `전체 누름 ${total.toLocaleString()}회 중 거치 모드 누름 ${mount.toLocaleString()}회. PC 헬퍼와 짝 지어 모바일을 거치한 상태에서 동작했을 때 더 높습니다.`,
+      `전체 누름 ${total.toLocaleString()}회 중 거치 모드 누름 ${mount.toLocaleString()}회. PC 앱과 짝 지어 모바일을 거치한 상태에서 동작했을 때 더 높습니다.`,
     actionTitle: '동작 종류 분포 (최근 8주)',
     actionAria: '동작 종류 비율',
     actionLink: '링크',
@@ -56,7 +56,7 @@ const INSIGHTS_COPY = {
     srCount: 'Press count',
     mountTitle: 'Mount-mode share (last 8 weeks)',
     mountBody: (total: number, mount: number) =>
-      `${mount.toLocaleString()} of ${total.toLocaleString()} presses were in mount mode — higher when your phone is docked with the PC helper.`,
+      `${mount.toLocaleString()} of ${total.toLocaleString()} presses were in mount mode — higher when your phone is docked with the PC app.`,
     actionTitle: 'Action type mix (last 8 weeks)',
     actionAria: 'Action type ratio',
     actionLink: 'Link',
@@ -86,7 +86,7 @@ const INSIGHTS_COPY = {
     srCount: '押下回数',
     mountTitle: '据え置きモード使用比率 (直近 8 週間)',
     mountBody: (total: number, mount: number) =>
-      `全押下 ${total.toLocaleString()} 回中、据え置きモード ${mount.toLocaleString()} 回。PC ヘルパーと連携してモバイルを据え置きしているときに高くなります。`,
+      `全押下 ${total.toLocaleString()} 回中、据え置きモード ${mount.toLocaleString()} 回。PC アプリと連携してモバイルを据え置きしているときに高くなります。`,
     actionTitle: 'アクション種別分布 (直近 8 週間)',
     actionAria: 'アクション種別比率',
     actionLink: 'リンク',

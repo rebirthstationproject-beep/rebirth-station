@@ -2729,7 +2729,7 @@ function Inspector() {
               window.alert(describeExecuteError(err));
             }
           }}
-          title={cube.action_type === 'plugin_action' ? 'Plugin keyDown 발송' : (isTauri() ? 'PC 헬퍼로 실행' : '브라우저 dev')}
+          title={cube.action_type === 'plugin_action' ? 'Plugin keyDown 발송' : (isTauri() ? 'PC 앱에서 실행' : '브라우저 dev')}
         >
           {t('inspector.test_run')}
         </button>

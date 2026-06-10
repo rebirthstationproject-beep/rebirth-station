@@ -13,7 +13,7 @@ const PAIR_COPY = {
   ko: {
     brand: '리버스 스테이션',
     title: '기기 페어링',
-    sub: 'PC 헬퍼 화면에 표시된 QR 코드를 스캔해주세요',
+    sub: 'PC 앱 화면에 표시된 QR 코드를 스캔해주세요',
     startScan: 'QR 스캔 시작',
     verifying: '검증 중…',
     successTitle: '페어링 완료',
@@ -25,9 +25,9 @@ const PAIR_COPY = {
     cameraDenied:
       '카메라 권한이 차단되어 있습니다. 브라우저 설정에서 카메라 접근을 허용한 뒤 다시 시도하세요.',
     cameraDeniedToast: '카메라 권한이 차단되어 QR 스캔을 시작할 수 없습니다',
-    helperTitle: 'PC 헬퍼가 아직 없나요?',
-    helperBody: '페어링하려면 먼저 PC에 큐브 리스트 헬퍼를 설치해야 합니다.',
-    helperWindows: 'Windows 감지 — PC 헬퍼 (Tauri v2 + Rust)는 Stage 2 진입 시 EV 코드 사이닝과 함께 배포됩니다.',
+    helperTitle: 'PC 앱이 아직 없나요?',
+    helperBody: '페어링하려면 먼저 PC에 큐브 리스트 PC 앱을 설치해야 합니다.',
+    helperWindows: 'Windows 감지 — PC 앱 (Tauri v2 + Rust)는 Stage 2 진입 시 EV 코드 사이닝과 함께 배포됩니다.',
     helperMac: 'macOS — Windows 1차 배포 후 Phase 2에서 지원 예정입니다.',
     helperLinux: 'Linux — 정식 빌드는 Phase 2 이후. 그동안 소스 빌드 가능합니다.',
     helperOther: '현재 디바이스에서 OS를 감지하지 못했습니다. PC(Windows·Mac)에서 다시 시도하세요.',
@@ -36,7 +36,7 @@ const PAIR_COPY = {
   en: {
     brand: 'Rebirth Station',
     title: 'Device pairing',
-    sub: 'Scan the QR code shown on the PC helper.',
+    sub: 'Scan the QR code shown on the PC app.',
     startScan: 'Start QR scan',
     verifying: 'Verifying…',
     successTitle: 'Pairing complete',
@@ -48,9 +48,9 @@ const PAIR_COPY = {
     cameraDenied:
       'Camera access is blocked. Allow camera in your browser settings, then try again.',
     cameraDeniedToast: 'Cannot start QR scan — camera access is blocked.',
-    helperTitle: 'No PC helper yet?',
+    helperTitle: 'No PC app yet?',
     helperBody: 'You need the Cube List helper installed on your PC first.',
-    helperWindows: 'Windows detected — PC helper (Tauri v2 + Rust) ships with EV signing when Stage 2 lands.',
+    helperWindows: 'Windows detected — PC app (Tauri v2 + Rust) ships with EV signing when Stage 2 lands.',
     helperMac: 'macOS — supported after the Windows 1st rollout in Phase 2.',
     helperLinux: 'Linux — official builds after Phase 2. Source builds available meanwhile.',
     helperOther: 'Could not detect the OS. Open this page on a PC (Windows / Mac).',
@@ -59,7 +59,7 @@ const PAIR_COPY = {
   ja: {
     brand: 'リバース・ステーション',
     title: 'デバイス ペアリング',
-    sub: 'PC ヘルパー画面に表示された QR コードをスキャンしてください',
+    sub: 'PC アプリ画面に表示された QR コードをスキャンしてください',
     startScan: 'QR スキャン開始',
     verifying: '検証中…',
     successTitle: 'ペアリング完了',
@@ -71,9 +71,9 @@ const PAIR_COPY = {
     cameraDenied:
       'カメラのアクセスがブロックされています。ブラウザ設定でカメラを許可してから再度お試しください。',
     cameraDeniedToast: 'カメラのアクセスがブロックされているため QR スキャンを開始できません',
-    helperTitle: 'PC ヘルパーがまだ無いですか?',
-    helperBody: 'ペアリングには先に PC にキューブ・リスト ヘルパーをインストールしてください。',
-    helperWindows: 'Windows を検出 — PC ヘルパー (Tauri v2 + Rust) は Stage 2 進入時に EV コード署名と共に配布されます。',
+    helperTitle: 'PC アプリがまだ無いですか?',
+    helperBody: 'ペアリングには先に PC にキューブ・リスト PC アプリをインストールしてください。',
+    helperWindows: 'Windows を検出 — PC アプリ (Tauri v2 + Rust) は Stage 2 進入時に EV コード署名と共に配布されます。',
     helperMac: 'macOS — Windows 1次リリース後、Phase 2 でサポート予定です。',
     helperLinux: 'Linux — 正式ビルドは Phase 2 以降。それまではソースビルドが可能です。',
     helperOther: '現在のデバイスで OS を検出できませんでした。PC (Windows・Mac) で再度お試しください。',
@@ -282,7 +282,7 @@ export default function PairPage() {
 }
 
 /**
- * PC 헬퍼 다운로드 안내 — Stage 1에서는 배포 URL 미확정.
+ * PC 앱 다운로드 안내 — Stage 1에서는 배포 URL 미확정.
  * OS 감지하여 안내 텍스트만 노출. 실제 다운로드 URL은 운영팀이 결정 후 채움.
  */
 function HelperDownloadHint({ locale }: { locale: 'ko' | 'en' | 'ja' }) {

@@ -141,7 +141,7 @@ export default function ListPage() {
         },
       },
       // 큐브 단축키 동적 등록 (TVK, 2026-05-23) — 활성 보드 큐브 중 metadata.hotkey 있는 큐브만.
-      // Stage 1 LOCAL_MODE: link 큐브만 window.open 발화. shortcut/macro는 PC helper 필요 (후속).
+      // Stage 1 LOCAL_MODE: link 큐브만 window.open 발화. shortcut/macro는 PC app 필요 (후속).
       // 편집 모드일 때는 비활성 (사용자가 hotkey 편집 중일 수 있음).
       ...(activeBoard?.items ?? [])
         .filter((it) => typeof it.metadata?.hotkey === 'string' && (it.metadata.hotkey as string).length > 0)
@@ -161,15 +161,15 @@ export default function ListPage() {
               if (url) window.open(url, '_blank', 'noopener,noreferrer');
               return;
             }
-            // TVP 2차: shortcut/macro는 PC helper sendPressItem
+            // TVP 2차: shortcut/macro는 PC app sendPressItem
             if (it.action_type === 'shortcut' || it.action_type === 'macro') {
               if (helper.status !== 'connected') {
                 const msg =
                   locale === 'en'
-                    ? 'PC helper not connected — pair first'
+                    ? 'PC app not connected — pair first'
                     : locale === 'ja'
-                      ? 'PC ヘルパーが未接続です — まずペアリング'
-                      : 'PC 헬퍼가 연결되지 않음 — 먼저 페어링하세요';
+                      ? 'PC アプリが未接続です — まずペアリング'
+                      : 'PC 앱이 연결되지 않음 — 먼저 페어링하세요';
                 showToast({ level: 'warning', message: msg, duration: 2_500 });
                 return;
               }
@@ -373,19 +373,19 @@ const CONNECTION_LABELS: Record<'ko' | 'en' | 'ja', Record<ConnectionDotProps['s
 
 const CONNECTION_TOOLTIPS: Record<'ko' | 'en' | 'ja', Record<ConnectionDotProps['status'], string>> = {
   ko: {
-    connected: 'LAN WebSocket으로 PC 헬퍼와 연결됨. 단축키·매크로 즉시 실행 가능.',
-    connecting: 'PC 헬퍼를 찾는 중입니다…',
-    disconnected: 'PC 헬퍼가 없습니다. 페어링 후 사용하세요.',
+    connected: 'LAN WebSocket으로 PC 앱과 연결됨. 단축키·매크로 즉시 실행 가능.',
+    connecting: 'PC 앱을 찾는 중입니다…',
+    disconnected: 'PC 앱이 없습니다. 페어링 후 사용하세요.',
   },
   en: {
-    connected: 'Linked to PC helper via LAN WebSocket. Shortcuts and macros run instantly.',
-    connecting: 'Looking for the PC helper…',
-    disconnected: 'No PC helper. Pair it first.',
+    connected: 'Linked to PC app via LAN WebSocket. Shortcuts and macros run instantly.',
+    connecting: 'Looking for the PC app…',
+    disconnected: 'No PC app. Pair it first.',
   },
   ja: {
-    connected: 'LAN WebSocket で PC ヘルパーに接続。ショートカット・マクロを即実行可能。',
-    connecting: 'PC ヘルパーを検索中です…',
-    disconnected: 'PC ヘルパーがありません。ペアリング後にご利用ください。',
+    connected: 'LAN WebSocket で PC アプリに接続。ショートカット・マクロを即実行可能。',
+    connecting: 'PC アプリを検索中です…',
+    disconnected: 'PC アプリがありません。ペアリング後にご利用ください。',
   },
 };
 

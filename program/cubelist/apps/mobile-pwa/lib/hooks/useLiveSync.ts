@@ -2,7 +2,7 @@
  * 모바일 PWA — LiveSyncBridge 수신 hook (v0.1.3 사전, 2026-05-31).
  *
  * PC frontend 의 동적 큐브 (live_clock/timer/gauge/battery), states (hotkey_toggle),
- * selection 변경을 PC 헬퍼 WebSocket 으로 받아 모바일 UI 에 반영.
+ * selection 변경을 PC 앱 WebSocket 으로 받아 모바일 UI 에 반영.
  *
  * 사용:
  *   const { cubeUpdates, selection } = useLiveSync(helperClient);

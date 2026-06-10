@@ -12,7 +12,7 @@ interface UseHelperConnectionResult {
 }
 
 /**
- * PC 헬퍼 WS 연결 라이프사이클.
+ * PC 앱 WS 연결 라이프사이클.
  * 한 페이지당 단일 인스턴스 — 마운트 시 자동 접속, 언마운트 시 정리.
  */
 export function useHelperConnection(): UseHelperConnectionResult {

@@ -279,7 +279,7 @@ export function CubeEditSheet({ open, item, onClose, onSaved, onDeleted }: CubeE
       setError(ec.saveErrorName);
       return;
     }
-    // SD-BP (2026-05-23): text_insert/clipboard_copy 텍스트 1024자 길이 검증 (PC helper sendInput 부담 회피)
+    // SD-BP (2026-05-23): text_insert/clipboard_copy 텍스트 1024자 길이 검증 (PC app sendInput 부담 회피)
     if ((actionType === 'text_insert' || actionType === 'clipboard_copy') && textValue.length > 1024) {
       setError(
         locale === 'en'
@@ -720,8 +720,8 @@ export function CubeEditSheet({ open, item, onClose, onSaved, onDeleted }: CubeE
             </p>
             <p className="text-xs text-ink-muted">
               {actionType === 'text_insert'
-                ? '큐브를 누르면 현재 포커스에 텍스트 입력 (PC 헬퍼 Tier 1)'
-                : '큐브를 누르면 클립보드에 복사 (PC 헬퍼 Tier 1)'}
+                ? '큐브를 누르면 현재 포커스에 텍스트 입력 (PC 앱 Tier 1)'
+                : '큐브를 누르면 클립보드에 복사 (PC 앱 Tier 1)'}
             </p>
           </div>
         )}
@@ -763,12 +763,12 @@ export function CubeEditSheet({ open, item, onClose, onSaved, onDeleted }: CubeE
               </p>
             )}
             <p className="text-xs text-ink-muted">
-              Tier 2 — 1회 동의 prompt 필요. 경로 화이트리스트 검증 (PC 헬퍼).
+              Tier 2 — 1회 동의 prompt 필요. 경로 화이트리스트 검증 (PC 앱).
             </p>
             {/* SD-BQ (2026-05-23): %USERNAME% 등 환경변수 사용 시 안내 */}
             {/[%$]/.test(appPath) && (
               <p className="text-[10px] text-yellow-600 dark:text-yellow-400 bg-yellow-50 dark:bg-yellow-950/30 px-2 py-1 rounded">
-                환경변수 (예: %USERNAME%, $HOME)는 PC 헬퍼에서 자동 expand됩니다.
+                환경변수 (예: %USERNAME%, $HOME)는 PC 앱에서 자동 expand됩니다.
               </p>
             )}
           </div>
@@ -848,11 +848,11 @@ export function CubeEditSheet({ open, item, onClose, onSaved, onDeleted }: CubeE
               />
               상대 좌표 (현재 마우스 위치 기준)
             </label>
-            {/* SD-BN (2026-05-23): 좌표 picker — PC 헬퍼 의존 안내 (sendMessage 후속) */}
+            {/* SD-BN (2026-05-23): 좌표 picker — PC 앱 의존 안내 (sendMessage 후속) */}
             <p className="text-[10px] text-ink-muted italic">
-              좌표 직접 입력 (PC 헬퍼 페어링 후 "현재 위치 캡처" 자동 입력 후속 지원 — SD-BN-2)
+              좌표 직접 입력 (PC 앱 페어링 후 "현재 위치 캡처" 자동 입력 후속 지원 — SD-BN-2)
             </p>
-            <p className="text-xs text-ink-muted">Tier 2 — PC 헬퍼 필요.</p>
+            <p className="text-xs text-ink-muted">Tier 2 — PC 앱 필요.</p>
           </div>
         )}
 

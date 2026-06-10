@@ -5,7 +5,7 @@
  * - 외부 결제 게이트웨이 사용 안 함
  * - Google Play Billing (Android 네이티브 앱)
  * - Apple StoreKit (iOS 네이티브 앱)
- * - PWA·Windows 헬퍼는 IAP 구매 불가 — `usePurchaseAvailable()` false
+ * - PWA·Windows 앱은 IAP 구매 불가 — `usePurchaseAvailable()` false
  *
  * 본 모듈은 추상 인터페이스만. 실제 구현은 모바일 앱 빌드 트랙(Capacitor)에서 활성.
  */
@@ -32,7 +32,7 @@ export interface IapPurchase {
  *
  * - 모바일 네이티브 앱 (Capacitor): true
  * - PWA / 모바일 브라우저: false
- * - Windows MSI 헬퍼: false
+ * - Windows MSI 앱: false
  */
 export function isPurchaseAvailable(): boolean {
   if (typeof window === 'undefined') return false;
