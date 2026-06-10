@@ -185,7 +185,7 @@ export function DropZone({ onPluginsDropped, onCubeFilesDropped, onProfilesDropp
       aria-label="파일 드롭"
     >
       <div className="drop-zone-card">
-        <div className="drop-zone-icon">📥</div>
+        <div className="drop-zone-icon">▼</div>
         <div className="drop-zone-title">파일을 여기에 놓으세요</div>
         <div className="drop-zone-sub">
           .streamDeckPlugin · .streamDeckProfile · .cubeone · .cubelist · .cubepack

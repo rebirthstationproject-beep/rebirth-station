@@ -283,9 +283,90 @@ function LiveGauge({ cube }: { cube: Cube }) {
 // live_weather — R3-2 Open-Meteo 실데이터
 // ============================================================================
 
-const WEATHER_ICON: Record<string, string> = {
-  sunny: '☀', cloudy: '☁', rainy: '🌧', snowy: '❄', stormy: '⛈', foggy: '🌫',
-};
+// ── 날씨 SVG 글리프 (24×24 viewBox, stroke 기반 무채색) ──────────────────────
+
+/** 해 — circle + rays */
+function WeatherIconSunny() {
+  return (
+    <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round">
+      <circle cx="12" cy="12" r="4" />
+      <line x1="12" y1="2" x2="12" y2="5" />
+      <line x1="12" y1="19" x2="12" y2="22" />
+      <line x1="2" y1="12" x2="5" y2="12" />
+      <line x1="19" y1="12" x2="22" y2="12" />
+      <line x1="4.22" y1="4.22" x2="6.34" y2="6.34" />
+      <line x1="17.66" y1="17.66" x2="19.78" y2="19.78" />
+      <line x1="4.22" y1="19.78" x2="6.34" y2="17.66" />
+      <line x1="17.66" y1="6.34" x2="19.78" y2="4.22" />
+    </svg>
+  );
+}
+
+/** 구름 */
+function WeatherIconCloudy() {
+  return (
+    <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M18 10a4 4 0 0 0-7.75-1.27A5 5 0 1 0 6 18h12a4 4 0 0 0 0-8z" />
+    </svg>
+  );
+}
+
+/** 비 — 구름 + 사선 */
+function WeatherIconRainy() {
+  return (
+    <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 10a4 4 0 0 0-7.75-1.27A5 5 0 1 0 4 18h12a4 4 0 0 0 0-8z" />
+      <line x1="8" y1="19" x2="7" y2="22" />
+      <line x1="12" y1="19" x2="11" y2="22" />
+      <line x1="16" y1="19" x2="15" y2="22" />
+    </svg>
+  );
+}
+
+/** 눈 — 구름 + 점 */
+function WeatherIconSnowy() {
+  return (
+    <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 10a4 4 0 0 0-7.75-1.27A5 5 0 1 0 4 18h12a4 4 0 0 0 0-8z" />
+      <circle cx="8" cy="21" r="0.8" fill="#fff" />
+      <circle cx="12" cy="21" r="0.8" fill="#fff" />
+      <circle cx="16" cy="21" r="0.8" fill="#fff" />
+    </svg>
+  );
+}
+
+/** 뇌우 — 구름 + 번개 */
+function WeatherIconStormy() {
+  return (
+    <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M16 10a4 4 0 0 0-7.75-1.27A5 5 0 1 0 4 18h12a4 4 0 0 0 0-8z" />
+      <polyline points="13,16 11,20 14,20 12,24" />
+    </svg>
+  );
+}
+
+/** 바람 — 구불구불한 선 3개 */
+function WeatherIconWindy() {
+  return (
+    <svg viewBox="0 0 24 24" width="38" height="38" fill="none" stroke="#fff" strokeWidth="1.5" strokeLinecap="round">
+      <path d="M3 8h10a3 3 0 0 0 0-6 3 3 0 0 0-2.83 4" />
+      <path d="M3 12h14a3 3 0 0 1 0 6 3 3 0 0 1-2.83-4" />
+      <path d="M3 16h6" />
+    </svg>
+  );
+}
+
+function WeatherGlyph({ condition }: { condition: string }) {
+  switch (condition) {
+    case 'sunny':  return <WeatherIconSunny />;
+    case 'cloudy': return <WeatherIconCloudy />;
+    case 'rainy':  return <WeatherIconRainy />;
+    case 'snowy':  return <WeatherIconSnowy />;
+    case 'stormy': return <WeatherIconStormy />;
+    case 'foggy':  return <WeatherIconWindy />;
+    default:       return <WeatherIconSunny />;
+  }
+}
 
 /** live_weather — Open-Meteo 실데이터 (R3-2) */
 function LiveWeather({ cube }: { cube: Cube }) {
@@ -317,13 +398,15 @@ function LiveWeather({ cube }: { cube: Cube }) {
   }
 
   return (
-    <svg viewBox="0 0 100 100" width="100%" height="100%">
-      <text x="50" y="52" textAnchor="middle" fontSize="38">{WEATHER_ICON[data.condition] ?? '☀'}</text>
-      <text x="50" y="75" textAnchor="middle" fontSize="14" fontWeight="700" fill="#fff">
+    <svg viewBox="0 0 100 100" width="100%" height="100%" overflow="visible">
+      <foreignObject x="31" y="8" width="38" height="38">
+        <WeatherGlyph condition={data.condition} />
+      </foreignObject>
+      <text x="50" y="65" textAnchor="middle" fontSize="14" fontWeight="700" fill="#fff">
         {data.temp_c.toFixed(1)}°C
       </text>
       {(data.location_label || locationLabel) && (
-        <text x="50" y="90" textAnchor="middle" fontSize="9" fill="#aaa">
+        <text x="50" y="80" textAnchor="middle" fontSize="9" fill="#aaa">
           {data.location_label ?? locationLabel}
         </text>
       )}
@@ -392,7 +475,7 @@ function LiveAlarm({ cube, nowMs }: { cube: Cube; nowMs: number }) {
       <circle cx="50" cy="55" r="35" fill={ringing ? '#ef4444' : 'transparent'} stroke={ringing ? '#fff' : '#9ca3af'} strokeWidth="3" opacity={ringing ? 0.7 : 1} />
       <path d="M35 25l-5-5M65 25l5-5" stroke="#fff" strokeWidth="3" strokeLinecap="round" />
       <text x="50" y="60" textAnchor="middle" fontSize="16" fontFamily="monospace" fontWeight="700" fill="#fff">{txt}</text>
-      <text x="50" y="78" textAnchor="middle" fontSize="9" fill="#fff" opacity="0.7">{ringing ? '⏰ 알람!' : 'ALARM'}</text>
+      <text x="50" y="78" textAnchor="middle" fontSize="9" fill="#fff" opacity="0.7">{ringing ? '알람!' : 'ALARM'}</text>
     </svg>
   );
 }

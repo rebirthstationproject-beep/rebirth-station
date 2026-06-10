@@ -147,7 +147,7 @@ export function MarketplaceCatalog({ onPackClick }: MarketplaceCatalogProps) {
                   <span className="mp-pack-price">{formatPrice(pack.meta.price_cents)}</span>
                   {pack.meta.rating && (
                     <span className="mp-pack-rating">
-                      ★ {pack.meta.rating.avg.toFixed(1)} ({pack.meta.rating.count})
+                      {pack.meta.rating.avg.toFixed(1)} ({pack.meta.rating.count})
                     </span>
                   )}
                 </div>
@@ -179,7 +179,7 @@ export function MarketplaceCatalog({ onPackClick }: MarketplaceCatalogProps) {
                         style={{ flex: 1, fontSize: 11, padding: '4px 8px' }}
                         title="다운로드 페이지로 이동"
                       >
-                        📥 Download
+                        Download
                       </button>
                     ) : (
                       <button
@@ -192,7 +192,7 @@ export function MarketplaceCatalog({ onPackClick }: MarketplaceCatalogProps) {
                         style={{ flex: 1, fontSize: 11, padding: '4px 8px' }}
                         title="결제 후 다운로드 (v0.1.4)"
                       >
-                        🛒 Buy {formatPrice(pack.meta.price_cents)}
+                        Buy {formatPrice(pack.meta.price_cents)}
                       </button>
                     )}
                   </div>
@@ -261,7 +261,7 @@ function OfficialCubelistSection() {
           letterSpacing: '0.02em',
         }}
       >
-        🌟 Rebirth Station 공식 큐브리스트
+        Rebirth Station 공식 큐브리스트
       </h3>
       <p
         style={{
@@ -363,7 +363,7 @@ function DownloadRow({ entry }: DownloadRowProps) {
         }}
         title={`다운로드: ${entry.downloadUrl}`}
       >
-        📥 Download
+        Download
       </button>
     </div>
   );

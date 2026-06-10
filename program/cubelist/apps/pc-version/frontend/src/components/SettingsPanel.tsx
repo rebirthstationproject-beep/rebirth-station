@@ -1,7 +1,7 @@
 /**
  * 설정 패널 (v0.1.3+, 2026-05-31).
  *
- * TopBar ⚙ 클릭 → 본 모달.
+ * TopBar 설정 버튼 클릭 → 본 모달.
  * - 영구 동의 목록 + 일괄 초기화 / 개별 제거
  * - 라이브러리 폴더 변경
  * - 언어 (LocaleSwitcher 임베드)
@@ -250,7 +250,7 @@ function IconLibraryPoolSection() {
 
   return (
     <section className="settings-section">
-      <h3 className="settings-section-title">🖼 Icon Library 풀</h3>
+      <h3 className="settings-section-title">Icon Library 풀</h3>
       <div className="settings-current-value">
         <span style={{ fontSize: 13, fontWeight: 600 }}>{stats.total}</span>
         <span className="muted small" style={{ marginLeft: 6 }}>개 sd_uuid → icon_url 매핑</span>
@@ -270,7 +270,7 @@ function IconLibraryPoolSection() {
           onClick={handleClear}
           style={{ marginTop: 8 }}
         >
-          🗑 풀 초기화
+          풀 초기화
         </button>
       )}
     </section>

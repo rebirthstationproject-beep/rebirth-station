@@ -69,7 +69,7 @@ export const MOCK_PACKS: ReadonlyArray<MockPack> = [
     list_count: 4,
     device_hint: 'streamdeck_xl',
     preview_cubes: genPreviewCubes(32, [
-      'Scene 1', 'Scene 2', 'Scene 3', '🎤 Mic', '🔴 REC', '⏸ Pause', '⏹ Stop', 'Stream',
+      'Scene 1', 'Scene 2', 'Scene 3', 'Mic', 'REC', 'Pause', 'Stop', 'Stream',
       'BRB', 'Intro', 'Outro', 'Game', 'Cam', 'Chat', 'Alert', 'Donate',
       'Music', 'Volume+', 'Volume-', 'Mute', 'Replay', 'Highlight', 'Clip', 'Save',
       'TTS', 'Bot', 'Discord', 'Twitch', 'YouTube', 'Spotify', 'OBS', 'Stats',

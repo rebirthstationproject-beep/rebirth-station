@@ -151,7 +151,7 @@ export function CubeStatesEditor({ cube, onStatesChange }: CubeStatesEditorProps
                 title={t('inspector.state_remove')}
                 aria-label={t('inspector.state_remove')}
               >
-                ✕
+                ×
               </button>
             </div>
             {cube.action_type === 'hotkey_toggle' && (

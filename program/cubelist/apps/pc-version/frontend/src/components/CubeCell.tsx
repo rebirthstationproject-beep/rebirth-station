@@ -151,7 +151,7 @@ export function CubeCellVisual({
       {/* R2-1: 라벨 하단 오버레이 — title_style.show===false 숨김 (R2 보완: 정식 CubeTitleStyle 타입 사용) */}
       {/* showLabels===false(리스트 토글) 또는 title_style.show===false(큐브 단위) 시 숨김 */}
       {showLabels !== false && (cube.title_style as CubeTitleStyle | undefined)?.show !== false && (
-        <span className="cube-label">{isFolder ? '📁 ' : ''}{cube.label}</span>
+        <span className="cube-label">{cube.label}</span>
       )}
 
       {/* R2-1: live/folder 구분 글리프 — 우상단 6px 무채색 */}

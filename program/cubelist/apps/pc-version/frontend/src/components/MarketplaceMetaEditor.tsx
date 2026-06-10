@@ -63,7 +63,7 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
   }, [onClose]);
 
   // Phase 4 (2026-06-01): 첫 열림 시 cover 없고 lists 있으면 silent 자동 캡처
-  // (handleExport 와 동일 정책 — confirm prompt 제거, 사용자가 ✕ 제거 버튼으로 명시 거부 가능)
+  // (handleExport 와 동일 정책 — confirm prompt 제거, 사용자가 × 제거 버튼으로 명시 거부 가능)
   useEffect(() => {
     if (meta.cover_url) return;
     if (!pack || pack.lists.length === 0) return;
@@ -128,7 +128,7 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
         aria-labelledby="mp-modal-title"
       >
         <header className="modal-header">
-          <h2 id="mp-modal-title">🏪 마켓플레이스 메타</h2>
+          <h2 id="mp-modal-title">마켓플레이스 메타</h2>
           <button
             type="button"
             className="modal-close-btn"
@@ -302,7 +302,7 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
                     }}
                     disabled={!pack || pack.lists.length === 0}
                   >
-                    📷 첫 리스트 자동 캡처
+                    첫 리스트 자동 캡처
                   </button>
                   {meta.cover_url && (
                     <button
@@ -310,7 +310,7 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
                       className="btn-ghost"
                       onClick={() => patch({ cover_url: undefined })}
                     >
-                      ✕ 제거
+                      × 제거
                     </button>
                   )}
                 </div>
@@ -322,7 +322,7 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
               {errors.length > 0 && (
                 <ul className="payload-errors" aria-live="polite">
                   {errors.map((e, i) => (
-                    <li key={i}>⚠ {e}</li>
+                    <li key={i}>{e}</li>
                   ))}
                 </ul>
               )}
@@ -341,12 +341,12 @@ export function MarketplaceMetaEditor({ onClose }: MarketplaceMetaEditorProps) {
                     color: 'var(--text-secondary)',
                   }}
                 >
-                  ⚠ {t('w3.restricted_notice')}
+                  {t('w3.restricted_notice')}
                 </div>
               )}
 
               <div className="mp-publish-info">
-                <strong>📋 게시 정보</strong>
+                <strong>게시 정보</strong>
                 <p>
                   v0.1.3 진입 시 서버 API 가 활성화됩니다. 현재는 로컬 저장만 가능 (CubePack.extensions.marketplace).
                 </p>

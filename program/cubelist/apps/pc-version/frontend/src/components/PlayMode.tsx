@@ -335,7 +335,7 @@ export function PlayMode({ pack, initialListId, onClose }: PlayModeProps) {
           {t('playmode.no_list')}
         </div>
         <button type="button" className="play-mode-close-btn" onClick={onClose}>
-          ✕
+          ×
         </button>
       </div>
     );
@@ -416,7 +416,7 @@ export function PlayMode({ pack, initialListId, onClose }: PlayModeProps) {
           onClick={onClose}
           aria-label={t('playmode.close')}
         >
-          ✕
+          ×
         </button>
       </div>
 

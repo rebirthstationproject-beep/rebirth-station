@@ -101,7 +101,7 @@ export function MacroStepEditor({ steps, onChange }: MacroStepEditorProps) {
                     onClick={() => removeStep(idx)}
                     title="삭제"
                   >
-                    ✕
+                    ×
                   </button>
                 </div>
               </div>

@@ -240,7 +240,7 @@ export function App() {
     const { invoke } = await import('@tauri-apps/api/core');
     const libraryDir = window.localStorage.getItem(LIBRARY_DIR_KEY) ?? '';
     if (!libraryDir) {
-      window.alert('라이브러리 폴더를 먼저 등록하세요 (우상단 📁).');
+      window.alert('라이브러리 폴더를 먼저 등록하세요 (우상단 폴더 버튼).');
       return;
     }
     for (const file of files) {
@@ -386,7 +386,7 @@ export function App() {
       {marketplaceOpen && <MarketplaceMetaEditor onClose={() => setMarketplaceOpen(false)} />}
       {/* v0.1.3: Ctrl+F 전역 검색 */}
       {globalSearchOpen && <GlobalSearch onClose={() => setGlobalSearchOpen(false)} />}
-      {/* v0.1.3: 설정 패널 (TopBar ⚙) */}
+      {/* v0.1.3: 설정 패널 (TopBar 설정 버튼) */}
       {settingsOpen && <SettingsPanel onClose={() => setSettingsOpen(false)} />}
       {/* W1: 작동 모드 전체화면 오버레이 */}
       {playModeOpen && pack && (
@@ -461,7 +461,7 @@ function MainTabBar({ activeTab, onChange }: { activeTab: MainTab; onChange: (ta
         const { downloadCubelist } = await import('./lib/cubepack-io');
         await downloadCubelist(activeList);
         window.alert(
-          `라이브러리 폴더 미등록 — 다운로드 폴더에 ${pages >= 2 ? '.cubedeck' : '.cubelist'} 파일 저장됨. 우상단 📁 폴더 등록 후 다음 부팅 시 자동 로드.`,
+          `라이브러리 폴더 미등록 — 다운로드 폴더에 ${pages >= 2 ? '.cubedeck' : '.cubelist'} 파일 저장됨. 우상단 폴더 버튼 등록 후 다음 부팅 시 자동 로드.`,
         );
       }
     } catch (e) {
@@ -667,8 +667,8 @@ function MakerSortableCell({
  * 큐브 만들기 가운데 영역 (Phase 2b).
  * - 라이브러리 큐브 그리드 (어플 아이콘 모양)
  * - "+ 새 큐브" 버튼 (Inspector 에서 편집)
- * - "📁 폴더 불러오기" — 폴더 + 하위 폴더 재귀 → 각 파일을 라이브러리 큐브로 자동 생성
- * - "📋 리스트 만들기" — 큐브 순차 선택 모드 (Phase 3) → 완료 시 모달 → 새 페이지(리스트)
+ * - "폴더 불러오기" — 폴더 + 하위 폴더 재귀 → 각 파일을 라이브러리 큐브로 자동 생성
+ * - "리스트 만들기" — 큐브 순차 선택 모드 (Phase 3) → 완료 시 모달 → 새 페이지(리스트)
  */
 function CubeMakerCenter() {
   const pack = useEditor((s) => s.pack);
@@ -782,7 +782,7 @@ function CubeMakerCenter() {
         {lists.length === 0 ? (
           <div className="cube-maker-empty">
             <p>큐브 리스트가 없습니다.</p>
-            <p className="muted small">우상단 📁 폴더 등록하거나 + 로 새 리스트 추가</p>
+            <p className="muted small">우상단 폴더 버튼으로 등록하거나 + 로 새 리스트 추가</p>
           </div>
         ) : (
           <div
@@ -804,7 +804,7 @@ function CubeMakerCenter() {
                     style={folderIcon ? { backgroundImage: `url("${folderIcon}")` } : undefined}
                     aria-hidden
                   >
-                    {!folderIcon && <span className="folder-cell-emoji">📁</span>}
+                    {!folderIcon && <span className="folder-cell-emoji">▶</span>}
                   </div>
                   <span className="cube-label">{list.name}</span>
                 </button>
@@ -843,7 +843,7 @@ function CubeMakerCenter() {
       {cubesToShow.length === 0 ? (
         <div className="cube-maker-empty">
           <p>큐브가 없습니다.</p>
-          <p className="muted small">＋ 새 큐브 또는 📁 폴더 불러오기로 큐브 추가</p>
+          <p className="muted small">＋ 새 큐브 또는 폴더 불러오기로 큐브 추가</p>
           <button type="button" className="btn-ghost" onClick={handleAddNewCube}>
             ＋ 첫 큐브 추가
           </button>
@@ -991,7 +991,7 @@ function PageSizeGuide({ currentCubeCount, cols }: { currentCubeCount: number; c
       }}
     >
       <span style={{ fontWeight: 600 }}>
-        📊 현재 {currentCubeCount} 큐브
+        현재 {currentCubeCount} 큐브
       </span>
       <span>
         PC 권장 페이지: <strong>{cols}×{PC_DEFAULT_ROWS}={pcRecommended}</strong>
@@ -1167,7 +1167,7 @@ function PackSwitcher({
           gap: 6,
         }}
       >
-        <span style={{ fontWeight: 600 }}>📦 {packName}</span>
+        <span style={{ fontWeight: 600 }}>{packName}</span>
         <span style={{ opacity: 0.6, fontSize: 10 }}>
           {cubeCount}큐브 · {listCount}리스트
         </span>
@@ -1190,12 +1190,12 @@ function PackSwitcher({
             padding: '4px 0',
           }}
         >
-          <PackMenuItem icon="🎬" label="데모 큐브팩 로드" onClick={handleLoadDemo} />
-          <PackMenuItem icon="✨" label="새 큐브팩 만들기" onClick={handleNewPack} />
+          <PackMenuItem icon="" label="데모 큐브팩 로드" onClick={handleLoadDemo} />
+          <PackMenuItem icon="" label="새 큐브팩 만들기" onClick={handleNewPack} />
           <div style={{ height: 1, background: 'var(--color-border, #333)', margin: '4px 0' }} />
-          <PackMenuItem icon="📥" label="가져오기 (.cubepack)" onClick={handleImport} />
+          <PackMenuItem icon="" label="가져오기 (.cubepack)" onClick={handleImport} />
           <PackMenuItem
-            icon="📤"
+            icon=""
             label="내보내기 (.cubepack)"
             onClick={handleExport}
             disabled={!pack}
@@ -1318,13 +1318,13 @@ function TopBar({
         );
         const matchPct = totalCubes > 0 ? Math.round((fromPool / totalCubes) * 100) : 0;
         window.alert(
-          `✅ 큐브팩 가져오기 완료\n\n` +
+          `큐브팩 가져오기 완료\n\n` +
           `이름: ${next.name}\n` +
           `페이지: ${next.lists.length}\n` +
           `큐브: ${totalCubes}\n\n` +
-          `🖼 Icon Pool 매칭: ${fromPool}/${totalCubes} (${matchPct}%)\n` +
-          `🔀 Heuristic 매핑: ${heuristic} 큐브\n\n` +
-          (matchPct < 50 ? '💡 라이브러리 폴더 등록 후 다시 가져오면 매칭률 ↑' : ''),
+          `Icon Pool 매칭: ${fromPool}/${totalCubes} (${matchPct}%)\n` +
+          `Heuristic 매핑: ${heuristic} 큐브\n\n` +
+          (matchPct < 50 ? '라이브러리 폴더 등록 후 다시 가져오면 매칭률 ↑' : ''),
         );
       } catch (e) {
         const msg = e instanceof CubepackFormatError ? e.message : '가져오기 실패';
@@ -1373,7 +1373,7 @@ function TopBar({
   async function handleAddPlugin(): Promise<void> {
     const libraryDir = window.localStorage.getItem('cubelist:library_dir') ?? '';
     if (!libraryDir) {
-      window.alert('먼저 우상단 📁 폴더로 라이브러리 폴더를 등록하세요.');
+      window.alert('먼저 우상단 폴더 버튼으로 라이브러리 폴더를 등록하세요.');
       return;
     }
     if (!isTauri()) {
@@ -1428,7 +1428,7 @@ function TopBar({
           }
           const tag = result.fallback ? '(en.json fallback)' : '';
           results.push(
-            `✓ ${result.pluginName}: ${result.cubes.length} 큐브 + 자산 _plugins/${result.pluginId}/ ${tag}`,
+            `${result.pluginName}: ${result.cubes.length} 큐브 + 자산 _plugins/${result.pluginId}/ ${tag}`,
           );
           if (result.warnings.length > 0) {
             for (const w of result.warnings) errors.push(`${result.pluginName}: ${w}`);
@@ -1516,7 +1516,7 @@ function TopBar({
           onClick={handleAddPlugin}
           title="StreamDeck 플러그인(.streamDeckPlugin) → 폴더 + .cubeone 자동 변환 후 라이브러리에 추가"
         >
-          📥 플러그인 변환
+          플러그인 변환
         </button>
         <button
           type="button"
@@ -1524,7 +1524,7 @@ function TopBar({
           onClick={handleSetLibraryDir}
           title="라이브러리 폴더 자동 로드 (등록 1회, 다음 부팅부터 자동 불러오기)"
         >
-          📁 폴더
+          폴더
         </button>
         {onOpenMarketplace && (
           <button
@@ -1534,7 +1534,7 @@ function TopBar({
             title="마켓플레이스 메타 편집 (v0.1.3 사전)"
             disabled={!pack}
           >
-            🏪 팩 정보
+            팩 정보
           </button>
         )}
         {/* W1: 작동 모드 토글 */}
@@ -1556,7 +1556,7 @@ function TopBar({
           title={t('app.settings')}
           aria-label={t('app.settings')}
         >
-          ⚙
+          {t('app.settings')}
         </button>
       </div>
     </header>
@@ -1620,14 +1620,14 @@ function Sidebar() {
   return (
     <aside className="sidebar sidebar-tree" aria-label="라이브러리 트리">
       <div className="sidebar-path" title={libDir}>
-        <span className="path-icon">📁</span>
+        <span className="path-icon">▶</span>
         <span className="path-text">{libDirShort}</span>
       </div>
       <div className="sidebar-filter">
         <input
           type="search"
           className="sidebar-filter-input"
-          placeholder="🔍 큐브 리스트·큐브 검색"
+          placeholder="큐브 리스트·큐브 검색"
           value={filterText}
           onChange={(e) => setFilterText(e.target.value)}
           aria-label="라이브러리 검색"
@@ -1651,7 +1651,7 @@ function Sidebar() {
           className={`tree-folder tree-folder-root ${activeListId === null ? 'is-active' : ''}`}
           onClick={() => selectList(null)}
         >
-          <span className="tree-icon">📂</span>
+          <span className="tree-icon">●</span>
           <span className="tree-label">전체</span>
           <span className="tree-count">({lists.length})</span>
         </button>
@@ -1672,7 +1672,7 @@ function Sidebar() {
                 >
                   {isExpanded ? '▼' : '▶'}
                 </span>
-                <span className="tree-icon">📁</span>
+                <span className="tree-icon">▶</span>
                 <span className="tree-label">{list.name}</span>
                 <span className="tree-count">({list.cubes.length})</span>
               </button>
@@ -1722,7 +1722,7 @@ function Sidebar() {
                   onClick={() => selectList(list.id)}
                   title={`${list.name} · ${list.cubes.length} 큐브`}
                 >
-                  <span className="recent-icon">📋</span>
+                  <span className="recent-icon">●</span>
                   <span className="recent-label">{list.name}</span>
                   <span className="recent-count">{list.cubes.length}</span>
                 </button>
@@ -1796,7 +1796,7 @@ function GridArea() {
             aria-pressed={list.show_labels !== false}
             title={t('grid.show_labels')}
           >
-            {list.show_labels !== false ? '🏷 ON' : '🏷 OFF'}
+            {list.show_labels !== false ? '라벨 ON' : '라벨 OFF'}
           </button>
           {/* W2: 스킨 버튼 */}
           <button
@@ -2088,7 +2088,7 @@ function SortableCubeCell({ cube, nowMs, showLabels }: { cube: Cube; nowMs?: num
         }
       }}
       aria-pressed={selected}
-      title={`${cube.label} (${cube.action_type})${isFolder ? '\n더블클릭 → 진입' : ''}${isInvalid ? `\n⚠ 검증 오류:\n  · ${validationErrors.join('\n  · ')}` : ''}`}
+      title={`${cube.label} (${cube.action_type})${isFolder ? '\n더블클릭 → 진입' : ''}${isInvalid ? `\n검증 오류:\n  · ${validationErrors.join('\n  · ')}` : ''}`}
       onContextMenu={(e) => {
         e.preventDefault();
         setMenuPos({ x: e.clientX, y: e.clientY });
@@ -2203,7 +2203,7 @@ function Inspector() {
               role="alert"
               style={{ color: '#dc2626', marginTop: 4, fontSize: 11 }}
             >
-              ⚠ {t('inspector.label_required')}
+              {t('inspector.label_required')}
             </div>
           )}
         </dd>
@@ -2281,8 +2281,8 @@ function Inspector() {
               {status?.connected
                 ? `● 작동 중 · ${p.plugin_uuid}`
                 : status?.lastError
-                  ? `⚠ ${status.lastError}`
-                  : `⏳ 마운트 중 또는 SDK 미초기화...`}
+                  ? status.lastError
+                  : `마운트 중 또는 SDK 미초기화...`}
               {status && (
                 <div className="muted small" style={{ marginTop: 4 }}>
                   setImage 호출 {status.imageCallCount}회
@@ -2296,7 +2296,7 @@ function Inspector() {
             <h4 className="inspector-subtitle" style={{ marginTop: 12 }}>PropertyInspector</h4>
             <PluginPropertyInspector cube={cube} />
             <div className="muted small" style={{ marginTop: 8 }}>
-              💡 같은 큐브를 큐브 리스트 만들기 페이지에 N번 배치하면 N개 독립 instance 작동
+              같은 큐브를 큐브 리스트 만들기 페이지에 N번 배치하면 N개 독립 instance 작동
             </div>
           </div>
         );

@@ -87,7 +87,7 @@ export function PackDetail({ packId, onBack }: PackDetailProps) {
           </div>
           {pack.meta.rating && (
             <div className="pack-detail-rating">
-              ★ {pack.meta.rating.avg.toFixed(1)}{' '}
+              {pack.meta.rating.avg.toFixed(1)}{' '}
               <span className="muted">({pack.meta.rating.count} {t('mp.reviews_suffix')})</span>
             </div>
           )}
@@ -184,7 +184,7 @@ export function PackDetail({ packId, onBack }: PackDetailProps) {
             <strong>현재는 mock 데이터입니다.</strong> v0.1.4 진입 시 실제 마켓플레이스 서버 + PayPal/Binance Pay 결제가 활성화됩니다.
           </p>
           <p>
-            큐브팩 게시는 큐브 만들기 → 🏪 팩 정보 버튼에서 메타 입력 후 v0.1.4 진입 시 서버 업로드 가능합니다.
+            큐브팩 게시는 큐브 만들기 → 팩 정보 버튼에서 메타 입력 후 v0.1.4 진입 시 서버 업로드 가능합니다.
           </p>
         </div>
       </section>

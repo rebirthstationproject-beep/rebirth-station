@@ -61,7 +61,7 @@ export function ActionPayloadForm({ actionType, value, onChange }: ActionPayload
       {errors.length > 0 && (
         <ul className="payload-errors" aria-live="polite">
           {errors.map((e, i) => (
-            <li key={i}>⚠ {e}</li>
+            <li key={i}>{e}</li>
           ))}
         </ul>
       )}
@@ -223,7 +223,7 @@ function JsonField({
         aria-invalid={parseError !== null}
       />
       {parseError && (
-        <div className="field-error" role="alert">⚠ {parseError}</div>
+        <div className="field-error" role="alert">{parseError}</div>
       )}
     </>
   );
