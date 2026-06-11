@@ -40,8 +40,9 @@ const SLASH_SERIES = [
 const KEYWORDS = ['think', 'think hard', 'ultrathink', 'ultracode'];
 
 const CUBES = [
-  // 그림 아이콘
-  // Claude Run: Windows Terminal을 워크스페이스에서 열고 claude.exe 실행 (네이티브 설치 표준 경로)
+  // 그림 아이콘 — Claude AI(Claw'd) 맨 앞 (2026-06-11 사용자 지정)
+  { label: 'Claude AI', type: 'link', payload: { url: 'https://claude.ai' } },
+  // Claude Run: 터미널 열고 claude 실행
   {
     label: 'Claude Run',
     type: 'app_launch',
@@ -58,7 +59,6 @@ const CUBES = [
   { label: 'Terminal', type: 'app_launch', payload: { path: 'wt.exe', args: [] } },
   { label: 'Claude Docs', type: 'link', payload: { url: 'https://code.claude.com/docs' } },
   { label: 'Console', type: 'link', payload: { url: 'https://console.anthropic.com' } },
-  { label: 'Claude AI', type: 'link', payload: { url: 'https://claude.ai' } },
   // /명령어 타이포 (text_insert — Enter는 사용자)
   ...SLASH_SERIES.map((cmd) => ({
     label: cmd,
