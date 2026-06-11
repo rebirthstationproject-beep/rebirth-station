@@ -95,8 +95,9 @@ const LIBRARY_DIR_KEY = 'cubelist:library_dir';
 // N2 (docs/11 G3): 큐브 복사 클립보드 — 메모리 보관 (리스트 간 붙여넣기 허용)
 let cubeClipboard: Cube[] = [];
 
-// dev 전용: E2E/디버그에서 store 접근 (프로덕션 번들 제외)
-if (import.meta.env.DEV) {
+// dev 전용: E2E/디버그에서 store 접근 (vite/client 타입 미포함 환경 호환)
+const viteEnv = (import.meta as unknown as { env?: { DEV?: boolean } }).env;
+if (viteEnv?.DEV) {
   (window as unknown as Record<string, unknown>).__editor = useEditor;
 }
 // 2026-06-10 사용자 지시: 미등록 시 기본 라이브러리 경로 자동 시도 (성공하면 영구 등록).
