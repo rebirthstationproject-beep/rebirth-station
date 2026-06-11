@@ -325,7 +325,7 @@ export function App() {
         const lower = file.name.toLowerCase();
         if (lower.endsWith('.cubepack')) {
           const pack = await importCubepack(buf);
-          useEditor.getState().loadPack(pack);
+          useEditor.getState().mergePack(pack); // 2026-06-11: 병합 (다중 팩 공존)
         } else if (lower.endsWith('.cubelist') || lower.endsWith('.cubedeck')) {
           // .cubelist → 활성 cubepack 에 추가 (또는 신규 pack 생성)
           const list = await importCubelist(buf);
@@ -1161,8 +1161,8 @@ function CubeMakerCenter() {
             style={{ gridTemplateColumns: `repeat(auto-fill, 112px)`, padding: '16px' }}
           >
             {lists.map((list) => {
-              // 2026-06-11: 폴더(팩) 아이콘 = 프로그램 공식 로고(pack.icon_url) 우선, 첫 큐브는 폴백
-              const folderIcon = pack?.icon_url ?? list.cubes[0]?.icon_url ?? null;
+              // 2026-06-11: 폴더 아이콘 = 리스트 자체 아이콘(소속 팩 로고) > 팩 로고 > 첫 큐브
+              const folderIcon = list.icon_url ?? pack?.icon_url ?? list.cubes[0]?.icon_url ?? null;
               return (
                 <button
                   key={list.id}
@@ -1235,19 +1235,7 @@ function CubeMakerCenter() {
                 className="cube-grid"
                 style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))`, padding: '16px' }}
               >
-                {/* 첫 셀: + 새 큐브 추가 (DnD 제외) */}
-                <button
-                  type="button"
-                  className="cube-cell cube-cell-add"
-                  onClick={handleAddNewCube}
-                  title="＋ 새 큐브 추가"
-                  aria-label="새 큐브 추가"
-                >
-                  <div className="cube-icon-bg">
-                    <span className="cube-cell-add-plus">＋</span>
-                  </div>
-                  <span className="cube-label">새 큐브</span>
-                </button>
+                {/* 2026-06-11: 첫 "새 큐브" 셀 제거 — 추가 진입점은 trail ＋ 셀 하나만 (사용자 지침) */}
                 {listCubes.map((cube) => {
                   const selectionIdx = listMakerSelection.indexOf(cube.id);
                   const isSelected = librarySelectedId === cube.id;
@@ -1270,7 +1258,7 @@ function CubeMakerCenter() {
                     />
                   );
                 })}
-                {/* trail 빈 슬롯 (DnD 제외) */}
+                {/* trail ＋ 셀 — 라벨 없이 글리프만 (2026-06-11 사용자 지침) */}
                 <button
                   type="button"
                   className="cube-cell cube-cell-add cube-cell-trail-empty"
@@ -1281,7 +1269,6 @@ function CubeMakerCenter() {
                   <div className="cube-icon-bg">
                     <span className="cube-cell-add-plus">＋</span>
                   </div>
-                  <span className="cube-label">새 큐브</span>
                 </button>
               </div>
             </SortableContext>
@@ -1311,19 +1298,7 @@ function CubeMakerCenter() {
             className="cube-grid"
             style={{ gridTemplateColumns: `repeat(${cols}, minmax(0, 112px))`, padding: '16px' }}
           >
-            {/* 첫 셀: + 새 큐브 추가 */}
-            <button
-              type="button"
-              className="cube-cell cube-cell-add"
-              onClick={handleAddNewCube}
-              title="＋ 새 큐브 추가"
-              aria-label="새 큐브 추가"
-            >
-              <div className="cube-icon-bg">
-                <span className="cube-cell-add-plus">＋</span>
-              </div>
-              <span className="cube-label">새 큐브</span>
-            </button>
+            {/* 2026-06-11: 첫 "새 큐브" 셀 제거 — 추가 진입점은 trail ＋ 셀 하나만 */}
             {cubesToShow.map((cube) => {
               const selectionIdx = listMakerSelection.indexOf(cube.id);
               const isSelected = librarySelectedId === cube.id;
@@ -1344,7 +1319,7 @@ function CubeMakerCenter() {
                 </button>
               );
             })}
-            {/* P1-B1 갱신 (2026-06-01): trail 빈 슬롯 */}
+            {/* trail ＋ 셀 — 라벨 없이 글리프만 (2026-06-11 사용자 지침) */}
             <button
               type="button"
               className="cube-cell cube-cell-add cube-cell-trail-empty"
@@ -1355,7 +1330,6 @@ function CubeMakerCenter() {
               <div className="cube-icon-bg">
                 <span className="cube-cell-add-plus">＋</span>
               </div>
-              <span className="cube-label">새 큐브</span>
             </button>
           </div>
         )
@@ -1703,7 +1677,8 @@ function TopBar({
       try {
         const buf = await file.arrayBuffer();
         const next = await importCubepack(buf);
-        loadPack(next);
+        // 2026-06-11: 교체 → 병합 (기존 팩 유지 + 리스트 추가, 다중 팩 공존)
+        useEditor.getState().mergePack(next);
         // 2026-06-01 D: 가져오기 후 통계 + icon pool 매칭률 alert
         const totalCubes = next.lists.reduce((a, l) => a + l.cubes.length, 0);
         const fromPool = next.lists.reduce(

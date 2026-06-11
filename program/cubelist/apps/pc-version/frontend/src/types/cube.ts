@@ -190,6 +190,8 @@ export type DeviceHint =
 export interface CubeList {
   id: string;
   name: string;
+  /** 리스트(폴더) 대표 아이콘 (소속 팩 로고 등, data URL) — 다중 팩 공존 시 폴더 구분용. 2026-06-11 */
+  icon_url?: string | null;
   sort_order: number;
   cubes: Cube[];
   /** grid 컬럼 수 (3~8 사용자 선택, 기본 5) */

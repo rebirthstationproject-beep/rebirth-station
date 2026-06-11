@@ -141,6 +141,7 @@ async function buildListZip(list: CubeList, now: string): Promise<JSZip> {
     rbs_min_version: RBS_MIN_VERSION,
     list: {
       name: list.name,
+      ...(list.icon_url ? { icon_url: list.icon_url } : {}), // 2026-06-11 리스트 아이콘 라운드트립
       order: list.cubes
         .slice()
         .sort((a, b) => a.sort_order - b.sort_order)
@@ -337,6 +338,8 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
       : iconRef.toLowerCase().endsWith('.webp') ? 'image/webp' : 'image/png';
     packIconUrl = `data:${mime};base64,${b64}`;
   }
+  // 리스트별 아이콘: 자체 아이콘 없으면 소속 팩 로고 상속 (다중 팩 병합 시 폴더 구분)
+  const listsWithIcon = lists.map((l) => (l.icon_url ? l : { ...l, icon_url: packIconUrl }));
 
   return {
     id: packId,
@@ -344,7 +347,7 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
     ...(packIconUrl ? { icon_url: packIconUrl } : {}),
     category: extractCategory(packBody),
     cubes: libraryCubes,
-    lists,
+    lists: listsWithIcon,
   };
 }
 
@@ -395,6 +398,7 @@ async function readListZip(buf: Uint8Array, sortOrder: number): Promise<CubeList
   return {
     id: listId,
     name: typeof body.name === 'string' ? body.name : '(이름 없음)',
+    ...(typeof body.icon_url === 'string' ? { icon_url: body.icon_url } : {}), // 2026-06-11
     sort_order: sortOrder,
     cubes,
   };

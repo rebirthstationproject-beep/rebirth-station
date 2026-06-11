@@ -51,6 +51,12 @@ interface EditorState extends EditorSelection {
   // === 액션 (큐브팩 수준) ===
   loadPack(pack: CubePack): void;
   closePack(): void;
+  /**
+   * 2026-06-11: 팩 병합 가져오기 — 기존 팩을 교체하지 않고 리스트를 추가한다.
+   * (같은 list id = 갱신 교체, 새 id = 끝에 추가 / 라이브러리 큐브는 id 중복 제외 병합)
+   * 기존 팩이 없으면 loadPack과 동일.
+   */
+  mergePack(incoming: CubePack): void;
 
   // === 액션 (선택) ===
   selectList(listId: string | null): void;
@@ -348,6 +354,40 @@ export const useEditor = create<EditorState>((set, get) => ({
       history_past: [],
       history_future: [],
       history_last_push: 0,
+    });
+  },
+
+  mergePack(incoming: CubePack): void {
+    const { pack } = get();
+    if (!pack) {
+      get().loadPack(incoming);
+      return;
+    }
+    get().pushHistory();
+    // 리스트 병합: 같은 id = 교체(재가져오기 갱신), 새 id = 끝에 추가
+    const maxSort = pack.lists.length > 0 ? Math.max(...pack.lists.map((l) => l.sort_order)) : 0;
+    let appended = 0;
+    const merged = pack.lists.map((l) => incoming.lists.find((il) => il.id === l.id) ?? l);
+    for (const il of incoming.lists) {
+      if (!pack.lists.some((l) => l.id === il.id)) {
+        appended += 1;
+        merged.push({ ...il, sort_order: maxSort + appended });
+      }
+    }
+    // 라이브러리 큐브 병합 (id 중복 제외)
+    const existingIds = new Set((pack.cubes ?? []).map((c) => c.id));
+    const mergedCubes = [
+      ...(pack.cubes ?? []),
+      ...(incoming.cubes ?? []).filter((c) => !existingIds.has(c.id)),
+    ];
+    set({
+      pack: { ...pack, lists: merged, cubes: mergedCubes },
+      // 선택은 새로 들어온 첫 리스트로
+      list_id: incoming.lists[0]?.id ?? get().list_id,
+      cube_id: null,
+      current_folder_id: null,
+      folder_stack: [],
+      current_page: 0,
     });
   },
 
