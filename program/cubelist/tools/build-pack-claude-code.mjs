@@ -25,11 +25,19 @@ const ICON_DIR = path.join(ROOT, 'assets', 'cubepacks-clean', '_claude-icons');
 const PACK_ICON = 'E:\\Claude-Workspace\\shared-assets\\brand-logos\\library\\claude\\app-icon.png';
 const OUT = path.join(ROOT, 'assets', 'cubepacks-clean', 'claude-code.cubepack');
 
-// /명령어 타이포 시리즈 (make-claude-pack-icons.py SLASH_SERIES 동기) — 자주 쓰는 + 숨은 유용 커맨드
+// /명령어 타이포 시리즈 (make-claude-pack-icons.py SLASH_SERIES 동기)
 const SLASH_SERIES = [
+  // 자주 쓰는 기본
   '/clear', '/compact', '/model', '/resume', '/cost', '/init', '/memory', '/agents',
+  // 잘 모르는데 유용한 기본
   '/mcp', '/config', '/permissions', '/doctor', '/review', '/rewind', '/context', '/export',
+  '/vim', '/hooks', '/statusline', '/add-dir', '/usage', '/todos', '/terminal-setup', '/bug',
+  // 워크스페이스 커스텀
+  '/plan', '/tdd', '/verify', '/code-review', '/security-review', '/e2e', '/loop', '/schedule', '/learn',
 ];
+
+// 사고 강화/오케스트레이션 키워드 (프롬프트 텍스트)
+const KEYWORDS = ['think', 'think hard', 'ultrathink', 'ultracode'];
 
 const CUBES = [
   // 그림 아이콘 12
@@ -45,12 +53,19 @@ const CUBES = [
   { label: 'Claude Docs', type: 'link', payload: { url: 'https://code.claude.com/docs' } },
   { label: 'Console', type: 'link', payload: { url: 'https://console.anthropic.com' } },
   { label: 'Claude AI', type: 'link', payload: { url: 'https://claude.ai' } },
-  // /명령어 타이포 16 (text_insert — Enter는 사용자)
+  // /명령어 타이포 (text_insert — Enter는 사용자)
   ...SLASH_SERIES.map((cmd) => ({
     label: cmd,
     type: 'text_insert',
     payload: { text: cmd },
-    iconFile: `slash-${cmd.slice(1)}.png`,
+    iconFile: `slash-${cmd.slice(1).replace(/[\\/:*?"<>| ]/g, '_')}.png`,
+  })),
+  // 사고 키워드 타이포
+  ...KEYWORDS.map((kw) => ({
+    label: kw,
+    type: 'text_insert',
+    payload: { text: kw },
+    iconFile: `kw-${kw.replace(/[\\/:*?"<>| ]/g, '_')}.png`,
   })),
 ];
 

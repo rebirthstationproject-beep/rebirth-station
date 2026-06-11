@@ -172,25 +172,19 @@ PICTORIAL = {
     'Claude AI': art_claude_ai,
 }
 
-# ── /명령어 타이포 시리즈 (커맨드 → 라벨) ──────────────────────────────────
-SLASH_SERIES = {
-    '/clear': 'Reset Context',
-    '/compact': 'Compress',
-    '/model': 'Switch Model',
-    '/resume': 'Resume Session',
-    '/cost': 'Token Cost',
-    '/init': 'Init CLAUDE.md',
-    '/memory': 'Edit Memory',
-    '/agents': 'Agents',
-    '/mcp': 'MCP Servers',
-    '/config': 'Settings',
-    '/permissions': 'Permissions',
-    '/doctor': 'Health Check',
-    '/review': 'Code Review',
-    '/rewind': 'Checkpoint',
-    '/context': 'Context Map',
-    '/export': 'Export Chat',
-}
+# ── /명령어 타이포 시리즈 — 커맨드 텍스트 = 타일 정중앙 아이콘 (라벨 없음) ──
+SLASH_SERIES = [
+    # 자주 쓰는 기본
+    '/clear', '/compact', '/model', '/resume', '/cost', '/init', '/memory', '/agents',
+    # 잘 모르는데 유용한 기본
+    '/mcp', '/config', '/permissions', '/doctor', '/review', '/rewind', '/context', '/export',
+    '/vim', '/hooks', '/statusline', '/add-dir', '/usage', '/todos', '/terminal-setup', '/bug',
+    # 워크스페이스 커스텀 (E:\Claude-Workspace commands/skills)
+    '/plan', '/tdd', '/verify', '/code-review', '/security-review', '/e2e', '/loop', '/schedule', '/learn',
+]
+
+# 사고 강화/오케스트레이션 키워드 (슬래시 아님 — 프롬프트 키워드)
+KEYWORDS = ['think', 'think hard', 'ultrathink', 'ultracode']
 
 
 def fit_font(texts, max_w, start=64):
@@ -214,29 +208,28 @@ def save_tile(img_s, label, label_font, text_cy):
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    all_labels = list(PICTORIAL.keys()) + list(SLASH_SERIES.values())
-    label_font, label_size = fit_font(all_labels, TEXT_MAX_W, start=40)
+    label_font, label_size = fit_font(list(PICTORIAL.keys()), TEXT_MAX_W, start=40)
     art_bottom = ART_TOP + int(CANVAS * CONTENT)
     text_cy = art_bottom + (CANVAS - art_bottom) // 2
 
-    # 그림 아이콘
+    # 그림 아이콘 — 아트 상단 + 라벨 아래 (유지)
     for label, fn in PICTORIAL.items():
         img, d = base()
         fn(d)
         save_tile(img, label, label_font, text_cy)
 
-    # /명령어 타이포 아이콘 — 명령 텍스트 자체가 아이콘 (최장 명령 기준 단일 크기, 4x 캔버스에 드로잉)
-    cmd_font_s, cmd_size = fit_font(list(SLASH_SERIES.keys()), (S - 30 * SCALE), start=60 * SCALE)
-    for cmd, label in SLASH_SERIES.items():
+    # /명령어·키워드 타이포 아이콘 — 텍스트만 타일 정중앙, 라벨 없음 (2026-06-11 사용자 확정)
+    typo_all = SLASH_SERIES + KEYWORDS
+    cmd_font_s, cmd_size = fit_font(typo_all, (S - 24 * SCALE), start=60 * SCALE)
+    for cmd in typo_all:
         img, d = base()
-        d.text((ZONE_CX, ZONE_CY), cmd, font=cmd_font_s, fill=TEXT, anchor='mm')
+        d.text((S // 2, S // 2), cmd, font=cmd_font_s, fill=TEXT, anchor='mm')
         tile = img.resize((CANVAS, CANVAS), Image.LANCZOS)
-        td = ImageDraw.Draw(tile)
-        td.text((CANVAS // 2, text_cy), label, font=label_font, fill=TEXT, anchor='mm')
-        safe = cmd[1:]
-        tile.save(os.path.join(OUT, f'slash-{safe}.png'), 'PNG')
+        prefix = 'slash-' if cmd.startswith('/') else 'kw-'
+        safe = re.sub(r'[\\/:*?"<>| ]', '_', cmd.lstrip('/'))
+        tile.save(os.path.join(OUT, f'{prefix}{safe}.png'), 'PNG')
 
-    print(f'완료: 그림 {len(PICTORIAL)} + 타이포 {len(SLASH_SERIES)} / 라벨 {label_size}px / 명령 {cmd_size // SCALE}px@256')
+    print(f'완료: 그림 {len(PICTORIAL)} + 타이포 {len(typo_all)} / 라벨 {label_size}px / 명령 {cmd_size // SCALE}px@256')
 
 
 if __name__ == '__main__':
