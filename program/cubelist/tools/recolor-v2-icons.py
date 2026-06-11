@@ -99,6 +99,9 @@ ART_SCALE = {
     'Merge Layers': 1.15,
 }
 
+# 세로 위치 보정 — 시각 무게중심이 위로 쏠린 아이콘 (캔버스 비율, +=아래)
+ART_OFFSET_Y = {'Levels': 0.07}
+
 # 텍스트 제거 한도 — 하단 아트가 텍스트 줄과 동일 메트릭인 아이콘만 예외
 # Levels: ▲▲▲ 슬라이더 (gap 규칙으로도 보존되지만 이중 안전)
 # Select All: marquee 아래 점선 변(h60)이 텍스트 줄(h50)과 메트릭 겹침 → 1블록만
@@ -198,7 +201,7 @@ def to_tile(img, label, font, raw_label=''):
     img = recolor_px(img)
     tile = Image.new('RGB', (CANVAS, CANVAS), NAVY)
     # 아트워크: 가로 중앙 / 세로 = 기본 아트 존(ART_TOP..ART_TOP+base_target) 중심 기준
-    zone_cy = ART_TOP + base_target // 2
+    zone_cy = ART_TOP + base_target // 2 + int(CANVAS * ART_OFFSET_Y.get(raw_label, 0.0))
     tile.paste(img, ((CANVAS - nw) // 2, zone_cy - nh // 2))
     # 기능명: 기본 아트 존 아래 잔여 공간 세로 중앙 (전 타일 동일 위치)
     draw = ImageDraw.Draw(tile)
