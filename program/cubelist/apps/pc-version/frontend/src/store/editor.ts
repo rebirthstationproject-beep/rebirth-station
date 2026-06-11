@@ -156,6 +156,17 @@ interface EditorState extends EditorSelection {
    * pre_skin_icon 복원 + skin_source 제거.
    */
   removeSkinFromList(listId: string): void;
+
+  // === N1 편집 Undo/Redo (docs/11 G1) ===
+  /** 과거 스냅샷 스택 (불변 업데이트 구조라 참조 보관으로 충분, 한도 50) */
+  history_past: Array<{ pack: CubePack | null; draft_list: CubeList | null }>;
+  history_future: Array<{ pack: CubePack | null; draft_list: CubeList | null }>;
+  /** 마지막 push 시각 — 800ms 내 연속 변이(타이핑)는 한 스텝으로 코얼레스 */
+  history_last_push: number;
+  /** 데이터 변이 액션 진입 시 호출 — 변이 전 상태를 과거 스택에 push */
+  pushHistory(): void;
+  undo(): void;
+  redo(): void;
 }
 
 export const useEditor = create<EditorState>((set, get) => ({
@@ -172,6 +183,51 @@ export const useEditor = create<EditorState>((set, get) => ({
   draft_list: null,
   main_tab: 'cube-maker',
   palette_list_id: null,
+  history_past: [],
+  history_future: [],
+  history_last_push: 0,
+
+  // === N1 편집 Undo/Redo ===
+  pushHistory(): void {
+    const now = Date.now();
+    const s = get();
+    // 800ms 내 연속 변이(타이핑 등) = 한 undo 스텝으로 코얼레스
+    if (now - s.history_last_push < 800 && s.history_past.length > 0) {
+      set({ history_last_push: now, history_future: [] });
+      return;
+    }
+    set({
+      history_past: [...s.history_past, { pack: s.pack, draft_list: s.draft_list }].slice(-50),
+      history_future: [],
+      history_last_push: now,
+    });
+  },
+
+  undo(): void {
+    const s = get();
+    const prev = s.history_past[s.history_past.length - 1];
+    if (!prev) return;
+    set({
+      pack: prev.pack,
+      draft_list: prev.draft_list,
+      history_past: s.history_past.slice(0, -1),
+      history_future: [...s.history_future, { pack: s.pack, draft_list: s.draft_list }].slice(-50),
+      history_last_push: 0,
+    });
+  },
+
+  redo(): void {
+    const s = get();
+    const next = s.history_future[s.history_future.length - 1];
+    if (!next) return;
+    set({
+      pack: next.pack,
+      draft_list: next.draft_list,
+      history_future: s.history_future.slice(0, -1),
+      history_past: [...s.history_past, { pack: s.pack, draft_list: s.draft_list }].slice(-50),
+      history_last_push: 0,
+    });
+  },
 
   // ── 내부 헬퍼: listId 가 draft 이면 draft_list, 아니면 pack.lists 를 불변 갱신 ──
 
@@ -265,6 +321,7 @@ export const useEditor = create<EditorState>((set, get) => ({
 
   loadPack(pack: CubePack): void {
     // 부팅 시 list_id = null (빈 상태로 시작) — 사용자가 직접 폴더 선택
+    // 새 문서 로드 = 히스토리 초기화 (N1)
     set({
       pack,
       pack_id: pack.id,
@@ -273,6 +330,9 @@ export const useEditor = create<EditorState>((set, get) => ({
       current_folder_id: null,
       folder_stack: [],
       current_page: 0,
+      history_past: [],
+      history_future: [],
+      history_last_push: 0,
     });
   },
 
@@ -285,6 +345,9 @@ export const useEditor = create<EditorState>((set, get) => ({
       current_folder_id: null,
       folder_stack: [],
       current_page: 0,
+      history_past: [],
+      history_future: [],
+      history_last_push: 0,
     });
   },
 
@@ -329,6 +392,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   upsertCube(listId: string, cube: Cube): void {
+    get().pushHistory();
     const { pack, draft_list } = get();
     // draft 분기
     if (draft_list && listId === draft_list.id) {
@@ -352,6 +416,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   removeCube(listId: string, cubeId: string): void {
+    get().pushHistory();
     const { pack, cube_id, draft_list } = get();
     // draft 분기
     if (draft_list && listId === draft_list.id) {
@@ -377,6 +442,7 @@ export const useEditor = create<EditorState>((set, get) => ({
    * SD-G 결정(모바일 PWA 동일): 1D real sort_order, 사이값 보간으로 row/col 변경 불필요.
    */
   reorderCubes(listId: string, fromId: string, toId: string): void {
+    get().pushHistory();
     const { pack, draft_list } = get();
     if (fromId === toId) return;
 
@@ -479,6 +545,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   // === 2A 폴더 드래그 인 ===
 
   addCubeToFolder(listId: string, folderId: string, cubeId: string): void {
+    get().pushHistory();
     const { pack, draft_list } = get();
     // draft 분기
     const targetList = (draft_list && listId === draft_list.id)
@@ -531,6 +598,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   // === 자유 슬롯 배치 (수정 #2) ===
 
   addCubeAtSlot(listId: string, slotIndex: number): void {
+    get().pushHistory();
     const { pack, draft_list } = get();
     // Draft 분기
     if (draft_list && listId === draft_list.id) {
@@ -558,6 +626,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   moveCubeToSlot(listId: string, cubeId: string, slotIndex: number): void {
+    get().pushHistory();
     const { pack, draft_list } = get();
     // Draft 분기
     if (draft_list && listId === draft_list.id) {
@@ -589,6 +658,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   // === 리스트(페이지) 관리 ===
 
   addList(name?: string): void {
+    get().pushHistory();
     const { pack } = get();
     if (!pack) return;
     const maxSort = pack.lists.length === 0
@@ -614,6 +684,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   renameList(listId: string, name: string): void {
+    get().pushHistory();
     const { pack, draft_list } = get();
     const trimmed = name.trim();
     if (trimmed.length === 0) return;
@@ -629,6 +700,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   setListShowLabels(listId: string, show: boolean): void {
+    get().pushHistory();
     const { pack, draft_list } = get();
     if (draft_list && listId === draft_list.id) {
       set({ draft_list: { ...draft_list, show_labels: show } });
@@ -642,6 +714,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   removeList(listId: string): void {
+    get().pushHistory();
     const { pack, list_id } = get();
     if (!pack || pack.lists.length <= 1) return; // 최소 1개 유지
     const nextLists = pack.lists.filter((l) => l.id !== listId);
@@ -662,6 +735,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   addLibraryCube(partial?: Partial<Cube>): void {
+    get().pushHistory();
     const { pack } = get();
     if (!pack) return;
     const newCube: Cube = {
@@ -678,6 +752,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   updateLibraryCube(cubeId: string, partial: Partial<Cube>): void {
+    get().pushHistory();
     const { pack } = get();
     if (!pack) return;
     const cubes = (pack.cubes ?? []).map((c) =>
@@ -687,6 +762,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   removeLibraryCube(cubeId: string): void {
+    get().pushHistory();
     const { pack, library_selected_id } = get();
     if (!pack) return;
     const cubes = (pack.cubes ?? []).filter((c) => c.id !== cubeId);
@@ -697,6 +773,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   addListFromLibrary(name: string, cubeIds: string[]): void {
+    get().pushHistory();
     const { pack } = get();
     if (!pack) return;
     const lib = pack.cubes ?? [];
@@ -750,6 +827,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   finishListMaker(name: string): void {
+    get().pushHistory();
     const { list_maker_selection, pack } = get();
     if (list_maker_selection.length === 0 || !pack) {
       set({ list_maker_active: false });
@@ -787,6 +865,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   // === Draft 액션 ===
 
   setDraftList(list: CubeList | null): void {
+    get().pushHistory();
     if (list) {
       set({ draft_list: list, list_id: list.id, current_page: 0 });
     } else {
@@ -797,12 +876,14 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   updateDraftMeta(partial): void {
+    get().pushHistory();
     const cur = get().draft_list;
     if (!cur) return;
     set({ draft_list: { ...cur, ...partial } });
   },
 
   addCubeToDraftSlot(slotIndex: number): void {
+    get().pushHistory();
     const cur = get().draft_list;
     if (!cur) return;
     if (cur.cubes.some((c) => c.sort_order === slotIndex)) return; // 이미 있음
@@ -821,6 +902,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   moveCubeInDraft(cubeId: string, toSlot: number): void {
+    get().pushHistory();
     const cur = get().draft_list;
     if (!cur) return;
     const moving = cur.cubes.find((c) => c.id === cubeId);
@@ -835,12 +917,14 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   removeCubeFromDraft(cubeId: string): void {
+    get().pushHistory();
     const cur = get().draft_list;
     if (!cur) return;
     set({ draft_list: { ...cur, cubes: cur.cubes.filter((c) => c.id !== cubeId) } });
   },
 
   updateCubeInDraft(cubeId: string, partial: Partial<Cube>): void {
+    get().pushHistory();
     const cur = get().draft_list;
     if (!cur) return;
     set({
@@ -922,6 +1006,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   // === W2 리스트 스킨 ===
 
   applySkinToList(listId, replacements) {
+    get().pushHistory();
     const { pack } = get();
     if (!pack) return;
     const replacementMap = new Map(replacements.map((r) => [r.cubeId, r]));
@@ -949,6 +1034,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   },
 
   removeSkinFromList(listId) {
+    get().pushHistory();
     const { pack } = get();
     if (!pack) return;
     const nextLists = pack.lists.map((l) => {
@@ -971,6 +1057,7 @@ export const useEditor = create<EditorState>((set, get) => ({
   // === 그리드 배치 설정 ===
 
   setListLayout(listId: string, layout: { cols: number; cubes_per_page: number }): void {
+    get().pushHistory();
     const { pack, draft_list } = get();
     if (draft_list && listId === draft_list.id) {
       set({ draft_list: { ...draft_list, cols: layout.cols, cubes_per_page: layout.cubes_per_page }, current_page: 0 });

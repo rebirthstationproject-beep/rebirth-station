@@ -132,6 +132,24 @@ export function App() {
     return () => window.removeEventListener('keydown', handleKey);
   }, []);
 
+  // N1 (docs/11 G1): Ctrl+Z / Ctrl+Shift+Z·Ctrl+Y 편집 Undo/Redo
+  useEffect(() => {
+    function handleUndoKey(e: KeyboardEvent): void {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      const key = e.key.toLowerCase();
+      if (key !== 'z' && key !== 'y') return;
+      const target = e.target as HTMLElement | null;
+      // 입력 필드는 자체 텍스트 undo 유지
+      if (target && (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable)) return;
+      e.preventDefault();
+      const editor = useEditor.getState();
+      if (key === 'y' || (key === 'z' && e.shiftKey)) editor.redo();
+      else editor.undo();
+    }
+    window.addEventListener('keydown', handleUndoKey);
+    return () => window.removeEventListener('keydown', handleUndoKey);
+  }, []);
+
   // draft 가 새로 생성되면 큐브 리스트 만들기 탭으로 자동 전환 (워크플로우 자동화)
   useEffect(() => {
     if (draftList) setMainTab('list-maker');
