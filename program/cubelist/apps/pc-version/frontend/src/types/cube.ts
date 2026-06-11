@@ -229,6 +229,8 @@ export interface CubeList {
 export interface CubePack {
   id: string;
   name: string;
+  /** 팩 대표 아이콘 (프로그램 공식 로고, data URL) — 폴더 셀 표시용. 2026-06-11 */
+  icon_url?: string | null;
   /** 큐브팩 카테고리 (생산성/미디어/개발/... — 시드 카탈로그와 매핑) */
   category?: string;
   /** 큐브 라이브러리 — 만들거나 폴더에서 불러온 큐브 풀 (sort_order 의미 없음, Phase 2b) */

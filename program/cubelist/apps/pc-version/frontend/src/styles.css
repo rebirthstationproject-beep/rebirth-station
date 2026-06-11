@@ -347,10 +347,12 @@ html, body, #root {
   flex-shrink: 0;
 }
 
-/* 2A: 폴더 드롭 타겟 강조 (드래그 중 폴더 셀 위) */
+/* 드롭 타겟 — 외곽선 제거, 살짝 밝아지는 정도만 (2026-06-11 사용자 지침) */
 .cube-cell.is-drop-target {
-  outline: 2px solid var(--accent, #cfcfcf);
-  outline-offset: -2px;
+  outline: none;
+}
+.cube-cell.is-drop-target .cube-icon-bg {
+  filter: brightness(1.35);
 }
 
 .brand {
@@ -2097,12 +2099,14 @@ html, body, #root {
   opacity: 0.6;
   font-family: 'Consolas', monospace;
 }
+/* 빈 슬롯 드롭 타겟 — 흰 테두리 없이 살짝 밝아짐 + 중앙 ＋만 (2026-06-11 사용자 지침) */
 .cube-cell.is-empty.is-drop-target .cube-icon-bg {
-  border-color: var(--accent) !important;
-  background: rgba(207,207,207,0.06) !important;
+  border-color: var(--border) !important;
+  background: rgba(255,255,255,0.08) !important;
+  filter: none;
 }
 .cube-cell.is-empty.is-drop-target .cube-icon-bg::after {
-  color: rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.6);
 }
 .inspector-actions {
   margin-top: 24px;

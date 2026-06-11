@@ -90,6 +90,7 @@ export async function exportCubepack(pack: CubePack): Promise<Blob> {
     rbs_min_version: RBS_MIN_VERSION,
     pack: {
       name: pack.name,
+      ...(pack.icon_url ? { icon: 'icon.png' } : {}), // 2026-06-11 팩 아이콘 라운드트립
       ...(pack.category ? { target_persona: [pack.category] } : {}),
       order: pack.lists
         .slice()
@@ -101,6 +102,12 @@ export async function exportCubepack(pack: CubePack): Promise<Blob> {
     },
   };
   zip.file('manifest.json', JSON.stringify(packManifest, null, 2));
+
+  // 팩 대표 아이콘 동봉 (data URL → 바이너리)
+  if (pack.icon_url) {
+    const m = /^data:image\/[a-z+]+;base64,(.+)$/i.exec(pack.icon_url);
+    if (m) zip.file('icon.png', m[1], { base64: true });
+  }
 
   for (const list of pack.lists) {
     const listZip = await buildListZip(list, now);
@@ -320,9 +327,21 @@ export async function importCubepack(input: Blob | ArrayBuffer | Uint8Array): Pr
     }
   }
 
+  // 2026-06-11: 팩 대표 아이콘 (manifest.pack.icon → ZIP 내 파일 → data URL)
+  let packIconUrl: string | null = null;
+  const iconRef = typeof packBody.icon === 'string' ? packBody.icon : 'icon.png';
+  const iconEntry = zip.file(iconRef);
+  if (iconEntry) {
+    const b64 = await iconEntry.async('base64');
+    const mime = iconRef.toLowerCase().endsWith('.svg') ? 'image/svg+xml'
+      : iconRef.toLowerCase().endsWith('.webp') ? 'image/webp' : 'image/png';
+    packIconUrl = `data:${mime};base64,${b64}`;
+  }
+
   return {
     id: packId,
     name: typeof packBody.name === 'string' ? packBody.name : '(이름 없음)',
+    ...(packIconUrl ? { icon_url: packIconUrl } : {}),
     category: extractCategory(packBody),
     cubes: libraryCubes,
     lists,

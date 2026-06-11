@@ -674,13 +674,16 @@ function ListMakerCenter() {
         // 빈 슬롯 — 그 슬롯 번호
         targetSlot = Number(overId.slice('empty-'.length));
         if (!Number.isFinite(targetSlot)) return;
-      } else {
-        // 큐브 위 → 마지막+1
+      } else if (draftList.cubes.some((c) => c.id === overId)) {
+        // 그리드 안 큐브 위 → 마지막+1
         const maxSlot =
           draftList.cubes.length > 0
             ? Math.max(...draftList.cubes.map((c) => c.sort_order))
             : 0;
         targetSlot = maxSlot + 1;
+      } else {
+        // 2026-06-11: 그리드 밖(팔레트 등)에 내려놓음 = 배치 취소
+        return;
       }
 
       // 복사본 생성 (새 id, 딥카피)
@@ -1143,7 +1146,8 @@ function CubeMakerCenter() {
             style={{ gridTemplateColumns: `repeat(auto-fill, 112px)`, padding: '16px' }}
           >
             {lists.map((list) => {
-              const folderIcon = list.cubes[0]?.icon_url ?? null;
+              // 2026-06-11: 폴더(팩) 아이콘 = 프로그램 공식 로고(pack.icon_url) 우선, 첫 큐브는 폴백
+              const folderIcon = pack?.icon_url ?? list.cubes[0]?.icon_url ?? null;
               return (
                 <button
                   key={list.id}
