@@ -172,7 +172,31 @@ def art_claude_ai(d):
     prect(629, 206, 701, 278, TEXT)    # 눈 우
 
 
+def art_claude_run(d):
+    # 터미널 창 + 미니 Claw'd — 터미널에서 Claude 시작 버튼 (2026-06-11)
+    x0, y0, x1, y1 = zbox(500, 420)
+    rrect(d, (x0, y0, x1, y1), 44, outline=MAIN, width=LW)
+    d.line((x0, y0 + 80, x1, y0 + 80), fill=MAIN, width=LW - 10)
+    # 미니 Claw'd (창 내부 중앙)
+    mx, my = (x0 + x1) // 2, y0 + 80 + (y1 - y0 - 80) // 2 - 10
+    u = 0.42  # 미니 스케일
+
+    def crect(rx0, ry0, rx1, ry1, color):
+        d.rectangle((mx + rx0 * u, my + ry0 * u, mx + rx1 * u, my + ry1 * u), fill=color)
+
+    crect(-242, -200, 242, -70, MAIN)            # 머리
+    crect(-375, -70, 375, 60, MAIN)              # 어깨
+    crect(-375, 60, -242, 130, MAIN)             # 좌팔
+    crect(242, 60, 375, 130, MAIN)               # 우팔
+    crect(-242, 60, 242, 185, MAIN)              # 몸통
+    for lx0 in (-232, -87, 81, 222):             # 다리 4
+        crect(lx0, 185, lx0 + 75, 330, MAIN)
+    crect(-177, -160, -105, -88, TEXT)           # 눈 좌
+    crect(129, -160, 201, -88, TEXT)             # 눈 우
+
+
 PICTORIAL = {
+    'Claude Run': art_claude_run,
     'Plan Mode': art_plan_mode,
     'Thinking': art_thinking,
     'Interrupt': art_interrupt,

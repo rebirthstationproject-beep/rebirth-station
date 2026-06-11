@@ -40,7 +40,13 @@ const SLASH_SERIES = [
 const KEYWORDS = ['think', 'think hard', 'ultrathink', 'ultracode'];
 
 const CUBES = [
-  // 그림 아이콘 12
+  // 그림 아이콘
+  // Claude Run: Windows Terminal을 워크스페이스에서 열고 claude.exe 실행 (네이티브 설치 표준 경로)
+  {
+    label: 'Claude Run',
+    type: 'app_launch',
+    payload: { path: 'wt.exe', args: ['-d', 'E:\\Claude-Workspace', 'C:\\Users\\PC\\.local\\bin\\claude.exe'] },
+  },
   { label: 'Plan Mode', type: 'shortcut', payload: { keys: ['Shift', 'Tab'] } },
   { label: 'Thinking', type: 'shortcut', payload: { keys: ['Alt', 'T'] } },
   { label: 'Interrupt', type: 'shortcut', payload: { keys: ['Esc'] } },
