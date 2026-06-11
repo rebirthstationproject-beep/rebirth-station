@@ -20,9 +20,24 @@ import {
   useSensor,
   useSensors,
   closestCenter,
+  pointerWithin,
+  rectIntersection,
+  type CollisionDetection,
   type DragEndEvent,
   type DragStartEvent,
 } from '@dnd-kit/core';
+
+/**
+ * 2026-06-11: 팔레트→그리드 드래그용 충돌 감지.
+ * closestCenter는 포인터가 그리드 밖(팔레트 등)에 있어도 "가장 가까운 슬롯"을
+ * over로 반환해 취소 의도 드롭이 배치되는 버그 원인 → 포인터가 실제로
+ * 올라가 있는 droppable만 인정 (폴백: 사각형 교차).
+ */
+const pointerFirstCollision: CollisionDetection = (args) => {
+  const within = pointerWithin(args);
+  if (within.length > 0) return within;
+  return rectIntersection(args);
+};
 import {
   SortableContext,
   rectSortingStrategy,
@@ -733,7 +748,7 @@ function ListMakerCenter() {
   return (
     <DndContext
       sensors={extSensors}
-      collisionDetection={closestCenter}
+      collisionDetection={pointerFirstCollision}
       onDragStart={handleExternalDragStart}
       onDragEnd={handleExternalDragEnd}
       onDragCancel={() => setActiveDragCube(null)}
