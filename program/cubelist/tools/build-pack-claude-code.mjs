@@ -45,7 +45,7 @@ const CUBES = [
   {
     label: 'Claude Run',
     type: 'app_launch',
-    payload: { path: 'wt.exe', args: ['-d', 'E:\\Claude-Workspace', 'C:\\Users\\PC\\.local\\bin\\claude.exe'] },
+    payload: { path: 'wt.exe', args: ['-d', 'E:\\Claude-Workspace', 'claude'] }, // claude = PATH 등록 표준 명령 (모든 환경 통용)
   },
   { label: 'Plan Mode', type: 'shortcut', payload: { keys: ['Shift', 'Tab'] } },
   { label: 'Thinking', type: 'shortcut', payload: { keys: ['Alt', 'T'] } },
