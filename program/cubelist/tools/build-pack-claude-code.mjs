@@ -31,9 +31,9 @@ const SLASH_SERIES = [
   '/clear', '/compact', '/model', '/resume', '/cost', '/init', '/memory', '/agents',
   // 잘 모르는데 유용한 기본
   '/mcp', '/config', '/permissions', '/doctor', '/review', '/rewind', '/context', '/export',
-  '/vim', '/hooks', '/statusline', '/add-dir', '/usage', '/todos', '/terminal-setup', '/bug',
+  '/vim', '/hooks', '/statusline', '/add-dir', '/usage', '/todos', '/bug',
   // 워크스페이스 커스텀
-  '/goal', '/plan', '/tdd', '/verify', '/code-review', '/security-review', '/e2e', '/loop', '/schedule', '/learn',
+  '/plan', '/tdd', '/verify', '/code-review', '/e2e', '/loop', '/schedule', '/learn',
 ];
 
 // 사고 강화/오케스트레이션 키워드 (프롬프트 텍스트)
