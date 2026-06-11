@@ -1358,12 +1358,11 @@ function PageSizeGuide({ currentCubeCount, cols }: { currentCubeCount: number; c
     <div
       role="note"
       style={{
-        margin: '20px 16px 8px',
-        padding: '8px 12px',
+        // N6 (docs/11 G8): 박스 제거 + 추가 감쇠 — 정보는 유지하되 시각 소음 최소화
+        margin: '16px 16px 6px',
+        padding: '0 4px',
         fontSize: 10,
-        opacity: 0.55,
-        border: '1px solid var(--color-border, #333)',
-        borderRadius: 6,
+        opacity: 0.4,
         display: 'flex',
         flexWrap: 'wrap',
         alignItems: 'center',
@@ -2681,6 +2680,16 @@ function Inspector() {
         <div className="inspector-empty">
           {t('inspector.empty')}
           <br /><span className="muted">{t('inspector.empty_hint')}</span>
+        </div>
+        {/* N6 (docs/11 G7): 빈 상태 = 단축키 치트 카드 */}
+        <div className="inspector-cheats">
+          <div className="cheats-title">{t('cheats.title')}</div>
+          <div className="cheat-row"><kbd>Ctrl+Z</kbd><span>{t('cheats.undo')}</span></div>
+          <div className="cheat-row"><kbd>Ctrl+C/V</kbd><span>{t('cheats.copy_paste')}</span></div>
+          <div className="cheat-row"><kbd>← ↑ ↓ →</kbd><span>{t('cheats.navigate')}</span></div>
+          <div className="cheat-row"><kbd>Delete</kbd><span>{t('cheats.delete')}</span></div>
+          <div className="cheat-row"><kbd>Ctrl+F</kbd><span>{t('cheats.search')}</span></div>
+          <div className="cheat-row"><kbd>2×{t('cheats.click')}</kbd><span>{t('cheats.run')}</span></div>
         </div>
       </aside>
     );

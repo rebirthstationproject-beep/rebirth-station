@@ -17,6 +17,13 @@
 - 라이브러리 현황: 31폴더 316큐브 — PS v2 외 전부 plugin_action 스텁 단계 (`assets/cubepacks-clean/_inventory.json`)
 - 잔여: PS 팩 PC 앱 실행 테스트(검토1 실측) + 디자인 통일감 수동 판정(검토4) / 다음 후보 = 네이티브 재설계 가능한 팩(Clocks·CPU→live_*, Advanced Launcher→app_launch, YouTube·Spotify→link 등) / discord 류 런타임 의존 팩은 액션 재설계 필요
 
+## ⭐ 2026-06-11 야간 — 1호 팩 자체 검증 + SD 동급화 라운드 (docs/11)
+- **1호 팩 자체 검증 완료**: 키 45/45 Rust map_key 유효(validate-pack-keys.mjs) / 아이콘 콘택트 시트 시각 검증(pack-contact-sheet.mjs) → **currentColor 검정 해석 결함 발견·수정**(svgOf color 속성) / 라벨-동작 불일치 7 제외 + 라벨 정정 2 → 45큐브 게이트 4종 PASS (a30ae92)
+- **SD 동급화 N1~N6 실행** (docs/11-sd-parity-night.md 실측 격차 분석 기반):
+  N1 Undo/Redo(75dc8ee) · N2 복사/붙여넣기(06e5364) · N3 키보드 네비게이션(4d35bd9) · N4 누름 피드백 · N6 인스펙터 단축키 치트(3언어)+footer 감쇠 — 전부 Playwright 실검증
+- N5(글리프 반복)는 표시단 가공 회피 — 클린 팩 자산화로 해결이 정도
+- 잔여 격차(후속): 전역 핫키 PlayMode 토글(Tauri) / 멀티 상태 셀 시각 / TopBar 그룹 재구성(디자인 결정)
+
 ## ⭐ 2026-06-10 품질 재설계 (Stream Deck 동급화) — R1~R3 완료
 - 권위 스펙: `docs/08-quality-redesign-plan.md` (Fable 5 검토 + 계획)
 - R1 구조 안정화(5d55a6b): CubeCell.tsx 셀 단일화 / live_* 라이브 비주얼 무조건 우선(정적 아이콘=옵트인) / 중앙 tick 단일화 / _LegacySidebar·하드코딩 제거

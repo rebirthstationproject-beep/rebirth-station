@@ -27,6 +27,19 @@
 
 검증: 각 N 완료 시 `npm run build` → commit. GUI 시각 확인은 Playwright 캡처.
 
+## 실행 결과 (2026-06-11 야간)
+
+| 항목 | 상태 | 검증 |
+|---|---|---|
+| N1 Undo/Redo | ✅ (75dc8ee) | Playwright: 추가 20→undo 19→redo 20 |
+| N2 복사/붙여넣기 | ✅ (06e5364) | Playwright: 20→21→undo 20 |
+| N3 키보드 네비게이션 | ✅ (4d35bd9+c1a34f7) | Playwright: 슬롯 1→2→6→5 (cols=4) |
+| N4 누름 피드백 | ✅ | CSS :active scale 0.93 + brightness (PlayMode+편집 그리드) |
+| N5 글리프 dedupe | ⏸ 보류 | 데이터 품질 문제 = 자산화 파이프라인(클린 팩)에서 해결이 정도 — 표시단 가공은 회피 |
+| N6 인스펙터 치트 카드 + footer 감쇠 | ✅ | 캡처 확인. 단축키 치트 = 신기능 광고 겸용 (i18n 3언어) |
+
+dev 전용 `window.__editor` 노출 추가 (E2E/디버그용, 프로덕션 제외).
+
 ## 이번 범위 제외 (후속)
 - 전역 핫키 PlayMode 토글 (Rust hotkeys.rs 연동 — Tauri 빌드 필요)
 - 멀티 상태 큐브 셀 시각 강화 / 사운드 피드백 (정책 결정 필요)

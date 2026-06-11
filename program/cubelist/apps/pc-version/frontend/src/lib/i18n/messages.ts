@@ -42,6 +42,16 @@ const MESSAGES_KO = {
   // Inspector
   'inspector.empty': '큐브를 선택하세요',
   'inspector.empty_hint': '또는 빈 슬롯 ＋ 클릭으로 추가',
+
+  // N6 단축키 치트 (빈 인스펙터)
+  'cheats.title': '단축키',
+  'cheats.undo': '실행 취소 / 다시 실행 (Shift)',
+  'cheats.copy_paste': '큐브 복사 / 붙여넣기',
+  'cheats.navigate': '큐브 선택 이동',
+  'cheats.delete': '선택 큐브 삭제',
+  'cheats.search': '전역 검색',
+  'cheats.click': '클릭',
+  'cheats.run': '큐브 즉시 실행',
   'inspector.label': '라벨',
   'inspector.label_required': '라벨을 입력하세요 (필수)',
   'inspector.action_type': '액션 타입',
@@ -239,6 +249,16 @@ const MESSAGES_EN: Record<MessageKey, string> = {
 
   'inspector.empty': 'Select a cube',
   'inspector.empty_hint': 'Or click an empty ＋ slot',
+
+  'cheats.title': 'Shortcuts',
+  'cheats.undo': 'Undo / Redo (Shift)',
+  'cheats.copy_paste': 'Copy / paste cubes',
+  'cheats.navigate': 'Move selection',
+  'cheats.delete': 'Delete selected cube',
+  'cheats.search': 'Global search',
+  'cheats.click': 'click',
+  'cheats.run': 'Run cube instantly',
+
   'inspector.label': 'Label',
   'inspector.label_required': 'Enter a label (required)',
   'inspector.action_type': 'Action Type',
@@ -426,6 +446,16 @@ const MESSAGES_JA: Record<MessageKey, string> = {
 
   'inspector.empty': 'キューブを選択',
   'inspector.empty_hint': 'または空きスロット ＋ をクリック',
+
+  'cheats.title': 'ショートカット',
+  'cheats.undo': '元に戻す / やり直し (Shift)',
+  'cheats.copy_paste': 'キューブのコピー / 貼り付け',
+  'cheats.navigate': '選択を移動',
+  'cheats.delete': '選択キューブを削除',
+  'cheats.search': 'グローバル検索',
+  'cheats.click': 'クリック',
+  'cheats.run': 'キューブを即実行',
+
   'inspector.label': 'ラベル',
   'inspector.label_required': 'ラベルを入力してください（必須）',
   'inspector.action_type': 'アクションタイプ',
