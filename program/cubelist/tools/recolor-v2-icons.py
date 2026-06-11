@@ -17,7 +17,7 @@ import re
 import sys
 import zipfile
 
-from PIL import Image
+from PIL import Image, ImageDraw, ImageFont
 
 SRC = os.path.join(os.path.expanduser('~'), 'Downloads', '플러그인', 'CUBE', 'Adobe Photoshop v2')
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -28,7 +28,27 @@ BLUE = (49, 168, 255)     # #31A8FF 기본톤
 LIGHT = (158, 215, 255)   # #9ED7FF 액센트 (흰색 대체)
 
 CANVAS = 256
-CONTENT = 0.62            # 콘텐츠 영역 비율 → 사방 19% 여백
+CONTENT = 0.58            # 아트워크 영역 비율
+ART_TOP = 28              # 아트워크 상단 고정 (중앙 대비 약 20% 위)
+FONT_PATH = os.path.join(HERE, '..', 'assets', 'fonts', 'NotoSans-Bold.ttf')
+TEXT_MAX_W = CANVAS - 24  # 텍스트 좌우 여백 12px
+
+# 라벨 정정 (빌더 RELABEL과 동기)
+RELABEL = {'Foreground': 'Default Colors', 'Background': 'Swap Colors'}
+
+
+def uniform_font_size(labels):
+    """가장 긴 이름이 TEXT_MAX_W 안에 들어가는 최대 크기 — 전 타일 단일 크기."""
+    probe = Image.new('RGB', (8, 8))
+    draw = ImageDraw.Draw(probe)
+    size = 40
+    while size > 8:
+        font = ImageFont.truetype(FONT_PATH, size)
+        widest = max(draw.textlength(t, font=font) for t in labels)
+        if widest <= TEXT_MAX_W:
+            return size
+        size -= 1
+    return 8
 
 
 def content_mask(img):
@@ -104,8 +124,8 @@ def recolor_px(img):
     return img
 
 
-def to_tile(img):
-    """아트워크 → 256 네이비 캔버스 중앙, 콘텐츠 62% 균일 배치."""
+def to_tile(img, label, font):
+    """아트워크 상단(약 20% 위) 균일 배치 + 하단 기능명 1줄 (Noto Sans Bold, 블루)."""
     img = img.convert('RGB')
     img = strip_text(img)
     box = art_bbox(img)
@@ -117,13 +137,20 @@ def to_tile(img):
     img = img.resize((nw, nh), Image.LANCZOS)
     img = recolor_px(img)
     tile = Image.new('RGB', (CANVAS, CANVAS), NAVY)
-    tile.paste(img, ((CANVAS - nw) // 2, (CANVAS - nh) // 2))
+    # 아트워크: 가로 중앙 / 세로 = 고정 영역(ART_TOP..ART_TOP+target) 안 중앙
+    tile.paste(img, ((CANVAS - nw) // 2, ART_TOP + (target - nh) // 2))
+    # 기능명: 아트워크 영역 아래 잔여 공간 세로 중앙
+    draw = ImageDraw.Draw(tile)
+    art_bottom = ART_TOP + target
+    text_cy = art_bottom + (CANVAS - art_bottom) // 2
+    draw.text((CANVAS // 2, text_cy), label, font=font, fill=BLUE, anchor='mm')
     return tile
 
 
 def main() -> None:
     os.makedirs(OUT, exist_ok=True)
-    done = 0
+    # 1차 스캔: 라벨 수집 → 최장 이름 기준 단일 폰트 크기
+    items = []
     for f in sorted(os.listdir(SRC)):
         if not f.endswith('.cubeone'):
             continue
@@ -137,9 +164,19 @@ def main() -> None:
         if not m:
             print('SKIP(no icon):', cube.get('label'))
             continue
-        img = Image.open(io.BytesIO(base64.b64decode(m.group(2))))
-        tile = to_tile(img)
-        safe = re.sub(r'[\\/:*?"<>|]', '_', cube.get('label', f))
+        raw_label = cube.get('label', f)
+        # 파일명 = 원본 라벨 (빌더 매칭 키), 표기 텍스트 = 정정 라벨
+        items.append((raw_label, RELABEL.get(raw_label, raw_label), m.group(2)))
+
+    size = uniform_font_size([fin for _, fin, _ in items])
+    font = ImageFont.truetype(FONT_PATH, size)
+    print('폰트 크기(최장 이름 기준):', size)
+
+    done = 0
+    for raw_label, final_label, b64 in items:
+        img = Image.open(io.BytesIO(base64.b64decode(b64)))
+        tile = to_tile(img, final_label, font)
+        safe = re.sub(r'[\\/:*?"<>|]', '_', raw_label)
         tile.save(os.path.join(OUT, f'{safe}.png'), 'PNG')
         done += 1
     print('완료:', done)

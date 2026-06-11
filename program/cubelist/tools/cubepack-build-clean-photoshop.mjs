@@ -114,9 +114,10 @@ async function main() {
       metadata: {
         source: 'rebirth-curated',
         icon_source: iconSource,
-        catalog_version: 'clean-v2-recolor',
+        catalog_version: 'clean-v3-recolor',
       },
-      title_style: { show: true },
+      // 기능명이 타일 안에 베이크됨 (2026-06-11 지시) — 셀 라벨 중복 표시 OFF
+      title_style: { show: false },
     });
   }
 
