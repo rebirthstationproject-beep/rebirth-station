@@ -33,8 +33,17 @@ ART_TOP = 28              # 아트워크 상단 고정 (중앙 대비 약 20% �
 FONT_PATH = os.path.join(HERE, '..', 'assets', 'fonts', 'NotoSans-Bold.ttf')
 TEXT_MAX_W = CANVAS - 24  # 텍스트 좌우 여백 12px
 
-# 라벨 정정 (빌더 RELABEL과 동기)
-RELABEL = {'Foreground': 'Default Colors', 'Background': 'Swap Colors'}
+# 라벨 정정 (빌더 RELABEL과 동기) — 2026-06-11 단축 라벨 (글씨 크기 확보)
+RELABEL = {
+    'Foreground': 'Default Colors',
+    'Background': 'Swap Colors',
+    'Fill with Foreground Color': 'Fill Foreground',
+    'Fill with Background Color': 'Fill Background',
+    'Increase Brush Size': 'Brush Size +',
+    'Decrease Brush Size': 'Brush Size -',
+    'Adj Black And White': 'Black & White',
+    'Adj Color Balance': 'Color Balance',
+}
 
 
 def uniform_font_size(labels):

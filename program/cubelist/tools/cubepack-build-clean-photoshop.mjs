@@ -44,10 +44,16 @@ const EXCLUDE_LABELS = new Set([
   'Vertical Type',        // T = Horizontal Type과 그룹 공유 — 비결정
   'Burn',                 // O = Dodge와 그룹 공유 — 비결정
 ]);
-// 라벨 정정: 실제 동작 명칭으로 (카탈로그 아이콘 키는 원 라벨 유지)
+// 라벨 정정: 실제 동작 명칭 + 단축 라벨 (recolor-v2-icons.py RELABEL과 동기)
 const RELABEL = new Map([
   ['Foreground', 'Default Colors'], // D = 기본색 리셋
   ['Background', 'Swap Colors'],    // X = 전경/배경 교체
+  ['Fill with Foreground Color', 'Fill Foreground'],
+  ['Fill with Background Color', 'Fill Background'],
+  ['Increase Brush Size', 'Brush Size +'],
+  ['Decrease Brush Size', 'Brush Size -'],
+  ['Adj Black And White', 'Black & White'],
+  ['Adj Color Balance', 'Color Balance'],
 ]);
 
 async function loadCatalog() {
