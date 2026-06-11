@@ -150,21 +150,26 @@ def art_console(d):
 
 
 def art_claude_ai(d):
-    # claw'd 캐릭터 — 웃는 starburst (팩 캐릭터의 큐브 테마 버전, 2026-06-11)
-    cx, cy = ZONE_CX, ZONE_CY
-    lengths = [250, 225, 245, 222, 248, 228, 250, 225, 240, 222, 246, 230]
-    for i in range(12):
-        ang = math.radians(i * 30 + 8)
-        d.line((cx + 120 * math.cos(ang), cy + 120 * math.sin(ang),
-                cx + lengths[i] * math.cos(ang), cy + lengths[i] * math.sin(ang)),
-               fill=MAIN, width=44)
-    # 얼굴판 (코랄)
-    d.ellipse((cx - 135, cy - 135, cx + 135, cy + 135), fill=MAIN)
-    # 눈 (아이보리)
-    for ex in (cx - 52, cx + 52):
-        d.ellipse((ex - 22, cy - 45, ex + 22, cy - 1), fill=BG)
-    # 스마일 (아이보리)
-    d.arc((cx - 70, cy - 25, cx + 70, cy + 85), start=20, end=160, fill=BG, width=18)
+    # Claw'd — Claude Code 공식 마스코트 (픽셀 게, 참조 clawd-ref2 비율)
+    Z = int(S * 0.66)  # 캐릭터 박스
+    ox = ZONE_CX - Z // 2
+    oy = ZONE_CY - Z // 2 + int(Z * 0.07)  # 캐릭터 y중심(430/1000) 보정
+
+    def prect(x0, y0, x1, y1, color):
+        d.rectangle((ox + x0 * Z // 1000, oy + y0 * Z // 1000,
+                     ox + x1 * Z // 1000, oy + y1 * Z // 1000), fill=color)
+
+    prect(258, 165, 742, 295, MAIN)    # 머리
+    prect(125, 295, 875, 424, MAIN)    # 어깨 풀로우
+    prect(125, 424, 258, 493, MAIN)    # 좌팔
+    prect(742, 424, 875, 493, MAIN)    # 우팔
+    prect(258, 424, 742, 549, MAIN)    # 몸통
+    prect(268, 549, 343, 694, MAIN)    # 다리 1
+    prect(413, 549, 488, 694, MAIN)    # 다리 2
+    prect(581, 549, 656, 694, MAIN)    # 다리 3
+    prect(722, 549, 797, 694, MAIN)    # 다리 4
+    prect(323, 206, 395, 278, TEXT)    # 눈 좌
+    prect(629, 206, 701, 278, TEXT)    # 눈 우
 
 
 PICTORIAL = {
