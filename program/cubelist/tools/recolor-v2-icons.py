@@ -87,27 +87,64 @@ def row_blocks(mask):
     return blocks
 
 
-def strip_text(img):
+# 텍스트 제거 한도 — 하단 아트가 텍스트 줄과 동일 메트릭인 아이콘만 예외
+# Levels: ▲▲▲ 슬라이더 (gap 규칙으로도 보존되지만 이중 안전)
+# Select All: marquee 아래 점선 변(h60)이 텍스트 줄(h50)과 메트릭 겹침 → 1블록만
+STRIP_LIMIT = {'Levels': 1, 'Select All': 1}
+
+
+def strip_text(img, label=''):
     """하단 분리 텍스트 블록 제거 → 아트워크만 남김.
 
     2줄 텍스트("Fill with BG" / "Color")는 줄마다 별도 블록이므로
-    조건 충족하는 동안 꼬리 블록을 반복 제거한다.
+    조건 충족하는 동안 꼬리 블록을 반복 제거한다. (라벨별 한도 STRIP_LIMIT)
     """
     mask = content_mask(img)
     h = img.size[1]
     blocks = row_blocks(mask)
-    while len(blocks) >= 2:
+    # 실측 기반 규칙 (diag-blocks.py, 350px 기준 비율):
+    #  1줄째(맨 아래): 바닥 밀착(bottom>=92%) + 높이<=20% + top>=55%
+    #  2줄째: 직전 줄과 gap<=4% + 줄 높이 11~19% (텍스트 줄 고유 높이)
+    #  → 도장 밑판(h6%)·Levels ▲(gap 8%)는 자동 보존
+    limit = STRIP_LIMIT.get(label, 2)
+    removed = 0
+    while len(blocks) >= 2 and removed < limit:
         top, bottom = blocks[-1]
-        # 하단 50% 이후에서 시작하는 얕은(<45%) 블록 = 텍스트 줄
-        if top > h * 0.50 and (bottom - top) < h * 0.45:
-            blocks = blocks[:-1]
+        bh = bottom - top
+        if removed == 0:
+            # 높이 한도 0.36 — 줄 간격이 좁아 2줄이 한 블록으로 병합되는 경우 수용
+            # (Adj Black And White h=31%, Duplicate Layers h=34% 실측)
+            ok = bottom >= h * 0.92 and bh <= h * 0.36 and top >= h * 0.55
         else:
+            gap = prev_top - bottom
+            ok = gap <= h * 0.04 and h * 0.11 <= bh <= h * 0.19 and top >= h * 0.55
+        if not ok:
             break
+        prev_top = top
+        blocks = blocks[:-1]
+        removed += 1
     if not blocks:
         return img
     y0 = max(0, blocks[0][0] - 2)
     y1 = min(h, blocks[-1][1] + 3)
     return img.crop((0, y0, img.size[0], y1))
+
+
+def draw_paste_art():
+    """Paste 대체 아트 — v2 원본(풀 튜브)은 영어 말장난이라 혼란.
+    표준 '클립보드' 마크를 흰색(기본톤 변환)으로 직접 드로잉."""
+    img = Image.new('RGB', (512, 512), (0, 0, 0))
+    d = ImageDraw.Draw(img)
+    W = (255, 255, 255)
+    A = (40, 140, 255)  # 블루 계열 → 액센트(밝은 블루)로 변환됨
+    # 보드
+    d.rounded_rectangle((112, 80, 400, 460), radius=42, outline=W, width=26)
+    # 상단 클립
+    d.rounded_rectangle((196, 38, 316, 124), radius=24, fill=W)
+    # 내용 줄 (액센트)
+    for y in (210, 280, 350):
+        d.rounded_rectangle((176, y, 336, y + 24), radius=12, fill=A)
+    return img
 
 
 def art_bbox(img):
@@ -133,10 +170,10 @@ def recolor_px(img):
     return img
 
 
-def to_tile(img, label, font):
+def to_tile(img, label, font, raw_label=''):
     """아트워크 상단(약 20% 위) 균일 배치 + 하단 기능명 1줄 (Noto Sans Bold, 블루)."""
     img = img.convert('RGB')
-    img = strip_text(img)
+    img = strip_text(img, raw_label)
     box = art_bbox(img)
     if box:
         img = img.crop(box)
@@ -183,8 +220,11 @@ def main() -> None:
 
     done = 0
     for raw_label, final_label, b64 in items:
-        img = Image.open(io.BytesIO(base64.b64decode(b64)))
-        tile = to_tile(img, final_label, font)
+        if raw_label == 'Paste':
+            img = draw_paste_art()  # 풀 튜브 말장난 → 표준 클립보드
+        else:
+            img = Image.open(io.BytesIO(base64.b64decode(b64)))
+        tile = to_tile(img, final_label, font, raw_label)
         safe = re.sub(r'[\\/:*?"<>|]', '_', raw_label)
         tile.save(os.path.join(OUT, f'{safe}.png'), 'PNG')
         done += 1

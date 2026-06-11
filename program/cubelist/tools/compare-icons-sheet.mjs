@@ -16,12 +16,10 @@ const esbuild = require(path.join(NM, 'esbuild'));
 const SRC_DIR = path.join(os.homedir(), 'Downloads', '플러그인', 'CUBE', 'Adobe Photoshop v2');
 const OUT = path.join(ROOT, 'assets', 'cubepacks-clean', '_compare-v2-vs-catalog.html');
 
-const ts = fs.readFileSync(path.join(ROOT, 'apps', 'pc-version', 'frontend', 'src', 'lib', 'icon-catalog-photoshop.ts'), 'utf-8');
-const { code } = esbuild.transformSync(ts, { loader: 'ts', format: 'esm' });
-const tmp = path.join(os.tmpdir(), `ps-cat-${process.pid}.mjs`);
-fs.writeFileSync(tmp, code);
-const { findPhotoshopIcon } = await import(pathToFileURL(tmp).href);
-fs.unlinkSync(tmp);
+// 우측 = 현재 산출물(_recolored PNG) — strip 손실/오변환 검수용
+void esbuild;
+void pathToFileURL;
+const RECOLOR_DIR = path.join(ROOT, 'assets', 'cubepacks-clean', '_recolored');
 
 const rows = [];
 for (const f of fs.readdirSync(SRC_DIR).filter((x) => x.endsWith('.cubeone')).sort()) {
@@ -29,11 +27,14 @@ for (const f of fs.readdirSync(SRC_DIR).filter((x) => x.endsWith('.cubeone')).so
   const m = JSON.parse(await zip.file('manifest.json').async('text'));
   const cube = m.cube ?? {};
   if (cube.action_type !== 'shortcut') continue;
-  const svg = findPhotoshopIcon(cube.label ?? '');
+  const safe = String(cube.label ?? '').replace(/[\\/:*?"<>|]/g, '_');
+  const rec = path.join(RECOLOR_DIR, `${safe}.png`);
   rows.push({
     label: cube.label,
     v2: cube.icon_url,
-    mine: svg ? `data:image/svg+xml;base64,${Buffer.from(svg).toString('base64')}` : null,
+    mine: fs.existsSync(rec)
+      ? `data:image/png;base64,${fs.readFileSync(rec).toString('base64')}`
+      : null,
   });
 }
 
