@@ -91,6 +91,9 @@ import { SkinDialog } from './components/SkinDialog';
 
 const PACK_STORAGE_KEY = 'cubelist:last_pack';
 const LIBRARY_DIR_KEY = 'cubelist:library_dir';
+
+// N2 (docs/11 G3): 큐브 복사 클립보드 — 메모리 보관 (리스트 간 붙여넣기 허용)
+let cubeClipboard: Cube[] = [];
 // 2026-06-10 사용자 지시: 미등록 시 기본 라이브러리 경로 자동 시도 (성공하면 영구 등록).
 const DEFAULT_LIBRARY_DIR = 'C:\\Users\\PC\\Downloads\\플러그인\\CUBE';
 
@@ -979,6 +982,56 @@ function CubeMakerCenter() {
   useEffect(() => {
     setMultiSelection(new Set());
   }, [activeList?.id]);
+
+  // ── N2 (docs/11 G3): 큐브 복사/붙여넣기 (Ctrl+C / Ctrl+V) ─────────────────
+  useEffect(() => {
+    function handleCopyPaste(e: KeyboardEvent): void {
+      if (!(e.ctrlKey || e.metaKey)) return;
+      const key = e.key.toLowerCase();
+      if (key !== 'c' && key !== 'v') return;
+      const target = e.target as HTMLElement | null;
+      // 입력 필드/텍스트 선택 중엔 브라우저 기본 복사 유지
+      if (target && (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable)) return;
+      if (key === 'c' && (window.getSelection()?.toString() ?? '') !== '') return;
+      if (!activeList) return;
+
+      if (key === 'c') {
+        const ids = multiSelection.size > 0
+          ? multiSelection
+          : new Set([useEditor.getState().cube_id].filter(Boolean) as string[]);
+        if (ids.size === 0) return;
+        const cubes = activeList.cubes
+          .filter((c) => ids.has(c.id))
+          .sort((a, b) => a.sort_order - b.sort_order);
+        if (cubes.length === 0) return;
+        e.preventDefault();
+        cubeClipboard = cubes;
+        return;
+      }
+
+      // paste
+      if (cubeClipboard.length === 0) return;
+      e.preventDefault();
+      const state = useEditor.getState();
+      const list = state.activeList();
+      if (!list) return;
+      const maxSlot = list.cubes.length > 0 ? Math.max(...list.cubes.map((c) => c.sort_order)) : 0;
+      let slot = maxSlot;
+      let lastId: string | null = null;
+      for (const src of cubeClipboard) {
+        slot += 1;
+        const id = crypto.randomUUID();
+        lastId = id;
+        const payload = src.action_type === 'folder'
+          ? { ...(src.action_payload as Record<string, unknown>), cube_ids: [] } // 폴더 복사 = 빈 폴더 (원본 자식 소유권 분리)
+          : src.action_payload;
+        state.upsertCube(list.id, { ...src, id, action_payload: payload as Cube['action_payload'], sort_order: slot });
+      }
+      if (lastId) state.selectCube(lastId);
+    }
+    window.addEventListener('keydown', handleCopyPaste);
+    return () => window.removeEventListener('keydown', handleCopyPaste);
+  }, [activeList, multiSelection]);
 
   // ── Delete 키 — 단일/다중 삭제 ─────────────────────────────────────────────
   useEffect(() => {
