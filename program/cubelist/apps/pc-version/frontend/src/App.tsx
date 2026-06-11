@@ -94,6 +94,11 @@ const LIBRARY_DIR_KEY = 'cubelist:library_dir';
 
 // N2 (docs/11 G3): 큐브 복사 클립보드 — 메모리 보관 (리스트 간 붙여넣기 허용)
 let cubeClipboard: Cube[] = [];
+
+// dev 전용: E2E/디버그에서 store 접근 (프로덕션 번들 제외)
+if (import.meta.env.DEV) {
+  (window as unknown as Record<string, unknown>).__editor = useEditor;
+}
 // 2026-06-10 사용자 지시: 미등록 시 기본 라이브러리 경로 자동 시도 (성공하면 영구 등록).
 const DEFAULT_LIBRARY_DIR = 'C:\\Users\\PC\\Downloads\\플러그인\\CUBE';
 
@@ -1032,6 +1037,58 @@ function CubeMakerCenter() {
     window.addEventListener('keydown', handleCopyPaste);
     return () => window.removeEventListener('keydown', handleCopyPaste);
   }, [activeList, multiSelection]);
+
+  // ── N3 (docs/11 G2): 그리드 키보드 네비게이션 (화살표 + Enter) ─────────────
+  useEffect(() => {
+    function handleGridNav(e: KeyboardEvent): void {
+      if (!['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Enter'].includes(e.key)) return;
+      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      const target = e.target as HTMLElement | null;
+      if (target && (['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) || target.isContentEditable)) return;
+      // 일반 버튼은 제외하되, 그리드 셀 버튼 포커스 상태에서는 네비게이션 허용
+      if (target?.tagName === 'BUTTON' && !target.className.includes('cube-cell')) return;
+      if (!activeList) return;
+      const state = useEditor.getState();
+      const cubes = state.scopedCubes().slice().sort((a, b) => a.sort_order - b.sort_order);
+      if (cubes.length === 0) return;
+
+      const current = cubes.find((c) => c.id === state.cube_id) ?? null;
+
+      if (e.key === 'Enter') {
+        // Enter = 인스펙터 라벨 입력 포커스 (선택 큐브 있을 때)
+        if (!current) return;
+        e.preventDefault();
+        const labelInput = document.querySelector<HTMLInputElement>('.inspector input[type="text"], aside input[type="text"]');
+        labelInput?.focus();
+        labelInput?.select();
+        return;
+      }
+
+      e.preventDefault();
+      if (!current) { state.selectCube(cubes[0].id); return; }
+
+      const cols = activeList.cols ?? 4;
+      const slotMap = new Map(cubes.map((c) => [c.sort_order, c]));
+      const delta = e.key === 'ArrowLeft' ? -1 : e.key === 'ArrowRight' ? 1 : e.key === 'ArrowUp' ? -cols : cols;
+      const exact = slotMap.get(current.sort_order + delta);
+      if (exact) { state.selectCube(exact.id); return; }
+      // 정확한 슬롯에 큐브가 없으면: 좌우는 배열 인접으로 폴백, 상하는 같은 방향 가장 가까운 슬롯
+      const idx = cubes.indexOf(current);
+      if (e.key === 'ArrowLeft' && idx > 0) state.selectCube(cubes[idx - 1].id);
+      else if (e.key === 'ArrowRight' && idx < cubes.length - 1) state.selectCube(cubes[idx + 1].id);
+      else if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        const dir = e.key === 'ArrowUp' ? -1 : 1;
+        const candidates = cubes.filter((c) => dir * (c.sort_order - current.sort_order) >= cols);
+        if (candidates.length > 0) {
+          const nearest = candidates.reduce((a, b) =>
+            Math.abs(a.sort_order - current.sort_order) <= Math.abs(b.sort_order - current.sort_order) ? a : b);
+          state.selectCube(nearest.id);
+        }
+      }
+    }
+    window.addEventListener('keydown', handleGridNav);
+    return () => window.removeEventListener('keydown', handleGridNav);
+  }, [activeList]);
 
   // ── Delete 키 — 단일/다중 삭제 ─────────────────────────────────────────────
   useEffect(() => {
