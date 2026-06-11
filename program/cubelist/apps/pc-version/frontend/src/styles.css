@@ -2543,9 +2543,11 @@ input[type="text"]:focus, select:focus {
 .cube-label,
 .library-cube-label,
 .palette-cell .cube-label {
-  font-family: 'Bahnschrift', 'Segoe UI', 'Malgun Gothic', sans-serif;
-  letter-spacing: 0.02em;
-  color: #31a8ff; /* 2026-06-11 사용자 지침: 기능명 라벨 블루 톤 */
+  font-family: 'Noto Sans KR', 'Noto Sans', 'Malgun Gothic', sans-serif; /* 사용자 지침: Noto Sans */
+  font-size: 10px; /* 작고 일정하게 */
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: #31a8ff; /* 기능명 라벨 블루 톤 */
 }
 .library-cube-label {
   display: block;
