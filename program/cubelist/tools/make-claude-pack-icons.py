@@ -150,11 +150,21 @@ def art_console(d):
 
 
 def art_claude_ai(d):
+    # claw'd 캐릭터 — 웃는 starburst (팩 캐릭터의 큐브 테마 버전, 2026-06-11)
     cx, cy = ZONE_CX, ZONE_CY
+    lengths = [250, 225, 245, 222, 248, 228, 250, 225, 240, 222, 246, 230]
     for i in range(12):
         ang = math.radians(i * 30 + 8)
-        d.line((cx + 70 * math.cos(ang), cy + 70 * math.sin(ang),
-                cx + 230 * math.cos(ang), cy + 230 * math.sin(ang)), fill=MAIN, width=LW + 10)
+        d.line((cx + 120 * math.cos(ang), cy + 120 * math.sin(ang),
+                cx + lengths[i] * math.cos(ang), cy + lengths[i] * math.sin(ang)),
+               fill=MAIN, width=44)
+    # 얼굴판 (코랄)
+    d.ellipse((cx - 135, cy - 135, cx + 135, cy + 135), fill=MAIN)
+    # 눈 (아이보리)
+    for ex in (cx - 52, cx + 52):
+        d.ellipse((ex - 22, cy - 45, ex + 22, cy - 1), fill=BG)
+    # 스마일 (아이보리)
+    d.arc((cx - 70, cy - 25, cx + 70, cy + 85), start=20, end=160, fill=BG, width=18)
 
 
 PICTORIAL = {
@@ -209,6 +219,9 @@ def save_tile(img_s, label, label_font, text_cy):
 def main():
     os.makedirs(OUT, exist_ok=True)
     label_font, label_size = fit_font(list(PICTORIAL.keys()), TEXT_MAX_W, start=40)
+    # 2026-06-11 사용자 지침: 라벨 일괄 10% 축소
+    label_size = max(8, int(label_size * 0.9))
+    label_font = ImageFont.truetype(MONO_FONT, label_size)
     art_bottom = ART_TOP + int(CANVAS * CONTENT)
     text_cy = art_bottom + (CANVAS - art_bottom) // 2
 
