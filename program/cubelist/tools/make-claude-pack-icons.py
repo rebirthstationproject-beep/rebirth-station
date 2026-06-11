@@ -180,7 +180,7 @@ SLASH_SERIES = [
     '/mcp', '/config', '/permissions', '/doctor', '/review', '/rewind', '/context', '/export',
     '/vim', '/hooks', '/statusline', '/add-dir', '/usage', '/todos', '/terminal-setup', '/bug',
     # 워크스페이스 커스텀 (E:\Claude-Workspace commands/skills)
-    '/plan', '/tdd', '/verify', '/code-review', '/security-review', '/e2e', '/loop', '/schedule', '/learn',
+    '/goal', '/plan', '/tdd', '/verify', '/code-review', '/security-review', '/e2e', '/loop', '/schedule', '/learn',
 ]
 
 # 사고 강화/오케스트레이션 키워드 (슬래시 아님 — 프롬프트 키워드)

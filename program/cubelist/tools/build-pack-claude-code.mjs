@@ -33,7 +33,7 @@ const SLASH_SERIES = [
   '/mcp', '/config', '/permissions', '/doctor', '/review', '/rewind', '/context', '/export',
   '/vim', '/hooks', '/statusline', '/add-dir', '/usage', '/todos', '/terminal-setup', '/bug',
   // 워크스페이스 커스텀
-  '/plan', '/tdd', '/verify', '/code-review', '/security-review', '/e2e', '/loop', '/schedule', '/learn',
+  '/goal', '/plan', '/tdd', '/verify', '/code-review', '/security-review', '/e2e', '/loop', '/schedule', '/learn',
 ];
 
 // 사고 강화/오케스트레이션 키워드 (프롬프트 텍스트)
