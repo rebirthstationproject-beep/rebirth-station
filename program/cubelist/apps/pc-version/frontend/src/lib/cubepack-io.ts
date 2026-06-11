@@ -172,6 +172,7 @@ function buildCubeZip(cube: Cube, now: string): JSZip {
       action_type: cube.action_type,
       action_payload: cube.action_payload,
       ...(cube.metadata ? { metadata: cube.metadata } : {}),
+      ...(cube.title_style ? { title_style: cube.title_style } : {}), // 2026-06-11 라운드트립 보존
     },
   };
   zip.file('manifest.json', JSON.stringify(cubeManifest, null, 2));
@@ -418,6 +419,10 @@ export async function readCubeZip(buf: Uint8Array, sortOrder: number): Promise<C
     action_type: actionType as CubeActionType,
     action_payload: (cubeBody.action_payload ?? {}) as Record<string, unknown>,
     ...(metadataWithCompat ? { metadata: metadataWithCompat } : {}),
+    // 2026-06-11: title_style 보존 — 기능명 베이크 팩(show:false)이 import 후 라벨 중복 표시되는 결함 수정
+    ...(cubeBody.title_style && typeof cubeBody.title_style === 'object'
+      ? { title_style: cubeBody.title_style as Cube['title_style'] }
+      : {}),
   };
 }
 
