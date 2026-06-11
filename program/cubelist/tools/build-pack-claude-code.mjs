@@ -25,16 +25,18 @@ const ICON_DIR = path.join(ROOT, 'assets', 'cubepacks-clean', '_claude-icons');
 const PACK_ICON = 'E:\\Claude-Workspace\\shared-assets\\brand-logos\\library\\claude\\app-icon.png';
 const OUT = path.join(ROOT, 'assets', 'cubepacks-clean', 'claude-code.cubepack');
 
+// /명령어 타이포 시리즈 (make-claude-pack-icons.py SLASH_SERIES 동기) — 자주 쓰는 + 숨은 유용 커맨드
+const SLASH_SERIES = [
+  '/clear', '/compact', '/model', '/resume', '/cost', '/init', '/memory', '/agents',
+  '/mcp', '/config', '/permissions', '/doctor', '/review', '/rewind', '/context', '/export',
+];
+
 const CUBES = [
+  // 그림 아이콘 12
   { label: 'Plan Mode', type: 'shortcut', payload: { keys: ['Shift', 'Tab'] } },
   { label: 'Thinking', type: 'shortcut', payload: { keys: ['Alt', 'T'] } },
   { label: 'Interrupt', type: 'shortcut', payload: { keys: ['Esc'] } },
   { label: 'Stop', type: 'shortcut', payload: { keys: ['Ctrl', 'C'] } },
-  { label: 'Clear', type: 'text_insert', payload: { text: '/clear' } },
-  { label: 'Compact', type: 'text_insert', payload: { text: '/compact' } },
-  { label: 'Model', type: 'text_insert', payload: { text: '/model' } },
-  { label: 'Resume', type: 'text_insert', payload: { text: '/resume' } },
-  { label: 'Cost', type: 'text_insert', payload: { text: '/cost' } },
   { label: 'Continue', type: 'text_insert', payload: { text: 'continue' } },
   { label: 'Git Status', type: 'text_insert', payload: { text: 'git status' } },
   { label: 'Git Diff', type: 'text_insert', payload: { text: 'git diff' } },
@@ -43,11 +45,19 @@ const CUBES = [
   { label: 'Claude Docs', type: 'link', payload: { url: 'https://code.claude.com/docs' } },
   { label: 'Console', type: 'link', payload: { url: 'https://console.anthropic.com' } },
   { label: 'Claude AI', type: 'link', payload: { url: 'https://claude.ai' } },
+  // /명령어 타이포 16 (text_insert — Enter는 사용자)
+  ...SLASH_SERIES.map((cmd) => ({
+    label: cmd,
+    type: 'text_insert',
+    payload: { text: cmd },
+    iconFile: `slash-${cmd.slice(1)}.png`,
+  })),
 ];
 
-function iconDataUrl(label) {
-  const f = path.join(ICON_DIR, `${label.replace(/[\\/:*?"<>|]/g, '_')}.png`);
-  if (!fs.existsSync(f)) throw new Error(`아이콘 없음: ${label}`);
+function iconDataUrl(cube) {
+  const file = cube.iconFile ?? `${cube.label.replace(/[\\/:*?"<>|]/g, '_')}.png`;
+  const f = path.join(ICON_DIR, file);
+  if (!fs.existsSync(f)) throw new Error(`아이콘 없음: ${cube.label}`);
   return `data:image/png;base64,${fs.readFileSync(f).toString('base64')}`;
 }
 
@@ -73,7 +83,7 @@ for (const [i, c] of CUBES.entries()) {
     rbs_min_version: '0.1.0',
     cube: {
       label: c.label,
-      icon_url: iconDataUrl(c.label),
+      icon_url: iconDataUrl(c),
       action_type: c.type,
       action_payload: c.payload,
       metadata: { source: 'rebirth-original', icon_source: 'original:claude-code', catalog_version: 'v1' },
