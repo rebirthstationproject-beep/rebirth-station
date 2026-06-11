@@ -1,0 +1,133 @@
+{
+ "file": "claude-code.cubepack",
+ "audited_at": null,
+ "pack_residue": [],
+ "lists": [
+  {
+   "ref": "lists/CLAUDE-CODE-MAIN.cubelist",
+   "residue": [],
+   "cubes": [
+    {
+     "ref": "cubes/cc-01.cubeone",
+     "label": "Plan Mode",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-02.cubeone",
+     "label": "Thinking",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-03.cubeone",
+     "label": "Interrupt",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-04.cubeone",
+     "label": "Stop",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-05.cubeone",
+     "label": "Clear",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-06.cubeone",
+     "label": "Compact",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-07.cubeone",
+     "label": "Model",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-08.cubeone",
+     "label": "Resume",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-09.cubeone",
+     "label": "Cost",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-10.cubeone",
+     "label": "Continue",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-11.cubeone",
+     "label": "Git Status",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-12.cubeone",
+     "label": "Git Diff",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-13.cubeone",
+     "label": "Git Log",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-14.cubeone",
+     "label": "Terminal",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-15.cubeone",
+     "label": "Claude Docs",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-16.cubeone",
+     "label": "Console",
+     "issues": [],
+     "residue": []
+    },
+    {
+     "ref": "cubes/cc-17.cubeone",
+     "label": "Claude AI",
+     "issues": [],
+     "residue": []
+    }
+   ]
+  }
+ ],
+ "totals": {
+  "cubes": 17,
+  "runnable_issues": 0,
+  "residue_hits": 0,
+  "icon": {
+   "ok": 17,
+   "placeholder": 0,
+   "tiny": 0,
+   "noIcon": 0
+  }
+ },
+ "verdict": {
+  "check1_runnable": true,
+  "check2_clean": true,
+  "check3_list_icon": true,
+  "check4_cube_icons": true
+ },
+ "pack_icon": "icon.png"
+}
