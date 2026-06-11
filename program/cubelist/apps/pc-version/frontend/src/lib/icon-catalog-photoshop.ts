@@ -19,16 +19,20 @@
 const PS_BLUE = '#31A8FF';
 const PS_DARK = '#001E36';
 const PS_WHITE = '#FFFFFF';
-void PS_DARK;
-void PS_WHITE;
 
-/** SVG wrapper 생성 — color는 strokeColor로 사용 */
-function svgOf(body: string, strokeColor: string = PS_BLUE, fillColor: string = 'none'): string {
-  // color 속성 필수 — img/background-image 컨텍스트에서 fill="currentColor"가
-  // 검정으로 해석돼 다크 셀 배경에 묻히는 결함 방지 (2026-06-11 콘택트 시트 검증)
+/**
+ * SVG wrapper — 2026-06-11 사용자 디자인 지침 반영:
+ * - 배경 = PS 로고 다크네이비(#001E36) 풀블리드 타일 (rx 20%)
+ * - 여백 = 글리프(0..24)를 36 캔버스 중앙 배치 → 사방 약 17~20% 균일 여백
+ * - 선 두께 = 2 → 1.6 (20% 감량)
+ * - 투톤 = 흰색 스트로크 기본 + 블루(#31A8FF) 액센트(currentColor)
+ * - color 속성 필수 — img 컨텍스트에서 currentColor 검정 해석 방지
+ */
+function svgOf(body: string, strokeColor: string = PS_WHITE, accentColor: string = PS_BLUE): string {
   return (
-    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" ` +
-    `color="${strokeColor}" stroke="${strokeColor}" fill="${fillColor}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">` +
+    `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 36 36" width="144" height="144" ` +
+    `color="${accentColor}" stroke="${strokeColor}" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">` +
+    `<rect x="-6" y="-6" width="36" height="36" rx="7.2" fill="${PS_DARK}" stroke="none" />` +
     `${body}</svg>`
   );
 }
@@ -106,10 +110,10 @@ const PS_BODIES: Record<string, string> = {
     '<path d="M12 2v3M12 19v3M5 12H2M22 12h-3M5 5l2 2M17 17l2 2M5 19l2-2M17 7l2-2" />',
 
   // === 13. Brush — 붓 ===
+  // PS 브러시 툴 마크 — 가는 손잡이 + 다이아몬드 붓끝 (참조: PS 툴바 #5)
   'brush':
-    '<path d="M9 11l-6 6v4h4l6-6" />' +
-    '<path d="M13 5l6 6-6 6" />' +
-    '<rect x="13" y="3" width="6" height="8" rx="1" fill="currentColor" stroke="none" />',
+    '<path d="M21 3l-9.5 9.5" />' +
+    '<path d="M11 12.5c-1.6-.4-3.6.5-4.7 2.3-1.2 1.9-.9 3.7-2.8 5.2 2.8 1.2 6.2.6 7.8-1.6 1.3-1.8 1.2-4.2-.3-5.9z" fill="currentColor" stroke="none" />',
 
   // === 14. Burn — 손 ===
   'burn':
@@ -118,9 +122,11 @@ const PS_BODIES: Record<string, string> = {
     '<path d="M15 12V8a2 2 0 014 0v6a6 6 0 01-12 0v-2" />',
 
   // === 15. Clone_Stamp — 스탬프 ===
+  // PS 도장(복제) 툴 마크 (참조: PS 툴바 #18)
   'clone stamp':
-    '<rect x="6" y="3" width="12" height="4" rx="1" fill="currentColor" stroke="none" />' +
-    '<path d="M9 21h6M12 21V11M5 11h14l-2 8H7z" />',
+    '<path d="M12 3.5a3.2 3.2 0 00-3.2 3.2c0 1.7 1.2 2.7 1.2 4.3h4c0-1.6 1.2-2.6 1.2-4.3A3.2 3.2 0 0012 3.5z" fill="currentColor" stroke="none" />' +
+    '<path d="M6.5 14.5a1.5 1.5 0 011.5-1.5h8a1.5 1.5 0 011.5 1.5V17h-11z" />' +
+    '<path d="M4.5 20h15" />',
 
   // === 16. Content_Aware_Fill — 채움 + 별 ===
   'content aware fill':
@@ -155,13 +161,16 @@ const PS_BODIES: Record<string, string> = {
     '<path d="M9 12h6" />',
 
   // === 22. Direct_Selection — 화살표 ===
+  // PS 패스/직접 선택 마크 — 흰 화살표 커서 (참조: PS 툴바 #22)
   'direct selection':
-    '<path d="M3 3l8 18 3-7 7-3z" fill="currentColor" stroke="none" />',
+    '<path d="M9 2.5v15l3.6-3.2 2.2 5.6 2.6-1-2.2-5.5h4.8z" />',
 
   // === 23. Dodge — 막대 + 빛 ===
+  // PS 닷지 툴 마크 — 막대사탕 (참조: PS 툴바 #8)
   'dodge':
-    '<circle cx="12" cy="12" r="5" />' +
-    '<path d="M12 5V2M12 22v-3M5 12H2M22 12h-3" />',
+    '<circle cx="10" cy="9" r="5.5" />' +
+    '<circle cx="10" cy="9" r="2.4" fill="currentColor" stroke="none" />' +
+    '<path d="M14.2 13.2L20 19" stroke-width="2" />',
 
   // === 24. Drop_Shadow — 그림자 ===
   'drop shadow':
@@ -199,8 +208,11 @@ const PS_BODIES: Record<string, string> = {
     '<path d="M12 11v6" />',
 
   // === 30. Fill — 페인트 통 (채움) ===
+  // PS 칠(페인트 통) 마크 — 기울어진 버킷 + 물감 방울
   'fill':
-    '<path d="M5 11l7-8 7 8a7 7 0 11-14 0z" fill="currentColor" stroke="none" />',
+    '<path d="M8 8.5L13.5 3l1.8 1.8" />' +
+    '<path d="M3.5 13L11 5.5l6.5 6.5L10 19.5z" />' +
+    '<path d="M19.8 13.5c1.1 1.7 1.9 2.9 1.9 3.9a1.9 1.9 0 11-3.8 0c0-1 .8-2.2 1.9-3.9z" fill="currentColor" stroke="none" />',
 
   // === 31. Fill_with_Background_Color — 뒤 색 ===
   'fill with background color':
@@ -264,9 +276,10 @@ const PS_BODIES: Record<string, string> = {
     '<rect x="13" y="9" width="5" height="6" rx="1" fill="currentColor" stroke="none" />',
 
   // === 41. Healing_Brush — 십자가 ===
+  // PS 복구 브러시 마크 — 반창고 (참조: PS 툴바 #15)
   'healing brush':
-    '<path d="M19 13l-6 6-6-6a4 4 0 116-5 4 4 0 116 5z" />' +
-    '<path d="M9 11l3 3 3-3" />',
+    '<rect x="2.5" y="8.8" width="19" height="6.4" rx="3.2" transform="rotate(-45 12 12)" />' +
+    '<rect x="9.4" y="9.4" width="5.2" height="5.2" rx="1" transform="rotate(-45 12 12)" fill="currentColor" stroke="none" opacity="0.85" />',
 
   // === 42. Horizontal_Type — 가로 T ===
   'horizontal type':
@@ -292,10 +305,11 @@ const PS_BODIES: Record<string, string> = {
     '<path d="M12 3v18" />',
 
   // === 46. Lasso — 자유 곡선 ===
+  // PS 올가미 툴 마크 — 비정형 루프 + 늘어진 줄 (참조: PS 툴바 #2)
   'lasso':
-    '<path d="M21 12c0 4-4 7-9 7s-9-3-9-7 4-7 9-7 9 3 9 7z" />' +
-    '<path d="M9 19v3" />' +
-    '<circle cx="9" cy="22" r="1.5" fill="currentColor" stroke="none" />',
+    '<path d="M20.5 10c0 3.6-3.8 6.2-8.5 6.2S3.5 13.6 3.5 10 7.3 3.8 12 3.8s8.5 2.6 8.5 6.2z" />' +
+    '<path d="M8.5 15.7c-1.6.5-2.6 1.4-2.6 2.4 0 .8.6 1.5 1.6 1.9" />' +
+    '<circle cx="8.6" cy="21" r="1.3" fill="currentColor" stroke="none" />',
 
   // === 47. Last_Filter — 필터 반복 ===
   'last filter':
@@ -382,9 +396,11 @@ const PS_BODIES: Record<string, string> = {
     '<path d="M3 3l8 18" />',
 
   // === 62. Pen — 펜 ===
+  // PS 펜 툴 마크 — 만년필 촉 (참조: PS 툴바 #21)
   'pen':
-    '<path d="M12 19l7-7-4-4-7 7z" />' +
-    '<path d="M3 21l5-2L19 8 16 5 5 16z" />',
+    '<path d="M12 2.5c-2.2 4.2-5.2 6-5.2 9.8L12 21l5.2-8.7c0-3.8-3-5.6-5.2-9.8z" />' +
+    '<path d="M12 8.5v4" />' +
+    '<circle cx="12" cy="14.6" r="1.5" fill="currentColor" stroke="none" />',
 
   // === 63. Perspective_Crop — 사다리꼴 ===
   'perspective crop':
@@ -464,7 +480,7 @@ export function findPhotoshopIcon(label: string): string | null {
   const key = normalize(label);
   const body = PS_BODIES[key];
   if (!body) return null;
-  return svgOf(body, PS_BLUE);
+  return svgOf(body);
 }
 
 /** 카탈로그 모든 키 (디버그/테스트용) */

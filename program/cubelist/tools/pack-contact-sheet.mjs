@@ -31,7 +31,7 @@ const html = `<!doctype html><meta charset="utf-8"><style>
 body{background:#111;color:#ddd;font:11px Consolas,monospace;margin:16px}
 .grid{display:grid;grid-template-columns:repeat(8,96px);gap:10px}
 .cell{width:96px}
-.icon{width:96px;height:96px;border-radius:12px;background-color:#0d0d0d;background-size:62% 62%;background-position:center;background-repeat:no-repeat;border:1px solid #2a2a2a}
+.icon{width:96px;height:96px;border-radius:12px;background-color:#0d0d0d;background-size:100% 100%;background-position:center;background-repeat:no-repeat;border:1px solid #2a2a2a}
 .lbl{margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .keys{color:#888}
 </style><h3>${pm.name} — ${cells.length} cubes</h3><div class="grid">${cells.join('')}</div>`;

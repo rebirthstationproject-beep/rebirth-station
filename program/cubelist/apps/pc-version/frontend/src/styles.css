@@ -2538,3 +2538,17 @@ input[type="text"]:focus, select:focus {
   color: var(--text-primary, #ddd);
   text-align: center;
 }
+
+/* 2026-06-11 사용자 지침: 기능명 라벨 = 전용 폰트 + 항상 1줄 (2줄 금지) */
+.cube-label,
+.library-cube-label,
+.palette-cell .cube-label {
+  font-family: 'Bahnschrift', 'Segoe UI', 'Malgun Gothic', sans-serif;
+  letter-spacing: 0.02em;
+}
+.library-cube-label {
+  display: block;
+  white-space: nowrap;
+  -webkit-line-clamp: unset;
+  -webkit-box-orient: unset;
+}
