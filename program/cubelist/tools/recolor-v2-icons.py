@@ -87,6 +87,18 @@ def row_blocks(mask):
     return blocks
 
 
+# 아트워크 확대 보정 — 상대적으로 작아 보이는 아이콘 15% 확대 (2026-06-11 사용자 지정 8종)
+ART_SCALE = {
+    'Adj Black And White': 1.15,
+    'Adj Color Balance': 1.15,
+    'Duplicate Layers': 1.15,
+    'Export As': 1.15,
+    'Last Filter': 1.15,
+    'Levels': 1.15,
+    'Lock Layers': 1.15,
+    'Merge Layers': 1.15,
+}
+
 # 텍스트 제거 한도 — 하단 아트가 텍스트 줄과 동일 메트릭인 아이콘만 예외
 # Levels: ▲▲▲ 슬라이더 (gap 규칙으로도 보존되지만 이중 안전)
 # Select All: marquee 아래 점선 변(h60)이 텍스트 줄(h50)과 메트릭 겹침 → 1블록만
@@ -177,17 +189,20 @@ def to_tile(img, label, font, raw_label=''):
     box = art_bbox(img)
     if box:
         img = img.crop(box)
-    target = int(CANVAS * CONTENT)
+    base_target = int(CANVAS * CONTENT)
+    # 확대 보정 아이콘: 아트만 키우고 레이아웃(존 중심·텍스트 위치)은 전 타일 동일 유지
+    target = int(base_target * ART_SCALE.get(raw_label, 1.0))
     ratio = min(target / img.size[0], target / img.size[1])
     nw, nh = max(1, int(img.size[0] * ratio)), max(1, int(img.size[1] * ratio))
     img = img.resize((nw, nh), Image.LANCZOS)
     img = recolor_px(img)
     tile = Image.new('RGB', (CANVAS, CANVAS), NAVY)
-    # 아트워크: 가로 중앙 / 세로 = 고정 영역(ART_TOP..ART_TOP+target) 안 중앙
-    tile.paste(img, ((CANVAS - nw) // 2, ART_TOP + (target - nh) // 2))
-    # 기능명: 아트워크 영역 아래 잔여 공간 세로 중앙
+    # 아트워크: 가로 중앙 / 세로 = 기본 아트 존(ART_TOP..ART_TOP+base_target) 중심 기준
+    zone_cy = ART_TOP + base_target // 2
+    tile.paste(img, ((CANVAS - nw) // 2, zone_cy - nh // 2))
+    # 기능명: 기본 아트 존 아래 잔여 공간 세로 중앙 (전 타일 동일 위치)
     draw = ImageDraw.Draw(tile)
-    art_bottom = ART_TOP + target
+    art_bottom = ART_TOP + base_target
     text_cy = art_bottom + (CANVAS - art_bottom) // 2
     draw.text((CANVAS // 2, text_cy), label, font=font, fill=BLUE, anchor='mm')
     return tile
