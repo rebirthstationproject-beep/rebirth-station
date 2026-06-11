@@ -52,6 +52,6 @@ h3{font-size:13px} .note{color:#888;margin-bottom:12px}
 .icons{display:flex;gap:4px}
 .icon{width:140px;height:140px;border-radius:10px;background-color:#0d0d0d;background-size:100% 100%;background-position:center;background-repeat:no-repeat;border:1px solid #2a2a2a}
 .miss{display:flex;align-items:center;justify-content:center;color:#666}
-.lbl{margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center}
+.lbl{margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;color:#31a8ff;font-family:Bahnschrift,sans-serif}
 </style><h3>Photoshop 아이콘 비교 — 좌: v2 원본(Elgato 팩) / 우: 자체 SVG 카탈로그</h3><div class="note">${rows.length} 쌍</div><div class="grid">${cells}</div>`, 'utf-8');
 console.log('생성:', OUT, `(${rows.length}쌍)`);

@@ -84,23 +84,37 @@ async function main() {
   const skipped = [];
   const noIcon = [];
 
+  // 2026-06-11 사용자 지시: 아이콘 = v2 형태 100% 유지 + 컬러 스왑(recolor-v2-icons.py 산출).
+  // 컬러 스왑 PNG 우선, 없으면 자체 SVG 카탈로그 폴백.
+  const RECOLOR_DIR = path.join(ROOT, 'assets', 'cubepacks-clean', '_recolored');
   for (const f of files) {
     const src = await readCubeone(path.join(SRC_DIR, f));
     const cube = src.cube ?? {};
     if (cube.action_type !== 'shortcut') { skipped.push(`${cube.label} (${cube.action_type})`); continue; }
     if (EXCLUDE_LABELS.has(cube.label)) { skipped.push(`${cube.label} (라벨-동작 불일치/비결정 — 재설계 대상)`); continue; }
-    const svg = findPhotoshopIcon(cube.label ?? '');
-    if (!svg) { noIcon.push(cube.label); continue; }
+
+    const safe = String(cube.label ?? '').replace(/[\\/:*?"<>|]/g, '_');
+    const recolorFile = path.join(RECOLOR_DIR, `${safe}.png`);
+    let iconUrl = null;
+    let iconSource = null;
+    if (fs.existsSync(recolorFile)) {
+      iconUrl = `data:image/png;base64,${fs.readFileSync(recolorFile).toString('base64')}`;
+      iconSource = 'recolor:photoshop-v2';
+    } else {
+      const svg = findPhotoshopIcon(cube.label ?? '');
+      if (svg) { iconUrl = svgToDataUrl(svg); iconSource = 'catalog:photoshop'; }
+    }
+    if (!iconUrl) { noIcon.push(cube.label); continue; }
 
     adopted.push({
       label: RELABEL.get(cube.label) ?? cube.label,
       action_type: 'shortcut',
       action_payload: { keys: cube.action_payload?.keys ?? [] },
-      icon_url: svgToDataUrl(svg),
+      icon_url: iconUrl,
       metadata: {
         source: 'rebirth-curated',
-        icon_source: 'catalog:photoshop',
-        catalog_version: 'clean-v1',
+        icon_source: iconSource,
+        catalog_version: 'clean-v2-recolor',
       },
       title_style: { show: true },
     });

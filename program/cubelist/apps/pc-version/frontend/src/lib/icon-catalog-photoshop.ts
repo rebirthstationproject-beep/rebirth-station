@@ -32,7 +32,7 @@ function svgOf(body: string, strokeColor: string = PS_WHITE, accentColor: string
   return (
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-6 -6 36 36" width="144" height="144" ` +
     `color="${accentColor}" stroke="${strokeColor}" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">` +
-    `<rect x="-6" y="-6" width="36" height="36" rx="7.2" fill="${PS_DARK}" stroke="none" />` +
+    `<rect x="-6" y="-6" width="36" height="36" fill="${PS_DARK}" stroke="none" />` + // 풀블리드 (모서리 라운딩은 셀 CSS 담당)
     `${body}</svg>`
   );
 }

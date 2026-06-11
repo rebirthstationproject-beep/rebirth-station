@@ -2545,6 +2545,7 @@ input[type="text"]:focus, select:focus {
 .palette-cell .cube-label {
   font-family: 'Bahnschrift', 'Segoe UI', 'Malgun Gothic', sans-serif;
   letter-spacing: 0.02em;
+  color: #31a8ff; /* 2026-06-11 사용자 지침: 기능명 라벨 블루 톤 */
 }
 .library-cube-label {
   display: block;
