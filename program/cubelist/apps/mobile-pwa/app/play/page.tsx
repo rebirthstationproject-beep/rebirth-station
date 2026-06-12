@@ -125,6 +125,7 @@ export default function PlayPage() {
   const [toast, setToast] = useState('');
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchX = useRef<number | null>(null);
+  const [dragDx, setDragDx] = useState(0); // 드래그 중 실시간 오프셋(px)
 
   const reload = useCallback(() => {
     if (!isLocalMode()) return;
@@ -174,17 +175,30 @@ export default function PlayPage() {
   }
 
   // 좌우 스와이프 페이지 전환 (스펙 3·4) — pointer 이벤트 = 마우스 드래그 + 터치 공통 (2026-06-12)
+  // 누른 상태로 움직이면 페이지가 마우스를 실시간으로 따라오고, 놓으면 넘어가거나 복귀
   function onSwipeDown(e: React.PointerEvent): void {
     if (arrange) return; // 배치 모드 중엔 큐브 드래그 우선
     touchX.current = e.clientX;
+  }
+  function onSwipeMove(e: React.PointerEvent): void {
+    if (arrange || touchX.current === null) return;
+    const dx = e.clientX - touchX.current;
+    // 첫/마지막 페이지 밖으로는 저항 (1/3만 따라옴)
+    const blocked = (dx > 0 && page === 0) || (dx < 0 && page === boards.length);
+    setDragDx(blocked ? dx / 3 : dx);
   }
   function onSwipeUp(e: React.PointerEvent): void {
     if (arrange || touchX.current === null) return;
     const dx = e.clientX - touchX.current;
     touchX.current = null;
+    setDragDx(0);
     if (Math.abs(dx) < 60) return;
     if (dx < 0 && page < boards.length) setPage(page + 1);
     if (dx > 0 && page > 0) setPage(page - 1);
+  }
+  function onSwipeCancel(): void {
+    touchX.current = null;
+    setDragDx(0);
   }
 
   if (!isLocalMode()) {
@@ -244,12 +258,16 @@ export default function PlayPage() {
       <div
         className="flex-1 overflow-hidden"
         onPointerDown={onSwipeDown}
+        onPointerMove={onSwipeMove}
         onPointerUp={onSwipeUp}
-        onPointerLeave={() => { touchX.current = null; }}
+        onPointerLeave={onSwipeCancel}
+        onPointerCancel={onSwipeCancel}
       >
         <div
-          className="flex h-full transition-transform duration-300 ease-out"
-          style={{ transform: `translateX(-${page * 100}%)` }}
+          className={`flex h-full ease-out ${
+            dragDx === 0 ? 'transition-transform duration-300' : ''
+          }`}
+          style={{ transform: `translateX(calc(-${page * 100}% + ${dragDx}px))` }}
         >
           {/* 페이지 0 — 전체 메뉴 */}
           <section className="min-w-full h-full overflow-y-auto">
