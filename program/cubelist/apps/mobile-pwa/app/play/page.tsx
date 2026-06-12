@@ -173,14 +173,14 @@ export default function PlayPage() {
     showToast('PC 연결 후 실행 가능한 큐브입니다');
   }
 
-  // 좌우 스와이프 페이지 전환 (스펙 3·4)
-  function onTouchStart(e: React.TouchEvent): void {
-    if (arrange) return; // 배치 모드 중엔 드래그 우선
-    touchX.current = e.touches[0].clientX;
+  // 좌우 스와이프 페이지 전환 (스펙 3·4) — pointer 이벤트 = 마우스 드래그 + 터치 공통 (2026-06-12)
+  function onSwipeDown(e: React.PointerEvent): void {
+    if (arrange) return; // 배치 모드 중엔 큐브 드래그 우선
+    touchX.current = e.clientX;
   }
-  function onTouchEnd(e: React.TouchEvent): void {
+  function onSwipeUp(e: React.PointerEvent): void {
     if (arrange || touchX.current === null) return;
-    const dx = e.changedTouches[0].clientX - touchX.current;
+    const dx = e.clientX - touchX.current;
     touchX.current = null;
     if (Math.abs(dx) < 60) return;
     if (dx < 0 && page < boards.length) setPage(page + 1);
@@ -241,7 +241,12 @@ export default function PlayPage() {
       </header>
 
       {/* 페이지 슬라이더 — 0 = 전체 메뉴, 1..N = 보드 */}
-      <div className="flex-1 overflow-hidden" onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <div
+        className="flex-1 overflow-hidden"
+        onPointerDown={onSwipeDown}
+        onPointerUp={onSwipeUp}
+        onPointerLeave={() => { touchX.current = null; }}
+      >
         <div
           className="flex h-full transition-transform duration-300 ease-out"
           style={{ transform: `translateX(-${page * 100}%)` }}
