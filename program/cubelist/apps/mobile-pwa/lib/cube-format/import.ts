@@ -119,6 +119,26 @@ export async function importFromText(
 // v3 ZIP 파싱 헬퍼
 // ---------------------------------------------------------------------------
 
+/**
+ * v3 pack의 리스트 ZIP 참조 추출 — 직렬화 방언 호환 (2026-06-12).
+ * 모바일 export = pack.order[{ref,sort_order}] / PC 편집기·SD 변환기 = pack.lists[{ref,...}].
+ */
+function packListRefs(pack: {
+  order?: Array<{ ref: string; sort_order: number }>;
+}): Array<{ ref: string; sort_order: number }> {
+  if (Array.isArray(pack.order) && pack.order.length > 0) return pack.order;
+  const lists = (pack as { lists?: Array<{ ref?: unknown; sort_order?: unknown }> }).lists;
+  if (Array.isArray(lists)) {
+    return lists
+      .filter((l) => typeof l?.ref === 'string')
+      .map((l) => ({
+        ref: l.ref as string,
+        sort_order: typeof l.sort_order === 'number' ? l.sort_order : 0,
+      }));
+  }
+  return [];
+}
+
 interface ParseResult {
   success: true;
   manifest: AnyCubeFile;
@@ -238,8 +258,10 @@ async function importCubePackV3(
   const boardIds: string[] = [];
 
   // v3: order 배열 → lists/*.cubelist ZIP 추출
-  if (Array.isArray(pack.order) && pack.order.length > 0) {
-    for (const entry of pack.order.sort((a, b) => a.sort_order - b.sort_order)) {
+  // 2026-06-12: PC 편집기·변환기는 pack.lists[{ref,...}]로 직렬화 → 폴백 호환 (packListRefs)
+  const packRefs = packListRefs(pack);
+  if (packRefs.length > 0) {
+    for (const entry of packRefs.sort((a, b) => a.sort_order - b.sort_order)) {
       const zipEntry = zip.file(entry.ref);
       if (!zipEntry) continue;
       try {
@@ -424,12 +446,13 @@ async function importLocalModeFromManifest(
     }
     case 'cubepack': {
       const pack = manifest.pack;
-      // v3: order 배열 → lists 추출
-      if (Array.isArray(pack.order) && pack.order.length > 0) {
+      // v3: order 배열 → lists 추출 (pack.lists 직렬화 폴백 호환 — 2026-06-12)
+      const localRefs = packListRefs(pack);
+      if (localRefs.length > 0) {
         let totalBoards = 0;
         let totalItems = 0;
         const boardIds: string[] = [];
-        for (const entry of pack.order.sort((a, b) => a.sort_order - b.sort_order)) {
+        for (const entry of localRefs.sort((a, b) => a.sort_order - b.sort_order)) {
           const zipEntry = zip.file(entry.ref);
           if (!zipEntry) continue;
           try {

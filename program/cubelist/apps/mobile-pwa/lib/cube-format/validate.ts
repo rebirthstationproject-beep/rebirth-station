@@ -39,7 +39,12 @@ export type CubeFormatErrorCode =
   | 'dangerous_payload'
   | 'external_url';
 
-const ALLOWED_ACTION_TYPES = new Set(['link', 'shortcut', 'macro']);
+// 2026-06-12: 구버전 3종 → Stage 1.5 enum 10종 동기 (types/cube.ts·wire 호환과 일치)
+// — text_insert/app_launch 등이 unsupported로 스킵돼 PC 제작 팩이 7/48만 들어오던 결함 수정
+const ALLOWED_ACTION_TYPES = new Set([
+  'link', 'shortcut', 'macro', 'folder', 'text_insert',
+  'clipboard_copy', 'app_launch', 'focus_window', 'mouse_click', 'plugin_action',
+]);
 
 const DANGEROUS_KEYWORDS = [
   'exec',

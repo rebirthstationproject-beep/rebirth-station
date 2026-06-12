@@ -167,7 +167,65 @@ export function ImportSheet({ open, onClose, onImported, initialText }: ImportSh
         setStep('preview');
         return;
       }
-      // dry-run은 텍스트 기반 — ZIP이면 텍스트 파싱이 실패해도 미리보기는 진행
+      // 2026-06-12: v3 ZIP 컨테이너 분기 — 기존엔 ZIP도 텍스트 dry-run으로 흘러
+      // malformed_json 실패 미리보기가 되고 확정 버튼이 막혀 importCubeFile(ZIP 파싱)에
+      // 도달 불가했던 결함 수정. ZIP이면 manifest.json만 읽어 미리보기 구성.
+      const buf = await file.arrayBuffer();
+      const u8 = new Uint8Array(buf);
+      if (u8[0] === 0x50 && u8[1] === 0x4b) {
+        try {
+          const JSZip = (await import('jszip')).default;
+          const zip = await JSZip.loadAsync(buf);
+          const mf = zip.file('manifest.json');
+          if (!mf) throw new Error('manifest.json 누락');
+          const manifest = JSON.parse(await mf.async('text')) as {
+            kind?: string;
+            license?: string;
+            rbs_format_version?: number;
+            pack?: { name?: string; lists?: Array<{ name?: string; cube_count?: number }> };
+            list?: { name?: string; order?: unknown[] };
+            cube?: { label?: string };
+          };
+          const lists = manifest.pack?.lists ?? [];
+          const boardCount = manifest.kind === 'cubepack' ? lists.length : 1;
+          const cubeCount =
+            manifest.kind === 'cubepack'
+              ? lists.reduce((a, l) => a + (l.cube_count ?? 0), 0)
+              : manifest.kind === 'cubelist'
+                ? (manifest.list?.order?.length ?? 0)
+                : 1;
+          const name =
+            manifest.pack?.name ?? manifest.list?.name ?? manifest.cube?.label ?? file.name;
+          setPendingFile(file);
+          setRawText('');
+          setPreview({
+            success: true,
+            boardCount,
+            cubeCount,
+            boards: [{ name, cubes: [] }],
+            warnings: [],
+            meta: {
+              license: manifest.license,
+              rbsFormatVersion: manifest.rbs_format_version,
+            },
+          });
+          setStep('preview');
+          return;
+        } catch (e) {
+          setPendingFile(null);
+          setPreview({
+            success: false,
+            boardCount: 0,
+            cubeCount: 0,
+            boards: [],
+            warnings: [],
+            meta: {},
+            reason: (e as Error).message,
+          });
+          setStep('preview');
+          return;
+        }
+      }
       const text = await file.text();
       setPendingFile(file);
       setRawText(text);

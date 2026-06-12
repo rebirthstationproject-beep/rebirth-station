@@ -566,6 +566,15 @@ export function CubeListView({ editMode, onRequestEdit, onOpenLibrary, onSelectC
     // SD-CH-2 (2026-05-23): multi-state 큐브의 effective payload 적용 (state별 다른 동작)
     const effectivePayload = getCubeEffectivePayload(item);
     const action = parseActionPayload({ ...item, action_payload: effectivePayload });
+    // 2026-06-12: link 큐브 = 디바이스에서 직접 발화 (PC 불필요).
+    // 기존엔 hotkey 경로(TVK)에만 window.open이 있고 탭 경로는 PC 송신만 해서
+    // 로컬 모드 탭이 무동작이던 결함 수정.
+    if (item.action_type === 'link') {
+      const url = (effectivePayload as { url?: string })?.url;
+      if (typeof url === 'string' && /^https?:\/\//i.test(url)) {
+        window.open(url, '_blank', 'noopener,noreferrer');
+      }
+    }
     // SD-AE (2026-05-23): shortcut/macro 큐브는 PC app 필요 — 미연결 시 toast 안내
     if ((item.action_type === 'shortcut' || item.action_type === 'macro') && helper.status !== 'connected') {
       const msg =
