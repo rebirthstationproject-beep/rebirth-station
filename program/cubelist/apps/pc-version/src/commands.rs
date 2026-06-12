@@ -624,7 +624,14 @@ fn scan_library_dir(
             continue;
         };
         let lower = ext.to_ascii_lowercase();
-        if !matches!(lower.as_str(), "cubeone" | "cubelist" | "cubepack") {
+        // 폴더 대표 아이콘(icon.png 등)은 리스트 아이콘으로 매핑 — 그 외 이미지는 제외
+        let is_folder_icon = matches!(lower.as_str(), "png" | "webp" | "jpg" | "jpeg")
+            && path
+                .file_stem()
+                .and_then(|s| s.to_str())
+                .map(|s| s.eq_ignore_ascii_case("icon"))
+                .unwrap_or(false);
+        if !matches!(lower.as_str(), "cubeone" | "cubelist" | "cubepack") && !is_folder_icon {
             continue;
         }
         let size = metadata.len();

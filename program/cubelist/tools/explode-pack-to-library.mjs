@@ -28,6 +28,9 @@ if (!fs.existsSync(libraryRoot)) {
 }
 
 const outer = await JSZip.loadAsync(fs.readFileSync(packPath));
+// 팩 대표 아이콘 — 각 리스트 폴더에 icon.png 로 복사 (편집기 리스트 아이콘으로 매핑됨)
+const packIconEntry = outer.file('icon.png');
+const packIconBytes = packIconEntry ? await packIconEntry.async('uint8array') : null;
 const listFiles = Object.keys(outer.files).filter((k) => k.toLowerCase().endsWith('.cubelist'));
 if (listFiles.length === 0) {
   console.error('팩 안에 .cubelist 가 없습니다');
@@ -65,5 +68,8 @@ for (const lf of listFiles) {
     fs.writeFileSync(path.join(dir, fileName), bytes);
     written++;
   }
-  console.log(`[ok] ${listName}: ${written}/${sorted.length} 큐브 → ${dir}`);
+  if (packIconBytes) {
+    fs.writeFileSync(path.join(dir, 'icon.png'), packIconBytes);
+  }
+  console.log(`[ok] ${listName}: ${written}/${sorted.length} 큐브${packIconBytes ? ' + icon.png' : ''} → ${dir}`);
 }

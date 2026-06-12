@@ -88,6 +88,24 @@ export async function loadLibraryFromDir(path: string): Promise<CubePack> {
   const looseCubes: Cube[] = []; // 최상위 직속 .cubeone
   const libraryCubes: Cube[] = []; // pack.cubes 풀
 
+  // <폴더>/icon.png|webp|jpg = 그 큐브리스트의 대표 아이콘 (2026-06-12)
+  const folderIcons = new Map<string, string>(); // 폴더명 → data URL
+  let rootIcon: string | undefined; // 최상위 icon.png = 팩 아이콘
+  for (const file of files) {
+    const m = file.relative_path.match(/^(?:([^/]+)\/)?icon\.(png|webp|jpe?g)$/i);
+    if (!m) continue;
+    const mime = m[2].toLowerCase() === 'png' ? 'image/png'
+      : m[2].toLowerCase() === 'webp' ? 'image/webp' : 'image/jpeg';
+    const u8 = toUint8(file.bytes);
+    let bin = '';
+    for (let i = 0; i < u8.length; i += 8192) {
+      bin += String.fromCharCode(...u8.subarray(i, i + 8192));
+    }
+    const dataUrl = `data:${mime};base64,${btoa(bin)}`;
+    if (m[1]) folderIcons.set(m[1], dataUrl);
+    else rootIcon = dataUrl;
+  }
+
   // 폴더 순서 유지 (파일 도착 순) — Map insertion order
   for (const file of files) {
     if (!file.relative_path.toLowerCase().endsWith('.cubeone')) continue;
@@ -134,6 +152,7 @@ export async function loadLibraryFromDir(path: string): Promise<CubePack> {
       sort_order: order++,
       cols: 4,
       cubes_per_page: 28,
+      icon_url: folderIcons.get(folderName),
       // 변환 폴백 중복 아이콘 → 렌더 플래그 마킹 (2026-06-10)
       cubes: markDuplicateIcons(cubes),
     });
@@ -171,6 +190,7 @@ export async function loadLibraryFromDir(path: string): Promise<CubePack> {
     id: `library-${Date.now()}`,
     name: lastSegment,
     category: '라이브러리',
+    icon_url: rootIcon,
     cubes: libraryCubes,
     lists,
   };
