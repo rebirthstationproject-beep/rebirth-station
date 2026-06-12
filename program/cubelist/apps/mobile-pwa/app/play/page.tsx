@@ -125,6 +125,7 @@ export default function PlayPage() {
   const [toast, setToast] = useState('');
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const touchX = useRef<number | null>(null);
+  const swipeCaptured = useRef(false); // 스와이프 판정 후 pointer capture 여부
   const [dragDx, setDragDx] = useState(0); // 드래그 중 실시간 오프셋(px)
 
   const reload = useCallback(() => {
@@ -179,10 +180,20 @@ export default function PlayPage() {
   function onSwipeDown(e: React.PointerEvent): void {
     if (arrange) return; // 배치 모드 중엔 큐브 드래그 우선
     touchX.current = e.clientX;
+    swipeCaptured.current = false;
   }
   function onSwipeMove(e: React.PointerEvent): void {
     if (arrange || touchX.current === null) return;
     const dx = e.clientX - touchX.current;
+    // 10px 이상 가로 이동 = 스와이프 확정 → capture로 컨테이너 밖에서 놓아도 pointerup 수신
+    if (!swipeCaptured.current && Math.abs(dx) > 10) {
+      try {
+        e.currentTarget.setPointerCapture(e.pointerId);
+        swipeCaptured.current = true;
+      } catch {
+        // capture 미지원 환경 — 기존 동작 유지
+      }
+    }
     // 첫/마지막 페이지 밖으로는 저항 (1/3만 따라옴)
     const blocked = (dx > 0 && page === 0) || (dx < 0 && page === boards.length);
     setDragDx(blocked ? dx / 3 : dx);
@@ -191,12 +202,15 @@ export default function PlayPage() {
     if (arrange || touchX.current === null) return;
     const dx = e.clientX - touchX.current;
     touchX.current = null;
+    swipeCaptured.current = false;
     setDragDx(0);
-    if (Math.abs(dx) < 60) return;
+    if (Math.abs(dx) < 40) return;
     if (dx < 0 && page < boards.length) setPage(page + 1);
     if (dx > 0 && page > 0) setPage(page - 1);
   }
   function onSwipeCancel(): void {
+    // capture 중에는 pointerleave가 발생하지 않음 — 미캡처(탭) 상태만 리셋
+    if (swipeCaptured.current) return;
     touchX.current = null;
     setDragDx(0);
   }
@@ -256,12 +270,16 @@ export default function PlayPage() {
 
       {/* 페이지 슬라이더 — 0 = 전체 메뉴, 1..N = 보드 */}
       <div
-        className="flex-1 overflow-hidden"
+        className="flex-1 overflow-hidden select-none"
         onPointerDown={onSwipeDown}
         onPointerMove={onSwipeMove}
         onPointerUp={onSwipeUp}
         onPointerLeave={onSwipeCancel}
-        onPointerCancel={onSwipeCancel}
+        onPointerCancel={() => {
+          touchX.current = null;
+          swipeCaptured.current = false;
+          setDragDx(0);
+        }}
       >
         <div
           className={`flex h-full ease-out ${
