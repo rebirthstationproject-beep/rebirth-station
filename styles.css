@@ -1056,7 +1056,7 @@ main[tabindex="-1"]:focus {
   border: 1px solid var(--line);
   border-radius: var(--r-3);
   cursor: pointer;
-  transition: all 150ms ease;
+  transition: border-color 150ms ease, background-color 150ms ease, color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
   font-family: inherit;
 }
 .action-type-btn:hover {
@@ -1182,7 +1182,7 @@ main[tabindex="-1"]:focus {
   justify-content: center;
   color: var(--muted);
   text-decoration: none;
-  transition: all 150ms;
+  transition: color 150ms, border-color 150ms, background-color 150ms;
 }
 .builder-cube-add:hover {
   border-color: var(--accent);
@@ -1196,7 +1196,7 @@ main[tabindex="-1"]:focus {
   border: 2px dashed var(--line);
   border-radius: var(--r-4);
   text-align: center;
-  transition: all 150ms;
+  transition: border-color 150ms, background-color 150ms, color 150ms, box-shadow 150ms, transform 150ms;
 }
 .dropzone.is-hover {
   border-color: var(--accent);
@@ -1909,4 +1909,47 @@ main[tabindex="-1"]:focus {
 .reveal.is-in {
   opacity: 1;
   transform: translateY(0);
+}
+
+/* ── 접근성 보강 (2026-06-20 UI 감사) — 브랜드 토큰 무변경, 순수 추가 ── */
+
+/* 키보드 포커스 가시화: 버튼·링크·큐브·폼에 브랜드 accent 포커스 링.
+   고대비 모드(box-shadow 무시) 대응으로 outline 동반. */
+.btn:focus-visible,
+.btn-ghost:focus-visible,
+.nav-links a:focus-visible,
+.cube:focus-visible,
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent, #3b6df0);
+  outline-offset: 2px;
+}
+.form-input:focus-visible,
+.form-select:focus-visible,
+select:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid var(--accent, #3b6df0);
+  outline-offset: 1px;
+}
+
+/* 모션 민감 사용자: 모든 애니메이션·트랜지션 정지(float·cube-flash·reveal 등) */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .float-cube,
+  .cube {
+    animation: none !important;
+  }
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }

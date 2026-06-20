@@ -832,7 +832,8 @@ function MarketplaceCubeListPage({ t }) {
         <div style={{ display: "flex", gap: 12, marginBottom: 20, flexWrap: "wrap", alignItems: "center" }}>
           <input
             type="search"
-            placeholder="제목·카테고리·작성자 검색..."
+            aria-label="큐브 검색"
+            placeholder="제목·카테고리·작성자 검색…"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             style={{
@@ -1167,13 +1168,13 @@ function CreateCubePage({ t }) {
           {/* Form */}
           <div>
             <div className="form-section">
-              <label className="form-label">큐브 이름</label>
-              <input className="form-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="예: ChatGPT 빠른 실행" />
+              <label className="form-label" htmlFor="cube-name">큐브 이름</label>
+              <input id="cube-name" className="form-input" value={name} onChange={(e) => setName(e.target.value)} placeholder="예: ChatGPT 빠른 실행" />
             </div>
 
             <div className="form-section">
-              <label className="form-label">아이콘 URL (선택)</label>
-              <input className="form-input" value={icon} onChange={(e) => setIcon(e.target.value)} placeholder="비워두면 favicon 자동 fetch" />
+              <label className="form-label" htmlFor="cube-icon">아이콘 URL (선택)</label>
+              <input id="cube-icon" className="form-input" value={icon} onChange={(e) => setIcon(e.target.value)} placeholder="비워두면 favicon 자동 fetch" />
               <p className="form-hint">사이트 URL의 favicon을 자동으로 추출합니다.</p>
             </div>
 
@@ -1181,9 +1182,9 @@ function CreateCubePage({ t }) {
               <label className="form-label">액션 타입</label>
               <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
                 {[
-                  { id: "link", label: "링크", icon: "🔗", desc: "웹사이트 열기" },
-                  { id: "shortcut", label: "단축키", icon: "⌨️", desc: "OS 단축키 입력" },
-                  { id: "macro", label: "매크로", icon: "⚡", desc: "여러 동작 시퀀스" },
+                  { id: "link", label: "링크", icon: (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M10 13a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1.5 1.5" /><path d="M14 11a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1.5-1.5" /></svg>), desc: "웹사이트 열기" },
+                  { id: "shortcut", label: "단축키", icon: (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2" /><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M8 14h8" /></svg>), desc: "OS 단축키 입력" },
+                  { id: "macro", label: "매크로", icon: (<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7z" /></svg>), desc: "여러 동작 시퀀스" },
                 ].map((opt) => (
                   <button
                     key={opt.id}
@@ -1202,15 +1203,15 @@ function CreateCubePage({ t }) {
 
             {actionType === "link" && (
               <div className="form-section">
-                <label className="form-label">URL</label>
-                <input className="form-input" value={payloadUrl} onChange={(e) => setPayloadUrl(e.target.value)} placeholder="https://chat.openai.com" />
+                <label className="form-label" htmlFor="cube-url">URL</label>
+                <input id="cube-url" className="form-input" value={payloadUrl} onChange={(e) => setPayloadUrl(e.target.value)} placeholder="https://chat.openai.com" />
               </div>
             )}
 
             {actionType === "shortcut" && (
               <div className="form-section">
-                <label className="form-label">키 조합</label>
-                <input className="form-input" value={payloadKeys} onChange={(e) => setPayloadKeys(e.target.value)} placeholder="예: Ctrl+Shift+S" />
+                <label className="form-label" htmlFor="cube-keys">키 조합</label>
+                <input id="cube-keys" className="form-input" value={payloadKeys} onChange={(e) => setPayloadKeys(e.target.value)} placeholder="예: Ctrl+Shift+S" />
                 <p className="form-hint">키 사이를 + 로 연결. Win·Ctrl·Shift·Alt 조합 가능.</p>
               </div>
             )}
@@ -1228,8 +1229,8 @@ function CreateCubePage({ t }) {
             )}
 
             <div className="form-section">
-              <label className="form-label">카테고리 (선택)</label>
-              <select className="form-input" value={category} onChange={(e) => setCategory(e.target.value)}>
+              <label className="form-label" htmlFor="cube-category">카테고리 (선택)</label>
+              <select id="cube-category" className="form-input" value={category} onChange={(e) => setCategory(e.target.value)}>
                 <option value="">자동 추정</option>
                 <option value="korean-life">한국 생활</option>
                 <option value="dev">개발</option>
@@ -1242,8 +1243,8 @@ function CreateCubePage({ t }) {
             </div>
 
             <div className="form-section">
-              <label className="form-label">큐브 색상</label>
-              <input type="color" className="form-input" value={color} onChange={(e) => setColor(e.target.value)} style={{ height: 44, padding: 4 }} />
+              <label className="form-label" htmlFor="cube-color">큐브 색상</label>
+              <input id="cube-color" type="color" className="form-input" value={color} onChange={(e) => setColor(e.target.value)} style={{ height: 44, padding: 4 }} />
             </div>
 
             <div style={{ display: "flex", gap: 12, marginTop: 28, flexWrap: "wrap" }}>

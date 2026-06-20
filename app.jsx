@@ -142,17 +142,17 @@ function SiteSearch() {
           alignItems: "center",
           gap: 8
         }}
-      >🔍 <span className="site-search-text">검색</span> <kbd style={{ fontSize: 11, padding: "1px 6px", background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 4 }}>⌘K</kbd></button>
+      ><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true" style={{ verticalAlign: "-2px" }}><circle cx="11" cy="11" r="7" /><line x1="21" y1="21" x2="16.65" y2="16.65" /></svg> <span className="site-search-text">검색</span> <kbd style={{ fontSize: 11, padding: "1px 6px", background: "var(--surface)", border: "1px solid var(--line)", borderRadius: 4 }}>⌘K</kbd></button>
     );
   }
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="사이트 검색" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "flex-start", justifyContent: "center", paddingTop: 100 }} onClick={() => setOpen(false)}>
-      <div style={{ background: "var(--surface)", borderRadius: 12, padding: 16, width: "90%", maxWidth: 560, boxShadow: "0 10px 40px rgba(0,0,0,0.3)" }} onClick={(e) => e.stopPropagation()}>
+    <div role="dialog" aria-modal="true" aria-label="사이트 검색" style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", zIndex: 1000, display: "flex", alignItems: "flex-start", justifyContent: "center", paddingTop: 100 }} onClick={() => setOpen(false)} onKeyDown={(e) => { if (e.key === "Escape") setOpen(false); }}>
+      <div style={{ background: "var(--surface)", borderRadius: 12, padding: 16, width: "90%", maxWidth: 560, boxShadow: "0 10px 40px rgba(0,0,0,0.3)", overscrollBehavior: "contain" }} onClick={(e) => e.stopPropagation()}>
         <input
           type="search"
           autoFocus
-          placeholder="페이지 검색... (예: 다운로드, 에디터, 블로그)"
+          placeholder="페이지 검색… (예: 다운로드, 에디터, 블로그)"
           value={q}
           onChange={(e) => setQ(e.target.value)}
           style={{ width: "100%", padding: "12px 16px", border: "1px solid var(--line)", borderRadius: 8, fontSize: 15, background: "var(--surface-sunken)" }}
