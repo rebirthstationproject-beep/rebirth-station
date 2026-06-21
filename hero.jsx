@@ -196,7 +196,7 @@ function HeroStage({ t }) {
         </div>
 
         {/* The phone */}
-        <div className="phone" aria-label="Rebirth Station phone controller mockup">
+        <div className="phone" aria-hidden="true">
           <div className="phone-notch" />
           <div className="phone-screen" style={{ fontWeight: "700", height: "577px" }}>
             <div className="phone-status">
