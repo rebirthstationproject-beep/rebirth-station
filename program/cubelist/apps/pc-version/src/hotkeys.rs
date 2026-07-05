@@ -65,7 +65,13 @@ pub struct HotkeyConfig {
     pub rbs_format_version: u8,
     #[serde(default)]
     pub bindings: Vec<HotkeyBinding>,
+    /// PlayMode 전역 토글 단축키. 미지정 시 기본 "ctrl+alt+p", 빈 문자열 "" = 비활성.
+    #[serde(default)]
+    pub playmode_toggle: Option<String>,
 }
+
+/// PlayMode 토글 기본 단축키.
+pub const DEFAULT_PLAYMODE_TOGGLE: &str = "ctrl+alt+p";
 
 fn default_version() -> u8 {
     1
@@ -215,6 +221,22 @@ mod tests {
     fn rejects_unknown_key() {
         let err = normalize_shortcut("ctrl+한글").unwrap_err();
         matches!(err, HotkeyError::InvalidShortcut(_));
+    }
+
+    #[test]
+    fn parses_playmode_toggle_field() {
+        // 지정 시 그 값, 미지정 시 None (호출부가 DEFAULT_PLAYMODE_TOGGLE 적용)
+        let with: HotkeyConfig =
+            serde_json::from_str(r#"{ "playmode_toggle": "ctrl+shift+p" }"#).unwrap();
+        assert_eq!(with.playmode_toggle.as_deref(), Some("ctrl+shift+p"));
+
+        let without: HotkeyConfig = serde_json::from_str(r#"{ "bindings": [] }"#).unwrap();
+        assert!(without.playmode_toggle.is_none());
+
+        // 비활성 표기: 빈 문자열
+        let disabled: HotkeyConfig =
+            serde_json::from_str(r#"{ "playmode_toggle": "" }"#).unwrap();
+        assert_eq!(disabled.playmode_toggle.as_deref(), Some(""));
     }
 
     #[test]

@@ -41,6 +41,6 @@
 dev 전용 `window.__editor` 노출 추가 (E2E/디버그용, 프로덕션 제외).
 
 ## 이번 범위 제외 (후속)
-- 전역 핫키 PlayMode 토글 (Rust hotkeys.rs 연동 — Tauri 빌드 필요)
+- ~~전역 핫키 PlayMode 토글 (Rust hotkeys.rs 연동 — Tauri 빌드 필요)~~ → **완료 (2026-07-06)**: 기본 ctrl+alt+p (hotkeys.json `playmode_toggle`로 변경, ""=비활성). Rust 등록+창 표시+이벤트 emit / frontend listen 토글. 부수 수정: get_webview_window("main")→"editor" 잠재 결함
 - 멀티 상태 큐브 셀 시각 강화 / 사운드 피드백 (정책 결정 필요)
 - 라이브러리 144큐브 데이터 자체의 아이콘 품질 (= 자산화 파이프라인 영역)

@@ -141,6 +141,23 @@ export function App() {
     return () => metrics.stopPolling();
   }, []);
 
+  // 전역 핫키 PlayMode 토글 — Rust hotkeys(기본 ctrl+alt+p)가 emit
+  useEffect(() => {
+    if (!isTauri()) return;
+    let unlisten: (() => void) | undefined;
+    let disposed = false;
+    (async () => {
+      const { listen } = await import('@tauri-apps/api/event');
+      const un = await listen('playmode_toggle', () => setPlayModeOpen((v) => !v));
+      if (disposed) un();
+      else unlisten = un;
+    })();
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, []);
+
   // v0.1.3: Ctrl+F / Cmd+F 전역 검색
   useEffect(() => {
     function handleKey(e: KeyboardEvent): void {

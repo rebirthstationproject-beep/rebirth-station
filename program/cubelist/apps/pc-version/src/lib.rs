@@ -120,7 +120,8 @@ pub fn run_tauri() -> tauri::Result<()> {
             // --minimized 인자가 있으면 창 숨김 시작
             let args: Vec<String> = std::env::args().collect();
             if !args.iter().any(|a| a == "--minimized") {
-                if let Some(window) = app.get_webview_window("main") {
+                // 윈도우 라벨 = "editor" (tauri.conf.json) — 기존 "main" 조회는 항상 None 이던 잠재 결함
+                if let Some(window) = app.get_webview_window("editor") {
                     let _ = window.show();
                 }
             }
@@ -152,12 +153,41 @@ fn register_hotkeys(app: &mut tauri::App) {
         }
     };
 
+    let gs = app.global_shortcut();
+
+    // PlayMode 전역 토글 — 기본 ctrl+alt+p, hotkeys.json playmode_toggle 로 변경/비활성("")
+    let toggle_raw = cfg
+        .playmode_toggle
+        .clone()
+        .unwrap_or_else(|| hotkeys::DEFAULT_PLAYMODE_TOGGLE.into());
+    if !toggle_raw.is_empty() {
+        match hotkeys::normalize_shortcut(&toggle_raw) {
+            Ok(shortcut) => {
+                match gs.on_shortcut(shortcut.as_str(), |app, _shortcut, event| {
+                    if event.state != ShortcutState::Pressed {
+                        return;
+                    }
+                    // 트레이에 숨어 있어도 창을 앞으로 — 전역 토글의 존재 이유
+                    if let Some(window) = app.get_webview_window("editor") {
+                        let _ = window.show();
+                        let _ = window.set_focus();
+                    }
+                    if let Err(e) = app.emit("playmode_toggle", ()) {
+                        tracing::warn!(error = ?e, "playmode_toggle emit 실패");
+                    }
+                }) {
+                    Ok(_) => tracing::info!(shortcut = %shortcut, "PlayMode 토글 핫키 등록"),
+                    Err(e) => tracing::warn!(shortcut = %shortcut, error = ?e, "PlayMode 토글 등록 실패"),
+                }
+            }
+            Err(e) => tracing::warn!(raw = %toggle_raw, error = ?e, "PlayMode 토글 표기 무효"),
+        }
+    }
+
     if cfg.bindings.is_empty() {
         tracing::info!("등록된 핫키 없음");
         return;
     }
-
-    let gs = app.global_shortcut();
 
     for binding in cfg.bindings {
         let shortcut_str = match hotkeys::normalize_shortcut(&binding.shortcut) {
