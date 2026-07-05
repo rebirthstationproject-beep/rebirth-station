@@ -2,6 +2,12 @@
 
 > 매 세션 시작 시 여기부터. 마지막 갱신: 2026-07-06 (완성도 검토 + P0 정리)
 
+## ⭐ 2026-07-06 (2차) — P1 베타 출시 완료 + 케이링크 직접 작동 셋팅
+
+- **P1 베타 출시 완료**: 버전 0.1.3 일치(a850582) → Ed25519 updater 키 생성(C:\Users\PC\.tauri\cubelist.key, memory: reference_cubelist_updater_key) → `cargo tauri build --features keys` MSI+NSIS 번들 → **GitHub Release `cubelist-pc-v0.1.3` 발행** (prerelease, SmartScreen 안내 포함). D-06=GitHub Releases·D-07=베타 무서명 확정. latest.json은 updater 플러그인 활성화(v0.1.4)와 함께.
+- **케이링크(klink/) 큐브 직접 작동**: 헤더 네비 "큐브" 진입점 + dev CSP unsafe-eval 분기(하이드레이션 불능 근본 수정) + export-cubes 아이콘 실존 검증 + featured 24큐브 재생성 + 회귀 테스트. Playwright 실검증(featured 렌더 + 링크 큐브 클릭→새 탭). klink git init 로컬 커밋 8e530fe — **원격 push는 케이링크 GitHub 계정 결정 대기** (reference_git_emails 분리 원칙).
+- 잔여: PC 앱 사용자 수동 smoke(설치→팩 로드→실행) / P2 콘텐츠 자산화(아이콘 디자인 v1~v5 선택 대기) / klink 원격 저장소.
+
 ## ⭐ 2026-07-06 — 완성도 검토 + 완성 계획 수립 + P0 정리
 
 - **완성도 검토 보고서 노션 발행** (리버스 스테이션 하위 「큐브 리스트 — 완성도 검토 + 완성 진행 계획 (2026-07-06)」).
