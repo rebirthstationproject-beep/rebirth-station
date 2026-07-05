@@ -18,15 +18,8 @@ pub mod tray;
 #[cfg(feature = "gui")]
 use tauri::{Emitter, Manager};
 
-/// Tauri 앱 기동 (gui feature 전용).
-///
-/// 책임
-/// - 시스템 트레이 등록 (좌클릭 = 창 토글, 우클릭 메뉴)
-/// - LAN WebSocket 서버 백그라운드 task
-/// - autostart 플러그인 (사용자 토글)
-/// - 창 close → hide (종료가 아닌 트레이로)
-#[cfg(feature = "gui")]
 /// R3-1: 시스템 메트릭 폴링 재사용 State
+#[cfg(feature = "gui")]
 pub use commands::SystemMetricsState;
 
 /// M4 Step 2: 라이브러리 폴더 경로 (custom URI scheme handler 가 사용)
@@ -40,6 +33,14 @@ pub struct PluginProcessState(
     pub std::sync::Arc<std::sync::Mutex<std::collections::HashMap<String, std::process::Child>>>,
 );
 
+/// Tauri 앱 기동 (gui feature 전용).
+///
+/// 책임
+/// - 시스템 트레이 등록 (좌클릭 = 창 토글, 우클릭 메뉴)
+/// - LAN WebSocket 서버 백그라운드 task
+/// - autostart 플러그인 (사용자 토글)
+/// - 창 close → hide (종료가 아닌 트레이로)
+#[cfg(feature = "gui")]
 pub fn run_tauri() -> tauri::Result<()> {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())

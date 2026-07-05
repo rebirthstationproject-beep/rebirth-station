@@ -11,7 +11,9 @@ use crate::actions::{self, ActionError};
 // R3-1: 시스템 메트릭 State (sysinfo 폴링 재사용)
 // ============================================================================
 
-use sysinfo::{System, Networks};
+use sysinfo::System;
+#[cfg(feature = "gui")]
+use sysinfo::Networks;
 use std::sync::Mutex;
 use std::time::Instant;
 
@@ -42,7 +44,8 @@ pub struct SystemMetricsDto {
     pub network_tx_kbps: f64,
 }
 
-#[cfg_attr(feature = "gui", tauri::command)]
+#[cfg(feature = "gui")]
+#[tauri::command]
 pub fn get_system_metrics(
     state: tauri::State<'_, SystemMetricsState>,
 ) -> Result<SystemMetricsDto, String> {
@@ -222,7 +225,8 @@ pub fn write_library_file(
 }
 
 /// M4 Step 3.2 + 3.6 + 3.7: Native plugin .exe child process spawn + process pool 등록
-#[cfg_attr(feature = "gui", tauri::command)]
+#[cfg(feature = "gui")]
+#[tauri::command]
 pub async fn spawn_plugin_process(
     library_dir: String,
     plugin_id: String,
@@ -293,7 +297,8 @@ pub async fn spawn_plugin_process(
 }
 
 /// M4 Step 3.4: frontend → plugin 메시지 전달
-#[cfg_attr(feature = "gui", tauri::command)]
+#[cfg(feature = "gui")]
+#[tauri::command]
 pub async fn send_to_plugin(
     context_uuid: String,
     message: String,
@@ -308,7 +313,8 @@ pub async fn send_to_plugin(
 }
 
 /// M4 Step 3.6: plugin context drop (큐브 unmount 시 connection + process 정리)
-#[cfg_attr(feature = "gui", tauri::command)]
+#[cfg(feature = "gui")]
+#[tauri::command]
 pub async fn drop_plugin_context(
     context_uuid: String,
     server_state: tauri::State<'_, crate::PluginServerState>,
@@ -333,7 +339,8 @@ pub async fn drop_plugin_context(
 }
 
 /// M4 Step 3.7: 현재 살아있는 native plugin process 목록 조회 (디버그)
-#[cfg_attr(feature = "gui", tauri::command)]
+#[cfg(feature = "gui")]
+#[tauri::command]
 pub fn list_plugin_processes(
     process_state: tauri::State<'_, crate::PluginProcessState>,
 ) -> Result<Vec<(String, u32)>, String> {
@@ -342,7 +349,8 @@ pub fn list_plugin_processes(
 }
 
 /// M4 Step 2.2: frontend 가 라이브러리 폴더 경로를 Rust state 에 등록 (custom URI scheme handler 가 사용)
-#[cfg_attr(feature = "gui", tauri::command)]
+#[cfg(feature = "gui")]
+#[tauri::command]
 pub fn set_library_dir_state(
     library_dir: String,
     state: tauri::State<'_, crate::LibraryDirState>,
@@ -361,6 +369,7 @@ pub fn set_library_dir_state(
 ///   - X-Frame-Options 제거 (iframe 안에서 로드 가능)
 ///   - Access-Control-Allow-Origin: * (cross-origin OK)
 ///   - Content-Type: 확장자 기반 sniff
+#[cfg(feature = "gui")]
 pub fn cubelist_plugin_protocol_handler(
     library_dir: Option<String>,
     url: &tauri::http::Uri,
@@ -439,6 +448,7 @@ pub fn cubelist_plugin_protocol_handler(
 
 /// HTML 응답에 <base href="cubelist-plugin://<host>/<dir_path>/"> 자동 inject.
 /// WebView2 의 base URL 추론을 보강 — 상대 경로 src/href 가 정확히 resolve.
+#[cfg(feature = "gui")]
 fn inject_base_href(html_bytes: &[u8], host: &str, path: &str) -> Vec<u8> {
     let html = match std::str::from_utf8(html_bytes) {
         Ok(s) => s,
@@ -494,6 +504,7 @@ fn inject_base_href(html_bytes: &[u8], host: &str, path: &str) -> Vec<u8> {
     out.into_bytes()
 }
 
+#[cfg(feature = "gui")]
 fn guess_mime(path: &std::path::Path) -> &'static str {
     let ext = path
         .extension()
