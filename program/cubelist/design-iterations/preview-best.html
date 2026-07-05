@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>Cubelist 베스트 버전 풀 셋트</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #18181B; color: #E5E5E5; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Apple SD Gothic Neo", sans-serif; padding: 24px; }
+  h1 { font-size: 24px; margin-bottom: 8px; }
+  .sub { color: #A1A1AA; margin-bottom: 24px; }
+  .info { background: #1F1F23; border-radius: 12px; padding: 14px; margin-bottom: 24px; font-size: 13px; color: #A1A1AA; }
+  .info b { color: #FFF; }
+  .app { background: #27272A; border-radius: 16px; padding: 20px; margin-bottom: 16px; display: grid; grid-template-columns: 200px 1fr; gap: 20px; align-items: center; }
+  .meta { font-size: 14px; }
+  .meta h2 { font-size: 18px; font-weight: 700; margin-bottom: 4px; color: #FFF; }
+  .meta .ver { color: #FBBF24; font-weight: 600; font-size: 12px; margin-bottom: 8px; }
+  .meta .note { color: #A1A1AA; font-size: 11px; line-height: 1.4; }
+  .icons { display: flex; gap: 10px; flex-wrap: wrap; }
+  .icon-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .icon { width: 72px; height: 72px; border-radius: 14px; background: #0A0A0A; }
+  .icon img { width: 100%; height: 100%; }
+  .label { font-size: 10px; color: #71717A; max-width: 72px; text-align: center; line-height: 1.2; }
+  @media (max-width: 900px) { .app { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<h1>Cubelist 베스트 버전 풀 셋트 (2차)</h1>
+<p class="sub">사용자 평가 반영 — 각 앱별 선택된 베스트 버전으로 모든 액션 큐브 제작</p>
+
+<div class="info">
+  <b>적용된 영구 규칙</b><br>
+  · 부정 표현(빨간 대각선) 금지 → 빨간 원 + X 마크로 대체<br>
+  · Photoshop "Ps" 로고 → 정식 italic SVG path 재제작 (텍스트 X)<br>
+  · Chrome bookmark → 흰 BG + 회색→금색 그라데이션 별 (검정 BG 폐기)<br>
+  · Slack → 로고 v1 / 액션 v4 하이브리드 적용
+</div>
+
+<div id="root"></div>
+
+<script>
+const apps = [
+  { slug: '01-photoshop', name: 'Photoshop', ver: 'v1 Flat Minimal', verSlug: 'v1-flat-minimal', note: 'Ps 정식 path 재제작 · 72개 확장 가능 (별도 폴더 예정)', icons: ['00-cubelist-icon', '01-new-document', '02-brush', '03-eraser', '04-marquee', '05-text', '06-layer', '07-save', '08-undo'] },
+  { slug: '02-premiere-pro', name: 'Premiere Pro', ver: 'v1 Flat Minimal', verSlug: 'v1-flat-minimal', note: '모든 액션 풀 셋트 완성', icons: ['00-cubelist-icon', '01-new-sequence', '02-cut', '03-play', '04-timeline', '05-export', '06-mark-in', '07-keyframe', '08-render'] },
+  { slug: '03-figma', name: 'Figma', ver: 'v1 Flat Minimal', verSlug: 'v1-flat-minimal', note: '풀 셋트 · 각 액션 카테고리 컬러 매칭', icons: ['00-cubelist-icon', '01-new-frame', '02-component', '03-auto-layout', '04-pen-tool', '05-comment', '06-share', '07-prototype', '08-export'] },
+  { slug: '04-discord', name: 'Discord', ver: 'v1 Flat Minimal', verSlug: 'v1-flat-minimal', note: 'mute/deafen 빨간 대각선 → 빨간 원 X 마크로 변경', icons: ['00-cubelist-icon', '01-mute-mic', '02-deafen', '03-push-to-talk', '04-join-channel', '05-leave-channel', '06-status-online', '07-screen-share', '08-stream'] },
+  { slug: '05-spotify', name: 'Spotify', ver: 'v1 Flat Minimal', verSlug: 'v1-flat-minimal', note: '사용자 평가 "완벽" · 풀 셋트 확장', icons: ['00-cubelist-icon', '01-play', '02-pause', '03-next', '04-prev', '05-like', '06-shuffle', '07-repeat', '08-playlist'] },
+  { slug: '06-vscode', name: 'VS Code', ver: 'v2 Glass Modern', verSlug: 'v2-glass-modern', note: '글래스 톤 풀 셋트', icons: ['00-cubelist-icon', '01-open-file', '02-save', '03-terminal', '04-debug', '05-git-commit', '06-search', '07-format', '08-extension'] },
+  { slug: '07-chrome', name: 'Chrome', ver: 'v1 Flat Minimal', verSlug: 'v1-flat-minimal', note: 'bookmark는 흰 BG + 회→금 그라데이션', icons: ['00-cubelist-icon', '01-new-tab', '02-bookmark', '03-history', '04-incognito', '05-refresh', '06-back', '07-devtools', '08-translate'] },
+  { slug: '08-obs-studio', name: 'OBS Studio', ver: 'v2 Glass Modern', verSlug: 'v2-glass-modern', note: '글래스 톤 풀 셋트', icons: ['00-cubelist-icon', '01-start-stream', '02-stop-stream', '03-start-record', '04-scene-switch', '05-mute-mic', '06-mute-desktop', '07-replay-buffer', '08-virtual-camera'] },
+  { slug: '09-notion', name: 'Notion', ver: 'v1 Flat Minimal', verSlug: 'v1-flat-minimal', note: '풀 셋트 확장', icons: ['00-cubelist-icon', '01-new-page', '02-database', '03-todo', '04-toggle', '05-callout', '06-link', '07-share', '08-search'] },
+  { slug: '10-slack', name: 'Slack', ver: '로고 v1 / 액션 v4', verSlug: 'hybrid', note: '하이브리드 — 메인 로고는 v1, 액션은 v4 Bold Outline', icons: ['00-cubelist-icon', '01-new-message', '02-channel', '03-dm', '04-mention', '05-thread', '06-search', '07-bookmark', '08-status'] }
+];
+
+const root = document.getElementById('root');
+apps.forEach(app => {
+  const div = document.createElement('div');
+  div.className = 'app';
+  let html = `<div class="meta"><h2>${app.name}</h2><div class="ver">${app.ver}</div><div class="note">${app.note}</div></div>`;
+  html += '<div class="icons">';
+  app.icons.forEach(icon => {
+    let folder;
+    if (app.slug === '10-slack') {
+      folder = icon === '00-cubelist-icon' ? 'v1-flat-minimal' : 'v4-bold-outline';
+    } else {
+      folder = app.verSlug;
+    }
+    const shortLabel = icon.replace(/^\d+-/, '').replace(/-/g, ' ');
+    html += `<div class="icon-wrap"><div class="icon"><img src="apps/${app.slug}/${folder}/${icon}.svg" onerror="this.style.opacity=0.3" alt="${icon}"></div><div class="label">${shortLabel}</div></div>`;
+  });
+  html += '</div>';
+  div.innerHTML = html;
+  root.appendChild(div);
+});
+</script>
+</body>
+</html>
