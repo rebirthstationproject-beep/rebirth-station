@@ -9,7 +9,7 @@
 
 [package]
 name = "cubelist-pc-helper"
-version = "0.1.0"
+version = "0.1.3"
 edition = "2021"
 description = "큐브 리스트 PC 헬퍼 — 리버스 스테이션"
 authors = ["Rebirth Station <support@rebirthstation.com>"]

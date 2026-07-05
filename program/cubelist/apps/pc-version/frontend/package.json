@@ -1,6 +1,6 @@
 {
   "name": "@cubelist/pc-frontend",
-  "version": "0.1.0",
+  "version": "0.1.3",
   "private": true,
   "description": "큐브 리스트 PC 데스크톱 편집기 — Vite + React (Tauri WebView 호스트)",
   "type": "module",
